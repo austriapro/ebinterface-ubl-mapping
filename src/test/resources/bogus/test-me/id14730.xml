@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+
+    Copyright (c) 2010-2015 Bundesrechenzentrum GmbH - www.brz.gv.at
+    Copyright (c) 2015 AUSTRIAPRO - www.austriapro.at
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" xmlns:inv="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2">
+	<cbc:UBLVersionID>2.0</cbc:UBLVersionID>
+	<cbc:CustomizationID>urn:oasis:names:specification:ubl:schema:xsd:Invoice-2::Invoice##urn:www.cenbii.eu:transaction:biicoretrdm010:ver1.0:#urn:www.peppol.eu:bis:peppol4a:ver1.0::2.0</cbc:CustomizationID>
+	<cbc:ProfileID>urn:www.cenbii.eu:profile:bii04:ver1.0</cbc:ProfileID>
+	<cbc:ID>90110063</cbc:ID>
+	<cbc:IssueDate>2012-07-12</cbc:IssueDate>
+	<cbc:InvoiceTypeCode>380</cbc:InvoiceTypeCode>
+	<cbc:DocumentCurrencyCode>EUR</cbc:DocumentCurrencyCode>
+	<cac:AccountingSupplierParty>
+		<cac:Party>
+			<cbc:EndpointID schemeAgencyID="9" schemeID="GLN">782655427</cbc:EndpointID>
+			<cac:PartyIdentification>
+				<cbc:ID>782655427</cbc:ID>
+			</cac:PartyIdentification>
+			<cac:PartyName>
+				<cbc:Name>Santa Cruz Biotechnology Inc.</cbc:Name>
+			</cac:PartyName>
+			<cac:PostalAddress>
+				<cbc:StreetName>2145 Delaware Ave</cbc:StreetName>
+				<cbc:CityName>Santa Cruz</cbc:CityName>
+				<cbc:PostalZone>95060</cbc:PostalZone>
+				<cbc:CountrySubentity>CA</cbc:CountrySubentity>
+				<cac:Country>
+					<cbc:IdentificationCode>US</cbc:IdentificationCode>
+				</cac:Country>
+			</cac:PostalAddress>
+			<cac:PartyTaxScheme>
+				<cbc:CompanyID>US782655427</cbc:CompanyID>
+				<cac:TaxScheme>
+					<cbc:ID>VAT</cbc:ID>
+				</cac:TaxScheme>
+			</cac:PartyTaxScheme>
+			<cac:PartyLegalEntity>
+				<cbc:CompanyID>782655427</cbc:CompanyID>
+			</cac:PartyLegalEntity>
+		</cac:Party>
+	</cac:AccountingSupplierParty>
+	<cac:AccountingCustomerParty>
+		<cac:Party>
+			<cbc:EndpointID schemeAgencyID="9" schemeID="GLN">NIFES</cbc:EndpointID>
+			<cac:PartyIdentification>
+				<cbc:ID>NIFES</cbc:ID>
+			</cac:PartyIdentification>
+			<cac:PartyName>
+				<cbc:Name>NIFES</cbc:Name>
+			</cac:PartyName>
+			<cac:PostalAddress>
+				<cbc:StreetName>Postboks 4104</cbc:StreetName>
+				<cbc:CityName>Hamar</cbc:CityName>
+				<cbc:PostalZone>2307</cbc:PostalZone>
+				<cbc:CountrySubentity>04</cbc:CountrySubentity>
+				<cac:Country>
+					<cbc:IdentificationCode>US</cbc:IdentificationCode>
+				</cac:Country>
+			</cac:PostalAddress>
+			<cac:PartyTaxScheme>
+				<cbc:CompanyID>USNIFES</cbc:CompanyID>
+				<cac:TaxScheme>
+					<cbc:ID>VAT</cbc:ID>
+				</cac:TaxScheme>
+			</cac:PartyTaxScheme>
+			<cac:PartyLegalEntity>
+				<cbc:CompanyID>NIFES</cbc:CompanyID>
+			</cac:PartyLegalEntity>
+			<cac:Person>
+				<cbc:FirstName>NIFES</cbc:FirstName>
+			</cac:Person>
+		</cac:Party>
+	</cac:AccountingCustomerParty>
+	<cac:PaymentTerms>
+		<cbc:Note>Number Of Days: 30,  Penalty percentage: 0</cbc:Note>
+	</cac:PaymentTerms>
+	<cac:TaxTotal>
+		<cbc:TaxAmount currencyID="EUR">0.00</cbc:TaxAmount>
+		<cac:TaxSubtotal>
+			<cbc:TaxableAmount currencyID="EUR">598.90</cbc:TaxableAmount>
+			<cbc:TaxAmount currencyID="EUR">0.00</cbc:TaxAmount>
+			<cac:TaxCategory>
+				<cbc:ID schemeAgencyID="6" schemeID="UN/ECE 5305">S</cbc:ID>
+				<cbc:Percent>0.00</cbc:Percent>
+				<cac:TaxScheme>
+					<cbc:ID schemeAgencyID="6" schemeID="UN/ECE 5153">VAT</cbc:ID>
+				</cac:TaxScheme>
+			</cac:TaxCategory>
+		</cac:TaxSubtotal>
+	</cac:TaxTotal>
+	<cac:LegalMonetaryTotal>
+		<cbc:LineExtensionAmount currencyID="EUR">598.90</cbc:LineExtensionAmount>
+		<cbc:TaxExclusiveAmount currencyID="EUR">598.90</cbc:TaxExclusiveAmount>
+		<cbc:TaxInclusiveAmount currencyID="EUR">598.90</cbc:TaxInclusiveAmount>
+		<cbc:PayableAmount currencyID="EUR">598.90</cbc:PayableAmount>
+	</cac:LegalMonetaryTotal>
+	<cac:InvoiceLine>
+		<cbc:ID>000010</cbc:ID>
+		<cbc:Note>Menaquinone 9</cbc:Note>
+		<cbc:InvoicedQuantity unitCode="EA">5</cbc:InvoicedQuantity>
+		<cbc:LineExtensionAmount currencyID="EUR">598.90</cbc:LineExtensionAmount>
+		<cac:Item>
+			<cbc:Name>Menaquinone 9</cbc:Name>
+			<cac:SellersItemIdentification>
+				<cbc:ID>sc-211788</cbc:ID>
+			</cac:SellersItemIdentification>
+			<ClassifiedTaxCategory xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+				<cbc:ID schemeAgencyID="6" schemeID="UN/ECE 5305">S</cbc:ID>
+				<TaxScheme>
+					<cbc:ID schemeAgencyID="6" schemeID="UN/ECE 5153">VAT</cbc:ID>
+				</TaxScheme>
+			</ClassifiedTaxCategory>
+		</cac:Item>
+		<cac:Price>
+			<cbc:PriceAmount currencyID="EUR">119.78</cbc:PriceAmount>
+		</cac:Price>
+	</cac:InvoiceLine>
+</Invoice>

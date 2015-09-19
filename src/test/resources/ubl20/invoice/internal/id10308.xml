@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+
+    Copyright (c) 2010-2015 Bundesrechenzentrum GmbH - www.brz.gv.at
+    Copyright (c) 2015 AUSTRIAPRO - www.austriapro.at
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" xmlns:Invoice="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" xmlns:clm54217="urn:un:unece:uncefact:codelist:specification:54217:2001" xmlns:clm66411="urn:un:unece:uncefact:codelist:specification:66411:2001" xmlns:clmIANAMIMEMediaType="urn:un:unece:uncefact:codelist:specification:IANAMIMEMediaType:2003" xmlns:cnt="urn:oasis:names:specification:ubl:schema:xsd:CountryIdentificationCode-2" xmlns:cur="urn:oasis:names:specification:ubl:schema:xsd:CurrencyCode-2" xmlns:ext="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2" xmlns:ns2="http://www.w3.org/2005/08/addressing" xmlns:ns3="http://www.w3.org/2009/02/ws-tra" xmlns:ns4="http://busdox.org/transport/identifiers/1.0/" xmlns:pty="urn:oasis:names:specification:ubl:schema:xsd:PaymentMeansCode-2" xmlns:udt="urn:un:unece:uncefact:data:specification:UnqualifiedDataTypesSchemaModule:2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2 C:/Users/MARTIN~1/Documents/Projects/Peppol/Svefaktura-BIICoreInvoice/BIICoreInvoiceXSD_AllowanceChargeTax/UBL-Invoice-2.0.xsd">
+  <cbc:UBLVersionID>2.0</cbc:UBLVersionID>
+  <cbc:CustomizationID>urn:www.cenbii.eu:transaction:biicoretrdm010:ver1.0</cbc:CustomizationID>
+  <cbc:ProfileID>urn:www.cenbii.eu:profile:bii04:ver1.0</cbc:ProfileID>
+  <cbc:ID>31915966</cbc:ID>
+  <cbc:IssueDate>2011-11-01</cbc:IssueDate>
+  <cbc:InvoiceTypeCode>380</cbc:InvoiceTypeCode>
+  <cbc:Note>
+Kundnummer: 112Number of lines:1
+TaxCurrency:SEK
+F-Skatt:F-skattebevis finns
+-Accounting Contact-----
+Name:Birgitta Österman
+Telephone:
+Telefax:
+Email:
+----------
+Currency Exchange Rate (tax currency)
+Source Currency Code:EUR
+Source Currency Base Rate:SEK
+Calculation Rate:9.1681
+</cbc:Note>
+  <cbc:TaxPointDate>2011-05-27</cbc:TaxPointDate>
+  <cbc:DocumentCurrencyCode>EUR</cbc:DocumentCurrencyCode>
+  <cbc:AccountingCost>Peppol conference</cbc:AccountingCost>
+  <cac:OrderReference>
+    <cbc:ID>123</cbc:ID>
+  </cac:OrderReference>
+  <cac:AccountingSupplierParty>
+    <cac:Party>
+      <cac:PartyIdentification>
+        <cbc:ID>2021005026</cbc:ID>
+			      </cac:PartyIdentification>
+      <cac:PartyName>
+        <cbc:Name>EKONOMISTYRNINGSVERKET</cbc:Name>
+			      </cac:PartyName>
+      <cac:PostalAddress>
+        <cbc:Postbox>Box 45316</cbc:Postbox>
+        <cbc:CityName>STOCKHOLM</cbc:CityName>
+        <cbc:PostalZone>10430</cbc:PostalZone>
+        <cac:Country>
+          <cbc:IdentificationCode>SE</cbc:IdentificationCode>
+				        </cac:Country>
+			      </cac:PostalAddress>
+      <cac:PartyTaxScheme>
+        <cbc:CompanyID>SE202100502601</cbc:CompanyID>
+        <cac:TaxScheme>
+          <cbc:ID>VAT</cbc:ID>
+				        </cac:TaxScheme>
+			      </cac:PartyTaxScheme>
+      <cac:PartyLegalEntity>
+        <cbc:CompanyID schemeID="SE:ORGNR">2021005026</cbc:CompanyID>
+			      </cac:PartyLegalEntity>
+      <cac:Contact>
+        <cbc:Telephone>086904300</cbc:Telephone>
+			      </cac:Contact>
+      <cac:Person>
+        <cbc:FirstName>Birgitta Österman</cbc:FirstName>
+			      </cac:Person>
+		    </cac:Party>
+	  </cac:AccountingSupplierParty>
+  <cac:AccountingCustomerParty>
+    <cac:Party>
+      <cac:PartyIdentification>
+        <cbc:ID>IT05359681003</cbc:ID>
+			      </cac:PartyIdentification>
+      <cac:PartyName>
+        <cbc:Name>Consip SPA</cbc:Name>
+			      </cac:PartyName>
+      <cac:PostalAddress>
+        <cbc:StreetName>Via Isonzo 19/e</cbc:StreetName>
+        <cbc:CityName>Rome</cbc:CityName>
+        <cbc:PostalZone>00198</cbc:PostalZone>
+        <cac:Country>
+          <cbc:IdentificationCode>IT</cbc:IdentificationCode>
+				        </cac:Country>
+			      </cac:PostalAddress>
+      <cac:PartyTaxScheme>
+        <cbc:CompanyID>IT05359681003</cbc:CompanyID>
+        <cac:TaxScheme>
+          <cbc:ID>VAT</cbc:ID>
+				        </cac:TaxScheme>
+			      </cac:PartyTaxScheme>
+      <cac:PartyLegalEntity>
+        <cbc:CompanyID>IT05359681003</cbc:CompanyID>
+			      </cac:PartyLegalEntity>
+      <cac:Person>
+        <cbc:FirstName>Peppol conference</cbc:FirstName>
+			      </cac:Person>
+		    </cac:Party>
+	  </cac:AccountingCustomerParty>
+  <cac:Delivery>
+    <cbc:ActualDeliveryDate>2011-05-27</cbc:ActualDeliveryDate>
+    <cac:DeliveryLocation>
+      <cac:Address>
+        <cbc:ID>IT05359681003</cbc:ID>
+        <cbc:StreetName>Via Isonzo 19/e</cbc:StreetName>
+        <cbc:CityName>Rome</cbc:CityName>
+        <cbc:PostalZone>00198</cbc:PostalZone>
+        <cac:Country>
+          <cbc:IdentificationCode>IT</cbc:IdentificationCode>
+				        </cac:Country>
+			      </cac:Address>
+		    </cac:DeliveryLocation>
+	  </cac:Delivery>
+  <cac:PaymentMeans>
+    <cbc:PaymentMeansCode>31</cbc:PaymentMeansCode>
+    <cbc:PaymentDueDate>2011-12-01</cbc:PaymentDueDate>
+    <cbc:PaymentID>11120319159664</cbc:PaymentID>
+    <cac:PayeeFinancialAccount>
+      <cbc:ID>SE7112000000012810103089</cbc:ID>
+      <cac:FinancialInstitutionBranch>
+        <cac:FinancialInstitution>
+          <cbc:ID>DABASESX</cbc:ID>
+				        </cac:FinancialInstitution>
+			      </cac:FinancialInstitutionBranch>
+		    </cac:PayeeFinancialAccount>
+	  </cac:PaymentMeans>
+  <cac:PaymentTerms>
+    <cbc:Note>30 dagar netto
+Penalty surcharge percent:10</cbc:Note>
+	  </cac:PaymentTerms>
+  <cac:TaxTotal>
+    <cbc:TaxAmount currencyID="EUR">127.5</cbc:TaxAmount>
+    <cac:TaxSubtotal>
+      <cbc:TaxableAmount currencyID="EUR">510</cbc:TaxableAmount>
+      <cbc:TaxAmount currencyID="EUR">127.5</cbc:TaxAmount>
+      <cac:TaxCategory>
+        <cbc:ID>S</cbc:ID>
+        <cbc:Percent>25</cbc:Percent>
+        <cac:TaxScheme>
+          <cbc:ID>VAT</cbc:ID>
+				        </cac:TaxScheme>
+			      </cac:TaxCategory>
+		    </cac:TaxSubtotal>
+	  </cac:TaxTotal>
+  <cac:LegalMonetaryTotal>
+    <cbc:LineExtensionAmount currencyID="EUR">510</cbc:LineExtensionAmount>
+    <cbc:TaxExclusiveAmount currencyID="EUR">510</cbc:TaxExclusiveAmount>
+    <cbc:TaxInclusiveAmount currencyID="EUR">638</cbc:TaxInclusiveAmount>
+    <cbc:AllowanceTotalAmount currencyID="EUR">0</cbc:AllowanceTotalAmount>
+    <cbc:ChargeTotalAmount currencyID="EUR">0</cbc:ChargeTotalAmount>
+    <cbc:PayableRoundingAmount currencyID="EUR">0.5</cbc:PayableRoundingAmount>
+    <cbc:PayableAmount currencyID="EUR">638</cbc:PayableAmount>
+	  </cac:LegalMonetaryTotal>
+  <cac:InvoiceLine>
+    <cbc:ID>1</cbc:ID>
+    <cbc:Note>Invoiced Quantity Code:ST
+A Caressa, R Migliorini, F Minerva
+S-kod:S3132
+Ordernummer: 810008138</cbc:Note>
+    <cbc:InvoicedQuantity unitCode="ZZ">3</cbc:InvoicedQuantity>
+    <cbc:LineExtensionAmount currencyID="EUR">510</cbc:LineExtensionAmount>
+    <cac:Item>
+      <cbc:Name>Peppol conference in Stockholm 26-27 May</cbc:Name>
+      <cac:SellersItemIdentification>
+        <cbc:ID>135</cbc:ID>
+			      </cac:SellersItemIdentification>
+      <cac:ClassifiedTaxCategory>
+        <cbc:ID>S</cbc:ID>
+        <cbc:Percent>25</cbc:Percent>
+        <cac:TaxScheme>
+          <cbc:ID>VAT</cbc:ID>
+				        </cac:TaxScheme>
+			      </cac:ClassifiedTaxCategory>
+		    </cac:Item>
+    <cac:Price>
+      <cbc:PriceAmount currencyID="EUR">170</cbc:PriceAmount>
+		    </cac:Price>
+	  </cac:InvoiceLine>
+</Invoice>

@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+
+    Copyright (c) 2010-2015 Bundesrechenzentrum GmbH - www.brz.gv.at
+    Copyright (c) 2015 AUSTRIAPRO - www.austriapro.at
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" xmlns:cur="urn:un:unece:uncefact:codelist:specification:54217:2001" xmlns:udt="urn:un:unece:uncefact:data:specification:UnqualifiedDataTypesSchemaModule:2" xmlns:uni="urn:un:unece:uncefact:codelist:specification:66411:2001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2 ./xsd/maindoc/UBL-Invoice-2.0.xsd">
+
+<cbc:UBLVersionID>2.0</cbc:UBLVersionID>
+<cbc:CustomizationID>urn:www.cenbii.eu:transaction:biicoretrdm010:ver1.0</cbc:CustomizationID>
+<cbc:ProfileID>urn:www.cenbii.eu:profile:bii04:ver1.0</cbc:ProfileID>
+<cbc:ID>0045541350</cbc:ID>
+<cbc:IssueDate>2011-01-20</cbc:IssueDate>
+<cbc:InvoiceTypeCode listAgencyID="6" listID="UN/ECE 1001 Subset">380</cbc:InvoiceTypeCode>
+<cbc:DocumentCurrencyCode listAgencyID="6" listID="ISO 4217 Alpha">EUR</cbc:DocumentCurrencyCode>
+
+<cac:OrderReference>
+<cbc:ID>0097017958</cbc:ID>
+</cac:OrderReference>
+
+<cac:AccountingSupplierParty>
+<cac:Party>
+<cac:PartyIdentification>
+<cbc:ID schemeAgencyName="INSEE:National Institute for statistics and Economic studies" schemeID="FR:SIRET" schemeURI="urn:oasis:names:tc:ebcore:partyid-type:unregistered:bii:fr:siret">77605646700587</cbc:ID>
+</cac:PartyIdentification>
+<cac:PartyName>
+<cbc:Name>Direction Ile de France</cbc:Name>
+</cac:PartyName>
+<cac:PostalAddress>
+<cbc:StreetName>1 Bd Archimède    Champs/Marne</cbc:StreetName>
+<cbc:CityName>Marne-la-Vallée cedex 2</cbc:CityName>
+<cbc:PostalZone>77444</cbc:PostalZone>
+<cac:Country>
+<cbc:IdentificationCode listAgencyID="6" listID="ISO3166-1">FR</cbc:IdentificationCode>
+</cac:Country>
+</cac:PostalAddress>
+<cac:PartyTaxScheme>
+<cbc:CompanyID schemeAgencyID="ZZZ" schemeID="FR:VAT">FR51776056467</cbc:CompanyID>
+<cac:TaxScheme>
+<cbc:ID schemeAgencyID="6" schemeID="UN/ECE 5153">VAT</cbc:ID>
+</cac:TaxScheme>
+</cac:PartyTaxScheme>
+<cac:PartyLegalEntity>
+<cbc:RegistrationName>UGAP</cbc:RegistrationName>
+<cbc:CompanyID schemeID="FR:RCS">RCS Meaux B776056467</cbc:CompanyID>
+<cac:RegistrationAddress>
+<cbc:CityName>MARNE-LA-VALLEE Cédex 2</cbc:CityName>
+<cac:Country>
+<cbc:IdentificationCode listAgencyID="6" listID="ISO3166-1">FR</cbc:IdentificationCode>
+</cac:Country>
+</cac:RegistrationAddress>
+</cac:PartyLegalEntity>
+<cac:Contact>
+<cbc:Telephone>0164732304</cbc:Telephone>
+<cbc:Telefax>0164732328</cbc:Telefax>
+<cbc:ElectronicMail>bboutier@ugap.fr</cbc:ElectronicMail>
+</cac:Contact>
+<cac:Person>
+<cbc:FamilyName>Béatrice BOUTIER</cbc:FamilyName>
+</cac:Person>
+</cac:Party>
+</cac:AccountingSupplierParty>
+
+<cac:AccountingCustomerParty>
+<cac:Party>
+<cbc:EndpointID schemeID="GLN">5060259473944</cbc:EndpointID>
+<cac:PartyIdentification>
+<cbc:ID schemeAgencyName="INSEE:National Institute for statistics and Economic studies" schemeID="FR:SIRET" schemeURI="urn:oasis:names:tc:ebcore:partyid-type:unregistered:bii:fr:siret">11006801200043</cbc:ID>
+</cac:PartyIdentification>
+<cac:PartyName>
+<cbc:Name>MINISTERE DE L ECOLOGIE ET DU DEVELOPPEMENT DURABLE DMASD BUR SYSTEMES INFORMATION</cbc:Name>
+</cac:PartyName>
+<cac:PostalAddress>
+<cbc:StreetName>20 AVENUE DE SEGUR</cbc:StreetName>
+<cbc:CityName>PARIS CEDEX 07</cbc:CityName>
+<cbc:PostalZone>75302</cbc:PostalZone>
+<cac:Country>
+<cbc:IdentificationCode listID="ISO3166-1" listName="6">FR</cbc:IdentificationCode>
+</cac:Country>
+</cac:PostalAddress>
+</cac:Party>
+</cac:AccountingCustomerParty>
+
+<cac:PayeeParty>
+<cac:PartyIdentification>
+<cbc:ID>0075107404</cbc:ID>
+</cac:PartyIdentification>
+<cac:PartyName>
+<cbc:Name>UGAP - Direction Financière et Comptable/Département Clients</cbc:Name>
+</cac:PartyName>
+</cac:PayeeParty>
+
+<cac:Delivery>
+<cbc:ActualDeliveryDate>2011-01-19</cbc:ActualDeliveryDate>
+<cac:DeliveryLocation>
+<cbc:ID>0075107404</cbc:ID>
+<cac:Address>
+<cbc:StreetName>20 AVENUE DE SEGUR</cbc:StreetName>
+<cbc:CityName>PARIS CEDEX 07</cbc:CityName>
+<cbc:PostalZone>75302</cbc:PostalZone>
+<cac:Country>
+<cbc:IdentificationCode>FR</cbc:IdentificationCode>
+</cac:Country>
+</cac:Address>
+</cac:DeliveryLocation>
+</cac:Delivery>
+
+<cac:PaymentMeans>
+<cbc:PaymentMeansCode listAgencyID="6" listID="UN/ECE 4461 Subset">31</cbc:PaymentMeansCode>
+<cbc:PaymentChannelCode listAgencyID="BII" listID="Payment Channel">IBAN</cbc:PaymentChannelCode>
+<cac:PayeeFinancialAccount>
+<cbc:ID>FR7610071750000000100004736</cbc:ID>
+<cac:FinancialInstitutionBranch>
+<cbc:ID>TRESOR PUBLIC</cbc:ID>
+</cac:FinancialInstitutionBranch>
+</cac:PayeeFinancialAccount>
+</cac:PaymentMeans>
+
+<cac:PaymentTerms>
+<cbc:Note languageID="FR">Les intérêts moratoires sont dus conformément aux dispositions relatives au paiement fixé par les conditions générales de vente.</cbc:Note>
+</cac:PaymentTerms>
+
+<cac:TaxTotal>
+<cbc:TaxAmount currencyID="EUR">1638.12</cbc:TaxAmount>
+<cac:TaxSubtotal>
+<cbc:TaxableAmount currencyID="EUR">8357.75</cbc:TaxableAmount>
+<cbc:TaxAmount currencyID="EUR">1638.12</cbc:TaxAmount>
+<cac:TaxCategory>
+<cbc:ID schemeAgencyID="6" schemeID="UN/ECE 5305">S</cbc:ID>
+<cbc:Percent>19.600</cbc:Percent>
+<cac:TaxScheme>
+<cbc:ID schemeAgencyID="6" schemeID="UN/ECE 5153">VAT</cbc:ID>
+</cac:TaxScheme>
+</cac:TaxCategory>
+</cac:TaxSubtotal>
+</cac:TaxTotal>
+
+<cac:LegalMonetaryTotal>
+<cbc:LineExtensionAmount currencyID="EUR">8357.75</cbc:LineExtensionAmount>
+<cbc:TaxExclusiveAmount currencyID="EUR">8357.75</cbc:TaxExclusiveAmount>
+<cbc:TaxInclusiveAmount currencyID="EUR">9995.87</cbc:TaxInclusiveAmount>
+<cbc:PayableAmount currencyID="EUR">9995.87</cbc:PayableAmount>
+</cac:LegalMonetaryTotal>
+
+<cac:InvoiceLine>
+<cbc:ID>10</cbc:ID>
+<cbc:InvoicedQuantity unitCode="C62">5.000</cbc:InvoicedQuantity>
+<cbc:LineExtensionAmount currencyID="EUR">4466.35</cbc:LineExtensionAmount>
+<cac:OrderLineReference>
+<cbc:LineID>000010</cbc:LineID>
+</cac:OrderLineReference>
+<cac:TaxTotal>
+<cbc:TaxAmount currencyID="EUR">875.40</cbc:TaxAmount>
+</cac:TaxTotal>
+<cac:Item>
+<cbc:Description>COMPACT 90  SYM 160XPR.80+ CONVIVIALITE VISITEUR+ CAISSON HAUT BUREAU 2 T+ 1T DS AVEC PRESTATION - GAMME EPURE </cbc:Description>
+<cbc:Name>000000000000987327</cbc:Name>
+<cac:ClassifiedTaxCategory>
+<cbc:ID schemeAgencyID="6" schemeID="UN/ECE 5305">S</cbc:ID>
+<cbc:Percent>19.600</cbc:Percent>
+<cac:TaxScheme>
+<cbc:ID schemeAgencyID="6" schemeID="UN/ECE 5153">VAT</cbc:ID>
+</cac:TaxScheme>
+</cac:ClassifiedTaxCategory>
+<cac:AdditionalItemProperty>
+<cbc:Name>GARANTIE                      </cbc:Name>
+<cbc:Value>24 MOIS</cbc:Value>
+</cac:AdditionalItemProperty>
+<cac:AdditionalItemProperty>
+<cbc:Name>Coloris Coffre Caisson        </cbc:Name>
+<cbc:Value>ANTHRACITE</cbc:Value>
+</cac:AdditionalItemProperty>
+<cac:AdditionalItemProperty>
+<cbc:Name>Coloris Coiffe Caisson EPURE  </cbc:Name>
+<cbc:Value>AULNE NATUREL</cbc:Value>
+</cac:AdditionalItemProperty>
+<cac:AdditionalItemProperty>
+<cbc:Name>Coloris Plateaux à préciser   </cbc:Name>
+<cbc:Value>AULNE NATUREL</cbc:Value>
+</cac:AdditionalItemProperty>
+<cac:AdditionalItemProperty>
+<cbc:Name>Coloris Piétements EPURE      </cbc:Name>
+<cbc:Value>ANTHRACITE</cbc:Value>
+</cac:AdditionalItemProperty>
+<cac:AdditionalItemProperty>
+<cbc:Name>Coloris Voile de Fond         </cbc:Name>
+<cbc:Value>ANTHRACITE</cbc:Value>
+</cac:AdditionalItemProperty>
+</cac:Item>
+<cac:Price>
+<cbc:PriceAmount currencyID="EUR">893.27</cbc:PriceAmount>
+<cbc:BaseQuantity unitCode="EA">1</cbc:BaseQuantity>
+</cac:Price>
+</cac:InvoiceLine>
+
+<cac:InvoiceLine>
+<cbc:ID>20</cbc:ID>
+<cbc:InvoicedQuantity unitCode="C62">5.000</cbc:InvoicedQuantity>
+<cbc:LineExtensionAmount currencyID="EUR">2680.20</cbc:LineExtensionAmount>
+<cac:OrderLineReference>
+<cbc:LineID>000020</cbc:LineID>
+</cac:OrderLineReference>
+<cac:TaxTotal>
+<cbc:TaxAmount currencyID="EUR">525.32</cbc:TaxAmount>
+</cac:TaxTotal>
+<cac:Item>
+<cbc:Description>COMPACT 90  SYM ISOLE 160X160X80X80 AVEC PRESTATION - GAMME EPURE </cbc:Description>
+<cbc:Name>000000000000986374</cbc:Name>
+<cac:ClassifiedTaxCategory>
+<cbc:ID schemeAgencyID="6" schemeID="UN/ECE 5305">S</cbc:ID>
+<cbc:Percent>19.600</cbc:Percent>
+<cac:TaxScheme>
+<cbc:ID schemeAgencyID="6" schemeID="UN/ECE 5153">VAT</cbc:ID>
+</cac:TaxScheme>
+</cac:ClassifiedTaxCategory>
+<cac:AdditionalItemProperty>
+<cbc:Name>GARANTIE                      </cbc:Name>
+<cbc:Value>24 MOIS</cbc:Value>
+</cac:AdditionalItemProperty>
+<cac:AdditionalItemProperty>
+<cbc:Name>Coloris Plateaux à préciser   </cbc:Name>
+<cbc:Value>AULNE NATUREL</cbc:Value>
+</cac:AdditionalItemProperty>
+<cac:AdditionalItemProperty>
+<cbc:Name>Coloris Piétements EPURE      </cbc:Name>
+<cbc:Value>ANTHRACITE</cbc:Value>
+</cac:AdditionalItemProperty>
+<cac:AdditionalItemProperty>
+<cbc:Name>Coloris Voile de Fond         </cbc:Name>
+<cbc:Value>ANTHRACITE</cbc:Value>
+</cac:AdditionalItemProperty>
+</cac:Item>
+<cac:Price>
+<cbc:PriceAmount currencyID="EUR">536.04</cbc:PriceAmount>
+<cbc:BaseQuantity unitCode="EA">1</cbc:BaseQuantity>
+</cac:Price>
+</cac:InvoiceLine>
+
+<cac:InvoiceLine>
+<cbc:ID>30</cbc:ID>
+<cbc:InvoicedQuantity unitCode="C62">4.000</cbc:InvoicedQuantity>
+<cbc:LineExtensionAmount currencyID="EUR">1211.20</cbc:LineExtensionAmount>
+<cac:OrderLineReference>
+<cbc:LineID>000030</cbc:LineID>
+</cac:OrderLineReference>
+<cac:TaxTotal>
+<cbc:TaxAmount currencyID="EUR">237.40</cbc:TaxAmount>
+</cac:TaxTotal>
+<cac:Item>
+<cbc:Description>BUREAU ISOLE 140 X 80 SANS PRESTATIONS GAMME EPURE </cbc:Description>
+<cbc:Name>000000000000986504</cbc:Name>
+<cac:ClassifiedTaxCategory>
+<cbc:ID schemeAgencyID="6" schemeID="UN/ECE 5305">S</cbc:ID>
+<cbc:Percent>19.600</cbc:Percent>
+<cac:TaxScheme>
+<cbc:ID schemeAgencyID="6" schemeID="UN/ECE 5153">VAT</cbc:ID>
+</cac:TaxScheme>
+</cac:ClassifiedTaxCategory>
+<cac:AdditionalItemProperty>
+<cbc:Name>GARANTIE                      </cbc:Name>
+<cbc:Value>24 MOIS</cbc:Value>
+</cac:AdditionalItemProperty>
+<cac:AdditionalItemProperty>
+<cbc:Name>Coloris Plateaux à préciser   </cbc:Name>
+<cbc:Value>AULNE NATUREL</cbc:Value>
+</cac:AdditionalItemProperty>
+<cac:AdditionalItemProperty>
+<cbc:Name>Coloris Piétements EPURE      </cbc:Name>
+<cbc:Value>ANTHRACITE</cbc:Value>
+</cac:AdditionalItemProperty>
+<cac:AdditionalItemProperty>
+<cbc:Name>Coloris Voile de Fond         </cbc:Name>
+<cbc:Value>ANTHRACITE</cbc:Value>
+</cac:AdditionalItemProperty>
+</cac:Item>
+<cac:Price>
+<cbc:PriceAmount currencyID="EUR">302.8</cbc:PriceAmount>
+<cbc:BaseQuantity unitCode="EA">1</cbc:BaseQuantity>
+</cac:Price>
+</cac:InvoiceLine>
+
+</Invoice>

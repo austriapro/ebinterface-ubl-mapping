@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+
+    Copyright (c) 2010-2015 Bundesrechenzentrum GmbH - www.brz.gv.at
+    Copyright (c) 2015 AUSTRIAPRO - www.austriapro.at
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" xmlns:ccts="urn:oasis:names:specification:ubl:schema:xsd:CoreComponentParameters-2" xmlns:sdt="urn:oasis:names:specification:ubl:schema:xsd:SpecializedDatatypes-2" xmlns:udt="urn:un:unece:uncefact:data:specification:UnqualifiedDataTypesSchemaModule:2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2 UBL-Invoice-2.0.xsd">
+   <cbc:UBLVersionID>2.0</cbc:UBLVersionID>
+   <cbc:CustomizationID>urn:www.cenbii.eu:transaction:biicoretrdm010:ver1.0</cbc:CustomizationID>
+   <cbc:ProfileID>urn:www.cenbii.eu:profile:bii04:ver1.0</cbc:ProfileID>
+   <cbc:ID>4</cbc:ID>
+   <cbc:IssueDate>2012-01-23</cbc:IssueDate>
+   <cbc:InvoiceTypeCode listAgencyID="6" listID="UN/ECE 1001 Subset">380</cbc:InvoiceTypeCode>
+   <cbc:TaxPointDate>2012-01-23</cbc:TaxPointDate>
+   <cbc:DocumentCurrencyCode>GBP</cbc:DocumentCurrencyCode>
+ <cac:OrderReference>
+<cbc:ID>5002701</cbc:ID>
+</cac:OrderReference>
+   <cac:AccountingSupplierParty>
+      <cac:Party>
+         <cbc:EndpointID schemeID="EU:VAT">GB123456789012</cbc:EndpointID>
+         <cac:PartyIdentification>
+            <cbc:ID schemeID="EU:VAT">GB123456789012</cbc:ID>
+         </cac:PartyIdentification>
+         <cac:PartyName>
+            <cbc:Name>GB</cbc:Name>
+         </cac:PartyName>
+         <cac:PostalAddress>
+            <cbc:StreetName>1</cbc:StreetName>
+            <cbc:AdditionalStreetName>1</cbc:AdditionalStreetName>
+            <cbc:BuildingNumber>1</cbc:BuildingNumber>
+            <cbc:CityName>1</cbc:CityName>
+            <cbc:PostalZone>1</cbc:PostalZone>
+            <cac:Country>
+               <cbc:IdentificationCode>GB</cbc:IdentificationCode>
+            </cac:Country>
+         </cac:PostalAddress>
+         <cac:PartyTaxScheme>
+            <cbc:CompanyID schemeID="GB:VAT">GB123456789012</cbc:CompanyID>
+            <cac:TaxScheme>
+               <cbc:ID schemeAgencyID="6" schemeID="UN/ECE 5153 Subset" schemeVersionID="D08B">VAT</cbc:ID>
+            </cac:TaxScheme>
+         </cac:PartyTaxScheme>
+         <cac:Person>
+            <cbc:FirstName>Morten</cbc:FirstName>
+            <cbc:FamilyName>Holm</cbc:FamilyName>
+         </cac:Person>
+      </cac:Party>
+   </cac:AccountingSupplierParty>
+   <cac:AccountingCustomerParty>
+      <cac:Party>
+         <cbc:EndpointID schemeID="GLN">1234567890000</cbc:EndpointID>
+         <cac:PartyIdentification>
+            <cbc:ID schemeID="GLN">1234567890000</cbc:ID>
+         </cac:PartyIdentification>
+         <cac:PartyName>
+            <cbc:Name>Morten Peppol Invoice</cbc:Name>
+         </cac:PartyName>
+         <cac:PostalAddress>
+            <cbc:StreetName>Peppolvej</cbc:StreetName>
+            <cbc:BuildingNumber>5</cbc:BuildingNumber>
+            <cbc:CityName>Peppol by</cbc:CityName>
+            <cbc:PostalZone>2300</cbc:PostalZone>
+            <cac:Country>
+               <cbc:IdentificationCode>GB</cbc:IdentificationCode>
+            </cac:Country>
+         </cac:PostalAddress>
+      </cac:Party>
+   </cac:AccountingCustomerParty>
+   <cac:TaxTotal>
+      <cbc:TaxAmount currencyID="GBP">0.20</cbc:TaxAmount>
+      <cac:TaxSubtotal>
+         <cbc:TaxableAmount currencyID="GBP">1.00</cbc:TaxableAmount>
+         <cbc:TaxAmount currencyID="GBP">0.20</cbc:TaxAmount>
+         <cac:TaxCategory>
+            <cbc:ID schemeAgencyID="6" schemeID="UN/ECE 5305" schemeVersionID="D08B">S</cbc:ID>
+            <cbc:Percent>20</cbc:Percent>
+            <cac:TaxScheme>
+               <cbc:ID schemeAgencyID="6" schemeID="UN/ECE 5153 Subset" schemeVersionID="D08B">VAT</cbc:ID>
+            </cac:TaxScheme>
+         </cac:TaxCategory>
+      </cac:TaxSubtotal>
+   </cac:TaxTotal>
+   <cac:LegalMonetaryTotal>
+      <cbc:LineExtensionAmount currencyID="GBP">1.00</cbc:LineExtensionAmount>
+      <cbc:TaxExclusiveAmount currencyID="GBP">1.00</cbc:TaxExclusiveAmount>
+      <cbc:TaxInclusiveAmount currencyID="GBP">1.20</cbc:TaxInclusiveAmount>
+      <cbc:PayableAmount currencyID="GBP">1.20</cbc:PayableAmount>
+   </cac:LegalMonetaryTotal>
+   <cac:InvoiceLine>
+      <cbc:ID>1</cbc:ID>
+      <cbc:InvoicedQuantity unitCode="EA">1</cbc:InvoicedQuantity>
+      <cbc:LineExtensionAmount currencyID="GBP">1.00</cbc:LineExtensionAmount>
+      <cac:TaxTotal>
+         <cbc:TaxAmount currencyID="GBP">0.20</cbc:TaxAmount>
+      </cac:TaxTotal>
+      <cac:Item>
+         <cbc:Description>1</cbc:Description>
+         <cbc:Name>1</cbc:Name>
+         <cac:SellersItemIdentification>
+            <cbc:ID schemeAgencyID="9" schemeID="GTIN">1</cbc:ID>
+         </cac:SellersItemIdentification>
+      </cac:Item>
+      <cac:Price>
+         <cbc:PriceAmount currencyID="GBP">1.00</cbc:PriceAmount>
+         <cbc:BaseQuantity unitCode="EA">1</cbc:BaseQuantity>
+      </cac:Price>
+   </cac:InvoiceLine>
+</Invoice>

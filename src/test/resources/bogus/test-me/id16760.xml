@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+
+    Copyright (c) 2010-2015 Bundesrechenzentrum GmbH - www.brz.gv.at
+    Copyright (c) 2015 AUSTRIAPRO - www.austriapro.at
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<ns0:Invoice xmlns:ns0="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2">
+    <ns1:UBLVersionID xmlns:ns1="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">2.0</ns1:UBLVersionID>
+    <ns1:CustomizationID schemeID="PEPPOL" xmlns:ns1="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">urn:www.cenbii.eu:transaction:biicoretrdm010:ver1.0:#urn:www.peppol.eu:bis:peppol4a:ver1.0</ns1:CustomizationID>
+    <ns1:ProfileID xmlns:ns1="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">urn:www.cenbii.eu:profile:bii04:ver1.0</ns1:ProfileID>
+    <ns1:ID xmlns:ns1="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">01015088</ns1:ID>
+    <ns1:IssueDate xmlns:ns1="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">2012-06-30</ns1:IssueDate>
+    <ns1:InvoiceTypeCode listID="UN/ECE 1001 Subset" xmlns:ns1="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">380</ns1:InvoiceTypeCode>
+    <ns1:DocumentCurrencyCode languageID="en" listAgencyID="6" listAgencyName="United Nations Economic Commission for Europe" listID="ISO 4217 Alpha" listName="Currency" listSchemeURI="urn:un:unece:uncefact:codelist:specification:54217:2001" listURI="http://docs.oasis-open.org/ubl/os-UBL-2.0-update/cl/gc/cefact/CurrencyCode-2.0.gc" listVersionID="2001" xmlns:ns1="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">EUR</ns1:DocumentCurrencyCode>
+    <ns1:AccountingSupplierParty xmlns:ns1="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+        <ns1:Party>
+            <ns2:EndpointID schemeID="IT:VAT" xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">IT00896331006</ns2:EndpointID>
+            <ns1:PartyIdentification>
+                <ns2:ID xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">S00269U005</ns2:ID>
+            </ns1:PartyIdentification>
+            <ns1:PartyName>
+                <ns2:Name xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">ENI FRANCE SARL</ns2:Name>
+            </ns1:PartyName>
+            <ns1:PostalAddress>
+                <ns2:StreetName xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">12, AVENUE TONY GARNIER</ns2:StreetName>
+                <ns2:CityName xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">LYON CEDEX 07</ns2:CityName>
+                <ns2:PostalZone xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">69367</ns2:PostalZone>
+                <ns2:CountrySubentity xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">FR</ns2:CountrySubentity>
+                <ns1:Country>
+                    <ns2:IdentificationCode languageID="en" listAgencyID="6" listAgencyName="United Nations Economic Commission for Europe" listID="ISO3166-1" listName="Country" listSchemeURI="urn:oasis:names:specification:ubl:codelist:gc:CountryIdentificationCode-2.0" listURI="http://docs.oasis-open.org/ubl/os-UBL-2.0-update/cl/gc/default/CountryIdentificationCode-2.0.gc" listVersionID="0.3" xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">FR</ns2:IdentificationCode>
+                </ns1:Country>
+            </ns1:PostalAddress>
+            <ns1:PartyTaxScheme>
+                <ns2:CompanyID xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">FR 18 969502004</ns2:CompanyID>
+                <ns1:TaxScheme>
+                    <ns2:ID xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">VAT</ns2:ID>
+                </ns1:TaxScheme>
+            </ns1:PartyTaxScheme>
+        </ns1:Party>
+    </ns1:AccountingSupplierParty>
+    <ns1:AccountingCustomerParty xmlns:ns1="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+        <ns1:Party>
+            <ns2:EndpointID schemeID="GLN" xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">xxx</ns2:EndpointID>
+            <ns1:PartyIdentification>
+                <ns2:ID xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">0002902311</ns2:ID>
+            </ns1:PartyIdentification>
+            <ns1:PartyName>
+                <ns2:Name xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">HOPITAUX CIVILS DE COLMAR</ns2:Name>
+            </ns1:PartyName>
+            <ns1:PostalAddress>
+                <ns2:StreetName xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">39 AVENUE DE LA LIBERTE</ns2:StreetName>
+                <ns2:CityName xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">COLMAR</ns2:CityName>
+                <ns2:PostalZone xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">68024</ns2:PostalZone>
+                <ns2:CountrySubentity xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">FR</ns2:CountrySubentity>
+                <ns1:Country>
+                    <ns2:IdentificationCode languageID="en" listAgencyID="6" listAgencyName="United Nations Economic Commission for Europe" listID="ISO3166-1" listName="Country" listSchemeURI="urn:oasis:names:specification:ubl:codelist:gc:CountryIdentificationCode-2.0" listURI="http://docs.oasis-open.org/ubl/os-UBL-2.0-update/cl/gc/default/CountryIdentificationCode-2.0.gc" listVersionID="0.3" xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">FR</ns2:IdentificationCode>
+                </ns1:Country>
+            </ns1:PostalAddress>
+        </ns1:Party>
+    </ns1:AccountingCustomerParty>
+    <ns1:PaymentMeans xmlns:ns1="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+        <ns2:PaymentMeansCode languageID="en" listAgencyID="6" listAgencyName="United Nations Economic Commission for Europe" listID="UN/ECE 4461" listName="Payment Means" listSchemeURI="urn:oasis:names:specification:ubl:codelist:gc:PaymentMeansCode-2.0" listURI="http://docs.oasis-open.org/ubl/os-ubl-2.0/cl/gc/default/PaymentMeansCode-2.0.gc" listVersionID="D03A" xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">1</ns2:PaymentMeansCode>
+    </ns1:PaymentMeans>
+    <ns1:TaxTotal xmlns:ns1="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+        <ns2:TaxAmount currencyID="EUR" xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">451.12</ns2:TaxAmount>
+        <ns1:TaxSubtotal>
+            <ns2:TaxableAmount currencyID="EUR" xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">2301.6</ns2:TaxableAmount>
+            <ns2:TaxAmount currencyID="EUR" xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">451.12</ns2:TaxAmount>
+            <ns1:TaxCategory>
+                <ns2:ID schemeID="UN/ECE 5305" xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">S</ns2:ID>
+                <ns2:Percent xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">19.6</ns2:Percent>
+                <ns1:TaxScheme>
+                    <ns2:ID schemeID="UN/ECE 5153" xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">VAT</ns2:ID>
+                </ns1:TaxScheme>
+            </ns1:TaxCategory>
+        </ns1:TaxSubtotal>
+    </ns1:TaxTotal>
+    <ns1:LegalMonetaryTotal xmlns:ns1="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+        <ns2:LineExtensionAmount currencyID="EUR" xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">2301.6</ns2:LineExtensionAmount>
+        <ns2:TaxExclusiveAmount currencyID="EUR" xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">2301.6</ns2:TaxExclusiveAmount>
+        <ns2:TaxInclusiveAmount currencyID="EUR" xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">2752.72</ns2:TaxInclusiveAmount>
+        <ns2:PayableAmount currencyID="EUR" xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">2752.72</ns2:PayableAmount>
+    </ns1:LegalMonetaryTotal>
+    <ns1:InvoiceLine xmlns:ns1="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+        <ns2:ID xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">1</ns2:ID>
+        <ns2:InvoicedQuantity unitCode="LTR" xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">1248.59</ns2:InvoicedQuantity>
+        <ns2:LineExtensionAmount currencyID="EUR" xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">1661.98</ns2:LineExtensionAmount>
+        <ns1:Item>
+            <ns2:Name xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">GASOIL</ns2:Name>
+            <ns1:ClassifiedTaxCategory>
+                <ns2:ID schemeAgencyID="6" schemeID="UN/ECE 5305" xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">S</ns2:ID>
+                <ns2:Percent xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">19.6</ns2:Percent>
+                <ns1:TaxScheme>
+                    <ns2:ID schemeAgencyID="6" schemeID="UN/ECE 5153" xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">VAT</ns2:ID>
+                </ns1:TaxScheme>
+            </ns1:ClassifiedTaxCategory>
+        </ns1:Item>
+        <ns1:Price>
+            <ns2:PriceAmount currencyID="EUR" xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">1661.98</ns2:PriceAmount>
+            <ns2:BaseQuantity unitCode="LTR" xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">1248.59</ns2:BaseQuantity>
+        </ns1:Price>
+    </ns1:InvoiceLine>
+    <ns1:InvoiceLine xmlns:ns1="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+        <ns2:ID xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">2</ns2:ID>
+        <ns2:InvoicedQuantity unitCode="LTR" xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">715.22</ns2:InvoicedQuantity>
+        <ns2:LineExtensionAmount currencyID="EUR" xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">1090.74</ns2:LineExtensionAmount>
+        <ns1:Item>
+            <ns2:Name xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">SANS PLOMB 95</ns2:Name>
+            <ns1:ClassifiedTaxCategory>
+                <ns2:ID schemeAgencyID="6" schemeID="UN/ECE 5305" xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">S</ns2:ID>
+                <ns2:Percent xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">19.6</ns2:Percent>
+                <ns1:TaxScheme>
+                    <ns2:ID schemeAgencyID="6" schemeID="UN/ECE 5153" xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">VAT</ns2:ID>
+                </ns1:TaxScheme>
+            </ns1:ClassifiedTaxCategory>
+        </ns1:Item>
+        <ns1:Price>
+            <ns2:PriceAmount currencyID="EUR" xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">1090.74</ns2:PriceAmount>
+            <ns2:BaseQuantity unitCode="LTR" xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">715.22</ns2:BaseQuantity>
+        </ns1:Price>
+    </ns1:InvoiceLine>
+    <ns1:InvoiceLine xmlns:ns1="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+        <ns2:ID xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">3</ns2:ID>
+        <ns2:InvoicedQuantity unitCode="C62" xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">-1</ns2:InvoicedQuantity>
+        <ns2:LineExtensionAmount currencyID="EUR" xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">-451.12</ns2:LineExtensionAmount>
+        <ns1:Item>
+            <ns2:Name xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">Totale IVA ai fini del calcolo</ns2:Name>
+        </ns1:Item>
+        <ns1:Price>
+            <ns2:PriceAmount currencyID="EUR" xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">451.12</ns2:PriceAmount>
+        </ns1:Price>
+    </ns1:InvoiceLine>
+</ns0:Invoice>

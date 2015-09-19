@@ -1,0 +1,200 @@
+<!--
+
+    Copyright (c) 2010-2015 Bundesrechenzentrum GmbH - www.brz.gv.at
+    Copyright (c) 2015 AUSTRIAPRO - www.austriapro.at
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<Invoice xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">
+    <cbc:UBLVersionID>2.0</cbc:UBLVersionID>
+    <cbc:CustomizationID schemeID="PEPPOL">urn:www.cenbii.eu:transaction:biicoretrdm010:ver1.0:#urn:www.peppol.eu:bis:peppol4a:ver1.0</cbc:CustomizationID>
+    <cbc:ProfileID>urn:www.cenbii.eu:profile:bii04:ver1.0</cbc:ProfileID>
+    <cbc:ID>20142303</cbc:ID>
+    <cbc:IssueDate>2014-02-06</cbc:IssueDate>
+    <cbc:InvoiceTypeCode>380</cbc:InvoiceTypeCode>
+    <cbc:DocumentCurrencyCode>EUR</cbc:DocumentCurrencyCode>
+    <cac:OrderReference>
+        <cbc:ID>H17:UEW-P, SKZ 703062</cbc:ID>
+    </cac:OrderReference>
+    <cac:AccountingSupplierParty>
+        <cbc:CustomerAssignedAccountID>11000508</cbc:CustomerAssignedAccountID>
+        <cac:Party>
+            <cac:PartyName>
+                <cbc:Name>Lipura Verlagsgesellschaft mbH</cbc:Name>
+            </cac:PartyName>
+            <cac:PostalAddress>
+                <cbc:StreetName>Gewerbepark 523</cbc:StreetName>
+                <cbc:CityName>Pöllau</cbc:CityName>
+                <cbc:PostalZone>8225</cbc:PostalZone>
+                <cac:Country>
+                    <cbc:IdentificationCode>AT</cbc:IdentificationCode>
+                </cac:Country>
+            </cac:PostalAddress>
+            <cac:PartyTaxScheme>
+                <cbc:CompanyID>ATU37636803</cbc:CompanyID>
+                <cac:TaxScheme>
+                    <cbc:ID schemeAgencyID="6" schemeID="UN/ECE 5153">VAT</cbc:ID>
+                </cac:TaxScheme>
+            </cac:PartyTaxScheme>
+            <cac:Contact>
+                <cbc:Telephone>+4333359414050</cbc:Telephone>
+                <cbc:ElectronicMail>info@lipura.at</cbc:ElectronicMail>
+            </cac:Contact>
+        </cac:Party>
+    </cac:AccountingSupplierParty>
+    <cac:AccountingCustomerParty>
+        <cbc:SupplierAssignedAccountID>703062</cbc:SupplierAssignedAccountID>
+        <cac:Party>
+            <cac:PartyName>
+                <cbc:Name>Finanzamt Innsbruck</cbc:Name>
+            </cac:PartyName>
+            <cac:PostalAddress>
+                <cbc:StreetName>Innrain 32</cbc:StreetName>
+                <cbc:CityName>Innsbruck</cbc:CityName>
+                <cbc:PostalZone>6020</cbc:PostalZone>
+                <cac:Country>
+                    <cbc:IdentificationCode>AT</cbc:IdentificationCode>
+                </cac:Country>
+            </cac:PostalAddress>
+            <cac:PartyTaxScheme>
+                <cbc:CompanyID>ATU 57879923</cbc:CompanyID>
+                <cac:TaxScheme>
+                    <cbc:ID schemeAgencyID="6" schemeID="UN/ECE 5153">VAT</cbc:ID>
+                </cac:TaxScheme>
+            </cac:PartyTaxScheme>
+            <cac:Contact>
+                <cbc:Telephone>+435125054231</cbc:Telephone>
+            </cac:Contact>
+        </cac:Party>
+    </cac:AccountingCustomerParty>
+    <cac:Delivery>
+        <cbc:ActualDeliveryDate>2014-02-06</cbc:ActualDeliveryDate>
+        <cac:DeliveryLocation>
+            <cbc:Description>NMS Telfs Dr. Aloys Weissenbach	</cbc:Description>
+            <cbc:Name>NMS Telfs Dr. Aloys Weissenbach	</cbc:Name>
+            <cac:Address>
+                <cbc:StreetName>Weißenbachgasse 30	</cbc:StreetName>
+                <cbc:CityName>Telfs</cbc:CityName>
+                <cbc:PostalZone>6410</cbc:PostalZone>
+                <cac:Country>
+                    <cbc:IdentificationCode>AT</cbc:IdentificationCode>
+                </cac:Country>
+            </cac:Address>
+        </cac:DeliveryLocation>
+    </cac:Delivery>
+    <cac:PaymentMeans>
+        <cbc:PaymentMeansCode>31</cbc:PaymentMeansCode>
+        <cbc:PaymentDueDate>2014-02-21</cbc:PaymentDueDate>
+        <cbc:PaymentChannelCode>IBAN</cbc:PaymentChannelCode>
+        <cbc:InstructionNote>10 T. ab RD, 2% bis 15 T. ohne Abzug</cbc:InstructionNote>
+        <cac:PayeeFinancialAccount>
+            <cbc:ID schemeID="IBAN">AT113840300002079366</cbc:ID>
+            <cac:FinancialInstitutionBranch>
+                <cac:FinancialInstitution>
+                    <cbc:ID>RZSTAT2G403</cbc:ID>
+                </cac:FinancialInstitution>
+            </cac:FinancialInstitutionBranch>
+        </cac:PayeeFinancialAccount>
+    </cac:PaymentMeans>
+    <cac:PaymentTerms>
+        <cbc:ID>2</cbc:ID>
+        <cbc:Note>Skonto</cbc:Note>
+        <cbc:SettlementDiscountPercent>2.0</cbc:SettlementDiscountPercent>
+        <cac:SettlementPeriod>
+            <cbc:StartDate>2014-02-06</cbc:StartDate>
+            <cbc:EndDate>2014-02-16</cbc:EndDate>
+        </cac:SettlementPeriod>
+    </cac:PaymentTerms>
+    <cac:TaxTotal>
+        <cbc:TaxAmount currencyID="EUR">49.9188</cbc:TaxAmount>
+        <cac:TaxSubtotal>
+            <cbc:TaxableAmount currencyID="EUR">499.187</cbc:TaxableAmount>
+            <cbc:TaxAmount currencyID="EUR">49.9188</cbc:TaxAmount>
+            <cac:TaxCategory>
+                <cbc:ID schemeAgencyID="6" schemeID="UN/ECE 5305">S</cbc:ID>
+                <cbc:Percent>10</cbc:Percent>
+                <cac:TaxScheme>
+                    <cbc:ID schemeAgencyID="6" schemeID="UN/ECE 5153">VAT</cbc:ID>
+                </cac:TaxScheme>
+            </cac:TaxCategory>
+        </cac:TaxSubtotal>
+    </cac:TaxTotal>
+    <cac:LegalMonetaryTotal>
+        <cbc:LineExtensionAmount currencyID="EUR">499.187</cbc:LineExtensionAmount>
+        <cbc:TaxExclusiveAmount currencyID="EUR">499.187</cbc:TaxExclusiveAmount>
+        <cbc:TaxInclusiveAmount currencyID="EUR">549.1058</cbc:TaxInclusiveAmount>
+        <cbc:PayableAmount currencyID="EUR">549.1058</cbc:PayableAmount>
+    </cac:LegalMonetaryTotal>
+    <cac:InvoiceLine>
+        <cbc:ID>12118</cbc:ID>
+        <cbc:InvoicedQuantity unitCode="EA">1.0</cbc:InvoicedQuantity>
+        <cbc:LineExtensionAmount currencyID="EUR">249.5935</cbc:LineExtensionAmount>
+        <cac:OrderLineReference>
+            <cbc:LineID>1</cbc:LineID>
+        </cac:OrderLineReference>
+        <cac:TaxTotal>
+            <cbc:TaxAmount currencyID="EUR">24.9594</cbc:TaxAmount>
+            <cac:TaxSubtotal>
+                <cbc:TaxableAmount currencyID="EUR">249.5935</cbc:TaxableAmount>
+                <cbc:TaxAmount currencyID="EUR">24.9594</cbc:TaxAmount>
+                <cac:TaxCategory>
+                    <cbc:ID schemeAgencyID="6" schemeID="UN/ECE 5305">S</cbc:ID>
+                    <cbc:Percent>10</cbc:Percent>
+                    <cac:TaxScheme>
+                        <cbc:ID schemeAgencyID="6" schemeID="UN/ECE 5153">VAT</cbc:ID>
+                    </cac:TaxScheme>
+                </cac:TaxCategory>
+            </cac:TaxSubtotal>
+        </cac:TaxTotal>
+        <cac:Item>
+            <cbc:Description>[AT3611] Kompetenztraining Grammatik IV</cbc:Description>
+            <cbc:Name>[AT3611] Kompetenztraining Grammatik IV</cbc:Name>
+        </cac:Item>
+        <cac:Price>
+            <cbc:PriceAmount currencyID="EUR">249.5935</cbc:PriceAmount>
+            <cbc:BaseQuantity unitCode="EUR">1</cbc:BaseQuantity>
+        </cac:Price>
+    </cac:InvoiceLine>
+    <cac:InvoiceLine>
+        <cbc:ID>12119</cbc:ID>
+        <cbc:InvoicedQuantity unitCode="EA">1.0</cbc:InvoicedQuantity>
+        <cbc:LineExtensionAmount currencyID="EUR">249.5935</cbc:LineExtensionAmount>
+        <cac:OrderLineReference>
+            <cbc:LineID>2</cbc:LineID>
+        </cac:OrderLineReference>
+        <cac:TaxTotal>
+            <cbc:TaxAmount currencyID="EUR">24.9594</cbc:TaxAmount>
+            <cac:TaxSubtotal>
+                <cbc:TaxableAmount currencyID="EUR">249.5935</cbc:TaxableAmount>
+                <cbc:TaxAmount currencyID="EUR">24.9594</cbc:TaxAmount>
+                <cac:TaxCategory>
+                    <cbc:ID schemeAgencyID="6" schemeID="UN/ECE 5305">S</cbc:ID>
+                    <cbc:Percent>10</cbc:Percent>
+                    <cac:TaxScheme>
+                        <cbc:ID schemeAgencyID="6" schemeID="UN/ECE 5153">VAT</cbc:ID>
+                    </cac:TaxScheme>
+                </cac:TaxCategory>
+            </cac:TaxSubtotal>
+        </cac:TaxTotal>
+        <cac:Item>
+            <cbc:Description>[AT4615] Kompetenztraining Mathematik VIII</cbc:Description>
+            <cbc:Name>[AT4615] Kompetenztraining Mathematik VIII</cbc:Name>
+        </cac:Item>
+        <cac:Price>
+            <cbc:PriceAmount currencyID="EUR">249.5935</cbc:PriceAmount>
+            <cbc:BaseQuantity unitCode="EUR">1</cbc:BaseQuantity>
+        </cac:Price>
+    </cac:InvoiceLine>
+</Invoice>
+

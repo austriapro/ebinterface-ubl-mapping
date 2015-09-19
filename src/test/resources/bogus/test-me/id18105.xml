@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+
+    Copyright (c) 2010-2015 Bundesrechenzentrum GmbH - www.brz.gv.at
+    Copyright (c) 2015 AUSTRIAPRO - www.austriapro.at
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<ns4:Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" xmlns:ns2="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2" xmlns:ns3="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:ns4="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2">
+	<UBLVersionID>2.0</UBLVersionID>
+	<CustomizationID>urn:www.cenbii.eu:transaction:biicoretrdm010:ver1.0</CustomizationID>
+	<ProfileID>urn:www.cenbii.eu:profile:bii04:ver1.0</ProfileID>
+	<ID>3986/25</ID>
+	<IssueDate>2012-10-17</IssueDate>
+	<InvoiceTypeCode listAgencyID="6" listID="UN/ECE 1001">380</InvoiceTypeCode>
+	<DocumentCurrencyCode listAgencyID="5" listID="ISO 4217 Alpha">EUR</DocumentCurrencyCode>
+	<AccountingCost>ODL NÂ°200696 (E) DEL 15-10-2012
+	</AccountingCost>
+	<ns3:ContractDocumentReference>
+		<ID>2011/2</ID>
+	</ns3:ContractDocumentReference>
+	<ns3:AccountingSupplierParty>
+		<ns3:Party>
+			<ns3:PartyName>
+				<Name>Bellentani Autoveicoli SPA</Name>
+			</ns3:PartyName>
+			<ns3:PostalAddress>
+				<StreetName>Via Emilia Ovest</StreetName>
+				<BuildingNumber>20</BuildingNumber>
+				<CityName>Modena</CityName>
+				<PostalZone>41123</PostalZone>
+				<CountrySubentity>MO</CountrySubentity>
+				<ns3:Country>
+					<IdentificationCode listAgencyID="5" listID="ISO3166-1">IT</IdentificationCode>
+				</ns3:Country>
+			</ns3:PostalAddress>
+			<ns3:PartyTaxScheme>
+				<CompanyID schemeID="IT:VAT" schemeURI="urn:oasis:names:tc:ebcore:partyid-type:unregistered:bii:it:vat">01011690367</CompanyID>
+				<ns3:TaxScheme>
+					<ID schemeAgencyID="6" schemeID="UN/ECE 5153">VAT</ID>
+				</ns3:TaxScheme>
+			</ns3:PartyTaxScheme>
+		</ns3:Party>
+	</ns3:AccountingSupplierParty>
+	<ns3:AccountingCustomerParty>
+		<ns3:Party>
+			<ns3:PartyName>
+				<Name>COMUNE DI MODENA SETTORE FINANZE ECONOMATO</Name>
+			</ns3:PartyName>
+			<ns3:PostalAddress>
+				<StreetName>VIA SCUDARI 20 20</StreetName>
+				<BuildingNumber>760/A</BuildingNumber>
+				<CityName>MODENA</CityName>
+				<PostalZone>41121</PostalZone>
+				<CountrySubentity>MO</CountrySubentity>
+				<ns3:Country>
+					<IdentificationCode listAgencyID="5" listID="ISO3166-1">IT</IdentificationCode>
+				</ns3:Country>
+			</ns3:PostalAddress>
+			<ns3:PartyTaxScheme>
+				<CompanyID schemeID="IT:VAT" schemeURI="urn:oasis:names:tc:ebcore:partyid-type:unregistered:bii:it:vat">00221940364</CompanyID>
+				<ns3:TaxScheme>
+					<ID schemeAgencyID="6" schemeID="UN/ECE 5153">VAT</ID>
+				</ns3:TaxScheme>
+			</ns3:PartyTaxScheme>
+		</ns3:Party>
+	</ns3:AccountingCustomerParty>
+	<ns3:PaymentMeans>
+		<PaymentMeansCode listAgencyID="6" listID="UN/ECE 4461">30</PaymentMeansCode>
+		<PaymentDueDate>2013-01-31</PaymentDueDate>
+	</ns3:PaymentMeans>
+	<ns3:PaymentTerms>
+		<Note>BONIFICO BANCARIO 90 GG.</Note>
+	</ns3:PaymentTerms>
+	<ns3:TaxTotal>
+		<TaxAmount currencyID="EUR">7.58</TaxAmount>
+		<ns3:TaxSubtotal>
+			<TaxableAmount currencyID="EUR">36.07</TaxableAmount>
+			<TaxAmount currencyID="EUR">7.58</TaxAmount>
+			<ns3:TaxCategory>
+				<ID schemeAgencyID="6" schemeID="UN/ECE 5305">A</ID>
+				<Percent>21</Percent>
+				<ns3:TaxScheme>
+					<ID schemeAgencyID="6" schemeID="UN/ECE 5153">VAT</ID>
+				</ns3:TaxScheme>
+			</ns3:TaxCategory>
+		</ns3:TaxSubtotal>
+	</ns3:TaxTotal>
+	<ns3:LegalMonetaryTotal>
+		<LineExtensionAmount currencyID="EUR">36.07</LineExtensionAmount>
+		<TaxExclusiveAmount currencyID="EUR">36.07</TaxExclusiveAmount>
+		<TaxInclusiveAmount currencyID="EUR">43.65</TaxInclusiveAmount>
+		<PayableAmount currencyID="EUR">43.65</PayableAmount>
+	</ns3:LegalMonetaryTotal>
+	<ns3:InvoiceLine>
+		<ID>1</ID>
+		<InvoicedQuantity unitCode="C62">1.000</InvoicedQuantity>
+		<LineExtensionAmount currencyID="EUR">9.04</LineExtensionAmount>
+		<ns3:AllowanceCharge>
+			<ChargeIndicator>false</ChargeIndicator>
+			<Amount currencyID="EUR">1.60</Amount>
+		</ns3:AllowanceCharge>
+		
+		<ns3:TaxTotal>
+     	<TaxAmount currencyID="EUR">1.90</TaxAmount>
+    </ns3:TaxTotal>
+    
+		<ns3:Item>
+			<Description>SPATOLA TERGI.</Description>
+			<Name>SPATOLA TERGI.</Name>
+		</ns3:Item>
+		<ns3:Price>
+			<PriceAmount currencyID="EUR">10.64</PriceAmount>
+		</ns3:Price>
+	</ns3:InvoiceLine>
+	<ns3:InvoiceLine>
+		<ID>2</ID>
+		<InvoicedQuantity unitCode="C62">1.000</InvoicedQuantity>
+		<LineExtensionAmount currencyID="EUR">20.43</LineExtensionAmount>
+		<ns3:AllowanceCharge>
+			<ChargeIndicator>false</ChargeIndicator>
+			<Amount currencyID="EUR">3.60</Amount>
+		</ns3:AllowanceCharge>
+		
+		<ns3:TaxTotal>
+     	<TaxAmount currencyID="EUR">4.30</TaxAmount>
+    </ns3:TaxTotal>
+		
+		<ns3:Item>
+			<Description>KIT SPATOLE TERGICRIST. (NUOVA PANDA)</Description>
+			<Name>KIT SPATOLE TERGICRIST. (NUOVA PANDA)</Name>
+		</ns3:Item>
+		<ns3:Price>
+			<PriceAmount currencyID="EUR">24.03</PriceAmount>
+		</ns3:Price>
+	</ns3:InvoiceLine>
+	<ns3:InvoiceLine>
+		<ID>3</ID>
+		<InvoicedQuantity unitCode="C62">0.25</InvoicedQuantity>
+		<LineExtensionAmount currencyID="EUR">6.60</LineExtensionAmount>
+			<ns3:TaxTotal>
+     	<TaxAmount currencyID="EUR">1.38</TaxAmount>
+    </ns3:TaxTotal>
+		<ns3:Item>
+			<Description>M-D PER SOST.SPAZZOLE TERGI</Description>
+			<Name>M-D PER SOST.SPAZZOLE TERGI</Name>
+		</ns3:Item>
+		<ns3:Price>
+			<PriceAmount currencyID="EUR">26.40</PriceAmount>			
+		</ns3:Price>
+	</ns3:InvoiceLine>
+</ns4:Invoice>
