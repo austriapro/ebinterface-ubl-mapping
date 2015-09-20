@@ -43,7 +43,6 @@ import com.helger.commons.io.resource.IReadableResource;
 import com.helger.commons.xml.serialize.write.XMLWriter;
 import com.helger.ebinterface.EbInterface41Marshaller;
 import com.helger.ebinterface.ubl.from.EbiNamespacePrefixMapper;
-import com.helger.ebinterface.ubl.from.creditnote.CreditNoteToEbInterface41Converter;
 import com.helger.ebinterface.v41.Ebi41InvoiceType;
 import com.helger.jaxb.JAXBMarshallerHelper;
 import com.helger.ubl21.UBL21Reader;
