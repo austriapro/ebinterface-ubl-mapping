@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.errorlist.ErrorList;
 import com.helger.commons.locale.country.CountryCache;
 import com.helger.commons.string.StringHelper;
 import com.helger.ebinterface.ubl.from.AbstractConverter.EText;
@@ -33,7 +34,6 @@ import com.helger.ebinterface.v41.Ebi41AddressType;
 import com.helger.ebinterface.v41.Ebi41CountryCodeType;
 import com.helger.ebinterface.v41.Ebi41CountryType;
 import com.helger.ebinterface.v41.Ebi41DeliveryType;
-import com.helger.validation.error.ErrorList;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AddressType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.ContactType;

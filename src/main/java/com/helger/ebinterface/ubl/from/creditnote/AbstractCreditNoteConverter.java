@@ -21,13 +21,13 @@ import java.util.Locale;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 
+import com.helger.commons.errorlist.ErrorList;
 import com.helger.commons.string.StringHelper;
 import com.helger.ebinterface.ubl.from.AbstractConverter;
 import com.helger.ebinterface.ubl.from.CPeppolUBL;
 import com.helger.peppol.identifier.doctype.IPeppolPredefinedDocumentTypeIdentifier;
 import com.helger.peppol.identifier.process.IPeppolPredefinedProcessIdentifier;
 import com.helger.peppol.identifier.process.PredefinedProcessIdentifierManager;
-import com.helger.validation.error.ErrorList;
 
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.CustomizationIDType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.ProfileIDType;

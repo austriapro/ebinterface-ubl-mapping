@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 
 import com.helger.commons.error.EErrorLevel;
+import com.helger.commons.errorlist.ErrorList;
 import com.helger.commons.io.file.FileHelper;
 import com.helger.commons.io.file.FilenameHelper;
 import com.helger.commons.io.file.filter.FileFilterFilenameEndsWith;
@@ -44,11 +45,9 @@ import com.helger.commons.io.resource.IReadableResource;
 import com.helger.commons.xml.serialize.write.XMLWriter;
 import com.helger.ebinterface.EbInterface41Marshaller;
 import com.helger.ebinterface.ubl.from.EbiNamespacePrefixMapper;
-import com.helger.ebinterface.ubl.from.invoice.InvoiceToEbInterface41Converter;
 import com.helger.ebinterface.v41.Ebi41InvoiceType;
 import com.helger.jaxb.JAXBMarshallerHelper;
 import com.helger.ubl21.UBL21Reader;
-import com.helger.validation.error.ErrorList;
 
 import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
 
