@@ -67,16 +67,6 @@
     </dependency>
     <dependency>
       <groupId>com.helger</groupId>
-      <artifactId>ph-jaxb</artifactId>
-      <version>6.2.1</version>
-    </dependency>
-    <dependency>
-      <groupId>com.helger</groupId>
-      <artifactId>ph-datetime</artifactId>
-      <version>4.2.1</version>
-    </dependency>
-    <dependency>
-      <groupId>com.helger</groupId>
       <artifactId>ph-ubl21</artifactId>
       <version>4.0.0</version>
     </dependency>
@@ -84,6 +74,11 @@
       <groupId>com.helger</groupId>
       <artifactId>ph-ubl21-codelists</artifactId>
       <version>4.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.helger</groupId>
+      <artifactId>ph-datetime</artifactId>
+      <version>4.2.0</version>
     </dependency>
     <dependency>
       <groupId>com.helger</groupId>
@@ -99,6 +94,12 @@
       <groupId>com.helger</groupId>
       <artifactId>peppol-commons</artifactId>
       <version>4.3.1</version>
+    </dependency>
+    <dependency>
+      <groupId>com.sun.xml.bind</groupId>
+      <artifactId>jaxb-impl</artifactId>
+      <version>2.1.13</version>
+      <scope>provided</scope>
     </dependency>
 
     <dependency>
