@@ -25,9 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import javax.annotation.Nonnull;
-import javax.xml.bind.Marshaller;
-
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,18 +32,14 @@ import org.w3c.dom.Document;
 
 import com.helger.commons.error.EErrorLevel;
 import com.helger.commons.errorlist.ErrorList;
-import com.helger.commons.io.file.FileHelper;
 import com.helger.commons.io.file.FilenameHelper;
 import com.helger.commons.io.file.filter.FileFilterFilenameEndsWith;
 import com.helger.commons.io.file.iterate.FileSystemIterator;
 import com.helger.commons.io.file.iterate.FileSystemRecursiveIterator;
 import com.helger.commons.io.resource.FileSystemResource;
 import com.helger.commons.io.resource.IReadableResource;
-import com.helger.commons.xml.serialize.write.XMLWriter;
-import com.helger.ebinterface.EbInterface41Marshaller;
-import com.helger.ebinterface.ubl.from.EbiNamespacePrefixMapper;
+import com.helger.ebinterface.ubl.from.Ebi41TestMarshaller;
 import com.helger.ebinterface.v41.Ebi41InvoiceType;
-import com.helger.jaxb.JAXBMarshallerHelper;
 import com.helger.ubl21.UBL21Reader;
 
 import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
@@ -58,15 +51,6 @@ import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
  */
 public class InvoiceToEbInterface41ConverterTest
 {
-  private static final class MyEbiMarshaller extends EbInterface41Marshaller
-  {
-    @Override
-    protected void customizeMarshaller (@Nonnull final Marshaller aMarshaller)
-    {
-      JAXBMarshallerHelper.setSunNamespacePrefixMapper (aMarshaller, new EbiNamespacePrefixMapper ());
-    }
-  }
-
   private static final Logger s_aLogger = LoggerFactory.getLogger (InvoiceToEbInterface41ConverterTest.class);
 
   @Test
@@ -91,8 +75,7 @@ public class InvoiceToEbInterface41ConverterTest
       final ErrorList aErrorList = new ErrorList ();
       final Ebi41InvoiceType aEbInvoice = new InvoiceToEbInterface41Converter (Locale.GERMANY,
                                                                                Locale.GERMANY,
-                                                                               false).convertToEbInterface (aUBLInvoice,
-                                                                                                            aErrorList);
+                                                                               false).convertToEbInterface (aUBLInvoice, aErrorList);
       assertTrue (aRes.getPath () +
                   ": " +
                   aErrorList.toString (),
@@ -103,11 +86,8 @@ public class InvoiceToEbInterface41ConverterTest
         s_aLogger.info ("  " + aErrorList.getAllItems ());
 
       // Convert ebInterface to XML
-      final Document aDocEb = new MyEbiMarshaller ().write (aEbInvoice);
-      assertNotNull (aDocEb);
-
-      XMLWriter.writeToStream (aDocEb, FileHelper.getOutputStream ("generated-ebi41-files/" +
-                                                                   FilenameHelper.getWithoutPath (aRes.getPath ())));
+      assertTrue (new Ebi41TestMarshaller ().write (aEbInvoice, new File ("generated-ebi41-files/" + FilenameHelper.getWithoutPath (aRes.getPath ())))
+                                            .isSuccess ());
     }
   }
 
@@ -115,8 +95,7 @@ public class InvoiceToEbInterface41ConverterTest
   public void testConvertPEPPOLInvoiceERB ()
   {
     final List <IReadableResource> aTestFiles = new ArrayList <IReadableResource> ();
-    for (final File aFile : FileSystemIterator.create (new File ("src/test/resources/ubl20/invoice"),
-                                                       new FileFilterFilenameEndsWith (".xml")))
+    for (final File aFile : FileSystemIterator.create (new File ("src/test/resources/ubl20/invoice"), new FileFilterFilenameEndsWith (".xml")))
       aTestFiles.add (new FileSystemResource (aFile));
 
     // For all PEPPOL test invoices
@@ -133,23 +112,16 @@ public class InvoiceToEbInterface41ConverterTest
       final ErrorList aErrorList = new ErrorList ();
       final Ebi41InvoiceType aEbInvoice = new InvoiceToEbInterface41Converter (Locale.GERMANY,
                                                                                Locale.GERMANY,
-                                                                               true).convertToEbInterface (aUBLInvoice,
-                                                                                                           aErrorList);
-      assertTrue (aRes.getPath () +
-                  ": " +
-                  aErrorList.toString (),
-                  aErrorList.getMostSevereErrorLevel ().isLessSevereThan (EErrorLevel.ERROR));
+                                                                               true).convertToEbInterface (aUBLInvoice, aErrorList);
+      assertTrue (aRes.getPath () + ": " + aErrorList.toString (), aErrorList.getMostSevereErrorLevel ().isLessSevereThan (EErrorLevel.ERROR));
       assertNotNull (aEbInvoice);
 
       if (aErrorList.getMostSevereErrorLevel ().isMoreOrEqualSevereThan (EErrorLevel.WARN))
         s_aLogger.info ("  " + aErrorList.getAllItems ());
 
       // Convert ebInterface to XML
-      final Document aDocEb = new MyEbiMarshaller ().write (aEbInvoice);
-      assertNotNull (aDocEb);
-
-      XMLWriter.writeToStream (aDocEb, FileHelper.getOutputStream ("generated-ebi41-files/" +
-                                                                   FilenameHelper.getWithoutPath (aRes.getPath ())));
+      assertTrue (new Ebi41TestMarshaller ().write (aEbInvoice, new File ("generated-ebi41-files/" + FilenameHelper.getWithoutPath (aRes.getPath ())))
+                                            .isSuccess ());
     }
   }
 
@@ -175,18 +147,15 @@ public class InvoiceToEbInterface41ConverterTest
       final ErrorList aErrorList = new ErrorList ();
       final Ebi41InvoiceType aEbInvoice = new InvoiceToEbInterface41Converter (Locale.GERMANY,
                                                                                Locale.GERMANY,
-                                                                               false).convertToEbInterface (aUBLInvoice,
-                                                                                                            aErrorList);
+                                                                               false).convertToEbInterface (aUBLInvoice, aErrorList);
       assertNotNull (aEbInvoice);
       assertTrue (aRes.getPath () +
                   ": " +
                   aErrorList.toString (),
-                  !aErrorList.isEmpty () &&
-                                          aErrorList.getMostSevereErrorLevel ()
-                                                    .isMoreOrEqualSevereThan (EErrorLevel.ERROR));
+                  !aErrorList.isEmpty () && aErrorList.getMostSevereErrorLevel ().isMoreOrEqualSevereThan (EErrorLevel.ERROR));
 
       // Convert ebInterface to XML
-      final Document aDocEb = new MyEbiMarshaller ().write (aEbInvoice);
+      final Document aDocEb = new Ebi41TestMarshaller ().write (aEbInvoice);
       assertNull (aDocEb);
     }
   }
