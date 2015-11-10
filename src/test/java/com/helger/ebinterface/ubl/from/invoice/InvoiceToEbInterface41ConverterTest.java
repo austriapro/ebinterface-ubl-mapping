@@ -32,6 +32,7 @@ import org.w3c.dom.Document;
 
 import com.helger.commons.error.EErrorLevel;
 import com.helger.commons.errorlist.ErrorList;
+import com.helger.commons.io.file.FileHelper;
 import com.helger.commons.io.file.FilenameHelper;
 import com.helger.commons.io.file.filter.FileFilterFilenameEndsWith;
 import com.helger.commons.io.file.iterate.FileSystemIterator;
@@ -86,7 +87,9 @@ public class InvoiceToEbInterface41ConverterTest
         s_aLogger.info ("  " + aErrorList.getAllItems ());
 
       // Convert ebInterface to XML
-      assertTrue (new Ebi41TestMarshaller ().write (aEbInvoice, new File ("generated-ebi41-files/" + FilenameHelper.getWithoutPath (aRes.getPath ())))
+      assertTrue (new Ebi41TestMarshaller ().write (aEbInvoice,
+                                                    FileHelper.getOutputStream ("generated-ebi41-files/" +
+                                                                                FilenameHelper.getWithoutPath (aRes.getPath ())))
                                             .isSuccess ());
     }
   }
@@ -120,7 +123,9 @@ public class InvoiceToEbInterface41ConverterTest
         s_aLogger.info ("  " + aErrorList.getAllItems ());
 
       // Convert ebInterface to XML
-      assertTrue (new Ebi41TestMarshaller ().write (aEbInvoice, new File ("generated-ebi41-files/" + FilenameHelper.getWithoutPath (aRes.getPath ())))
+      assertTrue (new Ebi41TestMarshaller ().write (aEbInvoice,
+                                                    FileHelper.getOutputStream ("generated-ebi41-files/" +
+                                                                                FilenameHelper.getWithoutPath (aRes.getPath ())))
                                             .isSuccess ());
     }
   }
