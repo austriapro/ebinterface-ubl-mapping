@@ -69,7 +69,7 @@ public class InvoiceToEbInterface41ConverterTest
       assertTrue (aRes.exists ());
 
       // Read UBL
-      final InvoiceType aUBLInvoice = UBL21Reader.readInvoice (aRes);
+      final InvoiceType aUBLInvoice = UBL21Reader.invoice ().read (aRes);
       assertNotNull (aUBLInvoice);
 
       // Convert to ebInterface
@@ -108,7 +108,7 @@ public class InvoiceToEbInterface41ConverterTest
       assertTrue (aRes.exists ());
 
       // Read UBL
-      final InvoiceType aUBLInvoice = UBL21Reader.readInvoice (aRes);
+      final InvoiceType aUBLInvoice = UBL21Reader.invoice ().read (aRes);
       assertNotNull (aUBLInvoice);
 
       // Convert to ebInterface
@@ -145,7 +145,7 @@ public class InvoiceToEbInterface41ConverterTest
       assertTrue (aRes.exists ());
 
       // Read UBL
-      final InvoiceType aUBLInvoice = UBL21Reader.readInvoice (aRes);
+      final InvoiceType aUBLInvoice = UBL21Reader.invoice ().read (aRes);
       assertNotNull (aUBLInvoice);
 
       // Convert to ebInterface

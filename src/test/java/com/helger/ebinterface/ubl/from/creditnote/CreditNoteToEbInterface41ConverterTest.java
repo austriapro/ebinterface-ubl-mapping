@@ -67,7 +67,7 @@ public class CreditNoteToEbInterface41ConverterTest
       assertTrue (aRes.exists ());
 
       // Read UBL
-      final CreditNoteType aUBLCreditNote = UBL21Reader.readCreditNote (aRes);
+      final CreditNoteType aUBLCreditNote = UBL21Reader.creditNote ().read (aRes);
       assertNotNull (aUBLCreditNote);
 
       // Convert to ebInterface
@@ -106,7 +106,7 @@ public class CreditNoteToEbInterface41ConverterTest
       assertTrue (aRes.exists ());
 
       // Read UBL
-      final CreditNoteType aUBLCreditNote = UBL21Reader.readCreditNote (aRes);
+      final CreditNoteType aUBLCreditNote = UBL21Reader.creditNote ().read (aRes);
       assertNotNull (aUBLCreditNote);
 
       // Convert to ebInterface
