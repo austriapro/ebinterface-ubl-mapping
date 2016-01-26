@@ -37,20 +37,20 @@ import com.helger.commons.io.file.iterate.FileSystemIterator;
 import com.helger.commons.io.file.iterate.FileSystemRecursiveIterator;
 import com.helger.commons.io.resource.FileSystemResource;
 import com.helger.commons.io.resource.IReadableResource;
-import com.helger.ebinterface.ubl.from.Ebi41TestMarshaller;
-import com.helger.ebinterface.v41.Ebi41InvoiceType;
+import com.helger.ebinterface.ubl.from.Ebi42TestMarshaller;
+import com.helger.ebinterface.v42.Ebi42InvoiceType;
 import com.helger.ubl21.UBL21Reader;
 
 import oasis.names.specification.ubl.schema.xsd.creditnote_21.CreditNoteType;
 
 /**
- * Test class for class {@link CreditNoteToEbInterface41Converter}.
+ * Test class for class {@link CreditNoteToEbInterface42Converter}.
  *
  * @author PEPPOL.AT, BRZ, Philip Helger
  */
-public class CreditNoteToEbInterface41ConverterTest
+public class CreditNoteToEbInterface42ConverterTest
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (CreditNoteToEbInterface41ConverterTest.class);
+  private static final Logger s_aLogger = LoggerFactory.getLogger (CreditNoteToEbInterface42ConverterTest.class);
 
   @Test
   public void testConvertPEPPOLCreditNoteLax ()
@@ -72,9 +72,10 @@ public class CreditNoteToEbInterface41ConverterTest
 
       // Convert to ebInterface
       final ErrorList aErrorList = new ErrorList ();
-      final Ebi41InvoiceType aEbInvoice = new CreditNoteToEbInterface41Converter (Locale.GERMANY,
+      final Ebi42InvoiceType aEbInvoice = new CreditNoteToEbInterface42Converter (Locale.GERMANY,
                                                                                   Locale.GERMANY,
-                                                                                  false).convertToEbInterface (aUBLCreditNote, aErrorList);
+                                                                                  false).convertToEbInterface (aUBLCreditNote,
+                                                                                                               aErrorList);
       assertTrue (aRes.getPath () +
                   ": " +
                   aErrorList.toString (),
@@ -85,8 +86,8 @@ public class CreditNoteToEbInterface41ConverterTest
         s_aLogger.info ("  " + aErrorList.getAllItems ());
 
       // Convert ebInterface to XML
-      assertTrue (new Ebi41TestMarshaller ().write (aEbInvoice,
-                                                    FileHelper.getOutputStream ("generated-ebi41-files/" +
+      assertTrue (new Ebi42TestMarshaller ().write (aEbInvoice,
+                                                    FileHelper.getOutputStream ("generated-ebi42-files/" +
                                                                                 FilenameHelper.getWithoutPath (aRes.getPath ())))
                                             .isSuccess ());
     }
@@ -96,7 +97,8 @@ public class CreditNoteToEbInterface41ConverterTest
   public void testConvertPEPPOLInvoiceERB ()
   {
     final List <IReadableResource> aTestFiles = new ArrayList <IReadableResource> ();
-    for (final File aFile : FileSystemIterator.create (new File ("src/test/resources/ubl20/creditnote"), new FileFilterFilenameEndsWith (".xml")))
+    for (final File aFile : FileSystemIterator.create (new File ("src/test/resources/ubl20/creditnote"),
+                                                       new FileFilterFilenameEndsWith (".xml")))
       aTestFiles.add (new FileSystemResource (aFile));
 
     // For all PEPPOL test invoices
@@ -111,18 +113,22 @@ public class CreditNoteToEbInterface41ConverterTest
 
       // Convert to ebInterface
       final ErrorList aErrorList = new ErrorList ();
-      final Ebi41InvoiceType aEbInvoice = new CreditNoteToEbInterface41Converter (Locale.GERMANY,
+      final Ebi42InvoiceType aEbInvoice = new CreditNoteToEbInterface42Converter (Locale.GERMANY,
                                                                                   Locale.GERMANY,
-                                                                                  true).convertToEbInterface (aUBLCreditNote, aErrorList);
-      assertTrue (aRes.getPath () + ": " + aErrorList.toString (), aErrorList.getMostSevereErrorLevel ().isLessSevereThan (EErrorLevel.ERROR));
+                                                                                  true).convertToEbInterface (aUBLCreditNote,
+                                                                                                              aErrorList);
+      assertTrue (aRes.getPath () +
+                  ": " +
+                  aErrorList.toString (),
+                  aErrorList.getMostSevereErrorLevel ().isLessSevereThan (EErrorLevel.ERROR));
       assertNotNull (aEbInvoice);
 
       if (aErrorList.getMostSevereErrorLevel ().isMoreOrEqualSevereThan (EErrorLevel.WARN))
         s_aLogger.info ("  " + aErrorList.getAllItems ());
 
       // Convert ebInterface to XML
-      assertTrue (new Ebi41TestMarshaller ().write (aEbInvoice,
-                                                    FileHelper.getOutputStream ("generated-ebi41-files/" +
+      assertTrue (new Ebi42TestMarshaller ().write (aEbInvoice,
+                                                    FileHelper.getOutputStream ("generated-ebi42-files/" +
                                                                                 FilenameHelper.getWithoutPath (aRes.getPath ())))
                                             .isSuccess ());
     }
