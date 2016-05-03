@@ -116,7 +116,7 @@
     <dependency>
       <groupId>com.helger</groupId>
       <artifactId>ph-ebinterface</artifactId>
-      <version>4.0.2</version>
+      <version>4.0.3</version>
     </dependency>
     <dependency>
       <groupId>com.helger</groupId>
