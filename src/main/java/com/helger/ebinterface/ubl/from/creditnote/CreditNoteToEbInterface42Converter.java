@@ -563,7 +563,8 @@ public final class CreditNoteToEbInterface42Converter extends AbstractCreditNote
       for (final CreditNoteLineType aUBLLine : aUBLDoc.getCreditNoteLine ())
       {
         // Try to resolve tax category
-        TaxCategoryType aUBLTaxCategory = CollectionHelper.getSafe (aUBLLine.getItem ().getClassifiedTaxCategory (), 0);
+        TaxCategoryType aUBLTaxCategory = CollectionHelper.getAtIndex (aUBLLine.getItem ().getClassifiedTaxCategory (),
+                                                                       0);
         if (aUBLTaxCategory == null)
         {
           // No direct tax category -> check if it is somewhere in the tax total
@@ -1001,7 +1002,7 @@ public final class CreditNoteToEbInterface42Converter extends AbstractCreditNote
       if (aEbiDelivery.getDate () == null)
       {
         // No delivery date is present - check for service period
-        final PeriodType aUBLCreditNotePeriod = CollectionHelper.getSafe (aUBLDoc.getInvoicePeriod (), 0);
+        final PeriodType aUBLCreditNotePeriod = CollectionHelper.getAtIndex (aUBLDoc.getInvoicePeriod (), 0);
         if (aUBLCreditNotePeriod != null)
         {
           final XMLGregorianCalendar aStartDate = aUBLCreditNotePeriod.getStartDateValue ();

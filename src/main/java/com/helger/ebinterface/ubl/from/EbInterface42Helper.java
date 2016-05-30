@@ -122,7 +122,7 @@ public final class EbInterface42Helper
                                            EText.MULTIPLE_PARTIES.getDisplayText (aDisplayLocale));
 
     // Convert name
-    final PartyNameType aUBLPartyName = CollectionHelper.getSafe (aUBLParty.getPartyName (), 0);
+    final PartyNameType aUBLPartyName = CollectionHelper.getAtIndex (aUBLParty.getPartyName (), 0);
     if (aUBLPartyName != null)
       aEbiAddress.setName (StringHelper.trim (aUBLPartyName.getNameValue ()));
 

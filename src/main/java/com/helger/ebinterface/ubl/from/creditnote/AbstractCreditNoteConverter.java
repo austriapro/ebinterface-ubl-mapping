@@ -25,9 +25,9 @@ import com.helger.commons.errorlist.ErrorList;
 import com.helger.commons.string.StringHelper;
 import com.helger.ebinterface.ubl.from.AbstractConverter;
 import com.helger.ebinterface.ubl.from.CPeppolUBL;
-import com.helger.peppol.identifier.doctype.IPeppolPredefinedDocumentTypeIdentifier;
-import com.helger.peppol.identifier.process.IPeppolPredefinedProcessIdentifier;
-import com.helger.peppol.identifier.process.PredefinedProcessIdentifierManager;
+import com.helger.peppol.identifier.peppol.doctype.IPeppolPredefinedDocumentTypeIdentifier;
+import com.helger.peppol.identifier.peppol.process.IPeppolPredefinedProcessIdentifier;
+import com.helger.peppol.identifier.peppol.process.PredefinedProcessIdentifierManager;
 
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.CustomizationIDType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.ProfileIDType;

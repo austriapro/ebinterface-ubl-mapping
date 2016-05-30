@@ -34,9 +34,8 @@ import com.helger.commons.error.EErrorLevel;
 import com.helger.commons.errorlist.ErrorList;
 import com.helger.commons.io.file.FileHelper;
 import com.helger.commons.io.file.FilenameHelper;
-import com.helger.commons.io.file.filter.FileFilterFilenameEndsWith;
+import com.helger.commons.io.file.filter.IFileFilter;
 import com.helger.commons.io.file.iterate.FileSystemIterator;
-import com.helger.commons.io.file.iterate.FileSystemRecursiveIterator;
 import com.helger.commons.io.resource.FileSystemResource;
 import com.helger.commons.io.resource.IReadableResource;
 import com.helger.ebinterface.ubl.from.Ebi42TestMarshaller;
@@ -58,8 +57,7 @@ public class InvoiceToEbInterface42ConverterTest
   public void testConvertPEPPOLInvoiceLax ()
   {
     final List <IReadableResource> aTestFiles = new ArrayList <IReadableResource> ();
-    for (final File aFile : FileSystemRecursiveIterator.create (new File ("src/test/resources/ubl20/invoice"),
-                                                                new FileFilterFilenameEndsWith (".xml")))
+    for (final File aFile : new FileSystemIterator (new File ("src/test/resources/ubl20/invoice")).withFilter (IFileFilter.filenameEndsWith (".xml")))
       aTestFiles.add (new FileSystemResource (aFile));
 
     // For all PEPPOL test invoices
@@ -99,8 +97,7 @@ public class InvoiceToEbInterface42ConverterTest
   public void testConvertPEPPOLInvoiceERB ()
   {
     final List <IReadableResource> aTestFiles = new ArrayList <IReadableResource> ();
-    for (final File aFile : FileSystemIterator.create (new File ("src/test/resources/ubl20/invoice"),
-                                                       new FileFilterFilenameEndsWith (".xml")))
+    for (final File aFile : new FileSystemIterator (new File ("src/test/resources/ubl20/invoice")).withFilter (IFileFilter.filenameEndsWith (".xml")))
       aTestFiles.add (new FileSystemResource (aFile));
 
     // For all PEPPOL test invoices
@@ -139,9 +136,8 @@ public class InvoiceToEbInterface42ConverterTest
   @Test
   public void testConvertPEPPOLInvoiceLaxBad ()
   {
-    final List <IReadableResource> aTestFiles = new ArrayList <IReadableResource> ();
-    for (final File aFile : FileSystemRecursiveIterator.create (new File ("src/test/resources/ubl20/invoice_bad"),
-                                                                new FileFilterFilenameEndsWith (".xml")))
+    final List <IReadableResource> aTestFiles = new ArrayList <> ();
+    for (final File aFile : new FileSystemIterator (new File ("src/test/resources/ubl20/invoice_bad")).withFilter (IFileFilter.filenameEndsWith (".xml")))
       aTestFiles.add (new FileSystemResource (aFile));
 
     // For all PEPPOL test invoices
@@ -169,7 +165,7 @@ public class InvoiceToEbInterface42ConverterTest
                                                     .isMoreOrEqualSevereThan (EErrorLevel.ERROR));
 
       // Convert ebInterface to XML
-      final Document aDocEb = new Ebi42TestMarshaller ().write (aEbInvoice);
+      final Document aDocEb = new Ebi42TestMarshaller ().getAsDocument (aEbInvoice);
       assertNull (aDocEb);
     }
   }

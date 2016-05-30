@@ -25,9 +25,9 @@ import com.helger.commons.errorlist.ErrorList;
 import com.helger.commons.string.StringHelper;
 import com.helger.ebinterface.ubl.from.AbstractConverter;
 import com.helger.ebinterface.ubl.from.CPeppolUBL;
-import com.helger.peppol.identifier.process.IPeppolPredefinedProcessIdentifier;
-import com.helger.peppol.identifier.process.PredefinedProcessIdentifierManager;
-import com.helger.peppol.identifier.process.SimpleProcessIdentifier;
+import com.helger.peppol.identifier.generic.process.IProcessIdentifier;
+import com.helger.peppol.identifier.peppol.process.PeppolProcessIdentifier;
+import com.helger.peppol.identifier.peppol.process.PredefinedProcessIdentifierManager;
 
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.InvoiceTypeCodeType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.ProfileIDType;
@@ -93,7 +93,7 @@ public abstract class AbstractInvoiceConverter extends AbstractConverter
     }
 
     // Check ProfileID
-    SimpleProcessIdentifier aProcID = null;
+    IProcessIdentifier aProcID = null;
     final ProfileIDType aProfileID = aUBLInvoice.getProfileID ();
     if (aProfileID == null)
     {
@@ -102,13 +102,11 @@ public abstract class AbstractInvoiceConverter extends AbstractConverter
     else
     {
       final String sProfileID = StringHelper.trim (aProfileID.getValue ());
-      final IPeppolPredefinedProcessIdentifier aPredefProcID = PredefinedProcessIdentifierManager.getProcessIdentifierOfID (sProfileID);
-      if (aPredefProcID != null)
-        aProcID = aPredefProcID.getAsProcessIdentifier ();
+      aProcID = PredefinedProcessIdentifierManager.getProcessIdentifierOfID (sProfileID);
       if (aProcID == null)
       {
         // Parse basically
-        aProcID = SimpleProcessIdentifier.createWithDefaultScheme (sProfileID);
+        aProcID = PeppolProcessIdentifier.createWithDefaultScheme (sProfileID);
       }
 
       if (aProcID == null)

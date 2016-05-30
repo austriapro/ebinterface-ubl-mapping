@@ -816,7 +816,8 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
       for (final InvoiceLineType aUBLLine : aUBLDoc.getInvoiceLine ())
       {
         // Try to resolve tax category
-        TaxCategoryType aUBLTaxCategory = CollectionHelper.getSafe (aUBLLine.getItem ().getClassifiedTaxCategory (), 0);
+        TaxCategoryType aUBLTaxCategory = CollectionHelper.getAtIndex (aUBLLine.getItem ().getClassifiedTaxCategory (),
+                                                                       0);
         if (aUBLTaxCategory == null)
         {
           // No direct tax category -> check if it is somewhere in the tax total
@@ -1253,7 +1254,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
       if (aEbiDelivery.getDate () == null)
       {
         // No delivery date is present - check for service period
-        final PeriodType aUBLInvoicePeriod = CollectionHelper.getSafe (aUBLDoc.getInvoicePeriod (), 0);
+        final PeriodType aUBLInvoicePeriod = CollectionHelper.getAtIndex (aUBLDoc.getInvoicePeriod (), 0);
         if (aUBLInvoicePeriod != null)
         {
           final XMLGregorianCalendar aStartDate = aUBLInvoicePeriod.getStartDateValue ();
