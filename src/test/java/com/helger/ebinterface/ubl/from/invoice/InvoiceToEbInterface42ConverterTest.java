@@ -21,8 +21,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 import org.junit.Test;
@@ -138,7 +136,7 @@ public class InvoiceToEbInterface42ConverterTest
   @Test
   public void testConvertPEPPOLInvoiceLaxBad ()
   {
-    final List <IReadableResource> aTestFiles = new ArrayList<> ();
+    final ICommonsList <IReadableResource> aTestFiles = new CommonsArrayList<> ();
     for (final File aFile : new FileSystemIterator (new File ("src/test/resources/ubl20/invoice_bad")).withFilter (IFileFilter.filenameEndsWith (".xml")))
       aTestFiles.add (new FileSystemResource (aFile));
 
