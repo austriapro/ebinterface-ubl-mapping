@@ -30,6 +30,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 
+import com.helger.commons.collection.ext.CommonsArrayList;
+import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.error.EErrorLevel;
 import com.helger.commons.errorlist.ErrorList;
 import com.helger.commons.io.file.FileHelper;
@@ -56,7 +58,7 @@ public class InvoiceToEbInterface42ConverterTest
   @Test
   public void testConvertPEPPOLInvoiceLax ()
   {
-    final List <IReadableResource> aTestFiles = new ArrayList <IReadableResource> ();
+    final ICommonsList <IReadableResource> aTestFiles = new CommonsArrayList<> ();
     for (final File aFile : new FileSystemIterator (new File ("src/test/resources/ubl20/invoice")).withFilter (IFileFilter.filenameEndsWith (".xml")))
       aTestFiles.add (new FileSystemResource (aFile));
 
@@ -96,7 +98,7 @@ public class InvoiceToEbInterface42ConverterTest
   @Test
   public void testConvertPEPPOLInvoiceERB ()
   {
-    final List <IReadableResource> aTestFiles = new ArrayList <IReadableResource> ();
+    final ICommonsList <IReadableResource> aTestFiles = new CommonsArrayList<> ();
     for (final File aFile : new FileSystemIterator (new File ("src/test/resources/ubl20/invoice")).withFilter (IFileFilter.filenameEndsWith (".xml")))
       aTestFiles.add (new FileSystemResource (aFile));
 
@@ -136,7 +138,7 @@ public class InvoiceToEbInterface42ConverterTest
   @Test
   public void testConvertPEPPOLInvoiceLaxBad ()
   {
-    final List <IReadableResource> aTestFiles = new ArrayList <> ();
+    final List <IReadableResource> aTestFiles = new ArrayList<> ();
     for (final File aFile : new FileSystemIterator (new File ("src/test/resources/ubl20/invoice_bad")).withFilter (IFileFilter.filenameEndsWith (".xml")))
       aTestFiles.add (new FileSystemResource (aFile));
 
@@ -157,12 +159,9 @@ public class InvoiceToEbInterface42ConverterTest
                                                                                false).convertToEbInterface (aUBLInvoice,
                                                                                                             aErrorList);
       assertNotNull (aEbInvoice);
-      assertTrue (aRes.getPath () +
-                  ": " +
-                  aErrorList.toString (),
-                  !aErrorList.isEmpty () &&
-                                          aErrorList.getMostSevereErrorLevel ()
-                                                    .isMoreOrEqualSevereThan (EErrorLevel.ERROR));
+      assertTrue (aRes.getPath () + ": " + aErrorList.toString (), !aErrorList.isEmpty () &&
+                                                                   aErrorList.getMostSevereErrorLevel ()
+                                                                             .isMoreOrEqualSevereThan (EErrorLevel.ERROR));
 
       // Convert ebInterface to XML
       final Document aDocEb = new Ebi42TestMarshaller ().getAsDocument (aEbInvoice);

@@ -16,7 +16,6 @@
  */
 package com.helger.ebinterface.ubl.from;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -24,6 +23,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.ext.CommonsArrayList;
+import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.errorlist.ErrorList;
 import com.helger.commons.locale.country.CountryCache;
 import com.helger.commons.string.StringHelper;
@@ -146,7 +147,7 @@ public final class EbInterface42Helper
     }
 
     // Person name
-    final List <String> ebContacts = new ArrayList <String> ();
+    final ICommonsList <String> ebContacts = new CommonsArrayList<> ();
     for (final PersonType aUBLPerson : aUBLParty.getPerson ())
     {
       ebContacts.add (StringHelper.getImplodedNonEmpty (' ',

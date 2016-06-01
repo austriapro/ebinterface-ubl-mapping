@@ -20,14 +20,14 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.helger.commons.collection.ext.CommonsArrayList;
+import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.error.EErrorLevel;
 import com.helger.commons.errorlist.ErrorList;
 import com.helger.commons.io.file.FileHelper;
@@ -54,7 +54,7 @@ public class CreditNoteToEbInterface42ConverterTest
   @Test
   public void testConvertPEPPOLCreditNoteLax ()
   {
-    final List <IReadableResource> aTestFiles = new ArrayList <> ();
+    final ICommonsList <IReadableResource> aTestFiles = new CommonsArrayList<> ();
     for (final File aFile : new FileSystemIterator (new File ("src/test/resources/ubl20/creditnote")).withFilter (IFileFilter.filenameEndsWith (".xml")))
       aTestFiles.add (new FileSystemResource (aFile));
 
@@ -94,7 +94,7 @@ public class CreditNoteToEbInterface42ConverterTest
   @Test
   public void testConvertPEPPOLInvoiceERB ()
   {
-    final List <IReadableResource> aTestFiles = new ArrayList <> ();
+    final ICommonsList <IReadableResource> aTestFiles = new CommonsArrayList<> ();
     for (final File aFile : new FileSystemIterator (new File ("src/test/resources/ubl20/creditnote")).withFilter (IFileFilter.filenameEndsWith (".xml")))
       aTestFiles.add (new FileSystemResource (aFile));
 

@@ -18,11 +18,7 @@ package com.helger.ebinterface.ubl.from.invoice;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -32,6 +28,10 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import com.helger.commons.CGlobal;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.ext.CommonsArrayList;
+import com.helger.commons.collection.ext.CommonsHashMap;
+import com.helger.commons.collection.ext.ICommonsList;
+import com.helger.commons.collection.ext.ICommonsMap;
 import com.helger.commons.errorlist.ErrorList;
 import com.helger.commons.math.MathHelper;
 import com.helger.commons.regex.RegExHelper;
@@ -139,7 +139,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
   {
     if (aUBLPaymentMeans.hasInstructionNoteEntries ())
     {
-      final List <String> aNotes = new ArrayList <String> ();
+      final ICommonsList <String> aNotes = new CommonsArrayList<> ();
       for (final InstructionNoteType aUBLNote : aUBLPaymentMeans.getInstructionNote ())
       {
         final String sNote = StringHelper.trim (aUBLNote.getValue ());
@@ -332,7 +332,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
 
     // Payment terms
     {
-      final List <String> aPaymentConditionsNotes = new ArrayList <String> ();
+      final ICommonsList <String> aPaymentConditionsNotes = new CommonsArrayList<> ();
       int nPaymentTermsIndex = 0;
       for (final PaymentTermsType aUBLPaymentTerms : aUBLDoc.getPaymentTerms ())
       {
@@ -449,7 +449,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
 
     // Global comment
     {
-      final List <String> aEbiComment = new ArrayList <String> ();
+      final ICommonsList <String> aEbiComment = new CommonsArrayList<> ();
       for (final NoteType aNote : aUBLDoc.getNote ())
         if (StringHelper.hasText (aNote.getValue ()))
           aEbiComment.add (aNote.getValue ());
@@ -638,7 +638,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
 
     // Tax totals
     // Map from tax category to percentage
-    final Map <TaxCategoryKey, BigDecimal> aTaxCategoryPercMap = new HashMap <TaxCategoryKey, BigDecimal> ();
+    final ICommonsMap <TaxCategoryKey, BigDecimal> aTaxCategoryPercMap = new CommonsHashMap<> ();
     final Ebi42TaxType aEbiTax = new Ebi42TaxType ();
     final Ebi42VATType aEbiVAT = new Ebi42VATType ();
     {
@@ -974,7 +974,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
         if (aUBLTaxCategory != null)
           // Optional
           if (false)
-            aEbiVATRate.setTaxCode (aUBLTaxCategory.getIDValue ());
+          aEbiVATRate.setTaxCode (aUBLTaxCategory.getIDValue ());
         aEbiListLineItem.setVATRate (aEbiVATRate);
 
         // Line item amount (quantity * unit price +- reduction / surcharge)
