@@ -16,9 +16,9 @@
  */
 package com.helger.ebinterface.ubl.from;
 
-import com.helger.commons.xml.CXML;
-import com.helger.commons.xml.namespace.MapBasedNamespaceContext;
 import com.helger.ebinterface.CEbInterface;
+import com.helger.xml.CXML;
+import com.helger.xml.namespace.MapBasedNamespaceContext;
 
 /**
  * A special map-based namespace context that maps XML prefixes to namespace
