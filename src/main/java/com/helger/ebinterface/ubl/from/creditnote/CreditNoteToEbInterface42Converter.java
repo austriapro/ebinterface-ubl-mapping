@@ -27,7 +27,6 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import com.helger.commons.CGlobal;
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.collection.ext.CommonsArrayList;
 import com.helger.commons.collection.ext.CommonsHashMap;
 import com.helger.commons.collection.ext.ICommonsList;
@@ -196,7 +195,7 @@ public final class CreditNoteToEbInterface42Converter extends AbstractCreditNote
 
     // Global comment
     {
-      final ICommonsList <String> aEbiComment = new CommonsArrayList<> ();
+      final ICommonsList <String> aEbiComment = new CommonsArrayList <> ();
       for (final NoteType aNote : aUBLDoc.getNote ())
         if (StringHelper.hasText (aNote.getValue ()))
           aEbiComment.add (aNote.getValue ());
@@ -386,7 +385,7 @@ public final class CreditNoteToEbInterface42Converter extends AbstractCreditNote
 
     // Tax totals
     // Map from tax category to percentage
-    final ICommonsMap <TaxCategoryKey, BigDecimal> aTaxCategoryPercMap = new CommonsHashMap<> ();
+    final ICommonsMap <TaxCategoryKey, BigDecimal> aTaxCategoryPercMap = new CommonsHashMap <> ();
     final Ebi42TaxType aEbiTax = new Ebi42TaxType ();
     final Ebi42VATType aEbiVAT = new Ebi42VATType ();
     {
@@ -563,8 +562,7 @@ public final class CreditNoteToEbInterface42Converter extends AbstractCreditNote
       for (final CreditNoteLineType aUBLLine : aUBLDoc.getCreditNoteLine ())
       {
         // Try to resolve tax category
-        TaxCategoryType aUBLTaxCategory = CollectionHelper.getAtIndex (aUBLLine.getItem ().getClassifiedTaxCategory (),
-                                                                       0);
+        TaxCategoryType aUBLTaxCategory = aUBLLine.getItem ().getClassifiedTaxCategoryAtIndex (0);
         if (aUBLTaxCategory == null)
         {
           // No direct tax category -> check if it is somewhere in the tax total
@@ -719,9 +717,9 @@ public final class CreditNoteToEbInterface42Converter extends AbstractCreditNote
         final Ebi42VATRateType aEbiVATRate = new Ebi42VATRateType ();
         aEbiVATRate.setValue (aUBLPercent);
         if (aUBLTaxCategory != null)
-          // Optional
-          if (false)
-          aEbiVATRate.setTaxCode (aUBLTaxCategory.getIDValue ());
+                                    // Optional
+                                    if (false)
+            aEbiVATRate.setTaxCode (aUBLTaxCategory.getIDValue ());
         aEbiListLineItem.setVATRate (aEbiVATRate);
 
         // Line item amount (quantity * unit price +- reduction / surcharge)
@@ -1002,7 +1000,7 @@ public final class CreditNoteToEbInterface42Converter extends AbstractCreditNote
       if (aEbiDelivery.getDate () == null)
       {
         // No delivery date is present - check for service period
-        final PeriodType aUBLCreditNotePeriod = CollectionHelper.getAtIndex (aUBLDoc.getInvoicePeriod (), 0);
+        final PeriodType aUBLCreditNotePeriod = aUBLDoc.getInvoicePeriodAtIndex (0);
         if (aUBLCreditNotePeriod != null)
         {
           final XMLGregorianCalendar aStartDate = aUBLCreditNotePeriod.getStartDateValue ();
