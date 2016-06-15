@@ -997,29 +997,28 @@ public final class CreditNoteToEbInterface42Converter extends AbstractCreditNote
       if (aEbiDelivery == null)
         aEbiDelivery = new Ebi42DeliveryType ();
 
-      if (aEbiDelivery.getDate () == null)
+      // No delivery date is present - check for service period
+      final PeriodType aUBLCreditNotePeriod = aUBLDoc.getInvoicePeriodAtIndex (0);
+      if (aUBLCreditNotePeriod != null)
       {
-        // No delivery date is present - check for service period
-        final PeriodType aUBLCreditNotePeriod = aUBLDoc.getInvoicePeriodAtIndex (0);
-        if (aUBLCreditNotePeriod != null)
+        final XMLGregorianCalendar aStartDate = aUBLCreditNotePeriod.getStartDateValue ();
+        final XMLGregorianCalendar aEndDate = aUBLCreditNotePeriod.getEndDateValue ();
+        if (aStartDate != null)
         {
-          final XMLGregorianCalendar aStartDate = aUBLCreditNotePeriod.getStartDateValue ();
-          final XMLGregorianCalendar aEndDate = aUBLCreditNotePeriod.getEndDateValue ();
-          if (aStartDate != null)
+          if (aEndDate == null)
           {
-            if (aEndDate == null)
-            {
-              // It's just a date
+            // It's just a date - prefer the delivery date over the
+            // InvoicePeriod/StartDate
+            if (aEbiDelivery.getDate () == null)
               aEbiDelivery.setDate (aStartDate);
-            }
-            else
-            {
-              // It's a period!
-              final Ebi42PeriodType aEbiPeriod = new Ebi42PeriodType ();
-              aEbiPeriod.setFromDate (aStartDate);
-              aEbiPeriod.setToDate (aEndDate);
-              aEbiDelivery.setPeriod (aEbiPeriod);
-            }
+          }
+          else
+          {
+            // It's a period!
+            final Ebi42PeriodType aEbiPeriod = new Ebi42PeriodType ();
+            aEbiPeriod.setFromDate (aStartDate);
+            aEbiPeriod.setToDate (aEndDate);
+            aEbiDelivery.setPeriod (aEbiPeriod);
           }
         }
       }
