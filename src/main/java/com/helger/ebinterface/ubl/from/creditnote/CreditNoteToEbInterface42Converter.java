@@ -27,6 +27,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import com.helger.commons.CGlobal;
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.collection.ext.CommonsArrayList;
 import com.helger.commons.collection.ext.CommonsHashMap;
 import com.helger.commons.collection.ext.ICommonsList;
@@ -562,7 +563,8 @@ public final class CreditNoteToEbInterface42Converter extends AbstractCreditNote
       for (final CreditNoteLineType aUBLLine : aUBLDoc.getCreditNoteLine ())
       {
         // Try to resolve tax category
-        TaxCategoryType aUBLTaxCategory = aUBLLine.getItem ().getClassifiedTaxCategoryAtIndex (0);
+        TaxCategoryType aUBLTaxCategory = CollectionHelper.getAtIndex (aUBLLine.getItem ().getClassifiedTaxCategory (),
+                                                                       0);
         if (aUBLTaxCategory == null)
         {
           // No direct tax category -> check if it is somewhere in the tax total
@@ -823,7 +825,7 @@ public final class CreditNoteToEbInterface42Converter extends AbstractCreditNote
         }
 
         // Delivery per line item
-        if (aUBLLine.getDeliveryCount () > 0)
+        if (aUBLLine.hasDeliveryEntries ())
         {
           // Delivery address
           final int nDeliveryIndex = 0;
@@ -998,7 +1000,7 @@ public final class CreditNoteToEbInterface42Converter extends AbstractCreditNote
         aEbiDelivery = new Ebi42DeliveryType ();
 
       // No delivery date is present - check for service period
-      final PeriodType aUBLCreditNotePeriod = aUBLDoc.getInvoicePeriodAtIndex (0);
+      final PeriodType aUBLCreditNotePeriod = CollectionHelper.getAtIndex (aUBLDoc.getInvoicePeriod (), 0);
       if (aUBLCreditNotePeriod != null)
       {
         final XMLGregorianCalendar aStartDate = aUBLCreditNotePeriod.getStartDateValue ();
@@ -1019,6 +1021,8 @@ public final class CreditNoteToEbInterface42Converter extends AbstractCreditNote
             aEbiPeriod.setFromDate (aStartDate);
             aEbiPeriod.setToDate (aEndDate);
             aEbiDelivery.setPeriod (aEbiPeriod);
+            // Has precedence over date!
+            aEbiDelivery.setDate (null);
           }
         }
       }
