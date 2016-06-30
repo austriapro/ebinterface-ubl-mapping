@@ -29,6 +29,7 @@
   <packaging>bundle</packaging>
   <name>ebinterface-ubl-mapping</name>
   <inceptionYear>2010</inceptionYear>
+  <url>https://github.com/austriapro/ebinterface-ubl-mapping</url>
 
   <licenses>
     <license>
@@ -97,7 +98,7 @@
       <dependency>
         <groupId>com.helger</groupId>
         <artifactId>ph-masterdata-parent-pom</artifactId>
-        <version>5.0.0-SNAPSHOT</version>
+        <version>5.0.0</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
