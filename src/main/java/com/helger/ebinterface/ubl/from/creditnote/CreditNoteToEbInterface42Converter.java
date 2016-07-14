@@ -873,8 +873,12 @@ public final class CreditNoteToEbInterface42Converter extends AbstractCreditNote
           }
         }
 
+        // Perform customizing as last action
+        if (m_aCustomizer != null)
+          m_aCustomizer.additionalItemMapping (aUBLLine, aEbiListLineItem);
+
         // Add the item to the list
-        aEbiItemList.getListLineItem ().add (aEbiListLineItem);
+        aEbiItemList.addListLineItem (aEbiListLineItem);
         nLineIndex++;
       }
       aEbiDetails.getItemList ().add (aEbiItemList);
@@ -1063,9 +1067,9 @@ public final class CreditNoteToEbInterface42Converter extends AbstractCreditNote
     if (aEbiDelivery.getDate () != null || aEbiDelivery.getPeriod () != null)
       aEbiDoc.setDelivery (aEbiDelivery);
 
-    // Perform custromizing as last action
+    // Perform customizing as last action
     if (m_aCustomizer != null)
-      m_aCustomizer.additionalMapping (aUBLDoc, aEbiDoc);
+      m_aCustomizer.additionalGlobalMapping (aUBLDoc, aEbiDoc);
 
     return aEbiDoc;
   }
