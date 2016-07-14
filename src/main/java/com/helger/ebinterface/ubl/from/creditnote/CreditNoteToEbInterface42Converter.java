@@ -100,6 +100,8 @@ import oasis.names.specification.ubl.schema.xsd.creditnote_21.CreditNoteType;
 @Immutable
 public final class CreditNoteToEbInterface42Converter extends AbstractCreditNoteConverter
 {
+  private ICustomCreditNoteConverter m_aCustomizer;
+
   /**
    * Constructor
    *
@@ -117,6 +119,13 @@ public final class CreditNoteToEbInterface42Converter extends AbstractCreditNote
                                              final boolean bStrictERBMode)
   {
     super (aDisplayLocale, aContentLocale, bStrictERBMode);
+  }
+
+  @Nonnull
+  public CreditNoteToEbInterface42Converter setCustomizer (@Nullable final ICustomCreditNoteConverter aCustomizer)
+  {
+    m_aCustomizer = aCustomizer;
+    return this;
   }
 
   private void _convertPayment (final ErrorList aTransformationErrorList, final Ebi42InvoiceType aEbiDoc)
@@ -1053,6 +1062,10 @@ public final class CreditNoteToEbInterface42Converter extends AbstractCreditNote
 
     if (aEbiDelivery.getDate () != null || aEbiDelivery.getPeriod () != null)
       aEbiDoc.setDelivery (aEbiDelivery);
+
+    // Perform custromizing as last action
+    if (m_aCustomizer != null)
+      m_aCustomizer.additionalMapping (aUBLDoc, aEbiDoc);
 
     return aEbiDoc;
   }

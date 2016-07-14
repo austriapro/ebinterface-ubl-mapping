@@ -116,6 +116,8 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
 {
   public static final int PAYMENT_REFERENCE_MAX_LENGTH = 35;
 
+  private ICustomInvoiceConverter m_aCustomizer;
+
   /**
    * Constructor
    *
@@ -133,6 +135,13 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
                                           final boolean bStrictERBMode)
   {
     super (aDisplayLocale, aContentLocale, bStrictERBMode);
+  }
+
+  @Nonnull
+  public InvoiceToEbInterface42Converter setCustomizer (@Nullable final ICustomInvoiceConverter aCustomizer)
+  {
+    m_aCustomizer = aCustomizer;
+    return this;
   }
 
   private static void _setPaymentMeansComment (@Nonnull final PaymentMeansType aUBLPaymentMeans,
@@ -1306,6 +1315,10 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
 
     if (aEbiDelivery.getDate () != null || aEbiDelivery.getPeriod () != null)
       aEbiDoc.setDelivery (aEbiDelivery);
+
+    // Perform custromizing as last action
+    if (m_aCustomizer != null)
+      m_aCustomizer.additionalMapping (aUBLDoc, aEbiDoc);
 
     return aEbiDoc;
   }
