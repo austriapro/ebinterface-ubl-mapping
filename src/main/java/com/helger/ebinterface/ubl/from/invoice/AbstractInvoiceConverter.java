@@ -97,7 +97,7 @@ public abstract class AbstractInvoiceConverter extends AbstractConverter
     final ProfileIDType aProfileID = aUBLInvoice.getProfileID ();
     if (aProfileID == null)
     {
-      aTransformationErrorList.addError ("ProfileID", EText.NO_PROFILE_ID.getDisplayText (m_aDisplayLocale));
+      aTransformationErrorList.addWarning ("ProfileID", EText.NO_PROFILE_ID.getDisplayText (m_aDisplayLocale));
     }
     else
     {
@@ -111,9 +111,9 @@ public abstract class AbstractInvoiceConverter extends AbstractConverter
 
       if (aProcID == null)
       {
-        aTransformationErrorList.addError ("ProfileID",
-                                           EText.INVALID_PROFILE_ID.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                            sProfileID));
+        aTransformationErrorList.addWarning ("ProfileID",
+                                             EText.INVALID_PROFILE_ID.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                              sProfileID));
       }
     }
 

@@ -98,6 +98,7 @@ import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.Sup
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxCategoryType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxSubtotalType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxTotalType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.AdditionalAccountIDType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.DescriptionType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.InstructionNoteType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.NameType;
@@ -139,7 +140,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
   {
     if (aUBLPaymentMeans.hasInstructionNoteEntries ())
     {
-      final ICommonsList <String> aNotes = new CommonsArrayList <> ();
+      final ICommonsList <String> aNotes = new CommonsArrayList<> ();
       for (final InstructionNoteType aUBLNote : aUBLPaymentMeans.getInstructionNote ())
       {
         final String sNote = StringHelper.trim (aUBLNote.getValue ());
@@ -332,7 +333,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
 
     // Payment terms
     {
-      final ICommonsList <String> aPaymentConditionsNotes = new CommonsArrayList <> ();
+      final ICommonsList <String> aPaymentConditionsNotes = new CommonsArrayList<> ();
       int nPaymentTermsIndex = 0;
       for (final PaymentTermsType aUBLPaymentTerms : aUBLDoc.getPaymentTerms ())
       {
@@ -449,7 +450,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
 
     // Global comment
     {
-      final ICommonsList <String> aEbiComment = new CommonsArrayList <> ();
+      final ICommonsList <String> aEbiComment = new CommonsArrayList<> ();
       for (final NoteType aNote : aUBLDoc.getNote ())
         if (StringHelper.hasText (aNote.getValue ()))
           aEbiComment.add (aNote.getValue ());
@@ -502,6 +503,15 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
           aTransformationErrorList.addError ("AccountingSupplierParty/CustomerAssignedAccountID",
                                              EText.ERB_CUSTOMER_ASSIGNED_ACCOUNTID_MISSING.getDisplayText (m_aDisplayLocale));
         }
+
+      for (final AdditionalAccountIDType aUBLAddAccountID : aUBLSupplier.getAdditionalAccountID ())
+      {
+        final Ebi42FurtherIdentificationType aFI = new Ebi42FurtherIdentificationType ();
+        aFI.setIdentificationType ("Consolidator");
+        aFI.setValue (StringHelper.trim (aUBLAddAccountID.getValue ()));
+        aEbiBiller.addFurtherIdentification (aFI);
+      }
+
       if (aUBLSupplier.getParty () != null)
       {
         aEbiBiller.setAddress (EbInterface42Helper.convertParty (aUBLSupplier.getParty (),
@@ -547,6 +557,14 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
         aEbiRecipient.setBillersInvoiceRecipientID (StringHelper.trim (aUBLCustomer.getSupplierAssignedAccountIDValue ()));
       }
       // BillersInvoiceRecipientID is no longer mandatory in ebi
+
+      for (final AdditionalAccountIDType aUBLAddAccountID : aUBLCustomer.getAdditionalAccountID ())
+      {
+        final Ebi42FurtherIdentificationType aFI = new Ebi42FurtherIdentificationType ();
+        aFI.setIdentificationType ("Consolidator");
+        aFI.setValue (StringHelper.trim (aUBLAddAccountID.getValue ()));
+        aEbiRecipient.addFurtherIdentification (aFI);
+      }
 
       if (aUBLCustomer.getParty () != null)
         aEbiRecipient.setAddress (EbInterface42Helper.convertParty (aUBLCustomer.getParty (),
@@ -638,7 +656,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
 
     // Tax totals
     // Map from tax category to percentage
-    final ICommonsMap <TaxCategoryKey, BigDecimal> aTaxCategoryPercMap = new CommonsHashMap <> ();
+    final ICommonsMap <TaxCategoryKey, BigDecimal> aTaxCategoryPercMap = new CommonsHashMap<> ();
     final Ebi42TaxType aEbiTax = new Ebi42TaxType ();
     final Ebi42VATType aEbiVAT = new Ebi42VATType ();
     {
@@ -974,7 +992,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
         if (aUBLTaxCategory != null)
                                     // Optional
                                     if (false)
-            aEbiVATRate.setTaxCode (aUBLTaxCategory.getIDValue ());
+                                    aEbiVATRate.setTaxCode (aUBLTaxCategory.getIDValue ());
         aEbiListLineItem.setVATRate (aEbiVATRate);
 
         // Line item amount (quantity * unit price +- reduction / surcharge)

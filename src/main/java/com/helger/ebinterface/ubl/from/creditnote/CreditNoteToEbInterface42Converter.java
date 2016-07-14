@@ -86,6 +86,7 @@ import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.Sup
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxCategoryType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxSubtotalType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxTotalType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.AdditionalAccountIDType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.DescriptionType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.NameType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.NoteType;
@@ -196,7 +197,7 @@ public final class CreditNoteToEbInterface42Converter extends AbstractCreditNote
 
     // Global comment
     {
-      final ICommonsList <String> aEbiComment = new CommonsArrayList <> ();
+      final ICommonsList <String> aEbiComment = new CommonsArrayList<> ();
       for (final NoteType aNote : aUBLDoc.getNote ())
         if (StringHelper.hasText (aNote.getValue ()))
           aEbiComment.add (aNote.getValue ());
@@ -250,6 +251,14 @@ public final class CreditNoteToEbInterface42Converter extends AbstractCreditNote
                                              EText.ERB_CUSTOMER_ASSIGNED_ACCOUNTID_MISSING.getDisplayText (m_aDisplayLocale));
         }
 
+      for (final AdditionalAccountIDType aUBLAddAccountID : aUBLSupplier.getAdditionalAccountID ())
+      {
+        final Ebi42FurtherIdentificationType aFI = new Ebi42FurtherIdentificationType ();
+        aFI.setIdentificationType ("Consolidator");
+        aFI.setValue (StringHelper.trim (aUBLAddAccountID.getValue ()));
+        aEbiBiller.addFurtherIdentification (aFI);
+      }
+
       if (aUBLSupplier.getParty () != null)
       {
         aEbiBiller.setAddress (EbInterface42Helper.convertParty (aUBLSupplier.getParty (),
@@ -294,6 +303,14 @@ public final class CreditNoteToEbInterface42Converter extends AbstractCreditNote
         // eb: Identifikation des Rechnungsempfängers beim Rechnungssteller.
         final String sBillersInvoiceRecipientID = StringHelper.trim (aUBLCustomer.getSupplierAssignedAccountIDValue ());
         aEbiRecipient.setBillersInvoiceRecipientID (sBillersInvoiceRecipientID);
+      }
+
+      for (final AdditionalAccountIDType aUBLAddAccountID : aUBLCustomer.getAdditionalAccountID ())
+      {
+        final Ebi42FurtherIdentificationType aFI = new Ebi42FurtherIdentificationType ();
+        aFI.setIdentificationType ("Consolidator");
+        aFI.setValue (StringHelper.trim (aUBLAddAccountID.getValue ()));
+        aEbiRecipient.addFurtherIdentification (aFI);
       }
 
       if (aUBLCustomer.getParty () != null)
@@ -386,7 +403,7 @@ public final class CreditNoteToEbInterface42Converter extends AbstractCreditNote
 
     // Tax totals
     // Map from tax category to percentage
-    final ICommonsMap <TaxCategoryKey, BigDecimal> aTaxCategoryPercMap = new CommonsHashMap <> ();
+    final ICommonsMap <TaxCategoryKey, BigDecimal> aTaxCategoryPercMap = new CommonsHashMap<> ();
     final Ebi42TaxType aEbiTax = new Ebi42TaxType ();
     final Ebi42VATType aEbiVAT = new Ebi42VATType ();
     {
@@ -721,7 +738,7 @@ public final class CreditNoteToEbInterface42Converter extends AbstractCreditNote
         if (aUBLTaxCategory != null)
                                     // Optional
                                     if (false)
-            aEbiVATRate.setTaxCode (aUBLTaxCategory.getIDValue ());
+                                    aEbiVATRate.setTaxCode (aUBLTaxCategory.getIDValue ());
         aEbiListLineItem.setVATRate (aEbiVATRate);
 
         // Line item amount (quantity * unit price +- reduction / surcharge)
