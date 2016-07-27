@@ -41,8 +41,9 @@ public interface ICustomCreditNoteConverter
    *        Existing pre-filled ebInterface invoice line. Never
    *        <code>null</code>.
    */
-  void additionalItemMapping (@Nonnull CreditNoteLineType aUBLCreditNoteLine,
-                              @Nonnull Ebi42ListLineItemType aEbiInvoiceLine);
+  default void additionalItemMapping (@Nonnull final CreditNoteLineType aUBLCreditNoteLine,
+                                      @Nonnull final Ebi42ListLineItemType aEbiInvoiceLine)
+  {}
 
   /**
    * Perform optional mapping.
@@ -52,5 +53,7 @@ public interface ICustomCreditNoteConverter
    * @param aEbiInvoice
    *        Existing pre-filled ebInterface invoice. Never <code>null</code>.
    */
-  void additionalGlobalMapping (@Nonnull CreditNoteType aUBLCreditNote, @Nonnull Ebi42InvoiceType aEbiInvoice);
+  default void additionalGlobalMapping (@Nonnull final CreditNoteType aUBLCreditNote,
+                                        @Nonnull final Ebi42InvoiceType aEbiInvoice)
+  {}
 }

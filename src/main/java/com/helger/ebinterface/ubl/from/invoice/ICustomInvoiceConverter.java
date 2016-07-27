@@ -41,7 +41,9 @@ public interface ICustomInvoiceConverter
    *        Existing pre-filled ebInterface invoice line. Never
    *        <code>null</code>.
    */
-  void additionalItemMapping (@Nonnull InvoiceLineType aUBLInvoiceLine, @Nonnull Ebi42ListLineItemType aEbiInvoiceLine);
+  default void additionalItemMapping (@Nonnull final InvoiceLineType aUBLInvoiceLine,
+                                      @Nonnull final Ebi42ListLineItemType aEbiInvoiceLine)
+  {}
 
   /**
    * Perform optional mapping after the whole conversion finished.
@@ -51,5 +53,7 @@ public interface ICustomInvoiceConverter
    * @param aEbiInvoice
    *        Existing pre-filled ebInterface invoice. Never <code>null</code>.
    */
-  void additionalGlobalMapping (@Nonnull InvoiceType aUBLInvoice, @Nonnull Ebi42InvoiceType aEbiInvoice);
+  default void additionalGlobalMapping (@Nonnull final InvoiceType aUBLInvoice,
+                                        @Nonnull final Ebi42InvoiceType aEbiInvoice)
+  {}
 }
