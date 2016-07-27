@@ -278,7 +278,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
             }
             aEbiAccount.setBankAccountOwner (sBankAccountOwnerName);
 
-            aEbiUBTMethod.getBeneficiaryAccount ().add (aEbiAccount);
+            aEbiUBTMethod.addBeneficiaryAccount (aEbiAccount);
             aEbiPaymentMethod.setUniversalBankTransaction (aEbiUBTMethod);
             aEbiDoc.setPaymentMethod (aEbiPaymentMethod);
 
@@ -371,7 +371,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
             aEbiDiscount.setPercentage (aUBLPaymentTerms.getSettlementDiscountPercentValue ());
             // Optional amount value
             aEbiDiscount.setAmount (aUBLPaymentTerms.getAmountValue ());
-            aEbiPaymentConditions.getDiscount ().add (aEbiDiscount);
+            aEbiPaymentConditions.addDiscount (aEbiDiscount);
           }
         }
         else
@@ -533,6 +533,22 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
         if (StringHelper.hasNoText (aEbiBiller.getAddress ().getEmail ()))
           aEbiBiller.getAddress ().setEmail (PEPPOL_FAKE_BILLER_EMAIL_ADDRESS);
       }
+
+      // Add contract reference as further identification
+      for (final DocumentReferenceType aDocumentReference : aUBLDoc.getContractDocumentReference ())
+        if (StringHelper.hasTextAfterTrim (aDocumentReference.getIDValue ()))
+        {
+          final String sKey = StringHelper.hasText (aDocumentReference.getID ().getSchemeID ())
+                                                                                                ? aDocumentReference.getID ()
+                                                                                                                    .getSchemeID ()
+                                                                                                : "Contract";
+
+          final Ebi42FurtherIdentificationType aEbiFurtherIdentification = new Ebi42FurtherIdentificationType ();
+          aEbiFurtherIdentification.setIdentificationType (sKey);
+          aEbiFurtherIdentification.setValue (StringHelper.trim (aDocumentReference.getIDValue ()));
+          aEbiBiller.addFurtherIdentification (aEbiFurtherIdentification);
+        }
+
       aEbiDoc.setBiller (aEbiBiller);
     }
 
@@ -646,21 +662,6 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
       final Ebi42OrderReferenceType aEbiOrderReference = new Ebi42OrderReferenceType ();
       aEbiOrderReference.setOrderID (sUBLOrderReferenceID);
       aEbiDoc.getInvoiceRecipient ().setOrderReference (aEbiOrderReference);
-
-      // Add contract reference as further identification
-      for (final DocumentReferenceType aDocumentReference : aUBLDoc.getContractDocumentReference ())
-        if (StringHelper.hasTextAfterTrim (aDocumentReference.getIDValue ()))
-        {
-          final String sKey = StringHelper.hasText (aDocumentReference.getID ().getSchemeID ())
-                                                                                                ? aDocumentReference.getID ()
-                                                                                                                    .getSchemeID ()
-                                                                                                : "Contract";
-
-          final Ebi42FurtherIdentificationType aEbiFurtherIdentification = new Ebi42FurtherIdentificationType ();
-          aEbiFurtherIdentification.setIdentificationType (sKey);
-          aEbiFurtherIdentification.setValue (StringHelper.trim (aDocumentReference.getIDValue ()));
-          aEbiDoc.getInvoiceRecipient ().getFurtherIdentification ().add (aEbiFurtherIdentification);
-        }
     }
 
     // Tax totals
@@ -799,7 +800,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
                     // Tax amount (mandatory)
                     aEbiVATItem.setAmount (aUBLTaxAmount.setScale (SCALE_PRICE2, ROUNDING_MODE));
                     // Add to list
-                    aEbiVAT.getVATItem ().add (aEbiVATItem);
+                    aEbiVAT.addVATItem (aEbiVATItem);
                   }
               }
               else
@@ -810,7 +811,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
                 aOtherTax.setComment (sUBLTaxSchemeID);
                 // Tax amount (mandatory)
                 aOtherTax.setAmount (aUBLTaxAmount.setScale (SCALE_PRICE2, ROUNDING_MODE));
-                aEbiTax.getOtherTax ().add (aOtherTax);
+                aEbiTax.addOtherTax (aOtherTax);
               }
             }
           }
@@ -919,13 +920,13 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
 
         // Descriptions
         for (final DescriptionType aUBLDescription : aUBLLine.getItem ().getDescription ())
-          aEbiListLineItem.getDescription ().add (StringHelper.trim (aUBLDescription.getValue ()));
-        if (aEbiListLineItem.getDescription ().isEmpty ())
+          aEbiListLineItem.addDescription (StringHelper.trim (aUBLDescription.getValue ()));
+        if (aEbiListLineItem.hasNoDescriptionEntries ())
         {
           // Use item name as description
           final NameType aUBLName = aUBLLine.getItem ().getName ();
           if (aUBLName != null)
-            aEbiListLineItem.getDescription ().add (StringHelper.trim (aUBLName.getValue ()));
+            aEbiListLineItem.addDescription (StringHelper.trim (aUBLName.getValue ()));
         }
 
         // Quantity
@@ -1135,7 +1136,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
         aEbiItemList.addListLineItem (aEbiListLineItem);
         nLineIndex++;
       }
-      aEbiDetails.getItemList ().add (aEbiItemList);
+      aEbiDetails.addItemList (aEbiItemList);
       aEbiDoc.setDetails (aEbiDetails);
     }
 
@@ -1151,7 +1152,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
         aEbiVATVATRate.setValue (BigDecimal.ZERO);
         aEbiVATItem.setVATRate (aEbiVATVATRate);
         aEbiVATItem.setAmount (aTotalZeroPercLineExtensionAmount);
-        aEbiVAT.getVATItem ().add (aEbiVATItem);
+        aEbiVAT.addVATItem (aEbiVATItem);
       }
     }
 
@@ -1224,12 +1225,12 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
 
         if (bItemIsSurcharge)
         {
-          aEbiRS.getReductionOrSurchargeOrOtherVATableTax ().add (new ObjectFactory ().createSurcharge (aEbiRSItem));
+          aEbiRS.addReductionOrSurchargeOrOtherVATableTax (new ObjectFactory ().createSurcharge (aEbiRSItem));
           aEbiBaseAmount = aEbiBaseAmount.add (aEbiRSItem.getAmount ());
         }
         else
         {
-          aEbiRS.getReductionOrSurchargeOrOtherVATableTax ().add (new ObjectFactory ().createReduction (aEbiRSItem));
+          aEbiRS.addReductionOrSurchargeOrOtherVATableTax (new ObjectFactory ().createReduction (aEbiRSItem));
           aEbiBaseAmount = aEbiBaseAmount.subtract (aEbiRSItem.getAmount ());
         }
         aEbiDoc.setReductionAndSurchargeDetails (aEbiRS);
