@@ -572,7 +572,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
         // Required by ebInterface
         aEbiRecipient.setVATIdentificationNumber ("ATU00000000");
         aTransformationErrorList.addWarning ("AccountingCustomerParty/PartyTaxScheme",
-                                             EText.SUPPLIER_VAT_MISSING.getDisplayText (m_aDisplayLocale));
+                                             EText.INVOICE_RECIPIENT_VAT_MISSING.getDisplayText (m_aDisplayLocale));
       }
       if (aUBLCustomer.getSupplierAssignedAccountID () != null)
       {
@@ -597,6 +597,13 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
                                                                     aTransformationErrorList,
                                                                     m_aContentLocale,
                                                                     m_aDisplayLocale));
+      if (aEbiRecipient.getAddress () == null)
+      {
+        // Required by ebInterface
+        aTransformationErrorList.addError ("AccountingCustomerParty/Party",
+                                           EText.INVOICE_RECIPIENT_PARTY_MISSING.getDisplayText (m_aDisplayLocale));
+      }
+
       aEbiDoc.setInvoiceRecipient (aEbiRecipient);
     }
 
@@ -620,7 +627,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
       {
         // Required by ebInterface
         aTransformationErrorList.addError ("BuyerCustomerParty/PartyTaxScheme",
-                                           EText.SUPPLIER_VAT_MISSING.getDisplayText (m_aDisplayLocale));
+                                           EText.ORDERING_PARTY_VAT_MISSING.getDisplayText (m_aDisplayLocale));
       }
 
       if (aUBLBuyer.getParty () != null)
@@ -629,6 +636,41 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
                                                                         aTransformationErrorList,
                                                                         m_aContentLocale,
                                                                         m_aDisplayLocale));
+      if (aEbiOrderingParty.getAddress () == null)
+      {
+        // Required by ebInterface
+        aTransformationErrorList.addError ("BuyerCustomerParty/Party",
+                                           EText.ORDERING_PARTY_PARTY_MISSING.getDisplayText (m_aDisplayLocale));
+      }
+
+      if (aUBLBuyer.getSupplierAssignedAccountID () != null)
+      {
+        // The billers internal identifier for the ordering party.
+        aEbiOrderingParty.setBillersOrderingPartyID (StringHelper.trim (aUBLBuyer.getSupplierAssignedAccountIDValue ()));
+      }
+      if (StringHelper.hasNoText (aEbiOrderingParty.getBillersOrderingPartyID ()) &&
+          aUBLBuyer.getParty () != null &&
+          aUBLBuyer.getParty ().hasPartyIdentificationEntries ())
+      {
+        // New version for BIS V2
+        aEbiOrderingParty.setBillersOrderingPartyID (StringHelper.trim (aUBLBuyer.getParty ()
+                                                                                 .getPartyIdentificationAtIndex (0)
+                                                                                 .getIDValue ()));
+      }
+      if (StringHelper.hasNoText (aEbiOrderingParty.getBillersOrderingPartyID ()) &&
+          aEbiDoc.getInvoiceRecipient () != null)
+      {
+        // Use the same as the the invoice recipient ID
+        // Heuristics, but what should I do :(
+        aEbiOrderingParty.setBillersOrderingPartyID (aEbiDoc.getInvoiceRecipient ().getBillersInvoiceRecipientID ());
+      }
+      if (StringHelper.hasNoText (aEbiOrderingParty.getBillersOrderingPartyID ()))
+      {
+        // Required by ebInterface
+        aTransformationErrorList.addError ("BuyerCustomerParty/SupplierAssignedAccountID",
+                                           EText.ORDERING_PARTY_SUPPLIER_ASSIGNED_ACCOUNT_ID_MISSING.getDisplayText (m_aDisplayLocale));
+      }
+
       aEbiDoc.setOrderingParty (aEbiOrderingParty);
     }
 
