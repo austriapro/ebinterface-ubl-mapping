@@ -49,7 +49,7 @@ import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
  *
  * @author PEPPOL.AT, BRZ, Philip Helger
  */
-public class InvoiceToEbInterface42ConverterTest
+public final class InvoiceToEbInterface42ConverterTest
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (InvoiceToEbInterface42ConverterTest.class);
 

@@ -47,7 +47,7 @@ import oasis.names.specification.ubl.schema.xsd.creditnote_21.CreditNoteType;
  *
  * @author PEPPOL.AT, BRZ, Philip Helger
  */
-public class CreditNoteToEbInterface42ConverterTest
+public final class CreditNoteToEbInterface42ConverterTest
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (CreditNoteToEbInterface42ConverterTest.class);
 

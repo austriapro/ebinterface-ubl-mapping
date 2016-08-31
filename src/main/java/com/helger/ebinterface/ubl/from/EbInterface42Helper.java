@@ -16,7 +16,6 @@
  */
 package com.helger.ebinterface.ubl.from;
 
-import java.util.List;
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
@@ -222,16 +221,9 @@ public final class EbInterface42Helper
   }
 
   @Nonnull
-  protected static final String getAggregated (@Nonnull final List <DescriptionType> aList)
+  protected static String getAggregated (@Nonnull final Iterable <DescriptionType> aList)
   {
-    final StringBuilder aSB = new StringBuilder ();
-    for (final DescriptionType aItem : aList)
-    {
-      if (aSB.length () > 0)
-        aSB.append ('\n');
-      aSB.append (aItem.getValue ());
-    }
-    return aSB.toString ();
+    return StringHelper.getImploded ('\n', aList, x -> x.getValue ());
   }
 
   @Nonnull
