@@ -24,7 +24,8 @@ import javax.annotation.Nullable;
 import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.collection.ext.CommonsArrayList;
 import com.helger.commons.collection.ext.ICommonsList;
-import com.helger.commons.errorlist.ErrorList;
+import com.helger.commons.error.SingleError;
+import com.helger.commons.error.list.ErrorList;
 import com.helger.commons.locale.country.CountryCache;
 import com.helger.commons.string.StringHelper;
 import com.helger.ebinterface.ubl.from.AbstractConverter.EText;
@@ -90,21 +91,26 @@ public final class EbInterface42Helper
     }
 
     if (aEbiAddress.getStreet () == null)
-      aTransformationErrorList.addError (sPartyType +
-                                         "/PostalAddress/StreetName",
-                                         EText.ADDRESS_NO_STREET.getDisplayText (aDisplayLocale));
+      aTransformationErrorList.add (SingleError.builderError ()
+                                               .setErrorFieldName (sPartyType + "/PostalAddress/StreetName")
+                                               .setErrorText (EText.ADDRESS_NO_STREET.getDisplayText (aDisplayLocale))
+                                               .build ());
     if (aEbiAddress.getTown () == null)
-      aTransformationErrorList.addError (sPartyType +
-                                         "/PostalAddress/CityName",
-                                         EText.ADDRESS_NO_CITY.getDisplayText (aDisplayLocale));
+      aTransformationErrorList.add (SingleError.builderError ()
+                                               .setErrorFieldName (sPartyType + "/PostalAddress/CityName")
+                                               .setErrorText (EText.ADDRESS_NO_CITY.getDisplayText (aDisplayLocale))
+                                               .build ());
     if (aEbiAddress.getZIP () == null)
-      aTransformationErrorList.addError (sPartyType +
-                                         "/PostalAddress/PostalZone",
-                                         EText.ADDRESS_NO_ZIPCODE.getDisplayText (aDisplayLocale));
+      aTransformationErrorList.add (SingleError.builderError ()
+                                               .setErrorFieldName (sPartyType + "/PostalAddress/PostalZone")
+                                               .setErrorText (EText.ADDRESS_NO_ZIPCODE.getDisplayText (aDisplayLocale))
+                                               .build ());
     if (aEbiAddress.getCountry () == null && !bCountryErrorMsgEmitted)
-      aTransformationErrorList.addError (sPartyType +
-                                         "/PostalAddress/Country/IdentificationCode",
-                                         EText.ADDRESS_NO_COUNTRY.getDisplayText (aDisplayLocale));
+      aTransformationErrorList.add (SingleError.builderError ()
+                                               .setErrorFieldName (sPartyType +
+                                                                   "/PostalAddress/Country/IdentificationCode")
+                                               .setErrorText (EText.ADDRESS_NO_COUNTRY.getDisplayText (aDisplayLocale))
+                                               .build ());
   }
 
   @Nonnull
@@ -117,9 +123,10 @@ public final class EbInterface42Helper
     final Ebi42AddressType aEbiAddress = new Ebi42AddressType ();
 
     if (aUBLParty.getPartyNameCount () > 1)
-      aTransformationErrorList.addWarning (sPartyType +
-                                           "/PartyName",
-                                           EText.MULTIPLE_PARTIES.getDisplayText (aDisplayLocale));
+      aTransformationErrorList.add (SingleError.builderWarn ()
+                                               .setErrorFieldName (sPartyType + "/PartyName")
+                                               .setErrorText (EText.MULTIPLE_PARTIES.getDisplayText (aDisplayLocale))
+                                               .build ());
 
     // Convert name
     final PartyNameType aUBLPartyName = CollectionHelper.getAtIndex (aUBLParty.getPartyName (), 0);
@@ -127,7 +134,10 @@ public final class EbInterface42Helper
       aEbiAddress.setName (StringHelper.trim (aUBLPartyName.getNameValue ()));
 
     if (aEbiAddress.getName () == null)
-      aTransformationErrorList.addError (sPartyType, EText.PARTY_NO_NAME.getDisplayText (aDisplayLocale));
+      aTransformationErrorList.add (SingleError.builderError ()
+                                               .setErrorFieldName (sPartyType)
+                                               .setErrorText (EText.PARTY_NO_NAME.getDisplayText (aDisplayLocale))
+                                               .build ());
 
     // Convert main address
     setAddressData (aUBLParty.getPostalAddress (),
@@ -180,11 +190,13 @@ public final class EbInterface42Helper
           }
 
         if (aEbiAddress.hasNoAddressIdentifierEntries ())
-          aTransformationErrorList.addWarning (sPartyType,
-                                               EText.PARTY_UNSUPPORTED_ENDPOINT.getDisplayTextWithArgs (aDisplayLocale,
-                                                                                                        sEndpointID,
-                                                                                                        aUBLParty.getEndpointID ()
-                                                                                                                 .getSchemeID ()));
+          aTransformationErrorList.add (SingleError.builderWarn ()
+                                                   .setErrorFieldName (sPartyType)
+                                                   .setErrorText (EText.PARTY_UNSUPPORTED_ENDPOINT.getDisplayTextWithArgs (aDisplayLocale,
+                                                                                                                           sEndpointID,
+                                                                                                                           aUBLParty.getEndpointID ()
+                                                                                                                                    .getSchemeID ()))
+                                                   .build ());
       }
     }
 
@@ -205,14 +217,16 @@ public final class EbInterface42Helper
             aEbiAddress.getAddressIdentifier ().add (aEbiType);
           }
         if (aEbiAddress.hasNoAddressIdentifierEntries ())
-          aTransformationErrorList.addWarning (sPartyType +
-                                               "/PartyIdentification[" +
-                                               nPartyIdentificationIndex +
-                                               "]",
-                                               EText.PARTY_UNSUPPORTED_ADDRESS_IDENTIFIER.getDisplayTextWithArgs (aDisplayLocale,
-                                                                                                                  sUBLPartyID,
-                                                                                                                  aUBLPartyID.getID ()
-                                                                                                                             .getSchemeID ()));
+          aTransformationErrorList.add (SingleError.builderWarn ()
+                                                   .setErrorFieldName (sPartyType +
+                                                                       "/PartyIdentification[" +
+                                                                       nPartyIdentificationIndex +
+                                                                       "]")
+                                                   .setErrorText (EText.PARTY_UNSUPPORTED_ADDRESS_IDENTIFIER.getDisplayTextWithArgs (aDisplayLocale,
+                                                                                                                                     sUBLPartyID,
+                                                                                                                                     aUBLPartyID.getID ()
+                                                                                                                                                .getSchemeID ()))
+                                                   .build ());
         ++nPartyIdentificationIndex;
       }
     }
@@ -284,9 +298,10 @@ public final class EbInterface42Helper
       aEbiAddress.setName (sAddressName);
 
       if (StringHelper.hasNoText (aEbiAddress.getName ()))
-        aTransformationErrorList.addError (sDeliveryType +
-                                           "/DeliveryParty",
-                                           EText.DELIVERY_WITHOUT_NAME.getDisplayText (aDisplayLocale));
+        aTransformationErrorList.add (SingleError.builderError ()
+                                                 .setErrorFieldName (sDeliveryType + "/DeliveryParty")
+                                                 .setErrorText (EText.DELIVERY_WITHOUT_NAME.getDisplayText (aDisplayLocale))
+                                                 .build ());
 
       aEbiDelivery.setAddress (aEbiAddress);
     }

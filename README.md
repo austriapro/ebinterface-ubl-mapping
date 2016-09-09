@@ -9,7 +9,15 @@ The reason why this project is not in the [ebinterface-mappings](https://github.
 # Status
 Currently on the the conversion UBL -> ebInterface 4.2 is present. Next steps are to build the other way around as well.
 
-Version 2.0 and on will require JDK 1.8. The last version for JDK 1.6 is `1.1.0`.
+# News and noteworthy
+
+  * v2.1.0
+    * Bind to ph-commons 8.5.x
+  * v2.0.0
+    * Bind to ph-commons 8.x
+    * Requires JDK 1.8
+  * v1.1.0
+    * Last version for JDK 6    
 
 #Building
 To build the project you need at least Java 1.8 (or newer) and Apache Maven 3.x. Build is quite easy: call `mvn clean install` in this directory and the final result will be in the `target` directory.
@@ -21,6 +29,6 @@ Add the following to your pom.xml to use this artifact:
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>ebinterface-ubl-mapping</artifactId>
-  <version>1.1.0</version>
+  <version>2.0.2</version>
 </dependency>
 ```

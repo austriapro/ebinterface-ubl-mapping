@@ -21,7 +21,8 @@ import java.util.Locale;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 
-import com.helger.commons.errorlist.ErrorList;
+import com.helger.commons.error.SingleError;
+import com.helger.commons.error.list.ErrorList;
 import com.helger.commons.string.StringHelper;
 import com.helger.ebinterface.ubl.from.AbstractConverter;
 import com.helger.ebinterface.ubl.from.CPeppolUBL;
@@ -74,21 +75,25 @@ public abstract class AbstractInvoiceConverter extends AbstractConverter
     final UBLVersionIDType aUBLVersionID = aUBLInvoice.getUBLVersionID ();
     if (aUBLVersionID == null)
     {
-      aTransformationErrorList.addError ("UBLVersionID",
-                                         EText.NO_UBL_VERSION_ID.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                         CPeppolUBL.UBL_VERSION_20,
-                                                                                         CPeppolUBL.UBL_VERSION_21));
+      aTransformationErrorList.add (SingleError.builderError ()
+                                               .setErrorFieldName ("UBLVersionID")
+                                               .setErrorText (EText.NO_UBL_VERSION_ID.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                              CPeppolUBL.UBL_VERSION_20,
+                                                                                                              CPeppolUBL.UBL_VERSION_21))
+                                               .build ());
     }
     else
     {
       final String sUBLVersionID = StringHelper.trim (aUBLVersionID.getValue ());
       if (!CPeppolUBL.UBL_VERSION_20.equals (sUBLVersionID) && !CPeppolUBL.UBL_VERSION_21.equals (sUBLVersionID))
       {
-        aTransformationErrorList.addError ("UBLVersionID",
-                                           EText.INVALID_UBL_VERSION_ID.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                sUBLVersionID,
-                                                                                                CPeppolUBL.UBL_VERSION_20,
-                                                                                                CPeppolUBL.UBL_VERSION_21));
+        aTransformationErrorList.add (SingleError.builderError ()
+                                                 .setErrorFieldName ("UBLVersionID")
+                                                 .setErrorText (EText.INVALID_UBL_VERSION_ID.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                     sUBLVersionID,
+                                                                                                                     CPeppolUBL.UBL_VERSION_20,
+                                                                                                                     CPeppolUBL.UBL_VERSION_21))
+                                                 .build ());
       }
     }
 
@@ -97,7 +102,10 @@ public abstract class AbstractInvoiceConverter extends AbstractConverter
     final ProfileIDType aProfileID = aUBLInvoice.getProfileID ();
     if (aProfileID == null)
     {
-      aTransformationErrorList.addWarning ("ProfileID", EText.NO_PROFILE_ID.getDisplayText (m_aDisplayLocale));
+      aTransformationErrorList.add (SingleError.builderWarn ()
+                                               .setErrorFieldName ("ProfileID")
+                                               .setErrorText (EText.NO_PROFILE_ID.getDisplayText (m_aDisplayLocale))
+                                               .build ());
     }
     else
     {
@@ -111,9 +119,11 @@ public abstract class AbstractInvoiceConverter extends AbstractConverter
 
       if (aProcID == null)
       {
-        aTransformationErrorList.addWarning ("ProfileID",
-                                             EText.INVALID_PROFILE_ID.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                              sProfileID));
+        aTransformationErrorList.add (SingleError.builderWarn ()
+                                                 .setErrorFieldName ("ProfileID")
+                                                 .setErrorText (EText.INVALID_PROFILE_ID.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                 sProfileID))
+                                                 .build ());
       }
     }
 
@@ -124,12 +134,14 @@ public abstract class AbstractInvoiceConverter extends AbstractConverter
     // final CustomizationIDType aCustomizationID =
     // aUBLInvoice.getCustomizationID ();
     // if (aCustomizationID == null)
-    // aTransformationErrorList.addError ("CustomizationID",
+    // aTransformationErrorList.add (SingleError.builderError
+    // ().setErrorFieldName ("CustomizationID",
     // EText.NO_CUSTOMIZATION_ID.getDisplayText (m_aDisplayLocale));
     // else
     // if (!CPeppolUBL.CUSTOMIZATION_SCHEMEID.equals
     // (aCustomizationID.getSchemeID ()))
-    // aTransformationErrorList.addError ("CustomizationID/schemeID",
+    // aTransformationErrorList.add (SingleError.builderError
+    // ().setErrorFieldName ("CustomizationID/schemeID",
     // EText.INVALID_CUSTOMIZATION_SCHEME_ID.getDisplayTextWithArgs
     // (m_aDisplayLocale,
     // aCustomizationID.getSchemeID (),
@@ -149,7 +161,8 @@ public abstract class AbstractInvoiceConverter extends AbstractConverter
     // break;
     // }
     // if (aMatchingDocID == null)
-    // aTransformationErrorList.addError ("CustomizationID",
+    // aTransformationErrorList.add (SingleError.builderError
+    // ().setErrorFieldName ("CustomizationID",
     // EText.INVALID_CUSTOMIZATION_ID.getDisplayTextWithArgs (m_aDisplayLocale,
     // sCustomizationID));
     // }
@@ -160,9 +173,11 @@ public abstract class AbstractInvoiceConverter extends AbstractConverter
     if (aInvoiceTypeCode == null)
     {
       // None present
-      aTransformationErrorList.addWarning ("InvoiceTypeCode",
-                                           EText.NO_INVOICE_TYPECODE.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                             INVOICE_TYPE_CODE));
+      aTransformationErrorList.add (SingleError.builderWarn ()
+                                               .setErrorFieldName ("InvoiceTypeCode")
+                                               .setErrorText (EText.NO_INVOICE_TYPECODE.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                INVOICE_TYPE_CODE))
+                                               .build ());
     }
     else
     {
@@ -170,10 +185,12 @@ public abstract class AbstractInvoiceConverter extends AbstractConverter
       final String sInvoiceTypeCode = StringHelper.trim (aInvoiceTypeCode.getValue ());
       if (!INVOICE_TYPE_CODE.equals (sInvoiceTypeCode))
       {
-        aTransformationErrorList.addError ("InvoiceTypeCode",
-                                           EText.INVALID_INVOICE_TYPECODE.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                  sInvoiceTypeCode,
-                                                                                                  INVOICE_TYPE_CODE));
+        aTransformationErrorList.add (SingleError.builderError ()
+                                                 .setErrorFieldName ("InvoiceTypeCode")
+                                                 .setErrorText (EText.INVALID_INVOICE_TYPECODE.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                       sInvoiceTypeCode,
+                                                                                                                       INVOICE_TYPE_CODE))
+                                                 .build ());
       }
     }
   }

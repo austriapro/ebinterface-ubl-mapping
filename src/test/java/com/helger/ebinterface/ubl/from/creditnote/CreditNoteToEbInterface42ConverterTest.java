@@ -28,8 +28,8 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.commons.collection.ext.CommonsArrayList;
 import com.helger.commons.collection.ext.ICommonsList;
-import com.helger.commons.error.EErrorLevel;
-import com.helger.commons.errorlist.ErrorList;
+import com.helger.commons.error.level.EErrorLevel;
+import com.helger.commons.error.list.ErrorList;
 import com.helger.commons.io.file.FileHelper;
 import com.helger.commons.io.file.FilenameHelper;
 import com.helger.commons.io.file.filter.IFileFilter;

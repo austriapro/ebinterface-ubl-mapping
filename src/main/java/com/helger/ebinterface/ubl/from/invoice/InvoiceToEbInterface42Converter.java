@@ -32,7 +32,8 @@ import com.helger.commons.collection.ext.CommonsArrayList;
 import com.helger.commons.collection.ext.CommonsHashMap;
 import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.collection.ext.ICommonsMap;
-import com.helger.commons.errorlist.ErrorList;
+import com.helger.commons.error.SingleError;
+import com.helger.commons.error.list.ErrorList;
 import com.helger.commons.math.MathHelper;
 import com.helger.commons.regex.RegExHelper;
 import com.helger.commons.state.ETriState;
@@ -200,13 +201,15 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
                 if (sUBLPaymentID.length () > PAYMENT_REFERENCE_MAX_LENGTH)
                 {
                   // Reference
-                  aTransformationErrorList.addWarning ("PaymentMeans[" +
-                                                       nPaymentMeansIndex +
-                                                       "]/PaymentID[" +
-                                                       nPaymentIDIndex +
-                                                       "]",
-                                                       EText.PAYMENT_ID_TOO_LONG_CUT.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                             sUBLPaymentID));
+                  aTransformationErrorList.add (SingleError.builderWarn ()
+                                                           .setErrorFieldName ("PaymentMeans[" +
+                                                                               nPaymentMeansIndex +
+                                                                               "]/PaymentID[" +
+                                                                               nPaymentIDIndex +
+                                                                               "]")
+                                                           .setErrorText (EText.PAYMENT_ID_TOO_LONG_CUT.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                                sUBLPaymentID))
+                                                           .build ());
                   sUBLPaymentID = sUBLPaymentID.substring (0, PAYMENT_REFERENCE_MAX_LENGTH);
                 }
 
@@ -233,10 +236,13 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
 
               if (StringHelper.hasNoText (sBIC) || !RegExHelper.stringMatchesPattern (REGEX_BIC, sBIC))
               {
-                aTransformationErrorList.addError ("PaymentMeans[" +
-                                                   nPaymentMeansIndex +
-                                                   "]/PayeeFinancialAccount/FinancialInstitutionBranch/FinancialInstitution/ID",
-                                                   EText.BIC_INVALID.getDisplayTextWithArgs (m_aDisplayLocale, sBIC));
+                aTransformationErrorList.add (SingleError.builderError ()
+                                                         .setErrorFieldName ("PaymentMeans[" +
+                                                                             nPaymentMeansIndex +
+                                                                             "]/PayeeFinancialAccount/FinancialInstitutionBranch/FinancialInstitution/ID")
+                                                         .setErrorText (EText.BIC_INVALID.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                  sBIC))
+                                                         .build ());
                 aEbiAccount.setBIC (null);
               }
             }
@@ -246,12 +252,14 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
             aEbiAccount.setIBAN (sIBAN);
             if (StringHelper.getLength (sIBAN) > IBAN_MAX_LENGTH)
             {
-              aTransformationErrorList.addWarning ("PaymentMeans[" +
-                                                   nPaymentMeansIndex +
-                                                   "]/PayeeFinancialAccount/ID",
-                                                   EText.IBAN_TOO_LONG.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                               sIBAN,
-                                                                                               Integer.valueOf (IBAN_MAX_LENGTH)));
+              aTransformationErrorList.add (SingleError.builderWarn ()
+                                                       .setErrorFieldName ("PaymentMeans[" +
+                                                                           nPaymentMeansIndex +
+                                                                           "]/PayeeFinancialAccount/ID")
+                                                       .setErrorText (EText.IBAN_TOO_LONG.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                  sIBAN,
+                                                                                                                  Integer.valueOf (IBAN_MAX_LENGTH)))
+                                                       .build ());
               aEbiAccount.setIBAN (sIBAN.substring (0, IBAN_MAX_LENGTH));
             }
 
@@ -288,11 +296,11 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
             break;
           }
 
-          aTransformationErrorList.addWarning ("PaymentMeans[" +
-                                               nPaymentMeansIndex +
-                                               "]",
-                                               EText.PAYMENTMEANS_UNSUPPORTED_CHANNELCODE.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                                  sPaymentChannelCode));
+          aTransformationErrorList.add (SingleError.builderWarn ()
+                                                   .setErrorFieldName ("PaymentMeans[" + nPaymentMeansIndex + "]")
+                                                   .setErrorText (EText.PAYMENTMEANS_UNSUPPORTED_CHANNELCODE.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                                     sPaymentChannelCode))
+                                                   .build ());
         }
         else
           if (ePaymentMeans == EPaymentMeansCode21._49)
@@ -321,13 +329,13 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
               break;
             }
 
-            aTransformationErrorList.addError ("PaymentMeans[" +
-                                               nPaymentMeansIndex +
-                                               "]",
-                                               EText.PAYMENTMEANS_CODE_INVALID.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                       ePaymentMeans.getID (),
-                                                                                                       EPaymentMeansCode21._31.getID (),
-                                                                                                       EPaymentMeansCode21._49.getID ()));
+            aTransformationErrorList.add (SingleError.builderError ()
+                                                     .setErrorFieldName ("PaymentMeans[" + nPaymentMeansIndex + "]")
+                                                     .setErrorText (EText.PAYMENTMEANS_CODE_INVALID.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                            ePaymentMeans.getID (),
+                                                                                                                            EPaymentMeansCode21._31.getID (),
+                                                                                                                            EPaymentMeansCode21._49.getID ()))
+                                                     .build ());
           }
 
         ++nPaymentMeansIndex;
@@ -337,7 +345,10 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
     if (m_bStrictERBMode)
     {
       if (aEbiDoc.getPaymentMethod () == null)
-        aTransformationErrorList.addError ("Invoice", EText.ERB_NO_PAYMENT_METHOD.getDisplayText (m_aDisplayLocale));
+        aTransformationErrorList.add (SingleError.builderError ()
+                                                 .setErrorFieldName ("Invoice")
+                                                 .setErrorText (EText.ERB_NO_PAYMENT_METHOD.getDisplayText (m_aDisplayLocale))
+                                                 .build ());
     }
 
     // Payment terms
@@ -351,10 +362,12 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
           if (aUBLPaymentTerms.getSettlementPeriod () == null ||
               aUBLPaymentTerms.getSettlementPeriod ().getEndDate () == null)
           {
-            aTransformationErrorList.addWarning ("PaymentTerms[" +
-                                                 nPaymentTermsIndex +
-                                                 "]/SettlementPeriod",
-                                                 EText.SETTLEMENT_PERIOD_MISSING.getDisplayText (m_aDisplayLocale));
+            aTransformationErrorList.add (SingleError.builderWarn ()
+                                                     .setErrorFieldName ("PaymentTerms[" +
+                                                                         nPaymentTermsIndex +
+                                                                         "]/SettlementPeriod")
+                                                     .setErrorText (EText.SETTLEMENT_PERIOD_MISSING.getDisplayText (m_aDisplayLocale))
+                                                     .build ());
           }
           else
           {
@@ -377,10 +390,10 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
         else
           if (aUBLPaymentTerms.getPenaltySurchargePercent () != null)
           {
-            aTransformationErrorList.addWarning ("PaymentTerms[" +
-                                                 nPaymentTermsIndex +
-                                                 "]",
-                                                 EText.PENALTY_NOT_ALLOWED.getDisplayText (m_aDisplayLocale));
+            aTransformationErrorList.add (SingleError.builderWarn ()
+                                                     .setErrorFieldName ("PaymentTerms[" + nPaymentTermsIndex + "]")
+                                                     .setErrorText (EText.PENALTY_NOT_ALLOWED.getDisplayText (m_aDisplayLocale))
+                                                     .build ());
           }
 
         ++nPaymentTermsIndex;
@@ -394,8 +407,10 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
     {
       // ebInterface requires due date
       if (aEbiPaymentConditions.hasDiscountEntries ())
-        aTransformationErrorList.addError ("PaymentMeans/PaymentDueDate",
-                                           EText.DISCOUNT_WITHOUT_DUEDATE.getDisplayTextWithArgs (m_aDisplayLocale));
+        aTransformationErrorList.add (SingleError.builderError ()
+                                                 .setErrorFieldName ("PaymentMeans/PaymentDueDate")
+                                                 .setErrorText (EText.DISCOUNT_WITHOUT_DUEDATE.getDisplayTextWithArgs (m_aDisplayLocale))
+                                                 .build ());
     }
     else
     {
@@ -442,13 +457,19 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
     // Invoice Number
     final String sInvoiceNumber = StringHelper.trim (aUBLDoc.getIDValue ());
     if (StringHelper.hasNoText (sInvoiceNumber))
-      aTransformationErrorList.addError ("ID", EText.MISSING_INVOICE_NUMBER.getDisplayText (m_aDisplayLocale));
+      aTransformationErrorList.add (SingleError.builderError ()
+                                               .setErrorFieldName ("ID")
+                                               .setErrorText (EText.MISSING_INVOICE_NUMBER.getDisplayText (m_aDisplayLocale))
+                                               .build ());
     aEbiDoc.setInvoiceNumber (sInvoiceNumber);
 
     // Ignore the time!
     aEbiDoc.setInvoiceDate (aUBLDoc.getIssueDateValue ());
     if (aEbiDoc.getInvoiceDate () == null)
-      aTransformationErrorList.addError ("IssueDate", EText.MISSING_INVOICE_DATE.getDisplayText (m_aDisplayLocale));
+      aTransformationErrorList.add (SingleError.builderError ()
+                                               .setErrorFieldName ("IssueDate")
+                                               .setErrorText (EText.MISSING_INVOICE_DATE.getDisplayText (m_aDisplayLocale))
+                                               .build ());
 
     // Is duplicate/copy indicator?
     if (aUBLDoc.getCopyIndicator () != null)
@@ -486,8 +507,10 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
       {
         // Required by ebInterface
         aEbiBiller.setVATIdentificationNumber ("ATU00000000");
-        aTransformationErrorList.addWarning ("AccountingSupplierParty/Party/PartyTaxScheme",
-                                             EText.BILLER_VAT_MISSING.getDisplayText (m_aDisplayLocale));
+        aTransformationErrorList.add (SingleError.builderWarn ()
+                                                 .setErrorFieldName ("AccountingSupplierParty/Party/PartyTaxScheme")
+                                                 .setErrorText (EText.BILLER_VAT_MISSING.getDisplayText (m_aDisplayLocale))
+                                                 .build ());
       }
       if (aUBLSupplier.getCustomerAssignedAccountID () != null)
       {
@@ -509,8 +532,10 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
         if (m_bStrictERBMode && StringHelper.hasNoText (aEbiBiller.getInvoiceRecipientsBillerID ()))
         {
           // Mandatory field
-          aTransformationErrorList.addError ("AccountingSupplierParty/CustomerAssignedAccountID",
-                                             EText.ERB_CUSTOMER_ASSIGNED_ACCOUNTID_MISSING.getDisplayText (m_aDisplayLocale));
+          aTransformationErrorList.add (SingleError.builderError ()
+                                                   .setErrorFieldName ("AccountingSupplierParty/CustomerAssignedAccountID")
+                                                   .setErrorText (EText.ERB_CUSTOMER_ASSIGNED_ACCOUNTID_MISSING.getDisplayText (m_aDisplayLocale))
+                                                   .build ());
         }
 
       for (final AdditionalAccountIDType aUBLAddAccountID : aUBLSupplier.getAdditionalAccountID ())
@@ -571,8 +596,10 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
       {
         // Required by ebInterface
         aEbiRecipient.setVATIdentificationNumber ("ATU00000000");
-        aTransformationErrorList.addWarning ("AccountingCustomerParty/PartyTaxScheme",
-                                             EText.INVOICE_RECIPIENT_VAT_MISSING.getDisplayText (m_aDisplayLocale));
+        aTransformationErrorList.add (SingleError.builderWarn ()
+                                                 .setErrorFieldName ("AccountingCustomerParty/PartyTaxScheme")
+                                                 .setErrorText (EText.INVOICE_RECIPIENT_VAT_MISSING.getDisplayText (m_aDisplayLocale))
+                                                 .build ());
       }
       if (aUBLCustomer.getSupplierAssignedAccountID () != null)
       {
@@ -600,8 +627,10 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
       if (aEbiRecipient.getAddress () == null)
       {
         // Required by ebInterface
-        aTransformationErrorList.addError ("AccountingCustomerParty/Party",
-                                           EText.INVOICE_RECIPIENT_PARTY_MISSING.getDisplayText (m_aDisplayLocale));
+        aTransformationErrorList.add (SingleError.builderError ()
+                                                 .setErrorFieldName ("AccountingCustomerParty/Party")
+                                                 .setErrorText (EText.INVOICE_RECIPIENT_PARTY_MISSING.getDisplayText (m_aDisplayLocale))
+                                                 .build ());
       }
 
       aEbiDoc.setInvoiceRecipient (aEbiRecipient);
@@ -626,8 +655,10 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
       if (StringHelper.hasNoText (aEbiOrderingParty.getVATIdentificationNumber ()))
       {
         // Required by ebInterface
-        aTransformationErrorList.addError ("BuyerCustomerParty/PartyTaxScheme",
-                                           EText.ORDERING_PARTY_VAT_MISSING.getDisplayText (m_aDisplayLocale));
+        aTransformationErrorList.add (SingleError.builderError ()
+                                                 .setErrorFieldName ("BuyerCustomerParty/PartyTaxScheme")
+                                                 .setErrorText (EText.ORDERING_PARTY_VAT_MISSING.getDisplayText (m_aDisplayLocale))
+                                                 .build ());
       }
 
       if (aUBLBuyer.getParty () != null)
@@ -639,8 +670,10 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
       if (aEbiOrderingParty.getAddress () == null)
       {
         // Required by ebInterface
-        aTransformationErrorList.addError ("BuyerCustomerParty/Party",
-                                           EText.ORDERING_PARTY_PARTY_MISSING.getDisplayText (m_aDisplayLocale));
+        aTransformationErrorList.add (SingleError.builderError ()
+                                                 .setErrorFieldName ("BuyerCustomerParty/Party")
+                                                 .setErrorText (EText.ORDERING_PARTY_PARTY_MISSING.getDisplayText (m_aDisplayLocale))
+                                                 .build ());
       }
 
       if (aUBLBuyer.getSupplierAssignedAccountID () != null)
@@ -667,8 +700,10 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
       if (StringHelper.hasNoText (aEbiOrderingParty.getBillersOrderingPartyID ()))
       {
         // Required by ebInterface
-        aTransformationErrorList.addError ("BuyerCustomerParty/SupplierAssignedAccountID",
-                                           EText.ORDERING_PARTY_SUPPLIER_ASSIGNED_ACCOUNT_ID_MISSING.getDisplayText (m_aDisplayLocale));
+        aTransformationErrorList.add (SingleError.builderError ()
+                                                 .setErrorFieldName ("BuyerCustomerParty/SupplierAssignedAccountID")
+                                                 .setErrorText (EText.ORDERING_PARTY_SUPPLIER_ASSIGNED_ACCOUNT_ID_MISSING.getDisplayText (m_aDisplayLocale))
+                                                 .build ());
       }
 
       aEbiDoc.setOrderingParty (aEbiOrderingParty);
@@ -686,17 +721,21 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
 
       if (StringHelper.hasNoText (sUBLOrderReferenceID))
       {
-        aTransformationErrorList.addError ("OrderReference/ID",
-                                           EText.ORDER_REFERENCE_MISSING.getDisplayText (m_aDisplayLocale));
+        aTransformationErrorList.add (SingleError.builderError ()
+                                                 .setErrorFieldName ("OrderReference/ID")
+                                                 .setErrorText (EText.ORDER_REFERENCE_MISSING.getDisplayText (m_aDisplayLocale))
+                                                 .build ());
       }
       else
       {
         if (sUBLOrderReferenceID != null && sUBLOrderReferenceID.length () > ORDER_REFERENCE_MAX_LENGTH)
         {
-          aTransformationErrorList.addWarning ("OrderReference/ID",
-                                               EText.ORDER_REFERENCE_TOO_LONG.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                      sUBLOrderReferenceID,
-                                                                                                      Integer.valueOf (ORDER_REFERENCE_MAX_LENGTH)));
+          aTransformationErrorList.add (SingleError.builderWarn ()
+                                                   .setErrorFieldName ("OrderReference/ID")
+                                                   .setErrorText (EText.ORDER_REFERENCE_TOO_LONG.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                         sUBLOrderReferenceID,
+                                                                                                                         Integer.valueOf (ORDER_REFERENCE_MAX_LENGTH)))
+                                                   .build ());
           sUBLOrderReferenceID = sUBLOrderReferenceID.substring (0, ORDER_REFERENCE_MAX_LENGTH);
         }
       }
@@ -773,12 +812,14 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
 
           if (aUBLTaxCategory.getID () == null)
           {
-            aTransformationErrorList.addError ("TaxTotal[" +
-                                               nTaxTotalIndex +
-                                               "]/TaxSubtotal[" +
-                                               nTaxSubtotalIndex +
-                                               "]/TaxCategory",
-                                               EText.MISSING_TAXCATEGORY_ID.getDisplayText (m_aDisplayLocale));
+            aTransformationErrorList.add (SingleError.builderError ()
+                                                     .setErrorFieldName ("TaxTotal[" +
+                                                                         nTaxTotalIndex +
+                                                                         "]/TaxSubtotal[" +
+                                                                         nTaxSubtotalIndex +
+                                                                         "]/TaxCategory")
+                                                     .setErrorText (EText.MISSING_TAXCATEGORY_ID.getDisplayText (m_aDisplayLocale))
+                                                     .build ());
             break;
           }
 
@@ -795,13 +836,15 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
             final ETaxSchemeID eUBLTaxScheme = ETaxSchemeID.getFromIDOrNull (sUBLTaxSchemeID);
             if (eUBLTaxScheme == null)
             {
-              aTransformationErrorList.addError ("TaxTotal[" +
-                                                 nTaxTotalIndex +
-                                                 "]/TaxSubtotal[" +
-                                                 nTaxSubtotalIndex +
-                                                 "]/TaxCategory/TaxScheme/ID",
-                                                 EText.UNSUPPORTED_TAX_SCHEME_ID.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                         sUBLTaxSchemeID));
+              aTransformationErrorList.add (SingleError.builderError ()
+                                                       .setErrorFieldName ("TaxTotal[" +
+                                                                           nTaxTotalIndex +
+                                                                           "]/TaxSubtotal[" +
+                                                                           nTaxSubtotalIndex +
+                                                                           "]/TaxCategory/TaxScheme/ID")
+                                                       .setErrorText (EText.UNSUPPORTED_TAX_SCHEME_ID.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                              sUBLTaxSchemeID))
+                                                       .build ());
             }
             else
             {
@@ -809,22 +852,26 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
               {
                 if (aUBLPercentage == null)
                 {
-                  aTransformationErrorList.addError ("TaxTotal[" +
-                                                     nTaxTotalIndex +
-                                                     "]/TaxSubtotal[" +
-                                                     nTaxSubtotalIndex +
-                                                     "]/TaxCategory/Percent",
-                                                     EText.TAX_PERCENT_MISSING.getDisplayTextWithArgs (m_aDisplayLocale));
+                  aTransformationErrorList.add (SingleError.builderError ()
+                                                           .setErrorFieldName ("TaxTotal[" +
+                                                                               nTaxTotalIndex +
+                                                                               "]/TaxSubtotal[" +
+                                                                               nTaxSubtotalIndex +
+                                                                               "]/TaxCategory/Percent")
+                                                           .setErrorText (EText.TAX_PERCENT_MISSING.getDisplayTextWithArgs (m_aDisplayLocale))
+                                                           .build ());
                 }
                 else
                   if (aUBLTaxableAmount == null)
                   {
-                    aTransformationErrorList.addError ("TaxTotal[" +
-                                                       nTaxTotalIndex +
-                                                       "]/TaxSubtotal[" +
-                                                       nTaxSubtotalIndex +
-                                                       "]/TaxableAmount",
-                                                       EText.TAXABLE_AMOUNT_MISSING.getDisplayText (m_aDisplayLocale));
+                    aTransformationErrorList.add (SingleError.builderError ()
+                                                             .setErrorFieldName ("TaxTotal[" +
+                                                                                 nTaxTotalIndex +
+                                                                                 "]/TaxSubtotal[" +
+                                                                                 nTaxSubtotalIndex +
+                                                                                 "]/TaxableAmount")
+                                                             .setErrorText (EText.TAXABLE_AMOUNT_MISSING.getDisplayText (m_aDisplayLocale))
+                                                             .build ());
                   }
                   else
                   {
@@ -859,14 +906,16 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
           }
           else
           {
-            aTransformationErrorList.addError ("TaxTotal[" +
-                                               nTaxTotalIndex +
-                                               "]/TaxSubtotal[" +
-                                               nTaxSubtotalIndex +
-                                               "]/TaxCategory/",
-                                               EText.UNSUPPORTED_TAX_SCHEME.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                    sUBLTaxSchemeSchemeID,
-                                                                                                    sUBLTaxSchemeID));
+            aTransformationErrorList.add (SingleError.builderError ()
+                                                     .setErrorFieldName ("TaxTotal[" +
+                                                                         nTaxTotalIndex +
+                                                                         "]/TaxSubtotal[" +
+                                                                         nTaxSubtotalIndex +
+                                                                         "]/TaxCategory/")
+                                                     .setErrorText (EText.UNSUPPORTED_TAX_SCHEME.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                         sUBLTaxSchemeSchemeID,
+                                                                                                                         sUBLTaxSchemeID))
+                                                     .build ());
           }
           ++nTaxSubtotalIndex;
         }
@@ -935,11 +984,13 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
         if (aUBLPercent == null)
         {
           aUBLPercent = BigDecimal.ZERO;
-          aTransformationErrorList.addWarning ("InvoiceLine[" +
-                                               nLineIndex +
-                                               "]/Item/ClassifiedTaxCategory",
-                                               EText.DETAILS_TAX_PERCENTAGE_NOT_FOUND.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                              aUBLPercent));
+          aTransformationErrorList.add (SingleError.builderWarn ()
+                                                   .setErrorFieldName ("InvoiceLine[" +
+                                                                       nLineIndex +
+                                                                       "]/Item/ClassifiedTaxCategory")
+                                                   .setErrorText (EText.DETAILS_TAX_PERCENTAGE_NOT_FOUND.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                                 aUBLPercent))
+                                                   .build ());
         }
 
         // Start creating ebInterface line
@@ -951,12 +1002,12 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
         if (aUBLPositionNumber == null)
         {
           aUBLPositionNumber = BigInteger.valueOf (nLineIndex + 1);
-          aTransformationErrorList.addWarning ("InvoiceLine[" +
-                                               nLineIndex +
-                                               "]/ID",
-                                               EText.DETAILS_INVALID_POSITION.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                      sUBLPositionNumber,
-                                                                                                      aUBLPositionNumber));
+          aTransformationErrorList.add (SingleError.builderWarn ()
+                                                   .setErrorFieldName ("InvoiceLine[" + nLineIndex + "]/ID")
+                                                   .setErrorText (EText.DETAILS_INVALID_POSITION.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                         sUBLPositionNumber,
+                                                                                                                         aUBLPositionNumber))
+                                                   .build ());
         }
         aEbiListLineItem.setPositionNumber (aUBLPositionNumber);
 
@@ -984,20 +1035,24 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
         {
           // ebInterface requires a quantity!
           aEbiQuantity.setUnit (EUnitOfMeasureCode21.C62.getID ());
-          aTransformationErrorList.addWarning ("InvoiceLine[" +
-                                               nLineIndex +
-                                               "]/InvoicedQuantity/UnitCode",
-                                               EText.DETAILS_INVALID_UNIT.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                  aEbiQuantity.getUnit ()));
+          aTransformationErrorList.add (SingleError.builderWarn ()
+                                                   .setErrorFieldName ("InvoiceLine[" +
+                                                                       nLineIndex +
+                                                                       "]/InvoicedQuantity/UnitCode")
+                                                   .setErrorText (EText.DETAILS_INVALID_UNIT.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                     aEbiQuantity.getUnit ()))
+                                                   .build ());
         }
         if (aEbiQuantity.getValue () == null)
         {
           aEbiQuantity.setValue (BigDecimal.ONE);
-          aTransformationErrorList.addWarning ("InvoiceLine[" +
-                                               nLineIndex +
-                                               "]/InvoicedQuantity",
-                                               EText.DETAILS_INVALID_QUANTITY.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                      aEbiQuantity.getValue ()));
+          aTransformationErrorList.add (SingleError.builderWarn ()
+                                                   .setErrorFieldName ("InvoiceLine[" +
+                                                                       nLineIndex +
+                                                                       "]/InvoicedQuantity")
+                                                   .setErrorText (EText.DETAILS_INVALID_QUANTITY.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                         aEbiQuantity.getValue ()))
+                                                   .build ());
         }
         aEbiListLineItem.setQuantity (aEbiQuantity);
 
@@ -1078,10 +1133,12 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
             {
               if (sOrderPosNumber.length () == 0)
               {
-                aTransformationErrorList.addError ("InvoiceLine[" +
-                                                   nLineIndex +
-                                                   "]/OrderLineReference/LineID",
-                                                   EText.ORDERLINE_REF_ID_EMPTY.getDisplayText (m_aDisplayLocale));
+                aTransformationErrorList.add (SingleError.builderError ()
+                                                         .setErrorFieldName ("InvoiceLine[" +
+                                                                             nLineIndex +
+                                                                             "]/OrderLineReference/LineID")
+                                                         .setErrorText (EText.ORDERLINE_REF_ID_EMPTY.getDisplayText (m_aDisplayLocale))
+                                                         .build ());
               }
               else
               {
@@ -1184,7 +1241,10 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
 
     if (aEbiVAT.hasNoVATItemEntries ())
     {
-      aTransformationErrorList.addError ("InvoiceLine", EText.VAT_ITEM_MISSING.getDisplayText (m_aDisplayLocale));
+      aTransformationErrorList.add (SingleError.builderError ()
+                                               .setErrorFieldName ("InvoiceLine")
+                                               .setErrorText (EText.VAT_ITEM_MISSING.getDisplayText (m_aDisplayLocale))
+                                               .build ());
       if (false)
       {
         // No default in this case
@@ -1251,10 +1311,12 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
           }
         if (aEbiVATRate == null)
         {
-          aTransformationErrorList.addError ("Invoice/AllowanceCharge[" +
-                                             nAllowanceChargeIndex +
-                                             "]",
-                                             EText.ALLOWANCE_CHARGE_NO_TAXRATE.getDisplayText (m_aDisplayLocale));
+          aTransformationErrorList.add (SingleError.builderError ()
+                                                   .setErrorFieldName ("Invoice/AllowanceCharge[" +
+                                                                       nAllowanceChargeIndex +
+                                                                       "]")
+                                                   .setErrorText (EText.ALLOWANCE_CHARGE_NO_TAXRATE.getDisplayText (m_aDisplayLocale))
+                                                   .build ());
           // No default in this case
           if (false)
           {
@@ -1285,8 +1347,10 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
     if (aUBLMonetaryTotal.getPrepaidAmount () != null &&
         !MathHelper.isEqualToZero (aUBLMonetaryTotal.getPrepaidAmountValue ()))
     {
-      aTransformationErrorList.addError ("Invoice/LegalMonetaryTotal/PrepaidAmount",
-                                         EText.PREPAID_NOT_SUPPORTED.getDisplayText (m_aDisplayLocale));
+      aTransformationErrorList.add (SingleError.builderError ()
+                                               .setErrorFieldName ("Invoice/LegalMonetaryTotal/PrepaidAmount")
+                                               .setErrorText (EText.PREPAID_NOT_SUPPORTED.getDisplayText (m_aDisplayLocale))
+                                               .build ());
     }
 
     // Total gross amount
@@ -1357,7 +1421,10 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
     if (m_bStrictERBMode)
     {
       if (aEbiDelivery.getDate () == null && aEbiDelivery.getPeriod () == null)
-        aTransformationErrorList.addError ("Invoice", EText.ERB_NO_DELIVERY_DATE.getDisplayText (m_aDisplayLocale));
+        aTransformationErrorList.add (SingleError.builderError ()
+                                                 .setErrorFieldName ("Invoice")
+                                                 .setErrorText (EText.ERB_NO_DELIVERY_DATE.getDisplayText (m_aDisplayLocale))
+                                                 .build ());
     }
 
     if (aEbiDelivery.getDate () != null || aEbiDelivery.getPeriod () != null)
