@@ -32,3 +32,8 @@ Add the following to your pom.xml to use this artifact:
   <version>2.0.2</version>
 </dependency>
 ```
+
+---
+
+My personal [Coding Styleguide](https://github.com/phax/meta/blob/master/CodeingStyleguide.md) |
+On Twitter: <a href="https://twitter.com/philiphelger">@philiphelger</a>
