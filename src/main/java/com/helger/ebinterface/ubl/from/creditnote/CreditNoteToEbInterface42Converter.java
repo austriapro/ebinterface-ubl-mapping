@@ -144,7 +144,7 @@ public final class CreditNoteToEbInterface42Converter extends AbstractCreditNote
       if (aEbiPaymentConditions.hasDiscountEntries ())
         aTransformationErrorList.add (SingleError.builderError ()
                                                  .setErrorFieldName ("PaymentMeans/PaymentDueDate")
-                                                 .setErrorText (EText.DISCOUNT_WITHOUT_DUEDATE.getDisplayTextWithArgs (m_aDisplayLocale))
+                                                 .setErrorText (EText.DISCOUNT_WITHOUT_DUEDATE.getDisplayText (m_aDisplayLocale))
                                                  .build ());
     }
     else
@@ -592,7 +592,7 @@ public final class CreditNoteToEbInterface42Converter extends AbstractCreditNote
                                                                                "]/TaxSubtotal[" +
                                                                                nTaxSubtotalIndex +
                                                                                "]/TaxCategory/Percent")
-                                                           .setErrorText (EText.TAX_PERCENT_MISSING.getDisplayTextWithArgs (m_aDisplayLocale))
+                                                           .setErrorText (EText.TAX_PERCENT_MISSING.getDisplayText (m_aDisplayLocale))
                                                            .build ());
                 }
                 else
