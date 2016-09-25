@@ -11,6 +11,8 @@ Currently on the the conversion UBL -> ebInterface 4.2 is present. Next steps ar
 
 # News and noteworthy
 
+  * v2.1.1
+    * Requires at least ph-common 8.5.2
   * v2.1.0
     * Bind to ph-commons 8.5.x
   * v2.0.0
