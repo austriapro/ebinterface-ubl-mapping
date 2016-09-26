@@ -477,6 +477,12 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
 
     // CancelledOriginalDocument
     convertRelatedDocuments (aUBLDoc.getBillingReference (), aEbiDoc);
+    convertReferencedDocuments (aUBLDoc.getDespatchDocumentReference (), aEbiDoc);
+    convertReferencedDocuments (aUBLDoc.getReceiptDocumentReference (), aEbiDoc);
+    convertReferencedDocuments (aUBLDoc.getContractDocumentReference (), aEbiDoc);
+    convertReferencedDocuments (aUBLDoc.getAdditionalDocumentReference (), aEbiDoc);
+    convertReferencedDocuments (aUBLDoc.getStatementDocumentReference (), aEbiDoc);
+    convertReferencedDocuments (aUBLDoc.getOriginatorDocumentReference (), aEbiDoc);
 
     // Global comment
     {

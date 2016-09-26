@@ -212,6 +212,12 @@ public final class CreditNoteToEbInterface42Converter extends AbstractCreditNote
 
     // CancelledOriginalDocument
     convertRelatedDocuments (aUBLDoc.getBillingReference (), aEbiDoc);
+    convertReferencedDocuments (aUBLDoc.getDespatchDocumentReference (), aEbiDoc);
+    convertReferencedDocuments (aUBLDoc.getReceiptDocumentReference (), aEbiDoc);
+    convertReferencedDocuments (aUBLDoc.getContractDocumentReference (), aEbiDoc);
+    convertReferencedDocuments (aUBLDoc.getAdditionalDocumentReference (), aEbiDoc);
+    convertReferencedDocuments (aUBLDoc.getStatementDocumentReference (), aEbiDoc);
+    convertReferencedDocuments (aUBLDoc.getOriginatorDocumentReference (), aEbiDoc);
 
     // Global comment
     {

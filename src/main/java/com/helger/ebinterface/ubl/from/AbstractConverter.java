@@ -39,6 +39,7 @@ import com.helger.peppol.codelist.ETaxSchemeID;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AllowanceChargeType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.BillingReferenceType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DocumentReferenceType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.AllowanceChargeReasonType;
 
 /**
@@ -244,7 +245,7 @@ public abstract class AbstractConverter
         aEbiRelatedDocument.setInvoiceNumber (aUBLBillingReference.getInvoiceDocumentReference ().getIDValue ());
         aEbiRelatedDocument.setInvoiceDate (aUBLBillingReference.getInvoiceDocumentReference ().getIssueDateValue ());
         aEbiRelatedDocument.setDocumentType (Ebi42DocumentTypeType.INVOICE);
-        aEbiDoc.getRelatedDocument ().add (aEbiRelatedDocument);
+        aEbiDoc.addRelatedDocument (aEbiRelatedDocument);
       }
       else
         if (aUBLBillingReference.getCreditNoteDocumentReference () != null &&
@@ -255,9 +256,23 @@ public abstract class AbstractConverter
           aEbiRelatedDocument.setInvoiceDate (aUBLBillingReference.getCreditNoteDocumentReference ()
                                                                   .getIssueDateValue ());
           aEbiRelatedDocument.setDocumentType (Ebi42DocumentTypeType.CREDIT_MEMO);
-          aEbiDoc.getRelatedDocument ().add (aEbiRelatedDocument);
+          aEbiDoc.addRelatedDocument (aEbiRelatedDocument);
         }
       // Ignore other values
     }
+  }
+
+  protected static void convertReferencedDocuments (@Nonnull final List <DocumentReferenceType> aUBLDocumentReferences,
+                                                    @Nonnull final Ebi42InvoiceType aEbiDoc)
+  {
+    for (final DocumentReferenceType aUBLDocumentReference : aUBLDocumentReferences)
+      if (StringHelper.hasText (aUBLDocumentReference.getIDValue ()) && aUBLDocumentReference.getAttachment () == null)
+      {
+        final Ebi42RelatedDocumentType aEbiRelatedDocument = new Ebi42RelatedDocumentType ();
+        aEbiRelatedDocument.setInvoiceNumber (aUBLDocumentReference.getIDValue ());
+        aEbiRelatedDocument.setInvoiceDate (aUBLDocumentReference.getIssueDateValue ());
+        aEbiRelatedDocument.setComment (aUBLDocumentReference.getDocumentTypeValue ());
+        aEbiDoc.getRelatedDocument ().add (aEbiRelatedDocument);
+      }
   }
 }
