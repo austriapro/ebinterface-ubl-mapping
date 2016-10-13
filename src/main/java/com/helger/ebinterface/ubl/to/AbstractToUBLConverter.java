@@ -36,6 +36,10 @@ import com.helger.ubl21.codelist.EDocumentTypeCode21;
 import com.helger.xsds.ccts.cct.schemamodule.CodeType;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AddressType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.ContactType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CountryType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyNameType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
 
 /**
@@ -129,6 +133,41 @@ public abstract class AbstractToUBLConverter extends AbstractConverter
       // Only one ID allowed
       break;
     }
+
+    ret.setStreetName (aEbiAddress.getStreet ());
+    ret.setPostbox (aEbiAddress.getPOBox ());
+    ret.setCityName (aEbiAddress.getTown ());
+    ret.setPostalZone (aEbiAddress.getZIP ());
+    if (aEbiAddress.getCountry () != null)
+    {
+      final CountryType aUBLCountry = new CountryType ();
+      aUBLCountry.setIdentificationCode (aEbiAddress.getCountry ().getCountryCode ());
+      aUBLCountry.setName (aEbiAddress.getCountry ().getValue ());
+      ret.setCountry (aUBLCountry);
+    }
+
+    return ret;
+  }
+
+  @Nullable
+  protected static PartyType convertParty (@Nullable final Ebi42AddressType aEbiAddress)
+  {
+    if (aEbiAddress == null)
+      return null;
+
+    final PartyType ret = new PartyType ();
+    if (aEbiAddress.getName () != null)
+    {
+      final PartyNameType aUBLPartyName = new PartyNameType ();
+      aUBLPartyName.setName (aEbiAddress.getName ());
+      ret.addPartyName (aUBLPartyName);
+    }
+    final ContactType aUBLContact = new ContactType ();
+    aUBLContact.setName (aEbiAddress.getContact ());
+    aUBLContact.setElectronicMail (aEbiAddress.getEmail ());
+    aUBLContact.setTelephone (aEbiAddress.getPhone ());
+    ret.setContact (aUBLContact);
+
     return ret;
   }
 }

@@ -5,17 +5,26 @@ import java.util.Locale;
 import javax.annotation.Nonnull;
 
 import com.helger.commons.string.StringHelper;
+import com.helger.ebinterface.v42.Ebi42BillerType;
 import com.helger.ebinterface.v42.Ebi42CancelledOriginalDocumentType;
 import com.helger.ebinterface.v42.Ebi42DeliveryType;
+import com.helger.ebinterface.v42.Ebi42FurtherIdentificationType;
 import com.helger.ebinterface.v42.Ebi42InvoiceType;
 import com.helger.ebinterface.v42.Ebi42RelatedDocumentType;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DeliveryType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DocumentReferenceType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyIdentificationType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyTaxSchemeType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PeriodType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.SupplierPartyType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxSchemeType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.DocumentDescriptionType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.DocumentTypeCodeType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.InvoiceTypeCodeType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.NoteType;
 import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
 
 /**
@@ -105,9 +114,61 @@ public class EbInterface42ToInvoiceConverter extends AbstractToUBLConverter
               aUBLDelivery.setRequestedDeliveryPeriod (aUBLPeriod);
           }
         aUBLDelivery.setDeliveryAddress (convertAddress (aEbiDelivery.getAddress ()));
+        aUBLDelivery.setDeliveryParty (convertParty (aEbiDelivery.getAddress ()));
         aUBLDoc.addDelivery (aUBLDelivery);
       }
     }
+
+    // Handle Biller
+    {
+      final Ebi42BillerType aEbiBiller = aEbiDoc.getBiller ();
+      if (aEbiBiller != null)
+      {
+        final SupplierPartyType aUBLSupplier = new SupplierPartyType ();
+        PartyType aUBLParty = convertParty (aEbiBiller.getAddress ());
+        if (StringHelper.hasText (aEbiBiller.getVATIdentificationNumber ()))
+        {
+          if (aUBLParty == null)
+            aUBLParty = new PartyType ();
+
+          final PartyTaxSchemeType aPTS = new PartyTaxSchemeType ();
+          final TaxSchemeType aTS = new TaxSchemeType ();
+          aTS.setID (SUPPORTED_TAX_SCHEME_ID.getID ());
+          aPTS.setTaxScheme (aTS);
+          aPTS.setCompanyID (aEbiBiller.getVATIdentificationNumber ());
+          aUBLParty.addPartyTaxScheme (aPTS);
+        }
+        if (StringHelper.hasText (aEbiBiller.getInvoiceRecipientsBillerID ()))
+        {
+          if (aUBLParty == null)
+            aUBLParty = new PartyType ();
+
+          // Set in 2 different places
+          aUBLSupplier.setCustomerAssignedAccountID (aEbiBiller.getInvoiceRecipientsBillerID ());
+          final PartyIdentificationType aPI = new PartyIdentificationType ();
+          aPI.setID (aEbiBiller.getInvoiceRecipientsBillerID ());
+          aUBLParty.addPartyIdentification (aPI);
+        }
+        aUBLSupplier.setParty (aUBLParty);
+
+        // Put this into global contract docment references
+        for (final Ebi42FurtherIdentificationType aEbiFI : aEbiBiller.getFurtherIdentification ())
+        {
+          final DocumentReferenceType aUBLContractDoc = new DocumentReferenceType ();
+          final IDType aID = new IDType ();
+          aID.setValue (aEbiFI.getValue ());
+          aID.setSchemeID (aEbiFI.getIdentificationType ());
+          aUBLContractDoc.setID (aID);
+          aUBLDoc.addContractDocumentReference (aUBLContractDoc);
+        }
+
+        aUBLDoc.setAccountingSupplierParty (aUBLSupplier);
+      }
+    }
+
+    // Comment
+    if (StringHelper.hasText (aEbiDoc.getComment ()))
+      aUBLDoc.addNote (new NoteType (aEbiDoc.getComment ()));
 
     return aUBLDoc;
   }
