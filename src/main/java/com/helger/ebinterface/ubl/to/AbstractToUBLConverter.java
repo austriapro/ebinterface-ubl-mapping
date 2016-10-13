@@ -17,6 +17,7 @@
 package com.helger.ebinterface.ubl.to;
 
 import java.util.Locale;
+import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -28,6 +29,14 @@ import com.helger.commons.text.display.IHasDisplayTextWithArgs;
 import com.helger.commons.text.resolve.DefaultTextResolver;
 import com.helger.commons.text.util.TextHelper;
 import com.helger.ebinterface.ubl.AbstractConverter;
+import com.helger.ebinterface.v42.Ebi42AddressIdentifierType;
+import com.helger.ebinterface.v42.Ebi42AddressType;
+import com.helger.ebinterface.v42.Ebi42DocumentTypeType;
+import com.helger.ubl21.codelist.EDocumentTypeCode21;
+import com.helger.xsds.ccts.cct.schemamodule.CodeType;
+
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AddressType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
 
 /**
  * Base class for ebInterface to PEPPOL UBL converter
@@ -70,10 +79,56 @@ public abstract class AbstractToUBLConverter extends AbstractConverter
     super (aDisplayLocale, aContentLocale);
   }
 
-  protected static final boolean isSupportedTaxSchemeSchemeID (@Nullable final String sUBLTaxSchemeSchemeID)
+  @Nullable
+  protected static <T extends CodeType> T getTypeCode (@Nullable final Ebi42DocumentTypeType eType,
+                                                       @Nonnull final Supplier <T> aFactory)
   {
-    return sUBLTaxSchemeSchemeID == null ||
-           sUBLTaxSchemeSchemeID.equals (SUPPORTED_TAX_SCHEME_SCHEME_ID) ||
-           sUBLTaxSchemeSchemeID.equals (SUPPORTED_TAX_SCHEME_SCHEME_ID_SUBSET);
+    String sID = null;
+    if (eType != null)
+      switch (eType)
+      {
+        case INVOICE:
+        case CREDIT_MEMO:
+        case FINAL_SETTLEMENT:
+        case INVOICE_FOR_ADVANCE_PAYMENT:
+        case SUBSEQUENT_CREDIT:
+        case SUBSEQUENT_DEBIT:
+          sID = EDocumentTypeCode21._380.getID ();
+          break;
+        case INVOICE_FOR_PARTIAL_DELIVERY:
+          sID = EDocumentTypeCode21._326.getID ();
+          break;
+        case SELF_BILLING:
+          sID = EDocumentTypeCode21._389.getID ();
+          break;
+      }
+
+    if (sID == null)
+      return null;
+
+    final T ret = aFactory.get ();
+    ret.setValue (sID);
+    ret.setListID ("UNCL1001");
+    return ret;
+  }
+
+  @Nullable
+  protected static AddressType convertAddress (@Nullable final Ebi42AddressType aEbiAddress)
+  {
+    if (aEbiAddress == null)
+      return null;
+
+    final AddressType ret = new AddressType ();
+    for (final Ebi42AddressIdentifierType aEbiType : aEbiAddress.getAddressIdentifier ())
+    {
+      final IDType aUBLID = new IDType ();
+      aUBLID.setValue (aEbiType.getValue ());
+      aUBLID.setSchemeID (aEbiType.getAddressIdentifierType ().value ());
+      ret.setID (aUBLID);
+
+      // Only one ID allowed
+      break;
+    }
+    return ret;
   }
 }
