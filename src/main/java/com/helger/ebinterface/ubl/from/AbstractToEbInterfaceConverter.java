@@ -16,7 +16,6 @@
  */
 package com.helger.ebinterface.ubl.from;
 
-import java.math.RoundingMode;
 import java.util.List;
 import java.util.Locale;
 
@@ -24,18 +23,16 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
-import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Translatable;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.text.IMultilingualText;
 import com.helger.commons.text.display.IHasDisplayTextWithArgs;
 import com.helger.commons.text.resolve.DefaultTextResolver;
 import com.helger.commons.text.util.TextHelper;
+import com.helger.ebinterface.ubl.AbstractConverter;
 import com.helger.ebinterface.v42.Ebi42DocumentTypeType;
 import com.helger.ebinterface.v42.Ebi42InvoiceType;
 import com.helger.ebinterface.v42.Ebi42RelatedDocumentType;
-import com.helger.peppol.codelist.EInvoiceTypeCode;
-import com.helger.peppol.codelist.ETaxSchemeID;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AllowanceChargeType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.BillingReferenceType;
@@ -43,12 +40,12 @@ import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.Doc
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.AllowanceChargeReasonType;
 
 /**
- * Base class for PEPPOL UBL 2.0 to ebInterface converter
+ * Base class for PEPPOL UBL to ebInterface converter
  *
  * @author philip
  */
 @Immutable
-public abstract class AbstractConverter
+public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
 {
   @Translatable
   public static enum EText implements IHasDisplayTextWithArgs
@@ -162,29 +159,12 @@ public abstract class AbstractConverter
     }
   }
 
-  public static final int ORDER_REFERENCE_MAX_LENGTH = 54;
-  public static final String REGEX_BIC = "[0-9A-Za-z]{8}([0-9A-Za-z]{3})?";
-  public static final String SUPPORTED_TAX_SCHEME_SCHEME_ID = "UN/ECE 5153";
-  public static final String SUPPORTED_TAX_SCHEME_SCHEME_ID_SUBSET = SUPPORTED_TAX_SCHEME_SCHEME_ID + " Subset";
-  public static final int IBAN_MAX_LENGTH = 34;
-  public static final String PAYMENT_CHANNEL_CODE_IBAN = "IBAN";
-  public static final ETaxSchemeID SUPPORTED_TAX_SCHEME_ID = ETaxSchemeID.VALUE_ADDED_TAX;
-  public static final String EBI_GENERATING_SYSTEM_42 = "UBL 2.1 to ebInterface 4.2 converter";
-  public static final int SCALE_PERC = 2;
-  public static final int SCALE_PRICE2 = 2;
-  public static final int SCALE_PRICE4 = 4;
-  /** Austria uses HALF_UP mode! */
-  public static final RoundingMode ROUNDING_MODE = RoundingMode.HALF_UP;
-  /** The invoice type code to use */
-  public static final String INVOICE_TYPE_CODE = EInvoiceTypeCode.COMMERCIAL_INVOICE.getID ();
   /**
    * The fake email address used by PEPPOL when no biller email address is in
    * the original XML file
    */
   public static final String PEPPOL_FAKE_BILLER_EMAIL_ADDRESS = "no-email-address-provided@peppol.eu";
 
-  protected final Locale m_aDisplayLocale;
-  protected final Locale m_aContentLocale;
   protected final boolean m_bStrictERBMode;
 
   /**
@@ -199,12 +179,11 @@ public abstract class AbstractConverter
    *        <code>true</code> if E-RECHNUNG.GV.AT specific checks should be
    *        performed
    */
-  public AbstractConverter (@Nonnull final Locale aDisplayLocale,
-                            @Nonnull final Locale aContentLocale,
-                            final boolean bStrictERBMode)
+  public AbstractToEbInterfaceConverter (@Nonnull final Locale aDisplayLocale,
+                                         @Nonnull final Locale aContentLocale,
+                                         final boolean bStrictERBMode)
   {
-    m_aDisplayLocale = ValueEnforcer.notNull (aDisplayLocale, "DisplayLocale");
-    m_aContentLocale = ValueEnforcer.notNull (aContentLocale, "ContentLocale");
+    super (aDisplayLocale, aContentLocale);
     m_bStrictERBMode = bStrictERBMode;
   }
 

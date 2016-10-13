@@ -24,8 +24,7 @@ import javax.annotation.concurrent.Immutable;
 import com.helger.commons.error.SingleError;
 import com.helger.commons.error.list.ErrorList;
 import com.helger.commons.string.StringHelper;
-import com.helger.ebinterface.ubl.from.AbstractConverter;
-import com.helger.ebinterface.ubl.from.CPeppolUBL;
+import com.helger.ebinterface.ubl.from.AbstractToEbInterfaceConverter;
 import com.helger.peppol.identifier.generic.process.IProcessIdentifier;
 import com.helger.peppol.identifier.peppol.process.PeppolProcessIdentifier;
 import com.helger.peppol.identifier.peppol.process.PredefinedProcessIdentifierManager;
@@ -41,7 +40,7 @@ import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
  * @author philip
  */
 @Immutable
-public abstract class AbstractInvoiceConverter extends AbstractConverter
+public abstract class AbstractInvoiceConverter extends AbstractToEbInterfaceConverter
 {
   /**
    * Constructor
@@ -78,21 +77,21 @@ public abstract class AbstractInvoiceConverter extends AbstractConverter
       aTransformationErrorList.add (SingleError.builderError ()
                                                .setErrorFieldName ("UBLVersionID")
                                                .setErrorText (EText.NO_UBL_VERSION_ID.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                              CPeppolUBL.UBL_VERSION_20,
-                                                                                                              CPeppolUBL.UBL_VERSION_21))
+                                                                                                              UBL_VERSION_20,
+                                                                                                              UBL_VERSION_21))
                                                .build ());
     }
     else
     {
       final String sUBLVersionID = StringHelper.trim (aUBLVersionID.getValue ());
-      if (!CPeppolUBL.UBL_VERSION_20.equals (sUBLVersionID) && !CPeppolUBL.UBL_VERSION_21.equals (sUBLVersionID))
+      if (!UBL_VERSION_20.equals (sUBLVersionID) && !UBL_VERSION_21.equals (sUBLVersionID))
       {
         aTransformationErrorList.add (SingleError.builderError ()
                                                  .setErrorFieldName ("UBLVersionID")
                                                  .setErrorText (EText.INVALID_UBL_VERSION_ID.getDisplayTextWithArgs (m_aDisplayLocale,
                                                                                                                      sUBLVersionID,
-                                                                                                                     CPeppolUBL.UBL_VERSION_20,
-                                                                                                                     CPeppolUBL.UBL_VERSION_21))
+                                                                                                                     UBL_VERSION_20,
+                                                                                                                     UBL_VERSION_21))
                                                  .build ());
       }
     }

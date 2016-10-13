@@ -28,7 +28,7 @@ import com.helger.commons.error.SingleError;
 import com.helger.commons.error.list.ErrorList;
 import com.helger.commons.locale.country.CountryCache;
 import com.helger.commons.string.StringHelper;
-import com.helger.ebinterface.ubl.from.AbstractConverter.EText;
+import com.helger.ebinterface.ubl.from.AbstractToEbInterfaceConverter.EText;
 import com.helger.ebinterface.v42.Ebi42AddressIdentifierType;
 import com.helger.ebinterface.v42.Ebi42AddressIdentifierTypeType;
 import com.helger.ebinterface.v42.Ebi42AddressType;

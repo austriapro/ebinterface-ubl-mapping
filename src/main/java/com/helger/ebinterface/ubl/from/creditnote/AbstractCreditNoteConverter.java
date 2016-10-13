@@ -24,8 +24,7 @@ import javax.annotation.concurrent.Immutable;
 import com.helger.commons.error.SingleError;
 import com.helger.commons.error.list.ErrorList;
 import com.helger.commons.string.StringHelper;
-import com.helger.ebinterface.ubl.from.AbstractConverter;
-import com.helger.ebinterface.ubl.from.CPeppolUBL;
+import com.helger.ebinterface.ubl.from.AbstractToEbInterfaceConverter;
 import com.helger.peppol.identifier.peppol.doctype.IPeppolPredefinedDocumentTypeIdentifier;
 import com.helger.peppol.identifier.peppol.process.IPeppolPredefinedProcessIdentifier;
 import com.helger.peppol.identifier.peppol.process.PredefinedProcessIdentifierManager;
@@ -41,7 +40,7 @@ import oasis.names.specification.ubl.schema.xsd.creditnote_21.CreditNoteType;
  * @author philip
  */
 @Immutable
-public abstract class AbstractCreditNoteConverter extends AbstractConverter
+public abstract class AbstractCreditNoteConverter extends AbstractToEbInterfaceConverter
 {
   /**
    * Constructor
@@ -78,21 +77,21 @@ public abstract class AbstractCreditNoteConverter extends AbstractConverter
       aTransformationErrorList.add (SingleError.builderError ()
                                                .setErrorFieldName ("UBLVersionID")
                                                .setErrorText (EText.NO_UBL_VERSION_ID.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                              CPeppolUBL.UBL_VERSION_20,
-                                                                                                              CPeppolUBL.UBL_VERSION_21))
+                                                                                                              UBL_VERSION_20,
+                                                                                                              UBL_VERSION_21))
                                                .build ());
     }
     else
     {
       final String sUBLVersionID = StringHelper.trim (aUBLVersionID.getValue ());
-      if (!CPeppolUBL.UBL_VERSION_20.equals (sUBLVersionID) && !CPeppolUBL.UBL_VERSION_21.equals (sUBLVersionID))
+      if (!UBL_VERSION_20.equals (sUBLVersionID) && !UBL_VERSION_21.equals (sUBLVersionID))
       {
         aTransformationErrorList.add (SingleError.builderError ()
                                                  .setErrorFieldName ("UBLVersionID")
                                                  .setErrorText (EText.INVALID_UBL_VERSION_ID.getDisplayTextWithArgs (m_aDisplayLocale,
                                                                                                                      sUBLVersionID,
-                                                                                                                     CPeppolUBL.UBL_VERSION_20,
-                                                                                                                     CPeppolUBL.UBL_VERSION_21))
+                                                                                                                     UBL_VERSION_20,
+                                                                                                                     UBL_VERSION_21))
                                                  .build ());
       }
     }
@@ -132,12 +131,12 @@ public abstract class AbstractCreditNoteConverter extends AbstractConverter
                                                  .setErrorText (EText.NO_CUSTOMIZATION_ID.getDisplayText (m_aDisplayLocale))
                                                  .build ());
       else
-        if (!CPeppolUBL.CUSTOMIZATION_SCHEMEID.equals (aCustomizationID.getSchemeID ()))
+        if (!CUSTOMIZATION_SCHEMEID.equals (aCustomizationID.getSchemeID ()))
           aTransformationErrorList.add (SingleError.builderError ()
                                                    .setErrorFieldName ("CustomizationID/schemeID")
                                                    .setErrorText (EText.INVALID_CUSTOMIZATION_SCHEME_ID.getDisplayTextWithArgs (m_aDisplayLocale,
                                                                                                                                 aCustomizationID.getSchemeID (),
-                                                                                                                                CPeppolUBL.CUSTOMIZATION_SCHEMEID))
+                                                                                                                                CUSTOMIZATION_SCHEMEID))
                                                    .build ());
         else
           if (aProcID != null)

@@ -23,7 +23,7 @@ import com.helger.xml.namespace.MapBasedNamespaceContext;
 /**
  * A special map-based namespace context that maps XML prefixes to namespace
  * URLs.
- * 
+ *
  * @author Philip Helger
  */
 public class EbiNamespaceContext extends MapBasedNamespaceContext
@@ -31,11 +31,12 @@ public class EbiNamespaceContext extends MapBasedNamespaceContext
   public EbiNamespaceContext ()
   {
     addMapping ("xsi", CXML.XML_NS_XSI);
-    addMapping ("xd", CXML.XML_NS_XSD);
+    addMapping ("xs", CXML.XML_NS_XSD);
     addMapping ("eb30", CEbInterface.EBINTERFACE_30_NS);
     addMapping ("eb302", CEbInterface.EBINTERFACE_302_NS);
     addMapping ("eb40", CEbInterface.EBINTERFACE_40_NS);
     addMapping ("eb41", CEbInterface.EBINTERFACE_41_NS);
+    addMapping ("eb42", CEbInterface.EBINTERFACE_42_NS);
     addMapping ("dsig", "http://www.w3.org/2000/09/xmldsig#");
   }
 }
