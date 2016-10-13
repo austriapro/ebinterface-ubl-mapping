@@ -151,7 +151,7 @@ public class EbInterface42ToInvoiceConverter extends AbstractToUBLConverter
         }
         aUBLSupplier.setParty (aUBLParty);
 
-        // Put this into global contract docment references
+        // Put this into global contract document references
         for (final Ebi42FurtherIdentificationType aEbiFI : aEbiBiller.getFurtherIdentification ())
         {
           final DocumentReferenceType aUBLContractDoc = new DocumentReferenceType ();
