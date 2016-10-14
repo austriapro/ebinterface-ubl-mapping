@@ -187,13 +187,6 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
     m_bStrictERBMode = bStrictERBMode;
   }
 
-  protected static final boolean isSupportedTaxSchemeSchemeID (@Nullable final String sUBLTaxSchemeSchemeID)
-  {
-    return sUBLTaxSchemeSchemeID == null ||
-           sUBLTaxSchemeSchemeID.equals (SUPPORTED_TAX_SCHEME_SCHEME_ID) ||
-           sUBLTaxSchemeSchemeID.equals (SUPPORTED_TAX_SCHEME_SCHEME_ID_SUBSET);
-  }
-
   @Nonnull
   protected static String getAllowanceChargeComment (@Nonnull final AllowanceChargeType aUBLAllowanceCharge)
   {

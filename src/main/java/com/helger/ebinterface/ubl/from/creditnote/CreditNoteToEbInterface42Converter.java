@@ -571,7 +571,6 @@ public final class CreditNoteToEbInterface42Converter extends AbstractCreditNote
                                                        new SchemedID (sUBLTaxCategorySchemeID, sUBLTaxCategoryID)),
                                    aUBLPercentage);
 
-          if (isSupportedTaxSchemeSchemeID (sUBLTaxSchemeSchemeID))
           {
             final ETaxSchemeID eUBLTaxScheme = ETaxSchemeID.getFromIDOrNull (sUBLTaxSchemeID);
             if (eUBLTaxScheme == null)
@@ -643,19 +642,6 @@ public final class CreditNoteToEbInterface42Converter extends AbstractCreditNote
                 aEbiTax.addOtherTax (aOtherTax);
               }
             }
-          }
-          else
-          {
-            aTransformationErrorList.add (SingleError.builderError ()
-                                                     .setErrorFieldName ("TaxTotal[" +
-                                                                         nTaxTotalIndex +
-                                                                         "]/TaxSubtotal[" +
-                                                                         nTaxSubtotalIndex +
-                                                                         "]/TaxCategory/")
-                                                     .setErrorText (EText.UNSUPPORTED_TAX_SCHEME.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                                         sUBLTaxSchemeSchemeID,
-                                                                                                                         sUBLTaxSchemeID))
-                                                     .build ());
           }
           ++nTaxSubtotalIndex;
         }
