@@ -9,17 +9,22 @@ import com.helger.ebinterface.v42.Ebi42BillerType;
 import com.helger.ebinterface.v42.Ebi42CancelledOriginalDocumentType;
 import com.helger.ebinterface.v42.Ebi42DeliveryType;
 import com.helger.ebinterface.v42.Ebi42FurtherIdentificationType;
+import com.helger.ebinterface.v42.Ebi42InvoiceRecipientType;
 import com.helger.ebinterface.v42.Ebi42InvoiceType;
+import com.helger.ebinterface.v42.Ebi42OrderReferenceType;
 import com.helger.ebinterface.v42.Ebi42RelatedDocumentType;
 
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CustomerPartyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DeliveryType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DocumentReferenceType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.OrderReferenceType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyIdentificationType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyTaxSchemeType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PeriodType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.SupplierPartyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxSchemeType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.AdditionalAccountIDType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.DocumentDescriptionType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.DocumentTypeCodeType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
@@ -163,6 +168,62 @@ public class EbInterface42ToInvoiceConverter extends AbstractToUBLConverter
         }
 
         aUBLDoc.setAccountingSupplierParty (aUBLSupplier);
+      }
+    }
+
+    // Handle Invoice Recipient
+    {
+      final Ebi42InvoiceRecipientType aEbiIR = aEbiDoc.getInvoiceRecipient ();
+      if (aEbiIR != null)
+      {
+        final CustomerPartyType aUBLCustomer = new CustomerPartyType ();
+        PartyType aUBLParty = convertParty (aEbiIR.getAddress ());
+        if (StringHelper.hasText (aEbiIR.getVATIdentificationNumber ()))
+        {
+          if (aUBLParty == null)
+            aUBLParty = new PartyType ();
+
+          final PartyTaxSchemeType aPTS = new PartyTaxSchemeType ();
+          final TaxSchemeType aTS = new TaxSchemeType ();
+          aTS.setID (SUPPORTED_TAX_SCHEME_ID.getID ());
+          aPTS.setTaxScheme (aTS);
+          aPTS.setCompanyID (aEbiIR.getVATIdentificationNumber ());
+          aUBLParty.addPartyTaxScheme (aPTS);
+        }
+        if (StringHelper.hasText (aEbiIR.getBillersInvoiceRecipientID ()))
+        {
+          if (aUBLParty == null)
+            aUBLParty = new PartyType ();
+
+          // Set in 2 different places
+          aUBLCustomer.setSupplierAssignedAccountID (aEbiIR.getBillersInvoiceRecipientID ());
+          final PartyIdentificationType aPI = new PartyIdentificationType ();
+          aPI.setID (aEbiIR.getBillersInvoiceRecipientID ());
+          aUBLParty.addPartyIdentification (aPI);
+        }
+        aUBLCustomer.setParty (aUBLParty);
+
+        // Put this into global contract document references
+        for (final Ebi42FurtherIdentificationType aEbiFI : aEbiIR.getFurtherIdentification ())
+        {
+          final AdditionalAccountIDType aUBLAddAccID = new AdditionalAccountIDType ();
+          aUBLAddAccID.setValue (aEbiFI.getValue ());
+          aUBLAddAccID.setSchemeID (aEbiFI.getIdentificationType ());
+          aUBLCustomer.addAdditionalAccountID (aUBLAddAccID);
+        }
+
+        // Handle order reference from invoice recipient
+        final Ebi42OrderReferenceType aEbiOR = aEbiIR.getOrderReference ();
+        if (aEbiOR != null)
+        {
+          final OrderReferenceType aUBLOR = new OrderReferenceType ();
+          aUBLOR.setID (aEbiOR.getOrderID ());
+          if (aEbiOR.getReferenceDate () != null)
+            aUBLOR.setIssueDate (aEbiOR.getReferenceDate ());
+          aUBLDoc.setOrderReference (aUBLOR);
+        }
+
+        aUBLDoc.setAccountingCustomerParty (aUBLCustomer);
       }
     }
 
