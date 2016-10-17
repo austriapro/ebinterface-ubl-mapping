@@ -44,6 +44,7 @@ import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.Del
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyNameType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PeriodType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxSchemeType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
 
 /**
@@ -166,7 +167,7 @@ public abstract class AbstractToUBLConverter extends AbstractConverter
       return null;
 
     final PartyType ret = new PartyType ();
-    if (aEbiAddress.getName () != null)
+    if (StringHelper.hasText (aEbiAddress.getName ()))
     {
       final PartyNameType aUBLPartyName = new PartyNameType ();
       aUBLPartyName.setName (aEbiAddress.getName ());
@@ -192,6 +193,8 @@ public abstract class AbstractToUBLConverter extends AbstractConverter
     }
     if (bHasData)
       ret.setContact (aUBLContact);
+
+    ret.setPostalAddress (convertAddress (aEbiAddress));
 
     return ret;
   }
@@ -219,5 +222,15 @@ public abstract class AbstractToUBLConverter extends AbstractConverter
     aUBLDelivery.setDeliveryAddress (convertAddress (aEbiDelivery.getAddress ()));
     aUBLDelivery.setDeliveryParty (convertParty (aEbiDelivery.getAddress ()));
     return aUBLDelivery;
+  }
+
+  @Nonnull
+  protected static TaxSchemeType createTaxSchemeVAT ()
+  {
+    final TaxSchemeType aUBLTaxScheme = new TaxSchemeType ();
+    final IDType aUBLTSID = aUBLTaxScheme.setID (SUPPORTED_TAX_SCHEME_ID.getID ());
+    aUBLTSID.setSchemeAgencyID ("6");
+    aUBLTSID.setSchemeID (SUPPORTED_TAX_SCHEME_SCHEME_ID);
+    return aUBLTaxScheme;
   }
 }

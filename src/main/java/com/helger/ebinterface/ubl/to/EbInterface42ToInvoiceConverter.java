@@ -43,10 +43,11 @@ import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.Par
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PriceType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.SupplierPartyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxCategoryType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxSchemeType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.AdditionalAccountIDType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.AllowanceChargeReasonType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.CompanyIDType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.DescriptionType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.DocumentCurrencyCodeType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.DocumentDescriptionType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.DocumentTypeCodeType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
@@ -78,7 +79,9 @@ public class EbInterface42ToInvoiceConverter extends AbstractToUBLConverter
     // Attributes
     // GeneratingSystem cannot be mapped
     aUBLDoc.setInvoiceTypeCode (getTypeCode (aEbiDoc.getDocumentType (), () -> new InvoiceTypeCodeType ()));
-    aUBLDoc.setDocumentCurrencyCode (sCurrency);
+    final DocumentCurrencyCodeType aUBLCurrency = aUBLDoc.setDocumentCurrencyCode (sCurrency);
+    aUBLCurrency.setListAgencyID ("6");
+    aUBLCurrency.setListID ("ISO 4217 Alpha");
     // ManualProcessing cannot be mapped
     // DocumentTitle is not mapped
     // Language is not mapped
@@ -148,10 +151,9 @@ public class EbInterface42ToInvoiceConverter extends AbstractToUBLConverter
             aUBLParty = new PartyType ();
 
           final PartyTaxSchemeType aPTS = new PartyTaxSchemeType ();
-          final TaxSchemeType aTS = new TaxSchemeType ();
-          aTS.setID (SUPPORTED_TAX_SCHEME_ID.getID ());
-          aPTS.setTaxScheme (aTS);
-          aPTS.setCompanyID (aEbiBiller.getVATIdentificationNumber ());
+          aPTS.setTaxScheme (createTaxSchemeVAT ());
+          final CompanyIDType aCID = aPTS.setCompanyID (aEbiBiller.getVATIdentificationNumber ());
+          aCID.setSchemeID (SUPPORTED_TAX_SCHEME_ID.getID ());
           aUBLParty.addPartyTaxScheme (aPTS);
         }
         if (StringHelper.hasText (aEbiBiller.getInvoiceRecipientsBillerID ()))
@@ -195,10 +197,9 @@ public class EbInterface42ToInvoiceConverter extends AbstractToUBLConverter
             aUBLParty = new PartyType ();
 
           final PartyTaxSchemeType aPTS = new PartyTaxSchemeType ();
-          final TaxSchemeType aTS = new TaxSchemeType ();
-          aTS.setID (SUPPORTED_TAX_SCHEME_ID.getID ());
-          aPTS.setTaxScheme (aTS);
-          aPTS.setCompanyID (aEbiIR.getVATIdentificationNumber ());
+          aPTS.setTaxScheme (createTaxSchemeVAT ());
+          final CompanyIDType aCID = aPTS.setCompanyID (aEbiIR.getVATIdentificationNumber ());
+          aCID.setSchemeID (SUPPORTED_TAX_SCHEME_ID.getID ());
           aUBLParty.addPartyTaxScheme (aPTS);
         }
         if (StringHelper.hasText (aEbiIR.getBillersInvoiceRecipientID ()))
@@ -251,10 +252,9 @@ public class EbInterface42ToInvoiceConverter extends AbstractToUBLConverter
             aUBLParty = new PartyType ();
 
           final PartyTaxSchemeType aPTS = new PartyTaxSchemeType ();
-          final TaxSchemeType aTS = new TaxSchemeType ();
-          aTS.setID (SUPPORTED_TAX_SCHEME_ID.getID ());
-          aPTS.setTaxScheme (aTS);
-          aPTS.setCompanyID (aEbiOrdering.getVATIdentificationNumber ());
+          aPTS.setTaxScheme (createTaxSchemeVAT ());
+          final CompanyIDType aCID = aPTS.setCompanyID (aEbiOrdering.getVATIdentificationNumber ());
+          aCID.setSchemeID (SUPPORTED_TAX_SCHEME_ID.getID ());
           aUBLParty.addPartyTaxScheme (aPTS);
         }
         if (StringHelper.hasText (aEbiOrdering.getBillersOrderingPartyID ()))
@@ -287,6 +287,7 @@ public class EbInterface42ToInvoiceConverter extends AbstractToUBLConverter
 
     // Details
     // Header and footer are not translated
+    BigDecimal aTaxExclusiveAmount = BigDecimal.ZERO;
     final Ebi42DetailsType aEbiDetails = aEbiDoc.getDetails ();
     int nInvoiceLineIndex = 1;
     for (final Ebi42ItemListType aEbiItemList : aEbiDetails.getItemList ())
@@ -339,14 +340,10 @@ public class EbInterface42ToInvoiceConverter extends AbstractToUBLConverter
               aUBLTCID.setSchemeAgencyID ("6");
               aUBLTCID.setSchemeID (SUPPORTED_TAX_SCHEME_SCHEME_ID);
               aUBLTaxCategory.setPercent (aEbiItem.getVATRate ().getValue ());
-              aUBLTaxCategory.setName (aEbiItem.getVATRate ().getTaxCode ());
+              if (StringHelper.hasText (aEbiItem.getVATRate ().getTaxCode ()))
+                aUBLTaxCategory.setName (aEbiItem.getVATRate ().getTaxCode ());
             }
-
-            final TaxSchemeType aUBLTaxScheme = new TaxSchemeType ();
-            final IDType aUBLTSID = aUBLTaxScheme.setID (SUPPORTED_TAX_SCHEME_ID.getID ());
-            aUBLTSID.setSchemeAgencyID ("6");
-            aUBLTSID.setSchemeID (SUPPORTED_TAX_SCHEME_SCHEME_ID);
-            aUBLTaxCategory.setTaxScheme (aUBLTaxScheme);
+            aUBLTaxCategory.setTaxScheme (createTaxSchemeVAT ());
 
             aUBLItem.addClassifiedTaxCategory (aUBLTaxCategory);
           }
@@ -422,9 +419,12 @@ public class EbInterface42ToInvoiceConverter extends AbstractToUBLConverter
           aUBLLine.setItem (aUBLItem);
         }
         aUBLDoc.addInvoiceLine (aUBLLine);
+
+        aTaxExclusiveAmount = aTaxExclusiveAmount.add (aEbiItem.getLineItemAmount ());
         ++nInvoiceLineIndex;
       }
     }
+
     int nBelowTheLineIndex = 1;
     for (final Ebi42BelowTheLineItemType aEbiItem : aEbiDetails.getBelowTheLineItem ())
     {
@@ -452,12 +452,7 @@ public class EbInterface42ToInvoiceConverter extends AbstractToUBLConverter
           aUBLTCID.setSchemeAgencyID ("6");
           aUBLTCID.setSchemeID (SUPPORTED_TAX_SCHEME_SCHEME_ID);
           aUBLTaxCategory.setPercent (BigDecimal.ZERO);
-
-          final TaxSchemeType aUBLTaxScheme = new TaxSchemeType ();
-          final IDType aUBLTSID = aUBLTaxScheme.setID (SUPPORTED_TAX_SCHEME_ID.getID ());
-          aUBLTSID.setSchemeAgencyID ("6");
-          aUBLTSID.setSchemeID (SUPPORTED_TAX_SCHEME_SCHEME_ID);
-          aUBLTaxCategory.setTaxScheme (aUBLTaxScheme);
+          aUBLTaxCategory.setTaxScheme (createTaxSchemeVAT ());
 
           aUBLTaxCategory.addTaxExemptionReason (new TaxExemptionReasonType ("BelowTheLine - tax already handled"));
 
@@ -466,12 +461,20 @@ public class EbInterface42ToInvoiceConverter extends AbstractToUBLConverter
         aUBLLine.setItem (aUBLItem);
       }
       aUBLDoc.addInvoiceLine (aUBLLine);
+
+      aTaxExclusiveAmount = aTaxExclusiveAmount.add (aEbiItem.getLineItemAmount ());
       ++nBelowTheLineIndex;
     }
 
-    // Totals
+    // TODO PaymentMeans
+    // TODO PaymentTersm
+    // TODO global allowances and charges
+    // TODO tax total
+
+    // Monetary Totals
     {
       final MonetaryTotalType aUBLMT = new MonetaryTotalType ();
+      aUBLMT.setTaxExclusiveAmount (aTaxExclusiveAmount).setCurrencyID (sCurrency);
       aUBLMT.setTaxInclusiveAmount (aEbiDoc.getTotalGrossAmount ()).setCurrencyID (sCurrency);
       aUBLMT.setPayableAmount (aEbiDoc.getPayableAmount ()).setCurrencyID (sCurrency);
       aUBLDoc.setLegalMonetaryTotal (aUBLMT);
