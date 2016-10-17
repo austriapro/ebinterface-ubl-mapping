@@ -1089,9 +1089,11 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
         final Ebi42VATRateType aEbiVATRate = new Ebi42VATRateType ();
         aEbiVATRate.setValue (aUBLPercent);
         if (aUBLTaxCategory != null)
-                                    // Optional
-                                    if (false)
-                                    aEbiVATRate.setTaxCode (aUBLTaxCategory.getIDValue ());
+        {
+          // Optional
+          if (false)
+            aEbiVATRate.setTaxCode (aUBLTaxCategory.getIDValue ());
+        }
         aEbiListLineItem.setVATRate (aEbiVATRate);
 
         // Line item amount (quantity * unit price +- reduction / surcharge)
@@ -1180,14 +1182,12 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
 
             if (eSurcharge.isTrue ())
             {
-              aEbiRSDetails.getReductionListLineItemOrSurchargeListLineItemOrOtherVATableTaxListLineItem ()
-                           .add (new ObjectFactory ().createSurchargeListLineItem (aEbiRSItem));
+              aEbiRSDetails.addReductionListLineItemOrSurchargeListLineItemOrOtherVATableTaxListLineItem (new ObjectFactory ().createSurchargeListLineItem (aEbiRSItem));
               aEbiBaseAmount = aEbiBaseAmount.add (aEbiRSItem.getAmount ());
             }
             else
             {
-              aEbiRSDetails.getReductionListLineItemOrSurchargeListLineItemOrOtherVATableTaxListLineItem ()
-                           .add (new ObjectFactory ().createReductionListLineItem (aEbiRSItem));
+              aEbiRSDetails.addReductionListLineItemOrSurchargeListLineItemOrOtherVATableTaxListLineItem (new ObjectFactory ().createReductionListLineItem (aEbiRSItem));
               aEbiBaseAmount = aEbiBaseAmount.subtract (aEbiRSItem.getAmount ());
             }
 

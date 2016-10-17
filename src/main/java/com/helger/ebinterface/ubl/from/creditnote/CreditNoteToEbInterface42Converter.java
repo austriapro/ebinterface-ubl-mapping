@@ -914,14 +914,12 @@ public final class CreditNoteToEbInterface42Converter extends AbstractCreditNote
 
             if (eSurcharge.isTrue ())
             {
-              aEbiRSDetails.getReductionListLineItemOrSurchargeListLineItemOrOtherVATableTaxListLineItem ()
-                           .add (new ObjectFactory ().createSurchargeListLineItem (aEbiRSItem));
+              aEbiRSDetails.addReductionListLineItemOrSurchargeListLineItemOrOtherVATableTaxListLineItem (new ObjectFactory ().createSurchargeListLineItem (aEbiRSItem));
               aEbiBaseAmount = aEbiBaseAmount.add (aEbiRSItem.getAmount ());
             }
             else
             {
-              aEbiRSDetails.getReductionListLineItemOrSurchargeListLineItemOrOtherVATableTaxListLineItem ()
-                           .add (new ObjectFactory ().createReductionListLineItem (aEbiRSItem));
+              aEbiRSDetails.addReductionListLineItemOrSurchargeListLineItemOrOtherVATableTaxListLineItem (new ObjectFactory ().createReductionListLineItem (aEbiRSItem));
               aEbiBaseAmount = aEbiBaseAmount.subtract (aEbiRSItem.getAmount ());
             }
 
