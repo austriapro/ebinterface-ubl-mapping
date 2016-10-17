@@ -22,9 +22,12 @@ import com.helger.ebinterface.v42.Ebi42ItemListType;
 import com.helger.ebinterface.v42.Ebi42ListLineItemType;
 import com.helger.ebinterface.v42.Ebi42OrderReferenceType;
 import com.helger.ebinterface.v42.Ebi42OrderingPartyType;
+import com.helger.ebinterface.v42.Ebi42OtherTaxType;
 import com.helger.ebinterface.v42.Ebi42OtherVATableTaxBaseType;
 import com.helger.ebinterface.v42.Ebi42ReductionAndSurchargeBaseType;
 import com.helger.ebinterface.v42.Ebi42RelatedDocumentType;
+import com.helger.ebinterface.v42.Ebi42VATItemType;
+import com.helger.peppol.codelist.ETaxSchemeID;
 import com.helger.ubl21.codelist.EUnitOfMeasureCode21;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AllowanceChargeType;
@@ -43,6 +46,9 @@ import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.Par
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PriceType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.SupplierPartyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxCategoryType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxSchemeType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxSubtotalType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxTotalType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.AdditionalAccountIDType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.AllowanceChargeReasonType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.CompanyIDType;
@@ -355,11 +361,30 @@ public class EbInterface42ToInvoiceConverter extends AbstractToUBLConverter
               final Object aValue = aEbiRS.getValue ();
               if (aValue instanceof Ebi42OtherVATableTaxBaseType)
               {
+                // Other tax
                 final Ebi42OtherVATableTaxBaseType aEbiRSValue = (Ebi42OtherVATableTaxBaseType) aValue;
-                // TODO
+
+                final AllowanceChargeType aUBLAC = new AllowanceChargeType ();
+                aUBLAC.setChargeIndicator (true);
+                aUBLAC.setBaseAmount (aEbiRSValue.getBaseAmount ()).setCurrencyID (sCurrency);
+                if (aEbiRSValue.getPercentage () != null)
+                  aUBLAC.setMultiplierFactorNumeric (aEbiRSValue.getPercentage ().divide (CGlobal.BIGDEC_100));
+                if (aEbiRSValue.getAmount () != null)
+                  aUBLAC.setAmount (aEbiRSValue.getAmount ()).setCurrencyID (sCurrency);
+                else
+                  if (aEbiRSValue.getPercentage () != null)
+                    aUBLAC.setAmount (MathHelper.getPercentValue (aEbiRSValue.getBaseAmount (),
+                                                                  aEbiRSValue.getPercentage ()))
+                          .setCurrencyID (sCurrency);
+                if (StringHelper.hasText (aEbiRSValue.getTaxID ()))
+                  aUBLAC.setAllowanceChargeReasonCode (aEbiRSValue.getTaxID ());
+                if (StringHelper.hasText (aEbiRSValue.getComment ()))
+                  aUBLAC.addAllowanceChargeReason (new AllowanceChargeReasonType (aEbiRSValue.getComment ()));
+                aUBLLine.addAllowanceCharge (aUBLAC);
               }
               else
               {
+                // Reduction/surcharge
                 final Ebi42ReductionAndSurchargeBaseType aEbiRSValue = (Ebi42ReductionAndSurchargeBaseType) aValue;
                 final boolean bIsReduction = aEbiRS.getName ().getLocalPart ().equals ("ReductionListLineItem");
 
@@ -469,7 +494,71 @@ public class EbInterface42ToInvoiceConverter extends AbstractToUBLConverter
     // TODO PaymentMeans
     // TODO PaymentTersm
     // TODO global allowances and charges
-    // TODO tax total
+
+    // VAT total
+    {
+      final TaxTotalType aUBLTaxTotal = new TaxTotalType ();
+      BigDecimal aTaxSum = BigDecimal.ZERO;
+      for (final Ebi42VATItemType aEbiVATItem : aEbiDoc.getTax ().getVAT ().getVATItem ())
+      {
+        final TaxSubtotalType aUBLTaxSubtotal = new TaxSubtotalType ();
+        aUBLTaxSubtotal.setTaxableAmount (aEbiVATItem.getTaxedAmount ()).setCurrencyID (sCurrency);
+        aUBLTaxSubtotal.setTaxAmount (aEbiVATItem.getAmount ()).setCurrencyID (sCurrency);
+
+        final TaxCategoryType aUBLTaxCategory = new TaxCategoryType ();
+        if (aEbiVATItem.getTaxExemption () != null)
+        {
+          // Exempt
+          final IDType aUBLTCID = aUBLTaxCategory.setID ("E");
+          aUBLTCID.setSchemeAgencyID ("6");
+          aUBLTCID.setSchemeID (SUPPORTED_TAX_SCHEME_SCHEME_ID);
+          aUBLTaxCategory.setPercent (BigDecimal.ZERO);
+          if (StringHelper.hasText (aEbiVATItem.getTaxExemption ().getValue ()))
+            aUBLTaxCategory.addTaxExemptionReason (new TaxExemptionReasonType (aEbiVATItem.getTaxExemption ()
+                                                                                          .getValue ()));
+        }
+        else
+        {
+          // Standard
+          final IDType aUBLTCID = aUBLTaxCategory.setID ("S");
+          aUBLTCID.setSchemeAgencyID ("6");
+          aUBLTCID.setSchemeID (SUPPORTED_TAX_SCHEME_SCHEME_ID);
+          aUBLTaxCategory.setPercent (aEbiVATItem.getVATRate ().getValue ());
+          if (StringHelper.hasText (aEbiVATItem.getVATRate ().getTaxCode ()))
+            aUBLTaxCategory.setName (aEbiVATItem.getVATRate ().getTaxCode ());
+        }
+        aUBLTaxCategory.setTaxScheme (createTaxSchemeVAT ());
+        aUBLTaxSubtotal.setTaxCategory (aUBLTaxCategory);
+        aUBLTaxTotal.addTaxSubtotal (aUBLTaxSubtotal);
+
+        aTaxSum = aTaxSum.add (aEbiVATItem.getAmount ());
+      }
+      for (final Ebi42OtherTaxType aEbiOtherTax : aEbiDoc.getTax ().getOtherTax ())
+      {
+        final TaxSubtotalType aUBLTaxSubtotal = new TaxSubtotalType ();
+        aUBLTaxSubtotal.setTaxableAmount (aEbiOtherTax.getAmount ()).setCurrencyID (sCurrency);
+
+        {
+          final TaxCategoryType aUBLTaxCategory = new TaxCategoryType ();
+
+          final TaxSchemeType aUBLTaxScheme = new TaxSchemeType ();
+          final IDType aUBLTSID = aUBLTaxScheme.setID (ETaxSchemeID.OTHER_TAXES.getID ());
+          aUBLTSID.setSchemeAgencyID ("6");
+          aUBLTSID.setSchemeID (SUPPORTED_TAX_SCHEME_SCHEME_ID);
+          if (StringHelper.hasText (aEbiOtherTax.getComment ()))
+            aUBLTaxScheme.setName (aEbiOtherTax.getComment ());
+          aUBLTaxCategory.setTaxScheme (aUBLTaxScheme);
+
+          aUBLTaxSubtotal.setTaxCategory (aUBLTaxCategory);
+        }
+
+        aUBLTaxTotal.addTaxSubtotal (aUBLTaxSubtotal);
+
+        aTaxSum = aTaxSum.add (aEbiOtherTax.getAmount ());
+      }
+      aUBLTaxTotal.setTaxAmount (aTaxSum).setCurrencyID (sCurrency);
+      aUBLDoc.addTaxTotal (aUBLTaxTotal);
+    }
 
     // Monetary Totals
     {
