@@ -14,6 +14,7 @@ import com.helger.ebinterface.v42.Ebi42ArticleNumberType;
 import com.helger.ebinterface.v42.Ebi42BelowTheLineItemType;
 import com.helger.ebinterface.v42.Ebi42BillerType;
 import com.helger.ebinterface.v42.Ebi42CancelledOriginalDocumentType;
+import com.helger.ebinterface.v42.Ebi42ClassificationType;
 import com.helger.ebinterface.v42.Ebi42DetailsType;
 import com.helger.ebinterface.v42.Ebi42FurtherIdentificationType;
 import com.helger.ebinterface.v42.Ebi42InvoiceRecipientType;
@@ -31,12 +32,12 @@ import com.helger.peppol.codelist.ETaxSchemeID;
 import com.helger.ubl21.codelist.EUnitOfMeasureCode21;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AllowanceChargeType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CommodityClassificationType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CustomerPartyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DeliveryType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DocumentReferenceType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.InvoiceLineType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.ItemIdentificationType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.ItemPropertyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.ItemType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.MonetaryTotalType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.OrderReferenceType;
@@ -58,6 +59,7 @@ import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.Documen
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.DocumentTypeCodeType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.InvoiceTypeCodeType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.ItemClassificationCodeType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.NoteType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.TaxExemptionReasonType;
 import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
@@ -426,17 +428,27 @@ public class EbInterface42ToInvoiceConverter extends AbstractToUBLConverter
           {
             for (final String sSerialNumber : aEbiAdditionalInfo.getSerialNumber ())
             {
-              final ItemPropertyType aUBLIP = new ItemPropertyType ();
-              aUBLIP.setName ("SerialNumber");
-              aUBLIP.setValue (sSerialNumber);
-              aUBLItem.addAdditionalItemProperty (aUBLIP);
+              aUBLItem.addAdditionalItemProperty (createItemProperty ("SerialNumber", sSerialNumber));
             }
             for (final String sChargeNumber : aEbiAdditionalInfo.getSerialNumber ())
             {
-              final ItemPropertyType aUBLIP = new ItemPropertyType ();
-              aUBLIP.setName ("ChargeNumber");
-              aUBLIP.setValue (sChargeNumber);
-              aUBLItem.addAdditionalItemProperty (aUBLIP);
+              aUBLItem.addAdditionalItemProperty (createItemProperty ("ChargeNumber", sChargeNumber));
+            }
+            for (final Ebi42ClassificationType aEbiClassification : aEbiAdditionalInfo.getClassification ())
+            {
+              final CommodityClassificationType aUBLCC = new CommodityClassificationType ();
+              final ItemClassificationCodeType aUBLICC = new ItemClassificationCodeType ();
+              aUBLICC.setValue (aEbiClassification.getValue ());
+              aUBLICC.setName (aEbiClassification.getClassificationSchema ());
+              aUBLCC.setItemClassificationCode (aUBLICC);
+              aUBLItem.addCommodityClassification (aUBLCC);
+            }
+            if (aEbiAdditionalInfo.getAlternativeQuantity () != null)
+            {
+              aUBLItem.addAdditionalItemProperty (createItemProperty ("AlternativeQuantity",
+                                                                      aEbiAdditionalInfo.getAlternativeQuantity ()
+                                                                                        .getValue ()
+                                                                                        .toString ()));
             }
             // TODO rest
           }

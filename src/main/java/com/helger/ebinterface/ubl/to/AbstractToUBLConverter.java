@@ -41,6 +41,7 @@ import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.Add
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.ContactType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CountryType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DeliveryType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.ItemPropertyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyNameType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PeriodType;
@@ -232,5 +233,14 @@ public abstract class AbstractToUBLConverter extends AbstractConverter
     aUBLTSID.setSchemeAgencyID ("6");
     aUBLTSID.setSchemeID (SUPPORTED_TAX_SCHEME_SCHEME_ID);
     return aUBLTaxScheme;
+  }
+
+  @Nonnull
+  protected static ItemPropertyType createItemProperty (@Nullable final String sName, @Nullable final String sValue)
+  {
+    final ItemPropertyType ret = new ItemPropertyType ();
+    ret.setName (sName);
+    ret.setValue (sValue);
+    return ret;
   }
 }
