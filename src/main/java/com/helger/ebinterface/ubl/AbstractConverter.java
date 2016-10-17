@@ -36,9 +36,9 @@ public abstract class AbstractConverter
 {
   public static final int ORDER_REFERENCE_MAX_LENGTH = 54;
   public static final String REGEX_BIC = "[0-9A-Za-z]{8}([0-9A-Za-z]{3})?";
-  public static final String SUPPORTED_TAX_SCHEME_SCHEME_ID = "UN/ECE 5153";
   public static final int IBAN_MAX_LENGTH = 34;
   public static final String PAYMENT_CHANNEL_CODE_IBAN = "IBAN";
+  public static final String SUPPORTED_TAX_SCHEME_SCHEME_ID = "UN/ECE 5153";
   public static final ETaxSchemeID SUPPORTED_TAX_SCHEME_ID = ETaxSchemeID.VALUE_ADDED_TAX;
   public static final String EBI_GENERATING_SYSTEM_42 = "UBL 2.1 to ebInterface 4.2 converter";
   public static final int SCALE_PERC = 2;

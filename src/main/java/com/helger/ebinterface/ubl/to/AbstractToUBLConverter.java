@@ -24,6 +24,7 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.annotation.Translatable;
+import com.helger.commons.string.StringHelper;
 import com.helger.commons.text.IMultilingualText;
 import com.helger.commons.text.display.IHasDisplayTextWithArgs;
 import com.helger.commons.text.resolve.DefaultTextResolver;
@@ -31,6 +32,7 @@ import com.helger.commons.text.util.TextHelper;
 import com.helger.ebinterface.ubl.AbstractConverter;
 import com.helger.ebinterface.v42.Ebi42AddressIdentifierType;
 import com.helger.ebinterface.v42.Ebi42AddressType;
+import com.helger.ebinterface.v42.Ebi42DeliveryType;
 import com.helger.ebinterface.v42.Ebi42DocumentTypeType;
 import com.helger.ubl21.codelist.EDocumentTypeCode21;
 import com.helger.xsds.ccts.cct.schemamodule.CodeType;
@@ -38,8 +40,10 @@ import com.helger.xsds.ccts.cct.schemamodule.CodeType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AddressType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.ContactType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CountryType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DeliveryType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyNameType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PeriodType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
 
 /**
@@ -134,14 +138,20 @@ public abstract class AbstractToUBLConverter extends AbstractConverter
       break;
     }
 
-    ret.setStreetName (aEbiAddress.getStreet ());
-    ret.setPostbox (aEbiAddress.getPOBox ());
-    ret.setCityName (aEbiAddress.getTown ());
-    ret.setPostalZone (aEbiAddress.getZIP ());
+    if (StringHelper.hasText (aEbiAddress.getStreet ()))
+      ret.setStreetName (aEbiAddress.getStreet ());
+    if (StringHelper.hasText (aEbiAddress.getPOBox ()))
+      ret.setPostbox (aEbiAddress.getPOBox ());
+    if (StringHelper.hasText (aEbiAddress.getTown ()))
+      ret.setCityName (aEbiAddress.getTown ());
+    if (StringHelper.hasText (aEbiAddress.getZIP ()))
+      ret.setPostalZone (aEbiAddress.getZIP ());
+
     if (aEbiAddress.getCountry () != null)
     {
       final CountryType aUBLCountry = new CountryType ();
-      aUBLCountry.setIdentificationCode (aEbiAddress.getCountry ().getCountryCode ());
+      if (StringHelper.hasText (aEbiAddress.getCountry ().getCountryCode ()))
+        aUBLCountry.setIdentificationCode (aEbiAddress.getCountry ().getCountryCode ());
       aUBLCountry.setName (aEbiAddress.getCountry ().getValue ());
       ret.setCountry (aUBLCountry);
     }
@@ -162,12 +172,52 @@ public abstract class AbstractToUBLConverter extends AbstractConverter
       aUBLPartyName.setName (aEbiAddress.getName ());
       ret.addPartyName (aUBLPartyName);
     }
+
     final ContactType aUBLContact = new ContactType ();
-    aUBLContact.setName (aEbiAddress.getContact ());
-    aUBLContact.setElectronicMail (aEbiAddress.getEmail ());
-    aUBLContact.setTelephone (aEbiAddress.getPhone ());
-    ret.setContact (aUBLContact);
+    boolean bHasData = false;
+    if (StringHelper.hasText (aEbiAddress.getContact ()))
+    {
+      aUBLContact.setName (aEbiAddress.getContact ());
+      bHasData = true;
+    }
+    if (StringHelper.hasText (aEbiAddress.getEmail ()))
+    {
+      aUBLContact.setElectronicMail (aEbiAddress.getEmail ());
+      bHasData = true;
+    }
+    if (StringHelper.hasText (aEbiAddress.getPhone ()))
+    {
+      aUBLContact.setTelephone (aEbiAddress.getPhone ());
+      bHasData = true;
+    }
+    if (bHasData)
+      ret.setContact (aUBLContact);
 
     return ret;
+  }
+
+  @Nullable
+  protected static DeliveryType convertDelivery (@Nullable final Ebi42DeliveryType aEbiDelivery)
+  {
+    if (aEbiDelivery == null)
+      return null;
+
+    final DeliveryType aUBLDelivery = new DeliveryType ();
+    if (aEbiDelivery.getDeliveryID () != null)
+      aUBLDelivery.setID (aEbiDelivery.getDeliveryID ());
+    if (aEbiDelivery.getDate () != null)
+      aUBLDelivery.setActualDeliveryDate (aEbiDelivery.getDate ());
+    else
+      if (aEbiDelivery.getPeriod () != null)
+      {
+        // Delivery period is mapped to invoice period
+        final PeriodType aUBLPeriod = new PeriodType ();
+        aUBLPeriod.setStartDate (aEbiDelivery.getPeriod ().getFromDate ());
+        aUBLPeriod.setEndDate (aEbiDelivery.getPeriod ().getToDate ());
+        aUBLDelivery.setRequestedDeliveryPeriod (aUBLPeriod);
+      }
+    aUBLDelivery.setDeliveryAddress (convertAddress (aEbiDelivery.getAddress ()));
+    aUBLDelivery.setDeliveryParty (convertParty (aEbiDelivery.getAddress ()));
+    return aUBLDelivery;
   }
 }

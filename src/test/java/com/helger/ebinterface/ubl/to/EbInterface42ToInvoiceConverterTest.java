@@ -36,7 +36,7 @@ public final class EbInterface42ToInvoiceConverterTest
       final InvoiceType aInvoice = aToUBL.convertInvoice (aEbi);
       assertNotNull (aInvoice);
 
-      System.err.println (UBL21Writer.invoice ().getAsString (aInvoice));
+      System.err.println (UBL21Writer.invoice ().setFormattedOutput (true).getAsString (aInvoice));
     }
   }
 }
