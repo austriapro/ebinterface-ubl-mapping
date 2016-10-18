@@ -45,6 +45,7 @@ import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.Ite
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyNameType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PeriodType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxCategoryType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxSchemeType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
 
@@ -226,13 +227,31 @@ public abstract class AbstractToUBLConverter extends AbstractConverter
   }
 
   @Nonnull
-  protected static TaxSchemeType createTaxSchemeVAT ()
+  protected static TaxSchemeType createTaxScheme (@Nonnull final String sID)
   {
     final TaxSchemeType aUBLTaxScheme = new TaxSchemeType ();
-    final IDType aUBLTSID = aUBLTaxScheme.setID (SUPPORTED_TAX_SCHEME_ID.getID ());
+    final IDType aUBLTSID = aUBLTaxScheme.setID (sID);
     aUBLTSID.setSchemeAgencyID ("6");
     aUBLTSID.setSchemeID (SUPPORTED_TAX_SCHEME_SCHEME_ID);
     return aUBLTaxScheme;
+  }
+
+  @Nonnull
+  protected static TaxSchemeType createTaxSchemeVAT ()
+  {
+    return createTaxScheme (SUPPORTED_TAX_SCHEME_ID.getID ());
+  }
+
+  @Nonnull
+  protected static TaxCategoryType createTaxCategoryVAT (@Nonnull final String sID)
+  {
+    final TaxCategoryType aUBLTaxCategory = new TaxCategoryType ();
+    final IDType aUBLTCID = aUBLTaxCategory.setID (sID);
+    aUBLTCID.setSchemeAgencyID ("6");
+    aUBLTCID.setSchemeID (SUPPORTED_TAX_SCHEME_SCHEME_ID);
+    // Set default scheme
+    aUBLTaxCategory.setTaxScheme (createTaxSchemeVAT ());
+    return aUBLTaxCategory;
   }
 
   @Nonnull
