@@ -8,6 +8,8 @@ import java.io.File;
 import java.util.Locale;
 
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.helger.commons.error.list.ErrorList;
 import com.helger.commons.io.file.filter.IFileFilter;
@@ -29,6 +31,8 @@ import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
  */
 public final class EbInterface42ToInvoiceConverterTest
 {
+  private static final Logger s_aLogger = LoggerFactory.getLogger (EbInterface42ToInvoiceConverterTest.class);
+
   @Test
   public void testBasic ()
   {
@@ -42,6 +46,8 @@ public final class EbInterface42ToInvoiceConverterTest
 
     for (final File aFile : new FileSystemIterator ("src/test/resources/ebi42").withFilter (IFileFilter.filenameEndsWith (".xml")))
     {
+      s_aLogger.info (aFile.getAbsolutePath ());
+
       final Ebi42InvoiceType aEbi = EbInterfaceReader.ebInterface42 ().read (aFile);
       assertNotNull (aEbi);
 
@@ -50,6 +56,7 @@ public final class EbInterface42ToInvoiceConverterTest
       assertNotNull (aInvoice);
 
       final String sUBL = aUBLWriter.getAsString (aInvoice);
+      assertNotNull (sUBL);
 
       // Back to ebInterface
       final ErrorList aErrorList = new ErrorList ();
@@ -61,8 +68,8 @@ public final class EbInterface42ToInvoiceConverterTest
       final String sEbi1 = aEbiWriter.getAsString (aEbi);
       final String sEbi2 = aEbiWriter.getAsString (aEbi2);
 
-      if (true)
-        System.err.println (sEbi1 + "\n" + sUBL + "\n" + sEbi2);
+      if (false)
+        s_aLogger.info (sEbi1 + "\n" + sUBL + "\n" + sEbi2);
 
       // Won't work :)
       if (false)
