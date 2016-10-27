@@ -727,28 +727,30 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
 
       if (StringHelper.hasNoText (sUBLOrderReferenceID))
       {
-        aTransformationErrorList.add (SingleError.builderError ()
-                                                 .setErrorFieldName ("OrderReference/ID")
-                                                 .setErrorText (EText.ORDER_REFERENCE_MISSING.getDisplayText (m_aDisplayLocale))
-                                                 .build ());
+        if (m_bStrictERBMode)
+          aTransformationErrorList.add (SingleError.builderError ()
+                                                   .setErrorFieldName ("OrderReference/ID")
+                                                   .setErrorText (EText.ORDER_REFERENCE_MISSING.getDisplayText (m_aDisplayLocale))
+                                                   .build ());
       }
       else
       {
-        if (sUBLOrderReferenceID != null && sUBLOrderReferenceID.length () > ORDER_REFERENCE_MAX_LENGTH)
-        {
-          aTransformationErrorList.add (SingleError.builderWarn ()
-                                                   .setErrorFieldName ("OrderReference/ID")
-                                                   .setErrorText (EText.ORDER_REFERENCE_TOO_LONG.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                                         sUBLOrderReferenceID,
-                                                                                                                         Integer.valueOf (ORDER_REFERENCE_MAX_LENGTH)))
-                                                   .build ());
-          sUBLOrderReferenceID = sUBLOrderReferenceID.substring (0, ORDER_REFERENCE_MAX_LENGTH);
-        }
-      }
+        if (m_bStrictERBMode)
+          if (sUBLOrderReferenceID.length () > ORDER_REFERENCE_MAX_LENGTH)
+          {
+            aTransformationErrorList.add (SingleError.builderWarn ()
+                                                     .setErrorFieldName ("OrderReference/ID")
+                                                     .setErrorText (EText.ORDER_REFERENCE_TOO_LONG.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                           sUBLOrderReferenceID,
+                                                                                                                           Integer.valueOf (ORDER_REFERENCE_MAX_LENGTH)))
+                                                     .build ());
+            sUBLOrderReferenceID = sUBLOrderReferenceID.substring (0, ORDER_REFERENCE_MAX_LENGTH);
+          }
 
-      final Ebi42OrderReferenceType aEbiOrderReference = new Ebi42OrderReferenceType ();
-      aEbiOrderReference.setOrderID (sUBLOrderReferenceID);
-      aEbiDoc.getInvoiceRecipient ().setOrderReference (aEbiOrderReference);
+        final Ebi42OrderReferenceType aEbiOrderReference = new Ebi42OrderReferenceType ();
+        aEbiOrderReference.setOrderID (sUBLOrderReferenceID);
+        aEbiDoc.getInvoiceRecipient ().setOrderReference (aEbiOrderReference);
+      }
     }
 
     // Tax totals
