@@ -25,8 +25,8 @@ import com.helger.commons.error.SingleError;
 import com.helger.commons.error.list.ErrorList;
 import com.helger.commons.string.StringHelper;
 import com.helger.ebinterface.ubl.from.AbstractToEbInterfaceConverter;
+import com.helger.peppol.identifier.factory.PeppolIdentifierFactory;
 import com.helger.peppol.identifier.generic.process.IProcessIdentifier;
-import com.helger.peppol.identifier.peppol.process.PeppolProcessIdentifier;
 import com.helger.peppol.identifier.peppol.process.PredefinedProcessIdentifierManager;
 
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.InvoiceTypeCodeType;
@@ -113,7 +113,7 @@ public abstract class AbstractInvoiceConverter extends AbstractToEbInterfaceConv
       if (aProcID == null)
       {
         // Parse basically
-        aProcID = PeppolProcessIdentifier.createWithDefaultScheme (sProfileID);
+        aProcID = PeppolIdentifierFactory.INSTANCE.parseProcessIdentifier (sProfileID);
       }
 
       if (aProcID == null)
