@@ -749,6 +749,9 @@ public final class CreditNoteToEbInterface42Converter extends AbstractCreditNote
           if (aUBLName != null)
             aEbiListLineItem.addDescription (StringHelper.trim (aUBLName.getValue ()));
         }
+        // Add the Note elements as well (IBM, 2016-11)
+        for (final NoteType aUBLNote : aUBLLine.getNote ())
+          aEbiListLineItem.addDescription (StringHelper.trim (aUBLNote.getValue ()));
 
         // Quantity
         final Ebi42UnitType aEbiQuantity = new Ebi42UnitType ();
