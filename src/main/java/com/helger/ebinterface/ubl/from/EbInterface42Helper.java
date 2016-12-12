@@ -237,7 +237,7 @@ public final class EbInterface42Helper
   @Nonnull
   protected static String getAggregated (@Nonnull final Iterable <DescriptionType> aList)
   {
-    return StringHelper.getImploded ('\n', aList, x -> x.getValue ());
+    return StringHelper.getImplodedMapped ('\n', aList, DescriptionType::getValue);
   }
 
   @Nonnull
