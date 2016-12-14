@@ -16,7 +16,6 @@ import com.helger.commons.io.file.filter.IFileFilter;
 import com.helger.commons.io.file.iterate.FileSystemIterator;
 import com.helger.ebinterface.builder.EbInterfaceReader;
 import com.helger.ebinterface.builder.EbInterfaceWriter;
-import com.helger.ebinterface.builder.EbInterfaceWriterBuilder;
 import com.helger.ebinterface.ubl.from.invoice.InvoiceToEbInterface42Converter;
 import com.helger.ebinterface.v42.Ebi42InvoiceType;
 import com.helger.ubl21.UBL21Writer;
@@ -40,8 +39,8 @@ public final class EbInterface42ToInvoiceConverterTest
     final EbInterface42ToInvoiceConverter aToUBL = new EbInterface42ToInvoiceConverter (aLocale, aLocale);
     final InvoiceToEbInterface42Converter aToEbi = new InvoiceToEbInterface42Converter (aLocale, aLocale, false);
 
-    final EbInterfaceWriterBuilder <Ebi42InvoiceType> aEbiWriter = EbInterfaceWriter.ebInterface42 ()
-                                                                                    .setFormattedOutput (true);
+    final EbInterfaceWriter <Ebi42InvoiceType> aEbiWriter = EbInterfaceWriter.ebInterface42 ()
+                                                                             .setFormattedOutput (true);
     final UBL21WriterBuilder <InvoiceType> aUBLWriter = UBL21Writer.invoice ().setFormattedOutput (true);
 
     for (final File aFile : new FileSystemIterator ("src/test/resources/ebi42").withFilter (IFileFilter.filenameEndsWith (".xml")))
