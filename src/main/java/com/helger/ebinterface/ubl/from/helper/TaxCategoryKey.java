@@ -78,6 +78,6 @@ public final class TaxCategoryKey
   {
     return new ToStringGenerator (this).append ("scheme", m_aTaxCategoryScheme)
                                        .append ("ID", m_aTaxCategoryID)
-                                       .toString ();
+                                       .getToString ();
   }
 }

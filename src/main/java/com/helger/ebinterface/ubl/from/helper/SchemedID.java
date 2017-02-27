@@ -76,6 +76,6 @@ public final class SchemedID
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).appendIfNotNull ("schemeID", m_sSchemeID).append ("ID", m_sID).toString ();
+    return new ToStringGenerator (this).appendIfNotNull ("schemeID", m_sSchemeID).append ("ID", m_sID).getToString ();
   }
 }
