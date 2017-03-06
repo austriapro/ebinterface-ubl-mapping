@@ -294,8 +294,9 @@ public final class EbInterface42Helper
 
     if (aEbiAddress != null)
     {
-      // Check delivery party
       String sAddressName = null;
+
+      // Check delivery party
       if (aUBLDelivery.getDeliveryParty () != null)
         for (final PartyNameType aUBLPartyName : aUBLDelivery.getDeliveryParty ().getPartyName ())
         {
