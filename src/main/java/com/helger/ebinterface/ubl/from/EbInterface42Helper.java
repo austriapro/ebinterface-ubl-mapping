@@ -156,7 +156,7 @@ public final class EbInterface42Helper
     }
 
     // Person name
-    final ICommonsList <String> ebContacts = new CommonsArrayList<> ();
+    final ICommonsList <String> ebContacts = new CommonsArrayList <> ();
     for (final PersonType aUBLPerson : aUBLParty.getPerson ())
     {
       ebContacts.add (StringHelper.getImplodedNonEmpty (' ',
@@ -257,19 +257,38 @@ public final class EbInterface42Helper
     aEbiDelivery.setDate (aUBLDelivery.getActualDeliveryDateValue ());
 
     // Address present?
+    final AddressType aUBLDeliveryAddress = aUBLDelivery.getDeliveryAddress ();
+    if (aUBLDeliveryAddress != null)
+    {
+      final Ebi42AddressType aEbiAddress = new Ebi42AddressType ();
+      EbInterface42Helper.setAddressData (aUBLDeliveryAddress,
+                                          aEbiAddress,
+                                          sDeliveryType,
+                                          aTransformationErrorList,
+                                          aContentLocale,
+                                          aDisplayLocale);
+      aEbiDelivery.setAddress (aEbiAddress);
+    }
+
     final LocationType aUBLDeliveryLocation = aUBLDelivery.getDeliveryLocation ();
     if (aUBLDeliveryLocation != null && aUBLDeliveryLocation.getAddress () != null)
     {
       // Optional description
       aEbiDelivery.setDescription (getAggregated (aUBLDeliveryLocation.getDescription ()));
 
-      final Ebi42AddressType aEbiAddress = new Ebi42AddressType ();
-      EbInterface42Helper.setAddressData (aUBLDeliveryLocation.getAddress (),
-                                          aEbiAddress,
-                                          sDeliveryType,
-                                          aTransformationErrorList,
-                                          aContentLocale,
-                                          aDisplayLocale);
+      Ebi42AddressType aEbiAddress = aEbiDelivery.getAddress ();
+      if (aEbiAddress == null)
+      {
+        // No Delivery/DeliveryAddress present
+        aEbiAddress = new Ebi42AddressType ();
+        EbInterface42Helper.setAddressData (aUBLDeliveryLocation.getAddress (),
+                                            aEbiAddress,
+                                            sDeliveryType,
+                                            aTransformationErrorList,
+                                            aContentLocale,
+                                            aDisplayLocale);
+        aEbiDelivery.setAddress (aEbiAddress);
+      }
 
       // Check delivery party
       String sAddressName = null;
@@ -302,8 +321,6 @@ public final class EbInterface42Helper
                                                  .setErrorFieldName (sDeliveryType + "/DeliveryParty")
                                                  .setErrorText (EText.DELIVERY_WITHOUT_NAME.getDisplayText (aDisplayLocale))
                                                  .build ());
-
-      aEbiDelivery.setAddress (aEbiAddress);
     }
 
     return aEbiDelivery;
