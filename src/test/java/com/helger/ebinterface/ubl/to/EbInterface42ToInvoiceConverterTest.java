@@ -77,7 +77,7 @@ public final class EbInterface42ToInvoiceConverterTest
       final ErrorList aErrorList = new ErrorList ();
       final Ebi42InvoiceType aEbi2 = aToEbi.convertToEbInterface (aInvoice, aErrorList);
       assertNotNull (aEbi2);
-      assertTrue (aErrorList.getAllErrors ().toString (), aErrorList.containsNoError ());
+      assertTrue (aErrorList.getAllErrors ().toString () + "\n\nSource UBL: " + sUBL, aErrorList.containsNoError ());
 
       // Convert both ebInterfaces to String and compare :)
       final String sEbi1 = aEbiWriter.getAsString (aEbi);

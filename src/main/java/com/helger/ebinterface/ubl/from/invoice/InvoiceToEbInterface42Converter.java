@@ -43,7 +43,39 @@ import com.helger.ebinterface.codelist.ETaxCode;
 import com.helger.ebinterface.ubl.from.EbInterface42Helper;
 import com.helger.ebinterface.ubl.from.helper.SchemedID;
 import com.helger.ebinterface.ubl.from.helper.TaxCategoryKey;
-import com.helger.ebinterface.v42.*;
+import com.helger.ebinterface.v42.Ebi42AccountType;
+import com.helger.ebinterface.v42.Ebi42BillerType;
+import com.helger.ebinterface.v42.Ebi42DeliveryType;
+import com.helger.ebinterface.v42.Ebi42DetailsType;
+import com.helger.ebinterface.v42.Ebi42DirectDebitType;
+import com.helger.ebinterface.v42.Ebi42DiscountType;
+import com.helger.ebinterface.v42.Ebi42DocumentTypeType;
+import com.helger.ebinterface.v42.Ebi42FurtherIdentificationType;
+import com.helger.ebinterface.v42.Ebi42InvoiceRecipientType;
+import com.helger.ebinterface.v42.Ebi42InvoiceType;
+import com.helger.ebinterface.v42.Ebi42ItemListType;
+import com.helger.ebinterface.v42.Ebi42ListLineItemType;
+import com.helger.ebinterface.v42.Ebi42NoPaymentType;
+import com.helger.ebinterface.v42.Ebi42OrderReferenceDetailType;
+import com.helger.ebinterface.v42.Ebi42OrderReferenceType;
+import com.helger.ebinterface.v42.Ebi42OrderingPartyType;
+import com.helger.ebinterface.v42.Ebi42OtherTaxType;
+import com.helger.ebinterface.v42.Ebi42PaymentConditionsType;
+import com.helger.ebinterface.v42.Ebi42PaymentMethodType;
+import com.helger.ebinterface.v42.Ebi42PaymentReferenceType;
+import com.helger.ebinterface.v42.Ebi42PeriodType;
+import com.helger.ebinterface.v42.Ebi42ReductionAndSurchargeBaseType;
+import com.helger.ebinterface.v42.Ebi42ReductionAndSurchargeDetailsType;
+import com.helger.ebinterface.v42.Ebi42ReductionAndSurchargeListLineItemDetailsType;
+import com.helger.ebinterface.v42.Ebi42ReductionAndSurchargeType;
+import com.helger.ebinterface.v42.Ebi42TaxType;
+import com.helger.ebinterface.v42.Ebi42UnitPriceType;
+import com.helger.ebinterface.v42.Ebi42UnitType;
+import com.helger.ebinterface.v42.Ebi42UniversalBankTransactionType;
+import com.helger.ebinterface.v42.Ebi42VATItemType;
+import com.helger.ebinterface.v42.Ebi42VATRateType;
+import com.helger.ebinterface.v42.Ebi42VATType;
+import com.helger.ebinterface.v42.ObjectFactory;
 import com.helger.peppol.codelist.ETaxSchemeID;
 import com.helger.ubl21.codelist.EPaymentMeansCode21;
 import com.helger.ubl21.codelist.EUnitOfMeasureCode21;
@@ -118,7 +150,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
   {
     if (aUBLPaymentMeans.hasInstructionNoteEntries ())
     {
-      final ICommonsList <String> aNotes = new CommonsArrayList <> ();
+      final ICommonsList <String> aNotes = new CommonsArrayList<> ();
       for (final InstructionNoteType aUBLNote : aUBLPaymentMeans.getInstructionNote ())
       {
         final String sNote = StringHelper.trim (aUBLNote.getValue ());
@@ -321,48 +353,85 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
 
     // Payment terms
     {
-      final ICommonsList <String> aPaymentConditionsNotes = new CommonsArrayList <> ();
+      final ICommonsList <String> aPaymentConditionsNotes = new CommonsArrayList<> ();
       int nPaymentTermsIndex = 0;
       for (final PaymentTermsType aUBLPaymentTerms : aUBLDoc.getPaymentTerms ())
       {
-        if (aUBLPaymentTerms.getSettlementDiscountPercent () != null)
+        // Add notes
+        for (final NoteType aUBLNote : aUBLPaymentTerms.getNote ())
         {
-          if (aUBLPaymentTerms.getSettlementPeriod () == null ||
-              aUBLPaymentTerms.getSettlementPeriod ().getEndDate () == null)
+          final String sUBLNote = StringHelper.trim (aUBLNote.getValue ());
+          if (StringHelper.hasText (sUBLNote))
+            aPaymentConditionsNotes.add (sUBLNote);
+        }
+
+        if (aUBLPaymentTerms.getPaymentDueDate () != null)
+        {
+          final XMLGregorianCalendar aUBLDueDate = aUBLPaymentTerms.getPaymentDueDateValue ();
+          final XMLGregorianCalendar aEbiDueDate = aEbiPaymentConditions.getDueDate ();
+          if (aUBLDueDate != null && aEbiDueDate != null)
           {
-            aTransformationErrorList.add (SingleError.builderWarn ()
-                                                     .setErrorFieldName ("PaymentTerms[" +
-                                                                         nPaymentTermsIndex +
-                                                                         "]/SettlementPeriod")
-                                                     .setErrorText (EText.SETTLEMENT_PERIOD_MISSING.getDisplayText (m_aDisplayLocale))
-                                                     .build ());
+            // Error only if due dates differ
+            if (!aEbiDueDate.equals (aUBLDueDate))
+              aTransformationErrorList.add (SingleError.builderWarn ()
+                                                       .setErrorFieldName ("PaymentTerms[" +
+                                                                           nPaymentTermsIndex +
+                                                                           "]/PaymentDueDate")
+                                                       .setErrorText (EText.PAYMENT_DUE_DATE_ALREADY_CONTAINED.getDisplayText (m_aDisplayLocale))
+                                                       .build ());
           }
           else
-          {
-            // Add notes
-            for (final NoteType aUBLNote : aUBLPaymentTerms.getNote ())
-            {
-              final String sUBLNote = StringHelper.trim (aUBLNote.getValue ());
-              if (StringHelper.hasText (sUBLNote))
-                aPaymentConditionsNotes.add (sUBLNote);
-            }
+            aEbiPaymentConditions.setDueDate (aUBLDueDate);
 
-            final Ebi42DiscountType aEbiDiscount = new Ebi42DiscountType ();
-            aEbiDiscount.setPaymentDate (aUBLPaymentTerms.getSettlementPeriod ().getEndDateValue ());
-            aEbiDiscount.setPercentage (aUBLPaymentTerms.getSettlementDiscountPercentValue ());
-            // Optional amount value
-            aEbiDiscount.setAmount (aUBLPaymentTerms.getAmountValue ());
-            aEbiPaymentConditions.addDiscount (aEbiDiscount);
+          final BigDecimal aUBLPaymentPerc = aUBLPaymentTerms.getPaymentPercentValue ();
+          if (aUBLPaymentPerc != null &&
+              MathHelper.isGreaterThanZero (aUBLPaymentPerc) &&
+              MathHelper.isLowerThan100 (aUBLPaymentPerc))
+          {
+            final BigDecimal aBaseAmount = aUBLDoc.getLegalMonetaryTotal () == null ? null
+                                                                                    : aUBLDoc.getLegalMonetaryTotal ()
+                                                                                             .getPayableAmountValue ();
+            if (aBaseAmount != null)
+            {
+              final BigDecimal aMinimumPayment = MathHelper.getPercentValue (aBaseAmount,
+                                                                             aUBLPaymentPerc,
+                                                                             SCALE_PRICE2,
+                                                                             ROUNDING_MODE);
+              aEbiPaymentConditions.setMinimumPayment (aMinimumPayment);
+            }
           }
         }
         else
-          if (aUBLPaymentTerms.getPenaltySurchargePercent () != null)
+          if (aUBLPaymentTerms.getSettlementDiscountPercent () != null)
           {
-            aTransformationErrorList.add (SingleError.builderWarn ()
-                                                     .setErrorFieldName ("PaymentTerms[" + nPaymentTermsIndex + "]")
-                                                     .setErrorText (EText.PENALTY_NOT_ALLOWED.getDisplayText (m_aDisplayLocale))
-                                                     .build ());
+            if (aUBLPaymentTerms.getSettlementPeriod () == null ||
+                aUBLPaymentTerms.getSettlementPeriod ().getEndDate () == null)
+            {
+              aTransformationErrorList.add (SingleError.builderWarn ()
+                                                       .setErrorFieldName ("PaymentTerms[" +
+                                                                           nPaymentTermsIndex +
+                                                                           "]/SettlementPeriod")
+                                                       .setErrorText (EText.SETTLEMENT_PERIOD_MISSING.getDisplayText (m_aDisplayLocale))
+                                                       .build ());
+            }
+            else
+            {
+              final Ebi42DiscountType aEbiDiscount = new Ebi42DiscountType ();
+              aEbiDiscount.setPaymentDate (aUBLPaymentTerms.getSettlementPeriod ().getEndDateValue ());
+              aEbiDiscount.setPercentage (aUBLPaymentTerms.getSettlementDiscountPercentValue ());
+              // Optional amount value
+              aEbiDiscount.setAmount (aUBLPaymentTerms.getAmountValue ());
+              aEbiPaymentConditions.addDiscount (aEbiDiscount);
+            }
           }
+          else
+            if (aUBLPaymentTerms.getPenaltySurchargePercent () != null)
+            {
+              aTransformationErrorList.add (SingleError.builderWarn ()
+                                                       .setErrorFieldName ("PaymentTerms[" + nPaymentTermsIndex + "]")
+                                                       .setErrorText (EText.PENALTY_NOT_ALLOWED.getDisplayText (m_aDisplayLocale))
+                                                       .build ());
+            }
 
         ++nPaymentTermsIndex;
       }
@@ -454,7 +523,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
 
     // Global comment
     {
-      final ICommonsList <String> aEbiComment = new CommonsArrayList <> ();
+      final ICommonsList <String> aEbiComment = new CommonsArrayList<> ();
       for (final NoteType aNote : aUBLDoc.getNote ())
         if (StringHelper.hasText (aNote.getValue ()))
           aEbiComment.add (aNote.getValue ());
@@ -723,7 +792,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
 
     // Tax totals
     // Map from tax category to percentage
-    final ICommonsMap <TaxCategoryKey, BigDecimal> aTaxCategoryPercMap = new CommonsHashMap <> ();
+    final ICommonsMap <TaxCategoryKey, BigDecimal> aTaxCategoryPercMap = new CommonsHashMap<> ();
     final Ebi42TaxType aEbiTax = new Ebi42TaxType ();
     final Ebi42VATType aEbiVAT = new Ebi42VATType ();
     {

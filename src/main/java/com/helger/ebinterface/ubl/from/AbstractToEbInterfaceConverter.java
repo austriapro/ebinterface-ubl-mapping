@@ -131,6 +131,8 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
     PAYMENTMEANS_UNSUPPORTED_CHANNELCODE ("Die Zahlungsart mit dem ChannelCode ''{0}'' wird ignoriert.",
                                           "The payment means with ChannelCode ''{0}'' are ignored."),
     ERB_NO_PAYMENT_METHOD ("Es muss eine Zahlungsart angegeben werden.", "A payment method must be provided."),
+    PAYMENT_DUE_DATE_ALREADY_CONTAINED ("Es wurde mehr als ein Zahlungsziel gefunden.",
+                                        "More than one payment due date was found."),
     SETTLEMENT_PERIOD_MISSING ("Für Skontoeinträge muss mindestens ein Endedatum angegeben werden.",
                                "Discount items require a settlement end date."),
     PENALTY_NOT_ALLOWED ("Strafzuschläge werden in ebInterface nicht unterstützt.",
