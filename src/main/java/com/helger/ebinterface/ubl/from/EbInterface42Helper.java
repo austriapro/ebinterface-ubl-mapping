@@ -258,9 +258,10 @@ public final class EbInterface42Helper
 
     // Address present?
     final AddressType aUBLDeliveryAddress = aUBLDelivery.getDeliveryAddress ();
+    Ebi42AddressType aEbiAddress = null;
     if (aUBLDeliveryAddress != null)
     {
-      final Ebi42AddressType aEbiAddress = new Ebi42AddressType ();
+      aEbiAddress = new Ebi42AddressType ();
       EbInterface42Helper.setAddressData (aUBLDeliveryAddress,
                                           aEbiAddress,
                                           sDeliveryType,
@@ -276,7 +277,7 @@ public final class EbInterface42Helper
       // Optional description
       aEbiDelivery.setDescription (getAggregated (aUBLDeliveryLocation.getDescription ()));
 
-      Ebi42AddressType aEbiAddress = aEbiDelivery.getAddress ();
+      aEbiAddress = aEbiDelivery.getAddress ();
       if (aEbiAddress == null)
       {
         // No Delivery/DeliveryAddress present
@@ -289,7 +290,10 @@ public final class EbInterface42Helper
                                             aDisplayLocale);
         aEbiDelivery.setAddress (aEbiAddress);
       }
+    }
 
+    if (aEbiAddress != null)
+    {
       // Check delivery party
       String sAddressName = null;
       if (aUBLDelivery.getDeliveryParty () != null)
@@ -300,8 +304,8 @@ public final class EbInterface42Helper
             break;
         }
 
-      // As fallback use location name
-      if (StringHelper.hasNoText (sAddressName))
+      // As fallback use delivery location name
+      if (StringHelper.hasNoText (sAddressName) && aUBLDeliveryLocation != null)
         sAddressName = StringHelper.trim (aUBLDeliveryLocation.getNameValue ());
 
       // As fallback use accounting customer party
