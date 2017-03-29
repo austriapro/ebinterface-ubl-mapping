@@ -30,7 +30,6 @@ import com.helger.commons.collection.ext.CommonsArrayList;
 import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.error.level.EErrorLevel;
 import com.helger.commons.error.list.ErrorList;
-import com.helger.commons.io.file.FileHelper;
 import com.helger.commons.io.file.FilenameHelper;
 import com.helger.commons.io.file.filter.IFileFilter;
 import com.helger.commons.io.file.iterate.FileSystemIterator;
@@ -54,7 +53,7 @@ public final class CreditNoteToEbInterface42ConverterTest
   @Test
   public void testConvertPEPPOLCreditNoteLax ()
   {
-    final ICommonsList <IReadableResource> aTestFiles = new CommonsArrayList<> ();
+    final ICommonsList <IReadableResource> aTestFiles = new CommonsArrayList <> ();
     for (final File aFile : new FileSystemIterator (new File ("src/test/resources/ubl20/creditnote")).withFilter (IFileFilter.filenameEndsWith (".xml")))
       aTestFiles.add (new FileSystemResource (aFile));
 
@@ -85,8 +84,8 @@ public final class CreditNoteToEbInterface42ConverterTest
 
       // Convert ebInterface to XML
       assertTrue (new Ebi42TestMarshaller ().write (aEbInvoice,
-                                                    FileHelper.getOutputStream ("generated-ebi42-files/" +
-                                                                                FilenameHelper.getWithoutPath (aRes.getPath ())))
+                                                    new File ("generated-ebi42-files/" +
+                                                              FilenameHelper.getWithoutPath (aRes.getPath ())))
                                             .isSuccess ());
     }
   }
@@ -94,7 +93,7 @@ public final class CreditNoteToEbInterface42ConverterTest
   @Test
   public void testConvertPEPPOLInvoiceERB ()
   {
-    final ICommonsList <IReadableResource> aTestFiles = new CommonsArrayList<> ();
+    final ICommonsList <IReadableResource> aTestFiles = new CommonsArrayList <> ();
     for (final File aFile : new FileSystemIterator (new File ("src/test/resources/ubl20/creditnote")).withFilter (IFileFilter.filenameEndsWith (".xml")))
       aTestFiles.add (new FileSystemResource (aFile));
 
@@ -125,8 +124,8 @@ public final class CreditNoteToEbInterface42ConverterTest
 
       // Convert ebInterface to XML
       assertTrue (new Ebi42TestMarshaller ().write (aEbInvoice,
-                                                    FileHelper.getOutputStream ("generated-ebi42-files/" +
-                                                                                FilenameHelper.getWithoutPath (aRes.getPath ())))
+                                                    new File ("generated-ebi42-files/" +
+                                                              FilenameHelper.getWithoutPath (aRes.getPath ())))
                                             .isSuccess ());
     }
   }
