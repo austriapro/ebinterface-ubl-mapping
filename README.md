@@ -21,17 +21,17 @@ Currently on the the conversion UBL -> ebInterface 4.2 is present. Next steps ar
   * v1.1.0
     * Last version for JDK 6    
 
-#Building
+# Building
 To build the project you need at least Java 1.8 (or newer) and Apache Maven 3.x. Build is quite easy: call `mvn clean install` in this directory and the final result will be in the `target` directory.
 Additionally Eclipse project files for the latest Eclipse version are contained.
 
-#Maven usage
+# Maven usage
 Add the following to your pom.xml to use this artifact:
 ```
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>ebinterface-ubl-mapping</artifactId>
-  <version>2.0.2</version>
+  <version>2.1.1</version>
 </dependency>
 ```
 
