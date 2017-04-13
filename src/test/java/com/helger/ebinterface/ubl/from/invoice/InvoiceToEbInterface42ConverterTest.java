@@ -23,6 +23,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.util.Locale;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,7 @@ import com.helger.commons.collection.ext.CommonsArrayList;
 import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.error.level.EErrorLevel;
 import com.helger.commons.error.list.ErrorList;
+import com.helger.commons.io.file.FileOperations;
 import com.helger.commons.io.file.FilenameHelper;
 import com.helger.commons.io.file.filter.IFileFilter;
 import com.helger.commons.io.file.iterate.FileSystemIterator;
@@ -51,6 +53,13 @@ import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
 public final class InvoiceToEbInterface42ConverterTest
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (InvoiceToEbInterface42ConverterTest.class);
+  private static final String TARGET_FOLDER = "generated-ebi42-files/";
+
+  @Before
+  public void onInit ()
+  {
+    FileOperations.createDirRecursiveIfNotExisting (new File (TARGET_FOLDER));
+  }
 
   @Test
   public void testConvertPEPPOLInvoiceLax ()
@@ -86,7 +95,7 @@ public final class InvoiceToEbInterface42ConverterTest
 
       // Convert ebInterface to XML
       assertTrue (new Ebi42TestMarshaller ().write (aEbInvoice,
-                                                    new File ("generated-ebi42-files/" +
+                                                    new File (TARGET_FOLDER +
                                                               FilenameHelper.getWithoutPath (aRes.getPath ())))
                                             .isSuccess ());
     }
@@ -126,7 +135,7 @@ public final class InvoiceToEbInterface42ConverterTest
 
       // Convert ebInterface to XML
       assertTrue (new Ebi42TestMarshaller ().write (aEbInvoice,
-                                                    new File ("generated-ebi42-files/" +
+                                                    new File (TARGET_FOLDER +
                                                               FilenameHelper.getWithoutPath (aRes.getPath ())))
                                             .isSuccess ());
     }
