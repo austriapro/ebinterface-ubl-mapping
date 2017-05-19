@@ -150,7 +150,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
   {
     if (aUBLPaymentMeans.hasInstructionNoteEntries ())
     {
-      final ICommonsList <String> aNotes = new CommonsArrayList<> ();
+      final ICommonsList <String> aNotes = new CommonsArrayList <> ();
       for (final InstructionNoteType aUBLNote : aUBLPaymentMeans.getInstructionNote ())
       {
         final String sNote = StringHelper.trim (aUBLNote.getValue ());
@@ -320,7 +320,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
           else
           {
             // No supported payment means code
-            if (MathHelper.isEqualToZero (aEbiDoc.getPayableAmount ()))
+            if (MathHelper.isEQ0 (aEbiDoc.getPayableAmount ()))
             {
               // As nothing is to be paid we can safely use NoPayment
               _setPaymentMeansComment (aUBLPaymentMeans, aEbiPaymentMethod);
@@ -353,7 +353,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
 
     // Payment terms
     {
-      final ICommonsList <String> aPaymentConditionsNotes = new CommonsArrayList<> ();
+      final ICommonsList <String> aPaymentConditionsNotes = new CommonsArrayList <> ();
       int nPaymentTermsIndex = 0;
       for (final PaymentTermsType aUBLPaymentTerms : aUBLDoc.getPaymentTerms ())
       {
@@ -384,9 +384,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
             aEbiPaymentConditions.setDueDate (aUBLDueDate);
 
           final BigDecimal aUBLPaymentPerc = aUBLPaymentTerms.getPaymentPercentValue ();
-          if (aUBLPaymentPerc != null &&
-              MathHelper.isGreaterThanZero (aUBLPaymentPerc) &&
-              MathHelper.isLowerThan100 (aUBLPaymentPerc))
+          if (aUBLPaymentPerc != null && MathHelper.isGT0 (aUBLPaymentPerc) && MathHelper.isLT100 (aUBLPaymentPerc))
           {
             final BigDecimal aBaseAmount = aUBLDoc.getLegalMonetaryTotal () == null ? null
                                                                                     : aUBLDoc.getLegalMonetaryTotal ()
@@ -523,7 +521,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
 
     // Global comment
     {
-      final ICommonsList <String> aEbiComment = new CommonsArrayList<> ();
+      final ICommonsList <String> aEbiComment = new CommonsArrayList <> ();
       for (final NoteType aNote : aUBLDoc.getNote ())
         if (StringHelper.hasText (aNote.getValue ()))
           aEbiComment.add (aNote.getValue ());
@@ -792,7 +790,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
 
     // Tax totals
     // Map from tax category to percentage
-    final ICommonsMap <TaxCategoryKey, BigDecimal> aTaxCategoryPercMap = new CommonsHashMap<> ();
+    final ICommonsMap <TaxCategoryKey, BigDecimal> aTaxCategoryPercMap = new CommonsHashMap <> ();
     final Ebi42TaxType aEbiTax = new Ebi42TaxType ();
     final Ebi42VATType aEbiVAT = new Ebi42VATType ();
     {
@@ -815,11 +813,11 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
             if (aUBLTaxAmount != null && aUBLTaxableAmount != null)
             {
               // Calculate percentage
-              aUBLPercentage = MathHelper.isEqualToZero (aUBLTaxableAmount) ? BigDecimal.ZERO
-                                                                            : aUBLTaxAmount.multiply (CGlobal.BIGDEC_100)
-                                                                                           .divide (aUBLTaxableAmount,
-                                                                                                    SCALE_PERC,
-                                                                                                    ROUNDING_MODE);
+              aUBLPercentage = MathHelper.isEQ0 (aUBLTaxableAmount) ? BigDecimal.ZERO
+                                                                    : aUBLTaxAmount.multiply (CGlobal.BIGDEC_100)
+                                                                                   .divide (aUBLTaxableAmount,
+                                                                                            SCALE_PERC,
+                                                                                            ROUNDING_MODE);
             }
           }
 
@@ -829,7 +827,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
             if (aUBLTaxableAmount == null && aUBLTaxAmount != null)
             {
               // Cannot "back" calculate the taxable amount from 0 percentage!
-              if (MathHelper.isNotEqualToZero (aUBLPercentage))
+              if (MathHelper.isNE0 (aUBLPercentage))
               {
                 // Calculate (inexact) subtotal
                 aUBLTaxableAmount = aUBLTaxAmount.multiply (CGlobal.BIGDEC_100).divide (aUBLPercentage,
@@ -841,11 +839,11 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
               if (aUBLTaxableAmount != null && aUBLTaxAmount == null)
               {
                 // Calculate (inexact) subtotal
-                aUBLTaxAmount = MathHelper.isEqualToZero (aUBLPercentage) ? BigDecimal.ZERO
-                                                                          : aUBLTaxableAmount.multiply (aUBLPercentage)
-                                                                                             .divide (CGlobal.BIGDEC_100,
-                                                                                                      SCALE_PRICE4,
-                                                                                                      ROUNDING_MODE);
+                aUBLTaxAmount = MathHelper.isEQ0 (aUBLPercentage) ? BigDecimal.ZERO
+                                                                  : aUBLTaxableAmount.multiply (aUBLPercentage)
+                                                                                     .divide (CGlobal.BIGDEC_100,
+                                                                                              SCALE_PRICE4,
+                                                                                              ROUNDING_MODE);
               }
           }
 
@@ -1102,7 +1100,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
           if (aUBLBaseQuantity != null)
           {
             aEbiUnitPrice.setBaseQuantity (aUBLBaseQuantity);
-            if (MathHelper.isEqualToZero (aUBLBaseQuantity))
+            if (MathHelper.isEQ0 (aUBLBaseQuantity))
               aEbiUnitPrice.setValue (BigDecimal.ZERO);
           }
           aEbiListLineItem.setUnitPrice (aEbiUnitPrice);
@@ -1112,7 +1110,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
           // Unit price = lineExtensionAmount / quantity (mandatory)
           final BigDecimal aUBLLineExtensionAmount = aUBLLine.getLineExtensionAmountValue ();
           final Ebi42UnitPriceType aEbiUnitPrice = new Ebi42UnitPriceType ();
-          if (MathHelper.isEqualToZero (aEbiQuantity.getValue ()))
+          if (MathHelper.isEQ0 (aEbiQuantity.getValue ()))
             aEbiUnitPrice.setValue (BigDecimal.ZERO);
           else
             aEbiUnitPrice.setValue (aUBLLineExtensionAmount.divide (aEbiQuantity.getValue (),
@@ -1143,7 +1141,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
                                                                                               ROUNDING_MODE));
 
         // Special handling in case no VAT item is present
-        if (MathHelper.isEqualToZero (aUBLPercent))
+        if (MathHelper.isEQ0 (aUBLPercent))
           aTotalZeroPercLineExtensionAmount = aTotalZeroPercLineExtensionAmount.add (aEbiListLineItem.getLineItemAmount ());
 
         // Order reference per line
@@ -1378,8 +1376,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
 
     // PrepaidAmount is not supported!
     final MonetaryTotalType aUBLMonetaryTotal = aUBLDoc.getLegalMonetaryTotal ();
-    if (aUBLMonetaryTotal.getPrepaidAmount () != null &&
-        !MathHelper.isEqualToZero (aUBLMonetaryTotal.getPrepaidAmountValue ()))
+    if (aUBLMonetaryTotal.getPrepaidAmount () != null && !MathHelper.isEQ0 (aUBLMonetaryTotal.getPrepaidAmountValue ()))
     {
       aTransformationErrorList.add (SingleError.builderError ()
                                                .setErrorFieldName ("Invoice/LegalMonetaryTotal/PrepaidAmount")

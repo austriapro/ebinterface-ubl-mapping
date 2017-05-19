@@ -221,7 +221,7 @@ public final class CreditNoteToEbInterface42Converter extends AbstractCreditNote
 
     // Global comment
     {
-      final ICommonsList <String> aEbiComment = new CommonsArrayList<> ();
+      final ICommonsList <String> aEbiComment = new CommonsArrayList <> ();
       for (final NoteType aNote : aUBLDoc.getNote ())
         if (StringHelper.hasText (aNote.getValue ()))
           aEbiComment.add (aNote.getValue ());
@@ -490,7 +490,7 @@ public final class CreditNoteToEbInterface42Converter extends AbstractCreditNote
 
     // Tax totals
     // Map from tax category to percentage
-    final ICommonsMap <TaxCategoryKey, BigDecimal> aTaxCategoryPercMap = new CommonsHashMap<> ();
+    final ICommonsMap <TaxCategoryKey, BigDecimal> aTaxCategoryPercMap = new CommonsHashMap <> ();
     final Ebi42TaxType aEbiTax = new Ebi42TaxType ();
     final Ebi42VATType aEbiVAT = new Ebi42VATType ();
     {
@@ -513,11 +513,11 @@ public final class CreditNoteToEbInterface42Converter extends AbstractCreditNote
             if (aUBLTaxAmount != null && aUBLTaxableAmount != null)
             {
               // Calculate percentage
-              aUBLPercentage = MathHelper.isEqualToZero (aUBLTaxableAmount) ? BigDecimal.ZERO
-                                                                            : aUBLTaxAmount.multiply (CGlobal.BIGDEC_100)
-                                                                                           .divide (aUBLTaxableAmount,
-                                                                                                    SCALE_PERC,
-                                                                                                    ROUNDING_MODE);
+              aUBLPercentage = MathHelper.isEQ0 (aUBLTaxableAmount) ? BigDecimal.ZERO
+                                                                    : aUBLTaxAmount.multiply (CGlobal.BIGDEC_100)
+                                                                                   .divide (aUBLTaxableAmount,
+                                                                                            SCALE_PERC,
+                                                                                            ROUNDING_MODE);
             }
           }
 
@@ -527,7 +527,7 @@ public final class CreditNoteToEbInterface42Converter extends AbstractCreditNote
             if (aUBLTaxableAmount == null && aUBLTaxAmount != null)
             {
               // Cannot "back" calculate the taxable amount from 0 percentage!
-              if (MathHelper.isNotEqualToZero (aUBLPercentage))
+              if (MathHelper.isNE0 (aUBLPercentage))
               {
                 // Calculate (inexact) subtotal
                 aUBLTaxableAmount = aUBLTaxAmount.multiply (CGlobal.BIGDEC_100).divide (aUBLPercentage,
@@ -539,11 +539,11 @@ public final class CreditNoteToEbInterface42Converter extends AbstractCreditNote
               if (aUBLTaxableAmount != null && aUBLTaxAmount == null)
               {
                 // Calculate (inexact) subtotal
-                aUBLTaxAmount = MathHelper.isEqualToZero (aUBLPercentage) ? BigDecimal.ZERO
-                                                                          : aUBLTaxableAmount.multiply (aUBLPercentage)
-                                                                                             .divide (CGlobal.BIGDEC_100,
-                                                                                                      SCALE_PRICE4,
-                                                                                                      ROUNDING_MODE);
+                aUBLTaxAmount = MathHelper.isEQ0 (aUBLPercentage) ? BigDecimal.ZERO
+                                                                  : aUBLTaxableAmount.multiply (aUBLPercentage)
+                                                                                     .divide (CGlobal.BIGDEC_100,
+                                                                                              SCALE_PRICE4,
+                                                                                              ROUNDING_MODE);
               }
           }
 
@@ -799,7 +799,7 @@ public final class CreditNoteToEbInterface42Converter extends AbstractCreditNote
           if (aUBLBaseQuantity != null)
           {
             aEbiUnitPrice.setBaseQuantity (aUBLBaseQuantity);
-            if (MathHelper.isEqualToZero (aUBLBaseQuantity))
+            if (MathHelper.isEQ0 (aUBLBaseQuantity))
               aEbiUnitPrice.setValue (BigDecimal.ZERO);
           }
           aEbiListLineItem.setUnitPrice (aEbiUnitPrice);
@@ -809,7 +809,7 @@ public final class CreditNoteToEbInterface42Converter extends AbstractCreditNote
           // Unit price = lineExtensionAmount / quantity (mandatory)
           final BigDecimal aUBLLineExtensionAmount = aUBLLine.getLineExtensionAmountValue ();
           final Ebi42UnitPriceType aEbiUnitPrice = new Ebi42UnitPriceType ();
-          if (MathHelper.isEqualToZero (aEbiQuantity.getValue ()))
+          if (MathHelper.isEQ0 (aEbiQuantity.getValue ()))
             aEbiUnitPrice.setValue (BigDecimal.ZERO);
           else
             aEbiUnitPrice.setValue (aUBLLineExtensionAmount.divide (aEbiQuantity.getValue (),
@@ -828,9 +828,9 @@ public final class CreditNoteToEbInterface42Converter extends AbstractCreditNote
         final Ebi42VATRateType aEbiVATRate = new Ebi42VATRateType ();
         aEbiVATRate.setValue (aUBLPercent);
         if (aUBLTaxCategory != null)
-                                    // Optional
-                                    if (false)
-                                    aEbiVATRate.setTaxCode (aUBLTaxCategory.getIDValue ());
+          // Optional
+          if (false)
+            aEbiVATRate.setTaxCode (aUBLTaxCategory.getIDValue ());
         aEbiListLineItem.setVATRate (aEbiVATRate);
 
         // Line item amount (quantity * unit price +- reduction / surcharge)
@@ -838,7 +838,7 @@ public final class CreditNoteToEbInterface42Converter extends AbstractCreditNote
                                                                                               ROUNDING_MODE));
 
         // Special handling in case no VAT item is present
-        if (MathHelper.isEqualToZero (aUBLPercent))
+        if (MathHelper.isEQ0 (aUBLPercent))
           aTotalZeroPercLineExtensionAmount = aTotalZeroPercLineExtensionAmount.add (aEbiListLineItem.getLineItemAmount ());
 
         // Order reference per line (UBL 2.1 only)
@@ -1074,8 +1074,7 @@ public final class CreditNoteToEbInterface42Converter extends AbstractCreditNote
 
     // PrepaidAmount is not supported!
     final MonetaryTotalType aUBLMonetaryTotal = aUBLDoc.getLegalMonetaryTotal ();
-    if (aUBLMonetaryTotal.getPrepaidAmount () != null &&
-        !MathHelper.isEqualToZero (aUBLMonetaryTotal.getPrepaidAmountValue ()))
+    if (aUBLMonetaryTotal.getPrepaidAmount () != null && !MathHelper.isEQ0 (aUBLMonetaryTotal.getPrepaidAmountValue ()))
     {
       aTransformationErrorList.add (SingleError.builderError ()
                                                .setErrorFieldName ("CreditNote/LegalMonetaryTotal/PrepaidAmount")
