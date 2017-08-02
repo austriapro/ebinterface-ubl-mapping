@@ -121,13 +121,9 @@ public final class InvoiceToEbInterface42Converter extends AbstractToEbInterface
     {
       final ICommonsList <String> aNotes = new CommonsArrayList <> ();
       for (final InstructionNoteType aUBLNote : aUBLPaymentMeans.getInstructionNote ())
-      {
-        final String sNote = StringHelper.trim (aUBLNote.getValue ());
-        if (StringHelper.hasText (sNote))
-          aNotes.add (sNote);
-      }
-      if (!aNotes.isEmpty ())
-        aEbiPaymentMethod.setComment (StringHelper.getImploded ('\n', aNotes));
+        aNotes.add (StringHelper.trim (aUBLNote.getValue ()));
+      if (aNotes.isNotEmpty ())
+        aEbiPaymentMethod.setComment (StringHelper.getImplodedNonEmpty ('\n', aNotes));
     }
   }
 
@@ -194,7 +190,8 @@ public final class InvoiceToEbInterface42Converter extends AbstractToEbInterface
 
             // BIC
             final FinancialAccountType aUBLFinancialAccount = aUBLPaymentMeans.getPayeeFinancialAccount ();
-            if (aUBLFinancialAccount.getFinancialInstitutionBranch () != null &&
+            if (aUBLFinancialAccount != null &&
+                aUBLFinancialAccount.getFinancialInstitutionBranch () != null &&
                 aUBLFinancialAccount.getFinancialInstitutionBranch ().getFinancialInstitution () != null)
             {
               final String sBIC = StringHelper.trim (aUBLFinancialAccount.getFinancialInstitutionBranch ()
@@ -217,7 +214,9 @@ public final class InvoiceToEbInterface42Converter extends AbstractToEbInterface
             }
 
             // IBAN
-            final String sIBAN = StringHelper.trim (aUBLPaymentMeans.getPayeeFinancialAccount ().getIDValue ());
+            final String sIBAN = aUBLPaymentMeans.getPayeeFinancialAccount () != null ? StringHelper.trim (aUBLPaymentMeans.getPayeeFinancialAccount ()
+                                                                                                                           .getIDValue ())
+                                                                                      : null;
             aEbiAccount.setIBAN (sIBAN);
             if (StringHelper.getLength (sIBAN) > IBAN_MAX_LENGTH)
             {

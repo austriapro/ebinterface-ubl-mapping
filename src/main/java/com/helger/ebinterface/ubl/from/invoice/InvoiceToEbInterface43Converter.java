@@ -121,13 +121,9 @@ public final class InvoiceToEbInterface43Converter extends AbstractToEbInterface
     {
       final ICommonsList <String> aNotes = new CommonsArrayList <> ();
       for (final InstructionNoteType aUBLNote : aUBLPaymentMeans.getInstructionNote ())
-      {
-        final String sNote = StringHelper.trim (aUBLNote.getValue ());
-        if (StringHelper.hasText (sNote))
-          aNotes.add (sNote);
-      }
-      if (!aNotes.isEmpty ())
-        aEbiPaymentMethod.setComment (StringHelper.getImploded ('\n', aNotes));
+        aNotes.add (StringHelper.trim (aUBLNote.getValue ()));
+      if (aNotes.isNotEmpty ())
+        aEbiPaymentMethod.setComment (StringHelper.getImplodedNonEmpty ('\n', aNotes));
     }
   }
 

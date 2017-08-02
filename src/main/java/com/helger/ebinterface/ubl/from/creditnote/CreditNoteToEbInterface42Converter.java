@@ -103,7 +103,8 @@ public final class CreditNoteToEbInterface42Converter extends AbstractToEbInterf
     return this;
   }
 
-  private void _convertPayment (final ErrorList aTransformationErrorList, final Ebi42InvoiceType aEbiDoc)
+  private void _convertPayment (@Nonnull final ErrorList aTransformationErrorList,
+                                @Nonnull final Ebi42InvoiceType aEbiDoc)
   {
     // Always no payment
     final Ebi42PaymentMethodType aEbiPaymentMethod = new Ebi42PaymentMethodType ();
