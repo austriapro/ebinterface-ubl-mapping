@@ -13,4 +13,5 @@ hs_err_pid*
 /target/
 /generated-ebi41-files/
 /generated-ebi42-files/
+/generated-ebi43-files/
 /**/.pmd

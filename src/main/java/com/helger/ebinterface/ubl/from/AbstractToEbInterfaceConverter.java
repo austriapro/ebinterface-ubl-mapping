@@ -16,7 +16,6 @@
  */
 package com.helger.ebinterface.ubl.from;
 
-import java.util.List;
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
@@ -24,20 +23,28 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.annotation.Translatable;
+import com.helger.commons.error.SingleError;
+import com.helger.commons.error.list.ErrorList;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.text.IMultilingualText;
 import com.helger.commons.text.display.IHasDisplayTextWithArgs;
 import com.helger.commons.text.resolve.DefaultTextResolver;
 import com.helger.commons.text.util.TextHelper;
 import com.helger.ebinterface.ubl.AbstractConverter;
-import com.helger.ebinterface.v42.Ebi42DocumentTypeType;
-import com.helger.ebinterface.v42.Ebi42InvoiceType;
-import com.helger.ebinterface.v42.Ebi42RelatedDocumentType;
+import com.helger.peppol.identifier.factory.PeppolIdentifierFactory;
+import com.helger.peppol.identifier.generic.process.IProcessIdentifier;
+import com.helger.peppol.identifier.peppol.doctype.IPeppolPredefinedDocumentTypeIdentifier;
+import com.helger.peppol.identifier.peppol.process.IPeppolPredefinedProcessIdentifier;
+import com.helger.peppol.identifier.peppol.process.PredefinedProcessIdentifierManager;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AllowanceChargeType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.BillingReferenceType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DocumentReferenceType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.AllowanceChargeReasonType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.CustomizationIDType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.InvoiceTypeCodeType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.ProfileIDType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.UBLVersionIDType;
+import oasis.names.specification.ubl.schema.xsd.creditnote_21.CreditNoteType;
+import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
 
 /**
  * Base class for PEPPOL UBL to ebInterface converter
@@ -207,46 +214,235 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
     return aSB.toString ();
   }
 
-  protected static void convertRelatedDocuments (@Nonnull final List <BillingReferenceType> aUBLBillingReferences,
-                                                 @Nonnull final Ebi42InvoiceType aEbiDoc)
+  /**
+   * Check if the passed UBL invoice is transformable
+   *
+   * @param aUBLInvoice
+   *        The UBL invoice to check
+   */
+  protected final void _checkConsistency (@Nonnull final InvoiceType aUBLInvoice,
+                                          @Nonnull final ErrorList aTransformationErrorList)
   {
-    for (final BillingReferenceType aUBLBillingReference : aUBLBillingReferences)
+    // Check UBLVersionID
+    final UBLVersionIDType aUBLVersionID = aUBLInvoice.getUBLVersionID ();
+    if (aUBLVersionID == null)
     {
-      if (aUBLBillingReference.getInvoiceDocumentReference () != null &&
-          aUBLBillingReference.getInvoiceDocumentReference ().getIDValue () != null)
+      aTransformationErrorList.add (SingleError.builderError ()
+                                               .setErrorFieldName ("UBLVersionID")
+                                               .setErrorText (EText.NO_UBL_VERSION_ID.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                              UBL_VERSION_20,
+                                                                                                              UBL_VERSION_21))
+                                               .build ());
+    }
+    else
+    {
+      final String sUBLVersionID = StringHelper.trim (aUBLVersionID.getValue ());
+      if (!UBL_VERSION_20.equals (sUBLVersionID) && !UBL_VERSION_21.equals (sUBLVersionID))
       {
-        final Ebi42RelatedDocumentType aEbiRelatedDocument = new Ebi42RelatedDocumentType ();
-        aEbiRelatedDocument.setInvoiceNumber (aUBLBillingReference.getInvoiceDocumentReference ().getIDValue ());
-        aEbiRelatedDocument.setInvoiceDate (aUBLBillingReference.getInvoiceDocumentReference ().getIssueDateValue ());
-        aEbiRelatedDocument.setDocumentType (Ebi42DocumentTypeType.INVOICE);
-        aEbiDoc.addRelatedDocument (aEbiRelatedDocument);
+        aTransformationErrorList.add (SingleError.builderError ()
+                                                 .setErrorFieldName ("UBLVersionID")
+                                                 .setErrorText (EText.INVALID_UBL_VERSION_ID.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                     sUBLVersionID,
+                                                                                                                     UBL_VERSION_20,
+                                                                                                                     UBL_VERSION_21))
+                                                 .build ());
       }
-      else
-        if (aUBLBillingReference.getCreditNoteDocumentReference () != null &&
-            aUBLBillingReference.getCreditNoteDocumentReference ().getIDValue () != null)
-        {
-          final Ebi42RelatedDocumentType aEbiRelatedDocument = new Ebi42RelatedDocumentType ();
-          aEbiRelatedDocument.setInvoiceNumber (aUBLBillingReference.getCreditNoteDocumentReference ().getIDValue ());
-          aEbiRelatedDocument.setInvoiceDate (aUBLBillingReference.getCreditNoteDocumentReference ()
-                                                                  .getIssueDateValue ());
-          aEbiRelatedDocument.setDocumentType (Ebi42DocumentTypeType.CREDIT_MEMO);
-          aEbiDoc.addRelatedDocument (aEbiRelatedDocument);
-        }
-      // Ignore other values
+    }
+
+    // Check ProfileID
+    IProcessIdentifier aProcID = null;
+    final ProfileIDType aProfileID = aUBLInvoice.getProfileID ();
+    if (aProfileID == null)
+    {
+      aTransformationErrorList.add (SingleError.builderWarn ()
+                                               .setErrorFieldName ("ProfileID")
+                                               .setErrorText (EText.NO_PROFILE_ID.getDisplayText (m_aDisplayLocale))
+                                               .build ());
+    }
+    else
+    {
+      final String sProfileID = StringHelper.trim (aProfileID.getValue ());
+      aProcID = PredefinedProcessIdentifierManager.getProcessIdentifierOfID (sProfileID);
+      if (aProcID == null)
+      {
+        // Parse basically
+        aProcID = PeppolIdentifierFactory.INSTANCE.parseProcessIdentifier (sProfileID);
+      }
+
+      if (aProcID == null)
+      {
+        aTransformationErrorList.add (SingleError.builderWarn ()
+                                                 .setErrorFieldName ("ProfileID")
+                                                 .setErrorText (EText.INVALID_PROFILE_ID.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                 sProfileID))
+                                                 .build ());
+      }
+    }
+
+    // Check CustomizationID
+    // I'm not quite sure whether the document ID or "PEPPOL" should be used!
+    // if (false)
+    // {
+    // final CustomizationIDType aCustomizationID =
+    // aUBLInvoice.getCustomizationID ();
+    // if (aCustomizationID == null)
+    // aTransformationErrorList.add (SingleError.builderError
+    // ().setErrorFieldName ("CustomizationID",
+    // EText.NO_CUSTOMIZATION_ID.getDisplayText (m_aDisplayLocale));
+    // else
+    // if (!CPeppolUBL.CUSTOMIZATION_SCHEMEID.equals
+    // (aCustomizationID.getSchemeID ()))
+    // aTransformationErrorList.add (SingleError.builderError
+    // ().setErrorFieldName ("CustomizationID/schemeID",
+    // EText.INVALID_CUSTOMIZATION_SCHEME_ID.getDisplayTextWithArgs
+    // (m_aDisplayLocale,
+    // aCustomizationID.getSchemeID (),
+    // CPeppolUBL.CUSTOMIZATION_SCHEMEID));
+    // else
+    // if (aProcID != null)
+    // {
+    // final String sCustomizationID = StringHelper.trim
+    // (aCustomizationID.getValue ());
+    // IPeppolPredefinedDocumentTypeIdentifier aMatchingDocID = null;
+    // for (final IPeppolPredefinedDocumentTypeIdentifier aDocID :
+    // aProcID.getDocumentTypeIdentifiers ())
+    // if (aDocID.getAsUBLCustomizationID ().equals (sCustomizationID))
+    // {
+    // // We found a match
+    // aMatchingDocID = aDocID;
+    // break;
+    // }
+    // if (aMatchingDocID == null)
+    // aTransformationErrorList.add (SingleError.builderError
+    // ().setErrorFieldName ("CustomizationID",
+    // EText.INVALID_CUSTOMIZATION_ID.getDisplayTextWithArgs (m_aDisplayLocale,
+    // sCustomizationID));
+    // }
+    // }
+
+    // Invoice type code
+    final InvoiceTypeCodeType aInvoiceTypeCode = aUBLInvoice.getInvoiceTypeCode ();
+    if (aInvoiceTypeCode == null)
+    {
+      // None present
+      aTransformationErrorList.add (SingleError.builderWarn ()
+                                               .setErrorFieldName ("InvoiceTypeCode")
+                                               .setErrorText (EText.NO_INVOICE_TYPECODE.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                INVOICE_TYPE_CODE))
+                                               .build ());
+    }
+    else
+    {
+      // If one is present, it must match
+      final String sInvoiceTypeCode = StringHelper.trim (aInvoiceTypeCode.getValue ());
+      if (!INVOICE_TYPE_CODE.equals (sInvoiceTypeCode))
+      {
+        aTransformationErrorList.add (SingleError.builderError ()
+                                                 .setErrorFieldName ("InvoiceTypeCode")
+                                                 .setErrorText (EText.INVALID_INVOICE_TYPECODE.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                       sInvoiceTypeCode,
+                                                                                                                       INVOICE_TYPE_CODE))
+                                                 .build ());
+      }
     }
   }
 
-  protected static void convertReferencedDocuments (@Nonnull final List <DocumentReferenceType> aUBLDocumentReferences,
-                                                    @Nonnull final Ebi42InvoiceType aEbiDoc)
+  /**
+   * Check if the passed UBL invoice is transformable
+   *
+   * @param aUBLCreditNote
+   *        The UBL invoice to check
+   */
+  protected final void _checkConsistency (@Nonnull final CreditNoteType aUBLCreditNote,
+                                          @Nonnull final ErrorList aTransformationErrorList)
   {
-    for (final DocumentReferenceType aUBLDocumentReference : aUBLDocumentReferences)
-      if (StringHelper.hasText (aUBLDocumentReference.getIDValue ()) && aUBLDocumentReference.getAttachment () == null)
+    // Check UBLVersionID
+    final UBLVersionIDType aUBLVersionID = aUBLCreditNote.getUBLVersionID ();
+    if (aUBLVersionID == null)
+    {
+      aTransformationErrorList.add (SingleError.builderError ()
+                                               .setErrorFieldName ("UBLVersionID")
+                                               .setErrorText (EText.NO_UBL_VERSION_ID.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                              UBL_VERSION_20,
+                                                                                                              UBL_VERSION_21))
+                                               .build ());
+    }
+    else
+    {
+      final String sUBLVersionID = StringHelper.trim (aUBLVersionID.getValue ());
+      if (!UBL_VERSION_20.equals (sUBLVersionID) && !UBL_VERSION_21.equals (sUBLVersionID))
       {
-        final Ebi42RelatedDocumentType aEbiRelatedDocument = new Ebi42RelatedDocumentType ();
-        aEbiRelatedDocument.setInvoiceNumber (aUBLDocumentReference.getIDValue ());
-        aEbiRelatedDocument.setInvoiceDate (aUBLDocumentReference.getIssueDateValue ());
-        aEbiRelatedDocument.setComment (aUBLDocumentReference.getDocumentTypeValue ());
-        aEbiDoc.getRelatedDocument ().add (aEbiRelatedDocument);
+        aTransformationErrorList.add (SingleError.builderError ()
+                                                 .setErrorFieldName ("UBLVersionID")
+                                                 .setErrorText (EText.INVALID_UBL_VERSION_ID.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                     sUBLVersionID,
+                                                                                                                     UBL_VERSION_20,
+                                                                                                                     UBL_VERSION_21))
+                                                 .build ());
       }
+    }
+
+    // Check ProfileID
+    IPeppolPredefinedProcessIdentifier aProcID = null;
+    final ProfileIDType aProfileID = aUBLCreditNote.getProfileID ();
+    if (aProfileID == null)
+    {
+      aTransformationErrorList.add (SingleError.builderError ()
+                                               .setErrorFieldName ("ProfileID")
+                                               .setErrorText (EText.NO_PROFILE_ID.getDisplayText (m_aDisplayLocale))
+                                               .build ());
+    }
+    else
+    {
+      final String sProfileID = StringHelper.trim (aProfileID.getValue ());
+      aProcID = PredefinedProcessIdentifierManager.getProcessIdentifierOfID (sProfileID);
+      if (aProcID == null)
+      {
+        aTransformationErrorList.add (SingleError.builderError ()
+                                                 .setErrorFieldName ("ProfileID")
+                                                 .setErrorText (EText.INVALID_PROFILE_ID.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                 sProfileID))
+                                                 .build ());
+      }
+    }
+
+    // Check CustomizationID
+    // I'm not quite sure whether the document ID or "PEPPOL" should be used!
+    if (false)
+    {
+      final CustomizationIDType aCustomizationID = aUBLCreditNote.getCustomizationID ();
+      if (aCustomizationID == null)
+        aTransformationErrorList.add (SingleError.builderError ()
+                                                 .setErrorFieldName ("CustomizationID")
+                                                 .setErrorText (EText.NO_CUSTOMIZATION_ID.getDisplayText (m_aDisplayLocale))
+                                                 .build ());
+      else
+        if (!CUSTOMIZATION_SCHEMEID.equals (aCustomizationID.getSchemeID ()))
+          aTransformationErrorList.add (SingleError.builderError ()
+                                                   .setErrorFieldName ("CustomizationID/schemeID")
+                                                   .setErrorText (EText.INVALID_CUSTOMIZATION_SCHEME_ID.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                                aCustomizationID.getSchemeID (),
+                                                                                                                                CUSTOMIZATION_SCHEMEID))
+                                                   .build ());
+        else
+          if (aProcID != null)
+          {
+            final String sCustomizationID = StringHelper.trim (aCustomizationID.getValue ());
+            IPeppolPredefinedDocumentTypeIdentifier aMatchingDocID = null;
+            for (final IPeppolPredefinedDocumentTypeIdentifier aDocID : aProcID.getDocumentTypeIdentifiers ())
+              if (aDocID.getAsUBLCustomizationID ().equals (sCustomizationID))
+              {
+                // We found a match
+                aMatchingDocID = aDocID;
+                break;
+              }
+            if (aMatchingDocID == null)
+              aTransformationErrorList.add (SingleError.builderError ()
+                                                       .setErrorFieldName ("CustomizationID")
+                                                       .setErrorText (EText.INVALID_CUSTOMIZATION_ID.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                             sCustomizationID))
+                                                       .build ());
+          }
+    }
   }
 }

@@ -41,6 +41,7 @@ public abstract class AbstractConverter
   public static final String SUPPORTED_TAX_SCHEME_SCHEME_ID = "UN/ECE 5153";
   public static final ETaxSchemeID SUPPORTED_TAX_SCHEME_ID = ETaxSchemeID.VALUE_ADDED_TAX;
   public static final String EBI_GENERATING_SYSTEM_42 = "UBL 2.1 to ebInterface 4.2 converter";
+  public static final String EBI_GENERATING_SYSTEM_43 = "UBL 2.1 to ebInterface 4.3 converter";
   public static final int SCALE_PERC = 2;
   public static final int SCALE_PRICE2 = 2;
   public static final int SCALE_PRICE4 = 4;

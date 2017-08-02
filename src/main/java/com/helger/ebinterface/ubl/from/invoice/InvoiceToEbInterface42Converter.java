@@ -40,42 +40,11 @@ import com.helger.commons.state.ETriState;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.StringParser;
 import com.helger.ebinterface.codelist.ETaxCode;
+import com.helger.ebinterface.ubl.from.AbstractToEbInterface42Converter;
 import com.helger.ebinterface.ubl.from.EbInterface42Helper;
 import com.helger.ebinterface.ubl.from.helper.SchemedID;
 import com.helger.ebinterface.ubl.from.helper.TaxCategoryKey;
-import com.helger.ebinterface.v42.Ebi42AccountType;
-import com.helger.ebinterface.v42.Ebi42BillerType;
-import com.helger.ebinterface.v42.Ebi42DeliveryType;
-import com.helger.ebinterface.v42.Ebi42DetailsType;
-import com.helger.ebinterface.v42.Ebi42DirectDebitType;
-import com.helger.ebinterface.v42.Ebi42DiscountType;
-import com.helger.ebinterface.v42.Ebi42DocumentTypeType;
-import com.helger.ebinterface.v42.Ebi42FurtherIdentificationType;
-import com.helger.ebinterface.v42.Ebi42InvoiceRecipientType;
-import com.helger.ebinterface.v42.Ebi42InvoiceType;
-import com.helger.ebinterface.v42.Ebi42ItemListType;
-import com.helger.ebinterface.v42.Ebi42ListLineItemType;
-import com.helger.ebinterface.v42.Ebi42NoPaymentType;
-import com.helger.ebinterface.v42.Ebi42OrderReferenceDetailType;
-import com.helger.ebinterface.v42.Ebi42OrderReferenceType;
-import com.helger.ebinterface.v42.Ebi42OrderingPartyType;
-import com.helger.ebinterface.v42.Ebi42OtherTaxType;
-import com.helger.ebinterface.v42.Ebi42PaymentConditionsType;
-import com.helger.ebinterface.v42.Ebi42PaymentMethodType;
-import com.helger.ebinterface.v42.Ebi42PaymentReferenceType;
-import com.helger.ebinterface.v42.Ebi42PeriodType;
-import com.helger.ebinterface.v42.Ebi42ReductionAndSurchargeBaseType;
-import com.helger.ebinterface.v42.Ebi42ReductionAndSurchargeDetailsType;
-import com.helger.ebinterface.v42.Ebi42ReductionAndSurchargeListLineItemDetailsType;
-import com.helger.ebinterface.v42.Ebi42ReductionAndSurchargeType;
-import com.helger.ebinterface.v42.Ebi42TaxType;
-import com.helger.ebinterface.v42.Ebi42UnitPriceType;
-import com.helger.ebinterface.v42.Ebi42UnitType;
-import com.helger.ebinterface.v42.Ebi42UniversalBankTransactionType;
-import com.helger.ebinterface.v42.Ebi42VATItemType;
-import com.helger.ebinterface.v42.Ebi42VATRateType;
-import com.helger.ebinterface.v42.Ebi42VATType;
-import com.helger.ebinterface.v42.ObjectFactory;
+import com.helger.ebinterface.v42.*;
 import com.helger.peppol.codelist.ETaxSchemeID;
 import com.helger.ubl21.codelist.EPaymentMeansCode21;
 import com.helger.ubl21.codelist.EUnitOfMeasureCode21;
@@ -110,14 +79,14 @@ import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
 /**
  * Main converter between UBL 2.1 invoice and ebInterface 4.2 invoice.
  *
- * @author philip
+ * @author Philip Helger
  */
 @Immutable
-public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConverter
+public final class InvoiceToEbInterface42Converter extends AbstractToEbInterface42Converter
 {
   public static final int PAYMENT_REFERENCE_MAX_LENGTH = 35;
 
-  private ICustomInvoiceConverter m_aCustomizer;
+  private ICustomInvoiceToEbInterface42Converter m_aCustomizer;
 
   /**
    * Constructor
@@ -139,7 +108,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
   }
 
   @Nonnull
-  public InvoiceToEbInterface42Converter setCustomizer (@Nullable final ICustomInvoiceConverter aCustomizer)
+  public InvoiceToEbInterface42Converter setCustomizer (@Nullable final ICustomInvoiceToEbInterface42Converter aCustomizer)
   {
     m_aCustomizer = aCustomizer;
     return this;
@@ -604,10 +573,10 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
       for (final DocumentReferenceType aDocumentReference : aUBLDoc.getContractDocumentReference ())
         if (StringHelper.hasTextAfterTrim (aDocumentReference.getIDValue ()))
         {
-          final String sKey = StringHelper.hasText (aDocumentReference.getID ().getSchemeID ())
-                                                                                                ? aDocumentReference.getID ()
-                                                                                                                    .getSchemeID ()
-                                                                                                : "Contract";
+          final String sKey = StringHelper.hasText (aDocumentReference.getID ()
+                                                                      .getSchemeID ()) ? aDocumentReference.getID ()
+                                                                                                           .getSchemeID ()
+                                                                                       : "Contract";
 
           final Ebi42FurtherIdentificationType aEbiFurtherIdentification = new Ebi42FurtherIdentificationType ();
           aEbiFurtherIdentification.setIdentificationType (sKey);
@@ -830,9 +799,8 @@ public final class InvoiceToEbInterface42Converter extends AbstractInvoiceConver
               if (MathHelper.isNE0 (aUBLPercentage))
               {
                 // Calculate (inexact) subtotal
-                aUBLTaxableAmount = aUBLTaxAmount.multiply (CGlobal.BIGDEC_100).divide (aUBLPercentage,
-                                                                                        SCALE_PRICE4,
-                                                                                        ROUNDING_MODE);
+                aUBLTaxableAmount = aUBLTaxAmount.multiply (CGlobal.BIGDEC_100)
+                                                 .divide (aUBLPercentage, SCALE_PRICE4, ROUNDING_MODE);
               }
             }
             else

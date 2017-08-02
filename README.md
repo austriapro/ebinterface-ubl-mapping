@@ -11,14 +11,18 @@ Currently on the the conversion UBL -> ebInterface 4.2 is present. Next steps ar
 
 # News and noteworthy
 
-  * v2.1.1
+  * v2.2.0 - work in progress
+    * Allow to create ebInterface 4.3 as well
+    * Added conversion from ebInterface to UBL
+  * v2.1.1 - 2016-09-27
     * Requires at least ph-common 8.5.2
-  * v2.1.0
+  * v2.1.0 - 2016-09-12
     * Bind to ph-commons 8.5.x
-  * v2.0.0
+  * v2.0.1 - 2016-08-01  
+  * v2.0.0 - 2016-07-12
     * Bind to ph-commons 8.x
     * Requires JDK 1.8
-  * v1.1.0
+  * v1.1.0 - 2016-01-26
     * Last version for JDK 6    
 
 # Building

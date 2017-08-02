@@ -14,46 +14,46 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.ebinterface.ubl.from.invoice;
+package com.helger.ebinterface.ubl.from.creditnote;
 
 import javax.annotation.Nonnull;
 
 import com.helger.ebinterface.v42.Ebi42InvoiceType;
 import com.helger.ebinterface.v42.Ebi42ListLineItemType;
 
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.InvoiceLineType;
-import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CreditNoteLineType;
+import oasis.names.specification.ubl.schema.xsd.creditnote_21.CreditNoteType;
 
 /**
  * Customization extension interface
  *
  * @author Philip Helger
  */
-public interface ICustomInvoiceConverter
+public interface ICustomCreditNoteToEbInterface42Converter
 {
   /**
    * Perform optional mapping after the conversion of a single details item
    * finished.
    *
-   * @param aUBLInvoiceLine
-   *        Existing UBL invoice line. Never <code>null</code>.
+   * @param aUBLCreditNoteLine
+   *        Existing UBL credit note line. Never <code>null</code>.
    * @param aEbiInvoiceLine
    *        Existing pre-filled ebInterface invoice line. Never
    *        <code>null</code>.
    */
-  default void additionalItemMapping (@Nonnull final InvoiceLineType aUBLInvoiceLine,
+  default void additionalItemMapping (@Nonnull final CreditNoteLineType aUBLCreditNoteLine,
                                       @Nonnull final Ebi42ListLineItemType aEbiInvoiceLine)
   {}
 
   /**
-   * Perform optional mapping after the whole conversion finished.
+   * Perform optional mapping.
    *
-   * @param aUBLInvoice
-   *        Existing UBL invoice. Never <code>null</code>.
+   * @param aUBLCreditNote
+   *        Existing UBL credit note. Never <code>null</code>.
    * @param aEbiInvoice
    *        Existing pre-filled ebInterface invoice. Never <code>null</code>.
    */
-  default void additionalGlobalMapping (@Nonnull final InvoiceType aUBLInvoice,
+  default void additionalGlobalMapping (@Nonnull final CreditNoteType aUBLCreditNote,
                                         @Nonnull final Ebi42InvoiceType aEbiInvoice)
   {}
 }

@@ -14,46 +14,46 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.ebinterface.ubl.from.creditnote;
+package com.helger.ebinterface.ubl.from.invoice;
 
 import javax.annotation.Nonnull;
 
-import com.helger.ebinterface.v42.Ebi42InvoiceType;
-import com.helger.ebinterface.v42.Ebi42ListLineItemType;
+import com.helger.ebinterface.v43.Ebi43InvoiceType;
+import com.helger.ebinterface.v43.Ebi43ListLineItemType;
 
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CreditNoteLineType;
-import oasis.names.specification.ubl.schema.xsd.creditnote_21.CreditNoteType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.InvoiceLineType;
+import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
 
 /**
  * Customization extension interface
  *
  * @author Philip Helger
  */
-public interface ICustomCreditNoteConverter
+public interface ICustomInvoiceToEbInterface43Converter
 {
   /**
    * Perform optional mapping after the conversion of a single details item
    * finished.
    *
-   * @param aUBLCreditNoteLine
-   *        Existing UBL credit note line. Never <code>null</code>.
+   * @param aUBLInvoiceLine
+   *        Existing UBL invoice line. Never <code>null</code>.
    * @param aEbiInvoiceLine
    *        Existing pre-filled ebInterface invoice line. Never
    *        <code>null</code>.
    */
-  default void additionalItemMapping (@Nonnull final CreditNoteLineType aUBLCreditNoteLine,
-                                      @Nonnull final Ebi42ListLineItemType aEbiInvoiceLine)
+  default void additionalItemMapping (@Nonnull final InvoiceLineType aUBLInvoiceLine,
+                                      @Nonnull final Ebi43ListLineItemType aEbiInvoiceLine)
   {}
 
   /**
-   * Perform optional mapping.
+   * Perform optional mapping after the whole conversion finished.
    *
-   * @param aUBLCreditNote
-   *        Existing UBL credit note. Never <code>null</code>.
+   * @param aUBLInvoice
+   *        Existing UBL invoice. Never <code>null</code>.
    * @param aEbiInvoice
    *        Existing pre-filled ebInterface invoice. Never <code>null</code>.
    */
-  default void additionalGlobalMapping (@Nonnull final CreditNoteType aUBLCreditNote,
-                                        @Nonnull final Ebi42InvoiceType aEbiInvoice)
+  default void additionalGlobalMapping (@Nonnull final InvoiceType aUBLInvoice,
+                                        @Nonnull final Ebi43InvoiceType aEbiInvoice)
   {}
 }
