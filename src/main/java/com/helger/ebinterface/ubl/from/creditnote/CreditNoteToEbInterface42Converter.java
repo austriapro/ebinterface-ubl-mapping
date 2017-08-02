@@ -155,7 +155,11 @@ public final class CreditNoteToEbInterface42Converter extends AbstractToEbInterf
     // Build ebInterface invoice
     final Ebi42InvoiceType aEbiDoc = new Ebi42InvoiceType ();
     aEbiDoc.setGeneratingSystem (EBI_GENERATING_SYSTEM_42);
-    aEbiDoc.setDocumentType (Ebi42DocumentTypeType.CREDIT_MEMO);
+    aEbiDoc.setDocumentType (getAsDocumentTypeType (aUBLDoc.getCreditNoteTypeCode () == null ? null
+                                                                                             : aUBLDoc.getCreditNoteTypeCode ()
+                                                                                                      .getName (),
+                                                    aUBLDoc.getCreditNoteTypeCodeValue (),
+                                                    Ebi42DocumentTypeType.CREDIT_MEMO.value ()));
 
     // Cannot set the language, because the 3letter code is expected but we only
     // have the 2letter code!

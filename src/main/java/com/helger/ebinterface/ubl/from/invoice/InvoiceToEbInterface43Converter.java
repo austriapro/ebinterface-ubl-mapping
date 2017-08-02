@@ -450,7 +450,11 @@ public final class InvoiceToEbInterface43Converter extends AbstractToEbInterface
     // Build ebInterface invoice
     final Ebi43InvoiceType aEbiDoc = new Ebi43InvoiceType ();
     aEbiDoc.setGeneratingSystem (EBI_GENERATING_SYSTEM_43);
-    aEbiDoc.setDocumentType (Ebi43DocumentTypeType.INVOICE);
+    aEbiDoc.setDocumentType (getAsDocumentTypeType (aUBLDoc.getInvoiceTypeCode () == null ? null
+                                                                                          : aUBLDoc.getInvoiceTypeCode ()
+                                                                                                   .getName (),
+                                                    aUBLDoc.getInvoiceTypeCodeValue (),
+                                                    Ebi43DocumentTypeType.INVOICE.value ()));
 
     // Cannot set the language, because the 3letter code is expected but we only
     // have the 2letter code!

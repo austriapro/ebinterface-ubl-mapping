@@ -23,6 +23,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.helger.commons.annotation.Translatable;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.text.IMultilingualText;
@@ -77,6 +80,8 @@ public abstract class AbstractEbInterface42ToUBLConverter extends AbstractConver
     }
   }
 
+  private static final Logger s_aLogger = LoggerFactory.getLogger (AbstractEbInterface42ToUBLConverter.class);
+
   /**
    * Constructor
    *
@@ -117,11 +122,15 @@ public abstract class AbstractEbInterface42ToUBLConverter extends AbstractConver
       }
 
     if (sID == null)
+    {
+      s_aLogger.warn ("Failed to resolve document type " + eType);
       return null;
+    }
 
     final T ret = aFactory.get ();
     ret.setValue (sID);
     ret.setListID ("UNCL1001");
+    ret.setName (eType.value ());
     return ret;
   }
 

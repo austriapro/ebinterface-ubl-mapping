@@ -20,8 +20,11 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
+import com.helger.commons.collection.ext.CommonsArrayList;
+import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.string.StringHelper;
 import com.helger.ebinterface.v42.Ebi42DocumentTypeType;
 import com.helger.ebinterface.v42.Ebi42InvoiceType;
@@ -29,6 +32,7 @@ import com.helger.ebinterface.v42.Ebi42RelatedDocumentType;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.BillingReferenceType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DocumentReferenceType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.DocumentDescriptionType;
 
 /**
  * Base class for PEPPOL UBL to ebInterface 4.2 converter
@@ -43,6 +47,24 @@ public abstract class AbstractToEbInterface42Converter extends AbstractToEbInter
                                            final boolean bStrictERBMode)
   {
     super (aDisplayLocale, aContentLocale, bStrictERBMode);
+  }
+
+  @Nullable
+  protected static final Ebi42DocumentTypeType getAsDocumentTypeType (@Nullable final String... aValues)
+  {
+    if (aValues != null)
+      for (final String s : aValues)
+        if (s != null)
+          try
+          {
+            // The first match wins
+            return Ebi42DocumentTypeType.fromValue (s);
+          }
+          catch (final IllegalArgumentException ex)
+          {
+            // Ignore
+          }
+    return null;
   }
 
   protected static void convertRelatedDocuments (@Nonnull final List <BillingReferenceType> aUBLBillingReferences,
@@ -83,7 +105,16 @@ public abstract class AbstractToEbInterface42Converter extends AbstractToEbInter
         final Ebi42RelatedDocumentType aEbiRelatedDocument = new Ebi42RelatedDocumentType ();
         aEbiRelatedDocument.setInvoiceNumber (aUBLDocumentReference.getIDValue ());
         aEbiRelatedDocument.setInvoiceDate (aUBLDocumentReference.getIssueDateValue ());
-        aEbiRelatedDocument.setComment (aUBLDocumentReference.getDocumentTypeValue ());
+        final ICommonsList <String> aComments = new CommonsArrayList <> ();
+        for (final DocumentDescriptionType aUBLDocDesc : aUBLDocumentReference.getDocumentDescription ())
+          aComments.add (aUBLDocDesc.getValue ());
+        aEbiRelatedDocument.setComment (StringHelper.getImplodedNonEmpty ('\n', aComments));
+        if (aUBLDocumentReference.getDocumentTypeCode () != null)
+        {
+          aEbiRelatedDocument.setDocumentType (getAsDocumentTypeType (aUBLDocumentReference.getDocumentTypeCode ()
+                                                                                           .getName (),
+                                                                      aUBLDocumentReference.getDocumentTypeCodeValue ()));
+        }
         aEbiDoc.getRelatedDocument ().add (aEbiRelatedDocument);
       }
   }
