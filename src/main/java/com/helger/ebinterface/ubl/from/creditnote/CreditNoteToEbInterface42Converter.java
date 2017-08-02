@@ -148,7 +148,7 @@ public final class CreditNoteToEbInterface42Converter extends AbstractToEbInterf
       throw new IllegalArgumentException ("TransformationErrorList must be empty!");
 
     // Consistency check before starting the conversion
-    _checkConsistency (aUBLDoc, aTransformationErrorList);
+    checkCreditNoteConsistency (aUBLDoc, aTransformationErrorList);
     if (aTransformationErrorList.containsAtLeastOneError ())
       return null;
 

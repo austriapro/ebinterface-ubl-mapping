@@ -220,8 +220,8 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
    * @param aUBLInvoice
    *        The UBL invoice to check
    */
-  protected final void _checkConsistency (@Nonnull final InvoiceType aUBLInvoice,
-                                          @Nonnull final ErrorList aTransformationErrorList)
+  protected final void checkInvoiceConsistency (@Nonnull final InvoiceType aUBLInvoice,
+                                                @Nonnull final ErrorList aTransformationErrorList)
   {
     // Check UBLVersionID
     final UBLVersionIDType aUBLVersionID = aUBLInvoice.getUBLVersionID ();
@@ -353,8 +353,8 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
    * @param aUBLCreditNote
    *        The UBL invoice to check
    */
-  protected final void _checkConsistency (@Nonnull final CreditNoteType aUBLCreditNote,
-                                          @Nonnull final ErrorList aTransformationErrorList)
+  protected final void checkCreditNoteConsistency (@Nonnull final CreditNoteType aUBLCreditNote,
+                                                   @Nonnull final ErrorList aTransformationErrorList)
   {
     // Check UBLVersionID
     final UBLVersionIDType aUBLVersionID = aUBLCreditNote.getUBLVersionID ();

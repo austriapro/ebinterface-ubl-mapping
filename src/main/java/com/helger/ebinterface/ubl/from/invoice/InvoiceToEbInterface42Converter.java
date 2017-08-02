@@ -443,7 +443,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractToEbInterface
       throw new IllegalArgumentException ("TransformationErrorList must be empty!");
 
     // Consistency check before starting the conversion
-    _checkConsistency (aUBLDoc, aTransformationErrorList);
+    checkInvoiceConsistency (aUBLDoc, aTransformationErrorList);
     if (aTransformationErrorList.containsAtLeastOneError ())
       return null;
 
