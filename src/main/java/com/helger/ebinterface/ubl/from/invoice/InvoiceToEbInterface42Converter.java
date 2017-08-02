@@ -45,29 +45,12 @@ import com.helger.ebinterface.ubl.from.EbInterface42Helper;
 import com.helger.ebinterface.ubl.from.helper.SchemedID;
 import com.helger.ebinterface.ubl.from.helper.TaxCategoryKey;
 import com.helger.ebinterface.v42.*;
+import com.helger.ebinterface.v42.ObjectFactory;
 import com.helger.peppol.codelist.ETaxSchemeID;
 import com.helger.ubl21.codelist.EPaymentMeansCode21;
 import com.helger.ubl21.codelist.EUnitOfMeasureCode21;
 
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AllowanceChargeType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CustomerPartyType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DeliveryType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DocumentReferenceType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.FinancialAccountType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.InvoiceLineType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.MonetaryTotalType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.OrderLineReferenceType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.OrderReferenceType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyNameType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyTaxSchemeType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PaymentMeansType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PaymentTermsType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PeriodType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.SupplierPartyType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxCategoryType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxSubtotalType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxTotalType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.*;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.AdditionalAccountIDType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.DescriptionType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.InstructionNoteType;
@@ -194,29 +177,37 @@ public final class InvoiceToEbInterface42Converter extends AbstractToEbInterface
                 aUBLFinancialAccount.getFinancialInstitutionBranch () != null &&
                 aUBLFinancialAccount.getFinancialInstitutionBranch ().getFinancialInstitution () != null)
             {
-              final String sBIC = StringHelper.trim (aUBLFinancialAccount.getFinancialInstitutionBranch ()
-                                                                         .getFinancialInstitution ()
-                                                                         .getIDValue ());
-
-              aEbiAccount.setBIC (sBIC);
-
-              if (StringHelper.hasNoText (sBIC) || !RegExHelper.stringMatchesPattern (REGEX_BIC, sBIC))
+              final FinancialInstitutionType aUBLFI = aUBLFinancialAccount.getFinancialInstitutionBranch ()
+                                                                          .getFinancialInstitution ();
+              if (aUBLFI.getID () != null)
               {
-                aTransformationErrorList.add (SingleError.builderError ()
-                                                         .setErrorFieldName ("PaymentMeans[" +
-                                                                             nPaymentMeansIndex +
-                                                                             "]/PayeeFinancialAccount/FinancialInstitutionBranch/FinancialInstitution/ID")
-                                                         .setErrorText (EText.BIC_INVALID.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                                  sBIC))
-                                                         .build ());
-                aEbiAccount.setBIC (null);
+                final String sID = StringHelper.trim (aUBLFI.getID ().getValue ());
+                final String sScheme = StringHelper.trim (aUBLFI.getID ().getSchemeID ());
+                final boolean bIsBIC = SCHEME_BIC.equalsIgnoreCase (sScheme) || StringHelper.hasNoText (sScheme);
+
+                if (bIsBIC)
+                  aEbiAccount.setBIC (sID);
+                else
+                  aEbiAccount.setBankName (sID);
+
+                if (bIsBIC)
+                  if (StringHelper.hasNoText (sID) || !RegExHelper.stringMatchesPattern (REGEX_BIC, sID))
+                  {
+                    aTransformationErrorList.add (SingleError.builderError ()
+                                                             .setErrorFieldName ("PaymentMeans[" +
+                                                                                 nPaymentMeansIndex +
+                                                                                 "]/PayeeFinancialAccount/FinancialInstitutionBranch/FinancialInstitution/ID")
+                                                             .setErrorText (EText.BIC_INVALID.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                      sID))
+                                                             .build ());
+                    aEbiAccount.setBIC (null);
+                  }
               }
             }
 
             // IBAN
-            final String sIBAN = aUBLPaymentMeans.getPayeeFinancialAccount () != null ? StringHelper.trim (aUBLPaymentMeans.getPayeeFinancialAccount ()
-                                                                                                                           .getIDValue ())
-                                                                                      : null;
+            final String sIBAN = aUBLFinancialAccount != null ? StringHelper.trim (aUBLFinancialAccount.getIDValue ())
+                                                              : null;
             aEbiAccount.setIBAN (sIBAN);
             if (StringHelper.getLength (sIBAN) > IBAN_MAX_LENGTH)
             {
@@ -233,14 +224,15 @@ public final class InvoiceToEbInterface42Converter extends AbstractToEbInterface
 
             // Bank Account Owner - no field present - check PayeePart or
             // SupplierPartyName
-            String sBankAccountOwnerName = null;
-            if (aUBLDoc.getPayeeParty () != null)
-              for (final PartyNameType aPartyName : aUBLDoc.getPayeeParty ().getPartyName ())
-              {
-                sBankAccountOwnerName = StringHelper.trim (aPartyName.getNameValue ());
-                if (StringHelper.hasText (sBankAccountOwnerName))
-                  break;
-              }
+            String sBankAccountOwnerName = aUBLFinancialAccount.getNameValue ();
+            if (StringHelper.hasNoText (sBankAccountOwnerName))
+              if (aUBLDoc.getPayeeParty () != null)
+                for (final PartyNameType aPartyName : aUBLDoc.getPayeeParty ().getPartyName ())
+                {
+                  sBankAccountOwnerName = StringHelper.trim (aPartyName.getNameValue ());
+                  if (StringHelper.hasText (sBankAccountOwnerName))
+                    break;
+                }
             if (StringHelper.hasNoText (sBankAccountOwnerName))
             {
               final PartyType aSupplierParty = aUBLDoc.getAccountingSupplierParty ().getParty ();

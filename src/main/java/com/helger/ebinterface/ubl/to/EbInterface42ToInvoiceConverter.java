@@ -43,6 +43,7 @@ import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.Instruc
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.InvoiceTypeCodeType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.ItemClassificationCodeType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.NoteType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.PaymentIDType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.TaxExemptionReasonType;
 import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
 
@@ -90,7 +91,8 @@ public class EbInterface42ToInvoiceConverter extends AbstractEbInterface42ToUBLC
           final Ebi42SEPADirectDebitType aEbiSepaDirectDebit = aEbiPaymentMethod.getSEPADirectDebit ();
           if (aEbiSepaDirectDebit != null)
           {
-            // SEPA Direct debit (49)
+            // TODO SEPA Direct debit (49)
+            // Back-mapping to ebInterface is also missing!!
             final PaymentMeansType aUBLPaymentMeans = new PaymentMeansType ();
             aUBLPaymentMeans.setPaymentMeansCode (EPaymentMeansCode21._49.getID ()).setName ("SEPA");
             if (aEbiPaymentConditions != null)
@@ -107,6 +109,59 @@ public class EbInterface42ToInvoiceConverter extends AbstractEbInterface42ToUBLC
               // TODO universal bank transaction
               final PaymentMeansType aUBLPaymentMeans = new PaymentMeansType ();
               aUBLPaymentMeans.setPaymentMeansCode (EPaymentMeansCode21._30.getID ());
+              aUBLPaymentMeans.setPaymentChannelCode (PAYMENT_CHANNEL_CODE_IBAN);
+
+              if (aEbiUBT.hasBeneficiaryAccountEntries ())
+              {
+                // First one only
+                final Ebi42AccountType aEbiAccount = aEbiUBT.getBeneficiaryAccountAtIndex (0);
+                final FinancialAccountType aUBLFinancialAccount = new FinancialAccountType ();
+                final BranchType aUBLBranch = new BranchType ();
+                final FinancialInstitutionType aUBLFinancialInstitution = new FinancialInstitutionType ();
+                {
+                  final IDType aUBLFIID = new IDType ();
+                  if (StringHelper.hasText (aEbiAccount.getBIC ()))
+                  {
+                    aUBLFIID.setValue (aEbiAccount.getBIC ());
+                    aUBLFIID.setSchemeID (SCHEME_BIC);
+                  }
+                  else
+                    if (aEbiAccount.getBankCode () != null)
+                    {
+                      aUBLFIID.setValue (aEbiAccount.getBankCode ().getValue ().toString ());
+                      aUBLFIID.setSchemeID (aEbiAccount.getBankCode ().getBankCodeType ());
+                    }
+                    else
+                    {
+                      aUBLFIID.setValue (aEbiAccount.getBankName ());
+                      aUBLFIID.setSchemeID ("name");
+                    }
+                  aUBLFinancialInstitution.setID (aUBLFIID);
+                }
+                aUBLBranch.setFinancialInstitution (aUBLFinancialInstitution);
+                {
+                  final IDType aUBLFAID = new IDType ();
+                  if (StringHelper.hasText (aEbiAccount.getIBAN ()))
+                  {
+                    aUBLFAID.setValue (aEbiAccount.getIBAN ());
+                    aUBLFAID.setSchemeID (SCHEME_IBAN);
+                  }
+                  else
+                  {
+                    aUBLFAID.setValue (aEbiAccount.getBankAccountNr ());
+                    aUBLFAID.setSchemeID ("local");
+                  }
+                  aUBLFinancialAccount.setID (aUBLFAID);
+                }
+                aUBLFinancialAccount.setName (aEbiAccount.getBankAccountOwner ());
+                aUBLFinancialAccount.setFinancialInstitutionBranch (aUBLBranch);
+                aUBLPaymentMeans.setPayeeFinancialAccount (aUBLFinancialAccount);
+              }
+
+              // PaymentReference
+              if (aEbiUBT.getPaymentReference () != null)
+                aUBLPaymentMeans.addPaymentID (new PaymentIDType (aEbiUBT.getPaymentReference ().getValue ()));
+
               if (aEbiPaymentConditions != null)
                 aUBLPaymentMeans.setPaymentDueDate (aEbiPaymentConditions.getDueDate ());
               if (StringHelper.hasText (aEbiPaymentMethod.getComment ()))
