@@ -157,6 +157,7 @@
             <exclude>**/LICENSE</exclude>
             <exclude>**/NOTICE</exclude>
             <exclude>src/test/resources/ebi42/**</exclude>
+            <exclude>src/test/resources/ebi43/**</exclude>
             <exclude>src/test/resources/ubl20/**</exclude>
           </excludes>
         </configuration>

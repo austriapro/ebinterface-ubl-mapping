@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ebInterface 4.2 example file.
+
+The MIT License (MIT)
+
+Copyright (c) 2014 Bundesrechenzentrum GmbH, Wien
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+ --><eb:Invoice xmlns:eb="http://www.ebinterface.at/schema/4p3/" 
+            eb:GeneratingSystem="Demo File" 
+            eb:DocumentType="Invoice" 
+            eb:InvoiceCurrency="EUR" 
+            eb:Language="ger">
+  <eb:InvoiceNumber>ERB_EBI41_001</eb:InvoiceNumber>
+  <eb:InvoiceDate>2015-01-01</eb:InvoiceDate>
+  <eb:Delivery>
+    <!-- Details zur Lieferung -->
+    <eb:Date>2015-01-01</eb:Date>
+    <eb:Address>
+      <eb:Salutation>Firma</eb:Salutation>
+      <eb:Name>Mustermann GmbH</eb:Name>
+      <eb:Street>Hauptstraße 10</eb:Street>
+      <eb:Town>Graz</eb:Town>
+      <eb:ZIP>8010</eb:ZIP>
+      <eb:Country eb:CountryCode="AT">Österreich</eb:Country>
+      <eb:Contact>Hr. Max Mustermann</eb:Contact>
+    </eb:Address>
+  </eb:Delivery>
+  <eb:Biller>
+    <!-- Rechnungssteller -->
+    <eb:VATIdentificationNumber>ATU12345678</eb:VATIdentificationNumber>
+    <eb:Address>
+      <eb:Salutation>Firma</eb:Salutation>
+      <eb:Name>Mustermann GmbH</eb:Name>
+      <eb:Street>Hauptstraße 10</eb:Street>
+      <eb:Town>Graz</eb:Town>
+      <eb:ZIP>8010</eb:ZIP>
+      <eb:Country eb:CountryCode="AT">Österreich</eb:Country>
+      <!-- An die folgende E-Mail-Adresse werden die E-Mails gesendet: -->
+      <eb:Email>kontakt@example.org</eb:Email>
+      <eb:Contact>Hr. Max Mustermann</eb:Contact>
+    </eb:Address>
+    <!-- Die Lieferantennummer/Kreditorennummer: -->
+    <eb:InvoiceRecipientsBillerID>0011025781</eb:InvoiceRecipientsBillerID>
+  </eb:Biller>
+  <eb:InvoiceRecipient>
+    <!-- Rechnungsempfänger -->
+    <eb:VATIdentificationNumber>ATU12345678</eb:VATIdentificationNumber>
+    <eb:FurtherIdentification eb:IdentificationType="FS">Wien</eb:FurtherIdentification>
+    <eb:FurtherIdentification eb:IdentificationType="FN">12345678</eb:FurtherIdentification>
+    <eb:FurtherIdentification eb:IdentificationType="FBG">Handelsgericht Wien</eb:FurtherIdentification>
+    <eb:OrderReference>
+      <!-- Die Auftragsreferenz: -->
+      <eb:OrderID>Z01</eb:OrderID>
+      <eb:ReferenceDate>2012-11-18</eb:ReferenceDate>
+      <eb:Description>Bestellung neuer Bedarfsmittel</eb:Description>
+    </eb:OrderReference>
+    <eb:Address>
+      <eb:Name>BRZ GmbH</eb:Name>
+      <eb:Street>Hintere Zollamtsstraße 4</eb:Street>
+      <eb:Town>Wien</eb:Town>
+      <eb:ZIP>1030</eb:ZIP>
+      <eb:Country eb:CountryCode="AT">Österreich</eb:Country>
+      <eb:Phone>+43 / 1 / 78 56 789</eb:Phone>
+      <eb:Email>support-erb@brz.gv.at; info@brz.gv.at</eb:Email>
+      <eb:Contact>Frau Maxime Musterfrau</eb:Contact>
+    </eb:Address>
+  </eb:InvoiceRecipient>
+  <eb:Details>
+    <eb:HeaderDescription>Optionaler Kopftext für alle Details</eb:HeaderDescription>
+    <eb:ItemList>
+      <eb:HeaderDescription>Optionaler Kopftext für diese ItemList</eb:HeaderDescription>
+      <eb:ListLineItem>
+        <eb:Description>Schraubenzieher</eb:Description>
+        <eb:Quantity eb:Unit="STK">100</eb:Quantity>
+        <eb:UnitPrice>10.20</eb:UnitPrice>
+        <eb:VATRate>20</eb:VATRate>
+        <eb:InvoiceRecipientsOrderReference>
+          <eb:OrderID>Z01</eb:OrderID>
+          <eb:OrderPositionNumber>1</eb:OrderPositionNumber>
+        </eb:InvoiceRecipientsOrderReference>
+        <eb:LineItemAmount>1020.00</eb:LineItemAmount>        
+      </eb:ListLineItem>
+      <eb:ListLineItem>
+        <eb:Description>Schrauben M10x50</eb:Description>
+        <eb:Quantity eb:Unit="STK">1000</eb:Quantity>
+        <eb:UnitPrice>0.10</eb:UnitPrice>
+        <eb:VATRate>20</eb:VATRate>
+        <eb:InvoiceRecipientsOrderReference>
+          <eb:OrderID>Z01</eb:OrderID>
+          <eb:OrderPositionNumber>2</eb:OrderPositionNumber>
+        </eb:InvoiceRecipientsOrderReference>
+        <eb:LineItemAmount>100.00</eb:LineItemAmount>        
+      </eb:ListLineItem>
+      <eb:ListLineItem>
+        <eb:Description>Schraubenmutter M10</eb:Description>
+        <eb:Quantity eb:Unit="STK">1000</eb:Quantity>
+        <eb:UnitPrice>0.01</eb:UnitPrice>
+        <eb:VATRate>20</eb:VATRate>
+        <eb:InvoiceRecipientsOrderReference>
+          <eb:OrderID>Z01</eb:OrderID>
+          <eb:OrderPositionNumber>3</eb:OrderPositionNumber>
+        </eb:InvoiceRecipientsOrderReference>
+        <eb:LineItemAmount>10.00</eb:LineItemAmount>        
+      </eb:ListLineItem>
+      <eb:ListLineItem>
+        <eb:Description>Handbuch "Mit der Schraube auf Du und Du"</eb:Description>
+        <eb:Quantity eb:Unit="STK">1</eb:Quantity>
+        <eb:UnitPrice>5.00</eb:UnitPrice>
+        <eb:VATRate>10</eb:VATRate>
+        <eb:InvoiceRecipientsOrderReference>
+          <eb:OrderID>Z01</eb:OrderID>
+          <eb:OrderPositionNumber>4</eb:OrderPositionNumber>
+        </eb:InvoiceRecipientsOrderReference>
+        <eb:LineItemAmount>5.00</eb:LineItemAmount>        
+      </eb:ListLineItem>
+      <eb:FooterDescription>Optionaler Fusstext für diese ItemList</eb:FooterDescription>
+    </eb:ItemList>
+    <eb:FooterDescription>Optionaler Fusstext für alle Details</eb:FooterDescription>
+  </eb:Details>
+  <eb:Tax>
+    <eb:VAT>
+      <eb:VATItem>
+        <eb:TaxedAmount>1130.00</eb:TaxedAmount>
+        <eb:VATRate>20.00</eb:VATRate>
+        <eb:Amount>226.00</eb:Amount>
+      </eb:VATItem>
+      <eb:VATItem>
+        <eb:TaxedAmount>5.00</eb:TaxedAmount>
+        <eb:VATRate>10.00</eb:VATRate>
+        <eb:Amount>0.50</eb:Amount>
+      </eb:VATItem>
+    </eb:VAT>
+  </eb:Tax>
+  <eb:TotalGrossAmount>1361.50</eb:TotalGrossAmount>
+  <eb:PayableAmount>1361.50</eb:PayableAmount>
+  <eb:PaymentMethod>
+    <eb:Comment>Wir ersuchen um termingerechte Bezahlung.</eb:Comment>
+    <eb:UniversalBankTransaction>
+      <eb:BeneficiaryAccount>
+        <eb:BIC>BKAUATWW</eb:BIC>
+        <eb:IBAN>AT611904300234573201</eb:IBAN>
+        <eb:BankAccountOwner>Max Mustermann</eb:BankAccountOwner>
+      </eb:BeneficiaryAccount>
+    </eb:UniversalBankTransaction>
+  </eb:PaymentMethod>
+  <eb:PaymentConditions>
+    <eb:DueDate>2015-12-30</eb:DueDate>
+    <eb:Discount>
+      <eb:PaymentDate>2015-12-10</eb:PaymentDate>
+      <eb:Percentage>3.00</eb:Percentage>
+    </eb:Discount>
+    <eb:Discount>
+      <eb:PaymentDate>2015-12-20</eb:PaymentDate>
+      <eb:Percentage>1.50</eb:Percentage>
+    </eb:Discount>
+    <eb:Comment>Kommentar zu den Zahlungsbedingungen</eb:Comment>
+  </eb:PaymentConditions>
+  <eb:Comment>Globaler Kommentar zur Rechnung.
+Hier können Sie diverse Informationen unterbringen, für die es kein strukturiertes Feld gibt.</eb:Comment>
+</eb:Invoice>
