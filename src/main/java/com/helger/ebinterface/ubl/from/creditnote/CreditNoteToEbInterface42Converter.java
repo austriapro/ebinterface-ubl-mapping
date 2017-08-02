@@ -271,7 +271,8 @@ public final class CreditNoteToEbInterface42Converter extends AbstractToEbInterf
                                                                  "AccountingSupplierParty",
                                                                  aTransformationErrorList,
                                                                  m_aContentLocale,
-                                                                 m_aDisplayLocale));
+                                                                 m_aDisplayLocale,
+                                                                 true));
 
         // Ensure a fake biller email address is present
         if (StringHelper.hasNoText (aEbiBiller.getAddress ().getEmail ()))
@@ -342,7 +343,8 @@ public final class CreditNoteToEbInterface42Converter extends AbstractToEbInterf
                                                                     "AccountingCustomerParty",
                                                                     aTransformationErrorList,
                                                                     m_aContentLocale,
-                                                                    m_aDisplayLocale));
+                                                                    m_aDisplayLocale,
+                                                                    true));
       if (aEbiRecipient.getAddress () == null)
       {
         // Required by ebInterface
@@ -385,7 +387,8 @@ public final class CreditNoteToEbInterface42Converter extends AbstractToEbInterf
                                                                         "BuyerCustomerParty",
                                                                         aTransformationErrorList,
                                                                         m_aContentLocale,
-                                                                        m_aDisplayLocale));
+                                                                        m_aDisplayLocale,
+                                                                        true));
       if (aEbiOrderingParty.getAddress () == null)
       {
         // Required by ebInterface

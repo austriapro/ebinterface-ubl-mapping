@@ -53,13 +53,8 @@ public final class EbInterface42Helper
 
   public static void setAddressData (@Nullable final AddressType aUBLAddress,
                                      @Nonnull final Ebi42AddressType aEbiAddress,
-                                     @Nonnull final String sPartyType,
-                                     @Nonnull final ErrorList aTransformationErrorList,
-                                     @Nonnull final Locale aContentLocale,
-                                     @Nonnull final Locale aDisplayLocale)
+                                     @Nonnull final Locale aContentLocale)
   {
-    final boolean bCountryErrorMsgEmitted = false;
-
     // Convert main address
     if (aUBLAddress != null)
     {
@@ -89,7 +84,13 @@ public final class EbInterface42Helper
         aEbiAddress.setCountry (aEbiCountry);
       }
     }
+  }
 
+  public static void validateAddressData (@Nonnull final Ebi42AddressType aEbiAddress,
+                                          @Nonnull final String sPartyType,
+                                          @Nonnull final ErrorList aTransformationErrorList,
+                                          @Nonnull final Locale aDisplayLocale)
+  {
     if (aEbiAddress.getStreet () == null)
       aTransformationErrorList.add (SingleError.builderError ()
                                                .setErrorFieldName (sPartyType + "/PostalAddress/StreetName")
@@ -105,7 +106,7 @@ public final class EbInterface42Helper
                                                .setErrorFieldName (sPartyType + "/PostalAddress/PostalZone")
                                                .setErrorText (EText.ADDRESS_NO_ZIPCODE.getDisplayText (aDisplayLocale))
                                                .build ());
-    if (aEbiAddress.getCountry () == null && !bCountryErrorMsgEmitted)
+    if (aEbiAddress.getCountry () == null)
       aTransformationErrorList.add (SingleError.builderError ()
                                                .setErrorFieldName (sPartyType +
                                                                    "/PostalAddress/Country/IdentificationCode")
@@ -118,7 +119,8 @@ public final class EbInterface42Helper
                                                @Nonnull final String sPartyType,
                                                @Nonnull final ErrorList aTransformationErrorList,
                                                @Nonnull final Locale aContentLocale,
-                                               @Nonnull final Locale aDisplayLocale)
+                                               @Nonnull final Locale aDisplayLocale,
+                                               final boolean bValidate)
   {
     final Ebi42AddressType aEbiAddress = new Ebi42AddressType ();
 
@@ -140,12 +142,7 @@ public final class EbInterface42Helper
                                                .build ());
 
     // Convert main address
-    setAddressData (aUBLParty.getPostalAddress (),
-                    aEbiAddress,
-                    sPartyType,
-                    aTransformationErrorList,
-                    aContentLocale,
-                    aDisplayLocale);
+    setAddressData (aUBLParty.getPostalAddress (), aEbiAddress, aContentLocale);
 
     // Contact
     final ContactType aUBLContact = aUBLParty.getContact ();
@@ -157,8 +154,9 @@ public final class EbInterface42Helper
 
     // Person name
     final ICommonsList <String> ebContacts = new CommonsArrayList <> ();
-    if (StringHelper.hasTextAfterTrim (aUBLContact.getNameValue ()))
-      ebContacts.add (StringHelper.trim (aUBLContact.getNameValue ()));
+    if (aUBLContact != null)
+      if (StringHelper.hasTextAfterTrim (aUBLContact.getNameValue ()))
+        ebContacts.add (StringHelper.trim (aUBLContact.getNameValue ()));
     for (final PersonType aUBLPerson : aUBLParty.getPerson ())
     {
       if (StringHelper.hasNoText (aEbiAddress.getSalutation ()))
@@ -235,6 +233,8 @@ public final class EbInterface42Helper
       }
     }
 
+    if (bValidate)
+      validateAddressData (aEbiAddress, sPartyType, aTransformationErrorList, aDisplayLocale);
     return aEbiAddress;
   }
 
@@ -242,6 +242,14 @@ public final class EbInterface42Helper
   protected static String getAggregated (@Nonnull final Iterable <DescriptionType> aList)
   {
     return StringHelper.getImplodedMapped ('\n', aList, DescriptionType::getValue);
+  }
+
+  protected static boolean isAddressIncomplete (@Nonnull final Ebi42AddressType aEbiAddress)
+  {
+    return StringHelper.hasNoText (aEbiAddress.getName ()) ||
+           StringHelper.hasNoText (aEbiAddress.getTown ()) ||
+           StringHelper.hasNoText (aEbiAddress.getZIP ()) ||
+           aEbiAddress.getCountry () == null;
   }
 
   @Nonnull
@@ -260,19 +268,30 @@ public final class EbInterface42Helper
     // Set the delivery date
     aEbiDelivery.setDate (aUBLDelivery.getActualDeliveryDateValue ());
 
-    // Address present?
-    final AddressType aUBLDeliveryAddress = aUBLDelivery.getDeliveryAddress ();
+    final PartyType aUBLParty = aUBLDelivery.getDeliveryParty ();
     Ebi42AddressType aEbiAddress = null;
-    if (aUBLDeliveryAddress != null)
+    if (aUBLParty != null)
     {
-      aEbiAddress = new Ebi42AddressType ();
-      EbInterface42Helper.setAddressData (aUBLDeliveryAddress,
-                                          aEbiAddress,
-                                          sDeliveryType,
-                                          aTransformationErrorList,
-                                          aContentLocale,
-                                          aDisplayLocale);
+      aEbiAddress = convertParty (aUBLParty,
+                                  "DeliveryParty",
+                                  aTransformationErrorList,
+                                  aContentLocale,
+                                  aDisplayLocale,
+                                  false);
       aEbiDelivery.setAddress (aEbiAddress);
+    }
+
+    // Address present?
+    if (aEbiAddress == null || isAddressIncomplete (aEbiAddress))
+    {
+      final AddressType aUBLDeliveryAddress = aUBLDelivery.getDeliveryAddress ();
+      if (aUBLDeliveryAddress != null)
+      {
+        if (aEbiAddress == null)
+          aEbiAddress = new Ebi42AddressType ();
+        setAddressData (aUBLDeliveryAddress, aEbiAddress, aContentLocale);
+        aEbiDelivery.setAddress (aEbiAddress);
+      }
     }
 
     final LocationType aUBLDeliveryLocation = aUBLDelivery.getDeliveryLocation ();
@@ -281,17 +300,12 @@ public final class EbInterface42Helper
       // Optional description
       aEbiDelivery.setDescription (getAggregated (aUBLDeliveryLocation.getDescription ()));
 
-      aEbiAddress = aEbiDelivery.getAddress ();
-      if (aEbiAddress == null)
+      if (aEbiAddress == null || isAddressIncomplete (aEbiAddress))
       {
         // No Delivery/DeliveryAddress present
-        aEbiAddress = new Ebi42AddressType ();
-        EbInterface42Helper.setAddressData (aUBLDeliveryLocation.getAddress (),
-                                            aEbiAddress,
-                                            sDeliveryType,
-                                            aTransformationErrorList,
-                                            aContentLocale,
-                                            aDisplayLocale);
+        if (aEbiAddress == null)
+          aEbiAddress = new Ebi42AddressType ();
+        setAddressData (aUBLDeliveryLocation.getAddress (), aEbiAddress, aContentLocale);
         aEbiDelivery.setAddress (aEbiAddress);
       }
     }
@@ -330,6 +344,7 @@ public final class EbInterface42Helper
                                                  .setErrorFieldName (sDeliveryType + "/DeliveryParty")
                                                  .setErrorText (EText.DELIVERY_WITHOUT_NAME.getDisplayText (aDisplayLocale))
                                                  .build ());
+      validateAddressData (aEbiAddress, sDeliveryType + "/DeliveryParty", aTransformationErrorList, aDisplayLocale);
     }
 
     return aEbiDelivery;
