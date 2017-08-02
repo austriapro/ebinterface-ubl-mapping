@@ -157,8 +157,12 @@ public final class EbInterface42Helper
 
     // Person name
     final ICommonsList <String> ebContacts = new CommonsArrayList <> ();
+    if (StringHelper.hasTextAfterTrim (aUBLContact.getNameValue ()))
+      ebContacts.add (StringHelper.trim (aUBLContact.getNameValue ()));
     for (final PersonType aUBLPerson : aUBLParty.getPerson ())
     {
+      if (StringHelper.hasNoText (aEbiAddress.getSalutation ()))
+        aEbiAddress.setSalutation (StringHelper.trim (aUBLPerson.getGenderCodeValue ()));
       ebContacts.add (StringHelper.getImplodedNonEmpty (' ',
                                                         StringHelper.trim (aUBLPerson.getTitleValue ()),
                                                         StringHelper.trim (aUBLPerson.getFirstNameValue ()),

@@ -87,7 +87,7 @@ public final class EbInterface42ToInvoiceConverterTest
         s_aLogger.info (sEbi1 + "\n" + sUBL + "\n" + sEbi2);
 
       // Won't work :)
-      if (false)
+      if (true)
         assertEquals ("Difference after conversion: " + sUBL, sEbi1, sEbi2);
     }
   }

@@ -45,6 +45,7 @@ import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.Ite
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyNameType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PeriodType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PersonType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxCategoryType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxSchemeType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
@@ -55,7 +56,7 @@ import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
  * @author philip
  */
 @Immutable
-public abstract class AbstractToUBLConverter extends AbstractConverter
+public abstract class AbstractEbInterface42ToUBLConverter extends AbstractConverter
 {
   @Translatable
   public static enum EText implements IHasDisplayTextWithArgs
@@ -85,7 +86,8 @@ public abstract class AbstractToUBLConverter extends AbstractConverter
    *        The locale for the created ebInterface files. May not be
    *        <code>null</code>.
    */
-  public AbstractToUBLConverter (@Nonnull final Locale aDisplayLocale, @Nonnull final Locale aContentLocale)
+  public AbstractEbInterface42ToUBLConverter (@Nonnull final Locale aDisplayLocale,
+                                              @Nonnull final Locale aContentLocale)
   {
     super (aDisplayLocale, aContentLocale);
   }
@@ -197,6 +199,13 @@ public abstract class AbstractToUBLConverter extends AbstractConverter
       ret.setContact (aUBLContact);
 
     ret.setPostalAddress (convertAddress (aEbiAddress));
+
+    if (StringHelper.hasText (aEbiAddress.getSalutation ()))
+    {
+      final PersonType aUBLPerson = new PersonType ();
+      aUBLPerson.setGenderCode (aEbiAddress.getSalutation ());
+      ret.addPerson (aUBLPerson);
+    }
 
     return ret;
   }

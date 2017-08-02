@@ -95,7 +95,7 @@ import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
  *
  * @author Philip Helger
  */
-public class EbInterface42ToInvoiceConverter extends AbstractToUBLConverter
+public class EbInterface42ToInvoiceConverter extends AbstractEbInterface42ToUBLConverter
 {
   public EbInterface42ToInvoiceConverter (@Nonnull final Locale aDisplayLocale, @Nonnull final Locale aContentLocale)
   {
