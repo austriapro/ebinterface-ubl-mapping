@@ -11,6 +11,8 @@ Currently on the the conversion UBL -> ebInterface 4.2 is present. Next steps ar
 
 # News and noteworthy
 
+  * v2.2.1 - work in progress
+    * Fixed potential NPE if UBL invoice has no `FinancialAccount` 
   * v2.2.0 - 2017-08-04
     * Allow to create ebInterface 4.3 as well
     * Added conversion from ebInterface 4.1/4.2/4.3 to UBL
