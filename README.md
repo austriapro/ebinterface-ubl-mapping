@@ -11,9 +11,9 @@ Currently on the the conversion UBL -> ebInterface 4.2 is present. Next steps ar
 
 # News and noteworthy
 
-  * v2.2.0 - work in progress
+  * v2.2.0 - 2017-08-04
     * Allow to create ebInterface 4.3 as well
-    * Added conversion from ebInterface to UBL
+    * Added conversion from ebInterface 4.1/4.2/4.3 to UBL
   * v2.1.1 - 2016-09-27
     * Requires at least ph-common 8.5.2
   * v2.1.0 - 2016-09-12
@@ -35,7 +35,7 @@ Add the following to your pom.xml to use this artifact:
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>ebinterface-ubl-mapping</artifactId>
-  <version>2.1.1</version>
+  <version>2.2.0</version>
 </dependency>
 ```
 
