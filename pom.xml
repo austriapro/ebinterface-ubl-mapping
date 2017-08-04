@@ -25,7 +25,7 @@
     <version>1.9.3</version>
   </parent>
   <artifactId>ebinterface-ubl-mapping</artifactId>
-  <version>2.2.0-SNAPSHOT</version>
+  <version>2.2.0</version>
   <packaging>bundle</packaging>
   <name>ebinterface-ubl-mapping</name>
   <inceptionYear>2010</inceptionYear>
@@ -41,7 +41,7 @@
     <connection>scm:git:git@github.com:austriapro/ebinterface-ubl-mapping.git</connection>
     <developerConnection>scm:git:git@github.com:austriapro/ebinterface-ubl-mapping.git</developerConnection>
     <url>http://github.com/austriapro/ebinterface-ubl-mapping</url>
-    <tag>HEAD</tag>
+    <tag>ebinterface-ubl-mapping-2.2.0</tag>
   </scm>
   <organization>
     <name>AUSTRIAPRO</name>
