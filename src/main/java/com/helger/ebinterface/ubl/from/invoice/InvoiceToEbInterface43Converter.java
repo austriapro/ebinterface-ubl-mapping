@@ -44,13 +44,63 @@ import com.helger.ebinterface.ubl.from.AbstractToEbInterface43Converter;
 import com.helger.ebinterface.ubl.from.EbInterface43Helper;
 import com.helger.ebinterface.ubl.from.helper.SchemedID;
 import com.helger.ebinterface.ubl.from.helper.TaxCategoryKey;
-import com.helger.ebinterface.v43.*;
+import com.helger.ebinterface.v43.Ebi43AccountType;
+import com.helger.ebinterface.v43.Ebi43BillerType;
+import com.helger.ebinterface.v43.Ebi43DeliveryType;
+import com.helger.ebinterface.v43.Ebi43DetailsType;
+import com.helger.ebinterface.v43.Ebi43DirectDebitType;
+import com.helger.ebinterface.v43.Ebi43DiscountType;
+import com.helger.ebinterface.v43.Ebi43DocumentTypeType;
+import com.helger.ebinterface.v43.Ebi43FurtherIdentificationType;
+import com.helger.ebinterface.v43.Ebi43InvoiceRecipientType;
+import com.helger.ebinterface.v43.Ebi43InvoiceType;
+import com.helger.ebinterface.v43.Ebi43ItemListType;
+import com.helger.ebinterface.v43.Ebi43ListLineItemType;
+import com.helger.ebinterface.v43.Ebi43NoPaymentType;
+import com.helger.ebinterface.v43.Ebi43OrderReferenceDetailType;
+import com.helger.ebinterface.v43.Ebi43OrderReferenceType;
+import com.helger.ebinterface.v43.Ebi43OrderingPartyType;
+import com.helger.ebinterface.v43.Ebi43OtherTaxType;
+import com.helger.ebinterface.v43.Ebi43PaymentConditionsType;
+import com.helger.ebinterface.v43.Ebi43PaymentMethodType;
+import com.helger.ebinterface.v43.Ebi43PaymentReferenceType;
+import com.helger.ebinterface.v43.Ebi43PeriodType;
+import com.helger.ebinterface.v43.Ebi43ReductionAndSurchargeBaseType;
+import com.helger.ebinterface.v43.Ebi43ReductionAndSurchargeDetailsType;
+import com.helger.ebinterface.v43.Ebi43ReductionAndSurchargeListLineItemDetailsType;
+import com.helger.ebinterface.v43.Ebi43ReductionAndSurchargeType;
+import com.helger.ebinterface.v43.Ebi43TaxType;
+import com.helger.ebinterface.v43.Ebi43UnitPriceType;
+import com.helger.ebinterface.v43.Ebi43UnitType;
+import com.helger.ebinterface.v43.Ebi43UniversalBankTransactionType;
+import com.helger.ebinterface.v43.Ebi43VATItemType;
+import com.helger.ebinterface.v43.Ebi43VATRateType;
+import com.helger.ebinterface.v43.Ebi43VATType;
 import com.helger.ebinterface.v43.ObjectFactory;
 import com.helger.peppol.codelist.ETaxSchemeID;
 import com.helger.ubl21.codelist.EPaymentMeansCode21;
 import com.helger.ubl21.codelist.EUnitOfMeasureCode21;
 
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.*;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AllowanceChargeType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CustomerPartyType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DeliveryType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DocumentReferenceType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.FinancialAccountType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.FinancialInstitutionType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.InvoiceLineType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.MonetaryTotalType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.OrderLineReferenceType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.OrderReferenceType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyNameType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyTaxSchemeType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PaymentMeansType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PaymentTermsType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PeriodType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.SupplierPartyType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxCategoryType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxSubtotalType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxTotalType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.AdditionalAccountIDType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.DescriptionType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.InstructionNoteType;
@@ -224,7 +274,7 @@ public final class InvoiceToEbInterface43Converter extends AbstractToEbInterface
 
             // Bank Account Owner - no field present - check PayeePart or
             // SupplierPartyName
-            String sBankAccountOwnerName = aUBLFinancialAccount.getNameValue ();
+            String sBankAccountOwnerName = aUBLFinancialAccount != null ? aUBLFinancialAccount.getNameValue () : null;
             if (StringHelper.hasNoText (sBankAccountOwnerName))
               if (aUBLDoc.getPayeeParty () != null)
                 for (final PartyNameType aPartyName : aUBLDoc.getPayeeParty ().getPartyName ())
