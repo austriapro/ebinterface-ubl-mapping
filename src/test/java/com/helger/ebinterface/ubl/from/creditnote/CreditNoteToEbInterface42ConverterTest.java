@@ -27,14 +27,14 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.collection.ext.CommonsArrayList;
-import com.helger.commons.collection.ext.ICommonsList;
+import com.helger.commons.collection.impl.CommonsArrayList;
+import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.error.level.EErrorLevel;
 import com.helger.commons.error.list.ErrorList;
 import com.helger.commons.io.file.FileOperations;
+import com.helger.commons.io.file.FileSystemIterator;
 import com.helger.commons.io.file.FilenameHelper;
-import com.helger.commons.io.file.filter.IFileFilter;
-import com.helger.commons.io.file.iterate.FileSystemIterator;
+import com.helger.commons.io.file.IFileFilter;
 import com.helger.commons.io.resource.FileSystemResource;
 import com.helger.commons.io.resource.IReadableResource;
 import com.helger.ebinterface.ubl.from.Ebi42TestMarshaller;
@@ -82,14 +82,12 @@ public final class CreditNoteToEbInterface42ConverterTest
                                                                                   Locale.GERMANY,
                                                                                   false).convertToEbInterface (aUBLCreditNote,
                                                                                                                aErrorList);
-      assertTrue (aRes.getPath () +
-                  ": " +
-                  aErrorList.toString (),
+      assertTrue (aRes.getPath () + ": " + aErrorList.toString (),
                   aErrorList.isEmpty () || aErrorList.getMostSevereErrorLevel ().isLT (EErrorLevel.ERROR));
       assertNotNull (aEbInvoice);
 
       if (!aErrorList.isEmpty () && aErrorList.getMostSevereErrorLevel ().isGE (EErrorLevel.WARN))
-        s_aLogger.info ("  " + aErrorList.getAllItems ());
+        s_aLogger.info ("  " + aErrorList.toString ());
 
       // Convert ebInterface to XML
       assertTrue (new Ebi42TestMarshaller ().write (aEbInvoice,
@@ -122,14 +120,12 @@ public final class CreditNoteToEbInterface42ConverterTest
                                                                                   Locale.GERMANY,
                                                                                   true).convertToEbInterface (aUBLCreditNote,
                                                                                                               aErrorList);
-      assertTrue (aRes.getPath () +
-                  ": " +
-                  aErrorList.toString (),
+      assertTrue (aRes.getPath () + ": " + aErrorList.toString (),
                   aErrorList.getMostSevereErrorLevel ().isLT (EErrorLevel.ERROR));
       assertNotNull (aEbInvoice);
 
       if (aErrorList.getMostSevereErrorLevel ().isGE (EErrorLevel.WARN))
-        s_aLogger.info ("  " + aErrorList.getAllItems ());
+        s_aLogger.info ("  " + aErrorList.toString ());
 
       // Convert ebInterface to XML
       assertTrue (new Ebi42TestMarshaller ().write (aEbInvoice,

@@ -16,8 +16,9 @@
  */
 package com.helger.ebinterface.ubl.from;
 
+import javax.xml.XMLConstants;
+
 import com.helger.ebinterface.CEbInterface;
-import com.helger.xml.CXML;
 import com.helger.xml.namespace.MapBasedNamespaceContext;
 
 /**
@@ -30,8 +31,8 @@ public class EbiNamespaceContext extends MapBasedNamespaceContext
 {
   public EbiNamespaceContext ()
   {
-    addMapping ("xsi", CXML.XML_NS_XSI);
-    addMapping ("xs", CXML.XML_NS_XSD);
+    addMapping ("xsi", XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI);
+    addMapping ("xs", XMLConstants.W3C_XML_SCHEMA_NS_URI);
     addMapping ("eb30", CEbInterface.EBINTERFACE_30_NS);
     addMapping ("eb302", CEbInterface.EBINTERFACE_302_NS);
     addMapping ("eb40", CEbInterface.EBINTERFACE_40_NS);

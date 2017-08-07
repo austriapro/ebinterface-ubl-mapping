@@ -28,8 +28,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.error.list.ErrorList;
-import com.helger.commons.io.file.filter.IFileFilter;
-import com.helger.commons.io.file.iterate.FileSystemIterator;
+import com.helger.commons.io.file.FileSystemIterator;
+import com.helger.commons.io.file.IFileFilter;
 import com.helger.ebinterface.builder.EbInterfaceReader;
 import com.helger.ebinterface.builder.EbInterfaceWriter;
 import com.helger.ebinterface.ubl.from.invoice.InvoiceToEbInterface42Converter;
