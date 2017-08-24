@@ -38,6 +38,8 @@ public class EbiNamespaceContext extends MapBasedNamespaceContext
     addMapping ("eb40", CEbInterface.EBINTERFACE_40_NS);
     addMapping ("eb41", CEbInterface.EBINTERFACE_41_NS);
     addMapping ("eb42", CEbInterface.EBINTERFACE_42_NS);
+    addMapping ("eb43", CEbInterface.EBINTERFACE_43_NS);
+    addMapping ("eb50", CEbInterface.EBINTERFACE_50_NS);
     addMapping ("dsig", "http://www.w3.org/2000/09/xmldsig#");
   }
 }

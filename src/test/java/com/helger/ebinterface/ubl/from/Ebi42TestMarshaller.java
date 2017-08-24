@@ -16,11 +16,7 @@
  */
 package com.helger.ebinterface.ubl.from;
 
-import javax.annotation.Nonnull;
-import javax.xml.bind.Marshaller;
-
 import com.helger.ebinterface.EbInterface42Marshaller;
-import com.helger.jaxb.JAXBMarshallerHelper;
 
 /**
  * Special ebInterface 4.2 marshaller providing a default namespace prefix
@@ -30,9 +26,8 @@ import com.helger.jaxb.JAXBMarshallerHelper;
  */
 public final class Ebi42TestMarshaller extends EbInterface42Marshaller
 {
-  @Override
-  protected void customizeMarshaller (@Nonnull final Marshaller aMarshaller)
+  public Ebi42TestMarshaller ()
   {
-    JAXBMarshallerHelper.setSunNamespacePrefixMapper (aMarshaller, new EbiNamespaceContext ());
+    setNamespaceContext (new EbiNamespaceContext ());
   }
 }
