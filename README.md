@@ -11,6 +11,7 @@ The reason why this project is not in the [ebinterface-mappings](https://github.
   * v3.0.0 - work in progress
     * Fixed potential NPE if UBL invoice has no `FinancialAccount`
     * Updated to ph-commons 9.0.0 
+    * Conversion of `TaxExemption` was added
   * v2.2.0 - 2017-08-04
     * Allow to create ebInterface 4.3 as well
     * Added conversion from ebInterface 4.1/4.2/4.3 to UBL

@@ -445,4 +445,9 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
           }
     }
   }
+
+  protected static final boolean isTaxExemptionCategoryID (@Nullable final String sUBLTaxCategoryID)
+  {
+    return "E".equals (sUBLTaxCategoryID) || "AE".equals (sUBLTaxCategoryID);
+  }
 }
