@@ -449,7 +449,11 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
 
   protected static final boolean isTaxExemptionCategoryID (@Nullable final String sUBLTaxCategoryID)
   {
-    return "E".equals (sUBLTaxCategoryID) || "AE".equals (sUBLTaxCategoryID);
+    // https://www.unece.org/fileadmin/DAM/trade/untdid/d16b/tred/tred5305.htm
+    // AE = VAT Reverse Charge
+    // E = Exempt from tax
+    // O = Services outside scope of tax
+    return "AE".equals (sUBLTaxCategoryID) || "E".equals (sUBLTaxCategoryID) || "O".equals (sUBLTaxCategoryID);
   }
 
   @Nonnull
