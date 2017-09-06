@@ -37,7 +37,6 @@ import com.helger.ebinterface.v43.Ebi43AddressIdentifierType;
 import com.helger.ebinterface.v43.Ebi43AddressType;
 import com.helger.ebinterface.v43.Ebi43DeliveryType;
 import com.helger.ebinterface.v43.Ebi43DocumentTypeType;
-import com.helger.ubl21.codelist.EDocumentTypeCode21;
 import com.helger.xsds.ccts.cct.schemamodule.CodeType;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AddressType;
@@ -111,13 +110,13 @@ public abstract class AbstractEbInterface43ToUBLConverter extends AbstractConver
         case INVOICE_FOR_ADVANCE_PAYMENT:
         case SUBSEQUENT_CREDIT:
         case SUBSEQUENT_DEBIT:
-          sID = EDocumentTypeCode21._380.getID ();
+          sID = "380";
           break;
         case INVOICE_FOR_PARTIAL_DELIVERY:
-          sID = EDocumentTypeCode21._326.getID ();
+          sID = "326";
           break;
         case SELF_BILLING:
-          sID = EDocumentTypeCode21._389.getID ();
+          sID = "389";
           break;
       }
 

@@ -56,8 +56,6 @@ import com.helger.ebinterface.v43.Ebi43SEPADirectDebitType;
 import com.helger.ebinterface.v43.Ebi43UniversalBankTransactionType;
 import com.helger.ebinterface.v43.Ebi43VATItemType;
 import com.helger.peppol.codelist.ETaxSchemeID;
-import com.helger.ubl21.codelist.EPaymentMeansCode21;
-import com.helger.ubl21.codelist.EUnitOfMeasureCode21;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AllowanceChargeType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.BranchType;
@@ -133,7 +131,7 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
         {
           // Direct debit (49)
           final PaymentMeansType aUBLPaymentMeans = new PaymentMeansType ();
-          aUBLPaymentMeans.setPaymentMeansCode (EPaymentMeansCode21._49.getID ()).setName ("local");
+          aUBLPaymentMeans.setPaymentMeansCode ("49");
           if (aEbiPaymentConditions != null)
             aUBLPaymentMeans.setPaymentDueDate (aEbiPaymentConditions.getDueDate ());
           if (StringHelper.hasText (aEbiPaymentMethod.getComment ()))
@@ -145,10 +143,10 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
           final Ebi43SEPADirectDebitType aEbiSepaDirectDebit = aEbiPaymentMethod.getSEPADirectDebit ();
           if (aEbiSepaDirectDebit != null)
           {
-            // TODO SEPA Direct debit (49)
+            // TODO SEPA Direct debit (59)
             // Back-mapping to ebInterface is also missing!!
             final PaymentMeansType aUBLPaymentMeans = new PaymentMeansType ();
-            aUBLPaymentMeans.setPaymentMeansCode (EPaymentMeansCode21._49.getID ()).setName ("SEPA");
+            aUBLPaymentMeans.setPaymentMeansCode ("59");
             if (aEbiPaymentConditions != null)
               aUBLPaymentMeans.setPaymentDueDate (aEbiPaymentConditions.getDueDate ());
             if (StringHelper.hasText (aEbiPaymentMethod.getComment ()))
@@ -162,7 +160,7 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
             {
               // TODO universal bank transaction
               final PaymentMeansType aUBLPaymentMeans = new PaymentMeansType ();
-              aUBLPaymentMeans.setPaymentMeansCode (EPaymentMeansCode21._30.getID ());
+              aUBLPaymentMeans.setPaymentMeansCode ("30");
               aUBLPaymentMeans.setPaymentChannelCode (PAYMENT_CHANNEL_CODE_IBAN);
 
               if (aEbiUBT.hasBeneficiaryAccountEntries ())
@@ -506,11 +504,11 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
         aUBLLine.setID (aEbiItem.getPositionNumber () != null ? aEbiItem.getPositionNumber ().toString ()
                                                               : Integer.toString (nInvoiceLineIndex));
 
-        EUnitOfMeasureCode21 eUOM = EUnitOfMeasureCode21.getFromIDOrNull (aEbiItem.getQuantity ().getUnit ());
-        if (eUOM == null)
-          eUOM = EUnitOfMeasureCode21.C62;
+        String sUOM = StringHelper.trim (aEbiItem.getQuantity ().getUnit ());
+        if (sUOM == null)
+          sUOM = "C62";
 
-        aUBLLine.setInvoicedQuantity (aEbiItem.getQuantity ().getValue ()).setUnitCode (eUOM.getID ());
+        aUBLLine.setInvoicedQuantity (aEbiItem.getQuantity ().getValue ()).setUnitCode (sUOM);
         aUBLLine.setLineExtensionAmount (aEbiItem.getLineItemAmount ()).setCurrencyID (sCurrency);
 
         final PriceType aUBLPrice = new PriceType ();
@@ -721,7 +719,7 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
         final InvoiceLineType aUBLLine = new InvoiceLineType ();
         aUBLLine.setID ("BTL" + nBelowTheLineIndex);
         aUBLLine.addNote (new NoteType ("BelowTheLineItem"));
-        aUBLLine.setInvoicedQuantity (BigDecimal.ONE).setUnitCode (EUnitOfMeasureCode21.C62.getID ());
+        aUBLLine.setInvoicedQuantity (BigDecimal.ONE).setUnitCode ("C62");
         aUBLLine.setLineExtensionAmount (aEbiItem.getLineItemAmount ()).setCurrencyID (sCurrency);
 
         final PriceType aUBLPrice = new PriceType ();

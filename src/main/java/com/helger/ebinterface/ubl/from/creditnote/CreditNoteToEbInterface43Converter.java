@@ -72,7 +72,6 @@ import com.helger.ebinterface.v43.Ebi43VATRateType;
 import com.helger.ebinterface.v43.Ebi43VATType;
 import com.helger.ebinterface.v43.ObjectFactory;
 import com.helger.peppol.codelist.ETaxSchemeID;
-import com.helger.ubl21.codelist.EUnitOfMeasureCode21;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AllowanceChargeType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CreditNoteLineType;
@@ -773,7 +772,7 @@ public final class CreditNoteToEbInterface43Converter extends AbstractToEbInterf
         if (aEbiQuantity.getUnit () == null)
         {
           // ebInterface requires a quantity!
-          aEbiQuantity.setUnit (EUnitOfMeasureCode21.C62.getID ());
+          aEbiQuantity.setUnit ("C62");
           aTransformationErrorList.add (SingleError.builderWarn ()
                                                    .setErrorFieldName ("CreditNoteLine[" +
                                                                        nLineIndex +

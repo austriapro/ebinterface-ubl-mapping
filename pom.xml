@@ -115,10 +115,6 @@
     </dependency>
     <dependency>
       <groupId>com.helger</groupId>
-      <artifactId>ph-ubl21-codelists</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.helger</groupId>
       <artifactId>ph-ebinterface</artifactId>
     </dependency>
     <dependency>

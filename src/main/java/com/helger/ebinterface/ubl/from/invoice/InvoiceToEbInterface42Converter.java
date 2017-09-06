@@ -69,6 +69,8 @@ import com.helger.ebinterface.v42.Ebi42ReductionAndSurchargeBaseType;
 import com.helger.ebinterface.v42.Ebi42ReductionAndSurchargeDetailsType;
 import com.helger.ebinterface.v42.Ebi42ReductionAndSurchargeListLineItemDetailsType;
 import com.helger.ebinterface.v42.Ebi42ReductionAndSurchargeType;
+import com.helger.ebinterface.v42.Ebi42SEPADirectDebitType;
+import com.helger.ebinterface.v42.Ebi42SEPADirectDebitTypeType;
 import com.helger.ebinterface.v42.Ebi42TaxExemptionType;
 import com.helger.ebinterface.v42.Ebi42TaxType;
 import com.helger.ebinterface.v42.Ebi42UnitPriceType;
@@ -79,8 +81,6 @@ import com.helger.ebinterface.v42.Ebi42VATRateType;
 import com.helger.ebinterface.v42.Ebi42VATType;
 import com.helger.ebinterface.v42.ObjectFactory;
 import com.helger.peppol.codelist.ETaxSchemeID;
-import com.helger.ubl21.codelist.EPaymentMeansCode21;
-import com.helger.ubl21.codelist.EUnitOfMeasureCode21;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AllowanceChargeType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CustomerPartyType;
@@ -173,15 +173,15 @@ public final class InvoiceToEbInterface42Converter extends AbstractToEbInterface
       for (final PaymentMeansType aUBLPaymentMeans : aUBLDoc.getPaymentMeans ())
       {
         final String sPaymentMeansCode = StringHelper.trim (aUBLPaymentMeans.getPaymentMeansCodeValue ());
-        final EPaymentMeansCode21 ePaymentMeans = EPaymentMeansCode21.getFromIDOrNull (sPaymentMeansCode);
-        if (ePaymentMeans == EPaymentMeansCode21._30 ||
-            ePaymentMeans == EPaymentMeansCode21._31 ||
-            ePaymentMeans == EPaymentMeansCode21._42)
+        // 30 = Credit transfer
+        // 31 = Debit transfer
+        // 42 = Payment to bank account
+        // 58 = SEPA credit transfer
+        if ("30".equals (sPaymentMeansCode) ||
+            "31".equals (sPaymentMeansCode) ||
+            "42".equals (sPaymentMeansCode) ||
+            "58".equals (sPaymentMeansCode))
         {
-          // Credit transfer (30)
-          // Debit transfer (31)
-          // Payment to bank account (42)
-
           // Is a payment channel code present?
           final String sPaymentChannelCode = StringHelper.trim (aUBLPaymentMeans.getPaymentChannelCodeValue ());
           // null for standard PEPPOL BIS
@@ -314,10 +314,9 @@ public final class InvoiceToEbInterface42Converter extends AbstractToEbInterface
                                                    .build ());
         }
         else
-          if (ePaymentMeans == EPaymentMeansCode21._49)
+          // 49 = Direct debit
+          if ("49".equals (sPaymentMeansCode))
           {
-            // Direct debit (49)
-
             _setPaymentMeansComment (aUBLPaymentMeans, aEbiPaymentMethod);
             final Ebi42DirectDebitType aEbiDirectDebit = new Ebi42DirectDebitType ();
             aEbiPaymentMethod.setDirectDebit (aEbiDirectDebit);
@@ -329,25 +328,56 @@ public final class InvoiceToEbInterface42Converter extends AbstractToEbInterface
             break;
           }
           else
-          {
-            // No supported payment means code
-            if (MathHelper.isEQ0 (aEbiDoc.getPayableAmount ()))
+            // 59 = SEPA direct debit
+            if ("59".equals (sPaymentMeansCode))
             {
-              // As nothing is to be paid we can safely use NoPayment
               _setPaymentMeansComment (aUBLPaymentMeans, aEbiPaymentMethod);
-              final Ebi42NoPaymentType aEbiNoPayment = new Ebi42NoPaymentType ();
-              aEbiPaymentMethod.setNoPayment (aEbiNoPayment);
+              // TODO use SEPA fields
+              if (true)
+              {
+                final Ebi42DirectDebitType aEbiDirectDebit = new Ebi42DirectDebitType ();
+                aEbiPaymentMethod.setDirectDebit (aEbiDirectDebit);
+                aEbiDoc.setPaymentMethod (aEbiPaymentMethod);
+              }
+              else
+              {
+                final Ebi42SEPADirectDebitType aEbiDirectDebit = new Ebi42SEPADirectDebitType ();
+                aEbiDirectDebit.setType (Ebi42SEPADirectDebitTypeType.B_2_C);
+                aEbiPaymentMethod.setSEPADirectDebit (aEbiDirectDebit);
+                aEbiDoc.setPaymentMethod (aEbiPaymentMethod);
+              }
+
+              // Set due date (optional)
+              aEbiPaymentConditions.setDueDate (aUBLPaymentMeans.getPaymentDueDateValue ());
+
               break;
             }
+            else
+            {
+              // No supported payment means code
+              if (MathHelper.isEQ0 (aEbiDoc.getPayableAmount ()))
+              {
+                // As nothing is to be paid we can safely use NoPayment
+                _setPaymentMeansComment (aUBLPaymentMeans, aEbiPaymentMethod);
+                final Ebi42NoPaymentType aEbiNoPayment = new Ebi42NoPaymentType ();
+                aEbiPaymentMethod.setNoPayment (aEbiNoPayment);
+                break;
+              }
 
-            aTransformationErrorList.add (SingleError.builderError ()
-                                                     .setErrorFieldName ("PaymentMeans[" + nPaymentMeansIndex + "]")
-                                                     .setErrorText (EText.PAYMENTMEANS_CODE_INVALID.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                                            ePaymentMeans.getID (),
-                                                                                                                            EPaymentMeansCode21._31.getID (),
-                                                                                                                            EPaymentMeansCode21._49.getID ()))
-                                                     .build ());
-          }
+              aTransformationErrorList.add (SingleError.builderError ()
+                                                       .setErrorFieldName ("PaymentMeans[" + nPaymentMeansIndex + "]")
+                                                       .setErrorText (EText.PAYMENTMEANS_CODE_INVALID.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                              sPaymentMeansCode,
+                                                                                                                              getOrString (", ",
+                                                                                                                                           "30",
+                                                                                                                                           "31",
+                                                                                                                                           "42",
+                                                                                                                                           "58"),
+                                                                                                                              getOrString (", ",
+                                                                                                                                           "49",
+                                                                                                                                           "59")))
+                                                       .build ());
+            }
 
         ++nPaymentMeansIndex;
       }
@@ -1105,7 +1135,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractToEbInterface
         if (aEbiQuantity.getUnit () == null)
         {
           // ebInterface requires a quantity!
-          aEbiQuantity.setUnit (EUnitOfMeasureCode21.C62.getID ());
+          aEbiQuantity.setUnit ("C62");
           aTransformationErrorList.add (SingleError.builderWarn ()
                                                    .setErrorFieldName ("InvoiceLine[" +
                                                                        nLineIndex +

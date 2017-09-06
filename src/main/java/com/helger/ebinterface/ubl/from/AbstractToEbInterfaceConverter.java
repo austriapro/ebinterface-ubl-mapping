@@ -57,6 +57,7 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
   @Translatable
   public static enum EText implements IHasDisplayTextWithArgs
   {
+    OR ("oder", "or"),
     NO_UBL_VERSION_ID ("Die UBLVersionID fehlt. Es wird der Wert ''{0}'' oder ''{1}'' erwartet.",
                        "No UBLVersionID present. It must be ''{0}'' or ''{1}''."),
     INVALID_UBL_VERSION_ID ("Die UBLVersionID ''{0}'' ist ungültig. Diese muss den Wert ''{1}'' oder ''{2}'' haben.",
@@ -129,7 +130,7 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
     ALLOWANCE_CHARGE_NO_TAXRATE ("Die Steuerprozentrate für den globalen Zuschlag/Abschlag konnte nicht ermittelt werden.",
                                  "Failed to resolve tax rate percentage for global AllowanceCharge."),
     PAYMENTMEANS_CODE_INVALID ("Der PaymentMeansCode ''{0}'' ist ungültig. Für Überweisungen muss {1} verwenden werden und für Lastschriftverfahren {2}.",
-                               "The PaymentMeansCode ''{0}'' is invalid. For debit transfer use {1} and for direct debit use {2}."),
+                               "The PaymentMeansCode ''{0}'' is invalid. For credit/debit transfer use {1} and for direct debit use {2}."),
     PAYMENT_ID_TOO_LONG_CUT ("Die Zahlungsreferenz ''{0}'' ist zu lang und wird abgeschnitten.",
                              "The payment reference ''{0}'' is too long and therefore cut."),
     BIC_INVALID ("Der BIC ''{0}'' ist ungültig.", "The BIC ''{0}'' is invalid."),
@@ -449,5 +450,27 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
   protected static final boolean isTaxExemptionCategoryID (@Nullable final String sUBLTaxCategoryID)
   {
     return "E".equals (sUBLTaxCategoryID) || "AE".equals (sUBLTaxCategoryID);
+  }
+
+  @Nonnull
+  protected String getOrString (final String sSep, @Nullable final String... aValues)
+  {
+    final StringBuilder aSB = new StringBuilder ();
+    if (aValues != null)
+    {
+      final int nSecondLast = aSB.length () - 2;
+      for (int i = 0; i < aValues.length; ++i)
+      {
+        if (i > 0)
+        {
+          if (i == nSecondLast)
+            aSB.append (EText.OR.getDisplayText (m_aDisplayLocale));
+          else
+            aSB.append (sSep);
+        }
+        aSB.append (aValues[i]);
+      }
+    }
+    return aSB.toString ();
   }
 }
