@@ -64,6 +64,7 @@ import com.helger.ebinterface.v43.Ebi43ReductionAndSurchargeBaseType;
 import com.helger.ebinterface.v43.Ebi43ReductionAndSurchargeDetailsType;
 import com.helger.ebinterface.v43.Ebi43ReductionAndSurchargeListLineItemDetailsType;
 import com.helger.ebinterface.v43.Ebi43ReductionAndSurchargeType;
+import com.helger.ebinterface.v43.Ebi43TaxExemptionType;
 import com.helger.ebinterface.v43.Ebi43TaxType;
 import com.helger.ebinterface.v43.Ebi43UnitPriceType;
 import com.helger.ebinterface.v43.Ebi43UnitType;
@@ -510,11 +511,14 @@ public final class CreditNoteToEbInterface43Converter extends AbstractToEbInterf
         {
           // Tax category is a mandatory element
           final TaxCategoryType aUBLTaxCategory = aUBLSubtotal.getTaxCategory ();
+
+          final String sUBLTaxCategoryID = StringHelper.trim (aUBLTaxCategory.getID ().getValue ());
+          final boolean bTaxExemption = isTaxExemptionCategoryID (sUBLTaxCategoryID);
           BigDecimal aUBLTaxAmount = aUBLSubtotal.getTaxAmountValue ();
           BigDecimal aUBLTaxableAmount = aUBLSubtotal.getTaxableAmountValue ();
 
           // Is the percentage value directly specified
-          BigDecimal aUBLPercentage = aUBLTaxCategory.getPercentValue ();
+          BigDecimal aUBLPercentage = bTaxExemption ? BigDecimal.ZERO : aUBLTaxCategory.getPercentValue ();
           if (aUBLPercentage == null)
           {
             // no it is not :(
@@ -572,9 +576,20 @@ public final class CreditNoteToEbInterface43Converter extends AbstractToEbInterf
                                                      .build ());
             break;
           }
+          if (StringHelper.hasNoText (sUBLTaxCategoryID))
+          {
+            aTransformationErrorList.add (SingleError.builderError ()
+                                                     .setErrorFieldName ("TaxTotal[" +
+                                                                         nTaxTotalIndex +
+                                                                         "]/TaxSubtotal[" +
+                                                                         nTaxSubtotalIndex +
+                                                                         "]/TaxCategory")
+                                                     .setErrorText (EText.MISSING_TAXCATEGORY_ID_VALUE.getDisplayText (m_aDisplayLocale))
+                                                     .build ());
+            break;
+          }
 
           final String sUBLTaxCategorySchemeID = StringHelper.trim (aUBLTaxCategory.getID ().getSchemeID ());
-          final String sUBLTaxCategoryID = StringHelper.trim (aUBLTaxCategory.getID ().getValue ());
 
           aTaxCategoryPercMap.put (new TaxCategoryKey (new SchemedID (sUBLTaxSchemeSchemeID, sUBLTaxSchemeID),
                                                        new SchemedID (sUBLTaxCategorySchemeID, sUBLTaxCategoryID)),
@@ -627,13 +642,29 @@ public final class CreditNoteToEbInterface43Converter extends AbstractToEbInterf
                     final Ebi43VATItemType aEbiVATItem = new Ebi43VATItemType ();
                     // Base amount
                     aEbiVATItem.setTaxedAmount (aUBLTaxableAmount.setScale (SCALE_PRICE2, ROUNDING_MODE));
-                    // tax rate
-                    final Ebi43VATRateType aEbiVATVATRate = new Ebi43VATRateType ();
-                    // Optional
-                    if (false)
-                      aEbiVATVATRate.setTaxCode (sUBLTaxCategoryID);
-                    aEbiVATVATRate.setValue (aUBLPercentage);
-                    aEbiVATItem.setVATRate (aEbiVATVATRate);
+                    if (bTaxExemption)
+                    {
+                      String sReason = null;
+                      if (aUBLTaxCategory.hasTaxExemptionReasonEntries ())
+                        sReason = aUBLTaxCategory.getTaxExemptionReasonAtIndex (0).getValue ();
+                      if (sReason == null && aUBLTaxCategory.getTaxExemptionReasonCode () != null)
+                        sReason = aUBLTaxCategory.getTaxExemptionReasonCode ().getValue ();
+                      if (StringHelper.hasNoText (sReason))
+                        sReason = "Tax Exemption";
+                      final Ebi43TaxExemptionType aEbiTaxEx = new Ebi43TaxExemptionType ();
+                      aEbiTaxEx.setValue (sReason);
+                      aEbiVATItem.setTaxExemption (aEbiTaxEx);
+                    }
+                    else
+                    {
+                      // tax rate
+                      final Ebi43VATRateType aEbiVATVATRate = new Ebi43VATRateType ();
+                      // Optional
+                      if (false)
+                        aEbiVATVATRate.setTaxCode (sUBLTaxCategoryID);
+                      aEbiVATVATRate.setValue (aUBLPercentage);
+                      aEbiVATItem.setVATRate (aEbiVATVATRate);
+                    }
                     // Tax amount (mandatory)
                     aEbiVATItem.setAmount (aUBLTaxAmount.setScale (SCALE_PRICE2, ROUNDING_MODE));
                     // Add to list
@@ -691,8 +722,11 @@ public final class CreditNoteToEbInterface43Converter extends AbstractToEbInterf
 
         // Try to resolve tax percentage
         BigDecimal aUBLPercent = null;
+        String sUBLTaxCategoryID = null;
         if (aUBLTaxCategory != null)
         {
+          sUBLTaxCategoryID = StringHelper.trim (aUBLTaxCategory.getIDValue ());
+
           // Specified at tax category?
           if (aUBLTaxCategory.getPercent () != null)
             aUBLPercent = aUBLTaxCategory.getPercentValue ();
@@ -709,13 +743,17 @@ public final class CreditNoteToEbInterface43Converter extends AbstractToEbInterf
             final String sUBLTaxSchemeID = StringHelper.trim (aUBLTaxCategory.getTaxScheme ().getIDValue ());
 
             final String sUBLTaxCategorySchemeID = StringHelper.trim (aUBLTaxCategory.getID ().getSchemeID ());
-            final String sUBLTaxCategoryID = StringHelper.trim (aUBLTaxCategory.getIDValue ());
 
             final TaxCategoryKey aKey = new TaxCategoryKey (new SchemedID (sUBLTaxSchemeSchemeID, sUBLTaxSchemeID),
                                                             new SchemedID (sUBLTaxCategorySchemeID, sUBLTaxCategoryID));
             aUBLPercent = aTaxCategoryPercMap.get (aKey);
           }
         }
+
+        final boolean bTaxExemption = isTaxExemptionCategoryID (sUBLTaxCategoryID);
+        if (bTaxExemption && aUBLPercent == null)
+          aUBLPercent = BigDecimal.ZERO;
+
         if (aUBLPercent == null)
         {
           aUBLPercent = BigDecimal.ZERO;
@@ -831,14 +869,31 @@ public final class CreditNoteToEbInterface43Converter extends AbstractToEbInterf
                                                           SCALE_PRICE4,
                                                           ROUNDING_MODE);
 
-        // Tax rate (mandatory)
-        final Ebi43VATRateType aEbiVATRate = new Ebi43VATRateType ();
-        aEbiVATRate.setValue (aUBLPercent);
-        if (aUBLTaxCategory != null)
-          // Optional
-          if (false)
-            aEbiVATRate.setTaxCode (aUBLTaxCategory.getIDValue ());
-        aEbiListLineItem.setVATRate (aEbiVATRate);
+        if (bTaxExemption)
+        {
+          // Tax exemption
+          String sReason = null;
+          if (aUBLTaxCategory.hasTaxExemptionReasonEntries ())
+            sReason = aUBLTaxCategory.getTaxExemptionReasonAtIndex (0).getValue ();
+          if (sReason == null && aUBLTaxCategory.getTaxExemptionReasonCode () != null)
+            sReason = aUBLTaxCategory.getTaxExemptionReasonCode ().getValue ();
+          if (StringHelper.hasNoText (sReason))
+            sReason = "Tax Exemption";
+          final Ebi43TaxExemptionType aEbiTaxEx = new Ebi43TaxExemptionType ();
+          aEbiTaxEx.setValue (sReason);
+          aEbiListLineItem.setTaxExemption (aEbiTaxEx);
+        }
+        else
+        {
+          // Tax rate (mandatory)
+          final Ebi43VATRateType aEbiVATRate = new Ebi43VATRateType ();
+          aEbiVATRate.setValue (aUBLPercent);
+          if (aUBLTaxCategory != null)
+            // Optional
+            if (false)
+              aEbiVATRate.setTaxCode (aUBLTaxCategory.getIDValue ());
+          aEbiListLineItem.setVATRate (aEbiVATRate);
+        }
 
         // Line item amount (quantity * unit price +- reduction / surcharge)
         aEbiListLineItem.setLineItemAmount (aUBLLine.getLineExtensionAmountValue ().setScale (SCALE_PRICE2,
