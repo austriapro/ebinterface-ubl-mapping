@@ -153,7 +153,8 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
                           "A Delivery/DeliveryDate or an InvoicePeriod must be present."),
     PREPAID_NOT_SUPPORTED ("Das Element <PrepaidAmount> wird nicht unterstützt.",
                            "The <PrepaidAmount> element is not supported!"),
-    MISSING_TAXCATEGORY_ID ("Das Element <ID> fehlt.", "Element <ID> is missing.");
+    MISSING_TAXCATEGORY_ID ("Das Element <ID> fehlt.", "Element <ID> is missing."),
+    MISSING_TAXCATEGORY_ID_VALUE ("Das Element <ID> hat keinen Wert.", "Element <ID> has no value.");
 
     private final IMultilingualText m_aTP;
 

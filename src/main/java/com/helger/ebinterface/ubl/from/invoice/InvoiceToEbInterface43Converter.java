@@ -916,6 +916,18 @@ public final class InvoiceToEbInterface43Converter extends AbstractToEbInterface
                                                      .build ());
             break;
           }
+          if (StringHelper.hasNoText (sUBLTaxCategoryID))
+          {
+            aTransformationErrorList.add (SingleError.builderError ()
+                                                     .setErrorFieldName ("TaxTotal[" +
+                                                                         nTaxTotalIndex +
+                                                                         "]/TaxSubtotal[" +
+                                                                         nTaxSubtotalIndex +
+                                                                         "]/TaxCategory")
+                                                     .setErrorText (EText.MISSING_TAXCATEGORY_ID_VALUE.getDisplayText (m_aDisplayLocale))
+                                                     .build ());
+            break;
+          }
 
           final String sUBLTaxCategorySchemeID = StringHelper.trim (aUBLTaxCategory.getID ().getSchemeID ());
 
@@ -1079,6 +1091,11 @@ public final class InvoiceToEbInterface43Converter extends AbstractToEbInterface
             aUBLPercent = aTaxCategoryPercMap.get (aKey);
           }
         }
+
+        final boolean bTaxExemption = isTaxExemptionCategoryID (sUBLTaxCategoryID);
+        if (bTaxExemption && aUBLPercent == null)
+          aUBLPercent = BigDecimal.ZERO;
+
         if (aUBLPercent == null)
         {
           aUBLPercent = BigDecimal.ZERO;
@@ -1194,7 +1211,6 @@ public final class InvoiceToEbInterface43Converter extends AbstractToEbInterface
                                                           SCALE_PRICE4,
                                                           ROUNDING_MODE);
 
-        final boolean bTaxExemption = isTaxExemptionCategoryID (sUBLTaxCategoryID);
         if (bTaxExemption)
         {
           // Tax exemption
