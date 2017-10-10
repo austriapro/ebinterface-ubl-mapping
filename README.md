@@ -1,5 +1,5 @@
 # ebinterface-ubl-mapping
-Mapping ebInterface 4.2/4.3 from and to UBL 2.1.
+Mapping ebInterface 4.2/4.3 from and to UBL 2.1 and vice versa.
 Author: Philip Helger
 
 This project is based on the project `ubl2ebinterface` which resides on Joinup (and will not be developed any further).
@@ -12,6 +12,7 @@ The reason why this project is not in the [ebinterface-mappings](https://github.
     * Fixed potential NPE if UBL invoice has no `FinancialAccount`
     * Updated to ph-commons 9.0.0 
     * Conversion of `TaxExemption` was added
+    * Some error handling details were improved
   * v2.2.0 - 2017-08-04
     * Allow to create ebInterface 4.3 as well
     * Added conversion from ebInterface 4.1/4.2/4.3 to UBL
