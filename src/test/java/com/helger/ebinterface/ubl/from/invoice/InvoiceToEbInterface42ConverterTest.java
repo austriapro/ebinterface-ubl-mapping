@@ -40,6 +40,7 @@ import com.helger.commons.io.file.IFileFilter;
 import com.helger.commons.io.resource.FileSystemResource;
 import com.helger.commons.io.resource.IReadableResource;
 import com.helger.ebinterface.ubl.from.Ebi42TestMarshaller;
+import com.helger.ebinterface.ubl.from.ToEbinterfaceSettings;
 import com.helger.ebinterface.v42.Ebi42InvoiceType;
 import com.helger.ubl21.UBL21Reader;
 
@@ -82,8 +83,8 @@ public final class InvoiceToEbInterface42ConverterTest
       final ErrorList aErrorList = new ErrorList ();
       final Ebi42InvoiceType aEbInvoice = new InvoiceToEbInterface42Converter (Locale.GERMANY,
                                                                                Locale.GERMANY,
-                                                                               false).convertToEbInterface (aUBLInvoice,
-                                                                                                            aErrorList);
+                                                                               new ToEbinterfaceSettings ()).convertToEbInterface (aUBLInvoice,
+                                                                                                                                   aErrorList);
       assertTrue (aRes.getPath () + ": " + aErrorList.toString (),
                   aErrorList.isEmpty () || aErrorList.getMostSevereErrorLevel ().isLT (EErrorLevel.ERROR));
       assertNotNull (aEbInvoice);
@@ -120,8 +121,8 @@ public final class InvoiceToEbInterface42ConverterTest
       final ErrorList aErrorList = new ErrorList ();
       final Ebi42InvoiceType aEbInvoice = new InvoiceToEbInterface42Converter (Locale.GERMANY,
                                                                                Locale.GERMANY,
-                                                                               true).convertToEbInterface (aUBLInvoice,
-                                                                                                           aErrorList);
+                                                                               ToEbinterfaceSettings.getERechnungGvAtSettings ()).convertToEbInterface (aUBLInvoice,
+                                                                                                                                                        aErrorList);
       assertTrue (aRes.getPath () + ": " + aErrorList.toString (),
                   aErrorList.getMostSevereErrorLevel ().isLT (EErrorLevel.ERROR));
       assertNotNull (aEbInvoice);
@@ -158,8 +159,8 @@ public final class InvoiceToEbInterface42ConverterTest
       final ErrorList aErrorList = new ErrorList ();
       final Ebi42InvoiceType aEbInvoice = new InvoiceToEbInterface42Converter (Locale.GERMANY,
                                                                                Locale.GERMANY,
-                                                                               false).convertToEbInterface (aUBLInvoice,
-                                                                                                            aErrorList);
+                                                                               new ToEbinterfaceSettings ()).convertToEbInterface (aUBLInvoice,
+                                                                                                                                   aErrorList);
       assertNotNull (aEbInvoice);
       assertTrue (aRes.getPath () + ": " + aErrorList.toString (),
                   !aErrorList.isEmpty () && aErrorList.getMostSevereErrorLevel ().isGE (EErrorLevel.ERROR));

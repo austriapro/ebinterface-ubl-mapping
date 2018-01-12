@@ -38,6 +38,7 @@ import com.helger.commons.io.file.IFileFilter;
 import com.helger.commons.io.resource.FileSystemResource;
 import com.helger.commons.io.resource.IReadableResource;
 import com.helger.ebinterface.ubl.from.Ebi43TestMarshaller;
+import com.helger.ebinterface.ubl.from.ToEbinterfaceSettings;
 import com.helger.ebinterface.v43.Ebi43InvoiceType;
 import com.helger.ubl21.UBL21Reader;
 
@@ -80,8 +81,8 @@ public final class CreditNoteToEbInterface43ConverterTest
       final ErrorList aErrorList = new ErrorList ();
       final Ebi43InvoiceType aEbInvoice = new CreditNoteToEbInterface43Converter (Locale.GERMANY,
                                                                                   Locale.GERMANY,
-                                                                                  false).convertToEbInterface (aUBLCreditNote,
-                                                                                                               aErrorList);
+                                                                                  new ToEbinterfaceSettings ()).convertToEbInterface (aUBLCreditNote,
+                                                                                                                                      aErrorList);
       assertTrue (aRes.getPath () + ": " + aErrorList.toString (),
                   aErrorList.isEmpty () || aErrorList.getMostSevereErrorLevel ().isLT (EErrorLevel.ERROR));
       assertNotNull (aEbInvoice);
@@ -118,8 +119,8 @@ public final class CreditNoteToEbInterface43ConverterTest
       final ErrorList aErrorList = new ErrorList ();
       final Ebi43InvoiceType aEbInvoice = new CreditNoteToEbInterface43Converter (Locale.GERMANY,
                                                                                   Locale.GERMANY,
-                                                                                  true).convertToEbInterface (aUBLCreditNote,
-                                                                                                              aErrorList);
+                                                                                  ToEbinterfaceSettings.getERechnungGvAtSettings ()).convertToEbInterface (aUBLCreditNote,
+                                                                                                                                                           aErrorList);
       assertTrue (aRes.getPath () + ": " + aErrorList.toString (),
                   aErrorList.getMostSevereErrorLevel ().isLT (EErrorLevel.ERROR));
       assertNotNull (aEbInvoice);

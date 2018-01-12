@@ -44,9 +44,9 @@ public abstract class AbstractToEbInterface42Converter extends AbstractToEbInter
 {
   public AbstractToEbInterface42Converter (@Nonnull final Locale aDisplayLocale,
                                            @Nonnull final Locale aContentLocale,
-                                           final boolean bStrictERBMode)
+                                           @Nonnull final ToEbinterfaceSettings aSettings)
   {
-    super (aDisplayLocale, aContentLocale, bStrictERBMode);
+    super (aDisplayLocale, aContentLocale, aSettings);
   }
 
   @Nullable

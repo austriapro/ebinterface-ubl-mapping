@@ -32,6 +32,7 @@ import com.helger.commons.io.file.FileSystemIterator;
 import com.helger.commons.io.file.IFileFilter;
 import com.helger.ebinterface.builder.EbInterfaceReader;
 import com.helger.ebinterface.builder.EbInterfaceWriter;
+import com.helger.ebinterface.ubl.from.ToEbinterfaceSettings;
 import com.helger.ebinterface.ubl.from.invoice.InvoiceToEbInterface42Converter;
 import com.helger.ebinterface.v42.Ebi42InvoiceType;
 import com.helger.ubl21.UBL21Writer;
@@ -53,7 +54,9 @@ public final class EbInterface42ToInvoiceConverterTest
   {
     final Locale aLocale = Locale.GERMANY;
     final EbInterface42ToInvoiceConverter aToUBL = new EbInterface42ToInvoiceConverter (aLocale, aLocale);
-    final InvoiceToEbInterface42Converter aToEbi = new InvoiceToEbInterface42Converter (aLocale, aLocale, false);
+    final InvoiceToEbInterface42Converter aToEbi = new InvoiceToEbInterface42Converter (aLocale,
+                                                                                        aLocale,
+                                                                                        new ToEbinterfaceSettings ());
 
     final EbInterfaceWriter <Ebi42InvoiceType> aEbiWriter = EbInterfaceWriter.ebInterface42 ()
                                                                              .setFormattedOutput (true);

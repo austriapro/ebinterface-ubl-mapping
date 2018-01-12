@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Translatable;
 import com.helger.commons.error.SingleError;
 import com.helger.commons.error.list.ErrorList;
@@ -170,13 +171,7 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
     }
   }
 
-  /**
-   * The fake email address used by PEPPOL when no biller email address is in
-   * the original XML file
-   */
-  public static final String PEPPOL_FAKE_BILLER_EMAIL_ADDRESS = "no-email-address-provided@peppol.eu";
-
-  protected final boolean m_bStrictERBMode;
+  protected final ToEbinterfaceSettings m_aSettings;
 
   /**
    * Constructor
@@ -186,16 +181,15 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
    * @param aContentLocale
    *        The locale for the created ebInterface files. May not be
    *        <code>null</code>.
-   * @param bStrictERBMode
-   *        <code>true</code> if E-RECHNUNG.GV.AT specific checks should be
-   *        performed
+   * @param aSettings
+   *        Conversion settings to be used. May not be <code>null</code>.
    */
   public AbstractToEbInterfaceConverter (@Nonnull final Locale aDisplayLocale,
                                          @Nonnull final Locale aContentLocale,
-                                         final boolean bStrictERBMode)
+                                         @Nonnull final ToEbinterfaceSettings aSettings)
   {
     super (aDisplayLocale, aContentLocale);
-    m_bStrictERBMode = bStrictERBMode;
+    m_aSettings = ValueEnforcer.notNull (aSettings, "Settings");
   }
 
   @Nonnull
@@ -462,7 +456,7 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
    * [string][sep][string][sep][string][or][last-string]. So the last and the
    * second last entries are separated by " or " whereas the other entries are
    * separated by the provided separator.
-   * 
+   *
    * @param sSep
    *        Separator to use. May not be <code>null</code>.
    * @param aValues

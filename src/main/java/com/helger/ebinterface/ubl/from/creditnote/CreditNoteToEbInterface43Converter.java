@@ -41,37 +41,10 @@ import com.helger.commons.string.StringParser;
 import com.helger.ebinterface.codelist.ETaxCode;
 import com.helger.ebinterface.ubl.from.AbstractToEbInterface43Converter;
 import com.helger.ebinterface.ubl.from.EbInterface43Helper;
+import com.helger.ebinterface.ubl.from.ToEbinterfaceSettings;
 import com.helger.ebinterface.ubl.from.helper.SchemedID;
 import com.helger.ebinterface.ubl.from.helper.TaxCategoryKey;
-import com.helger.ebinterface.v43.Ebi43BillerType;
-import com.helger.ebinterface.v43.Ebi43DeliveryType;
-import com.helger.ebinterface.v43.Ebi43DetailsType;
-import com.helger.ebinterface.v43.Ebi43DocumentTypeType;
-import com.helger.ebinterface.v43.Ebi43FurtherIdentificationType;
-import com.helger.ebinterface.v43.Ebi43InvoiceRecipientType;
-import com.helger.ebinterface.v43.Ebi43InvoiceType;
-import com.helger.ebinterface.v43.Ebi43ItemListType;
-import com.helger.ebinterface.v43.Ebi43ListLineItemType;
-import com.helger.ebinterface.v43.Ebi43NoPaymentType;
-import com.helger.ebinterface.v43.Ebi43OrderReferenceDetailType;
-import com.helger.ebinterface.v43.Ebi43OrderReferenceType;
-import com.helger.ebinterface.v43.Ebi43OrderingPartyType;
-import com.helger.ebinterface.v43.Ebi43OtherTaxType;
-import com.helger.ebinterface.v43.Ebi43PaymentConditionsType;
-import com.helger.ebinterface.v43.Ebi43PaymentMethodType;
-import com.helger.ebinterface.v43.Ebi43PeriodType;
-import com.helger.ebinterface.v43.Ebi43ReductionAndSurchargeBaseType;
-import com.helger.ebinterface.v43.Ebi43ReductionAndSurchargeDetailsType;
-import com.helger.ebinterface.v43.Ebi43ReductionAndSurchargeListLineItemDetailsType;
-import com.helger.ebinterface.v43.Ebi43ReductionAndSurchargeType;
-import com.helger.ebinterface.v43.Ebi43TaxExemptionType;
-import com.helger.ebinterface.v43.Ebi43TaxType;
-import com.helger.ebinterface.v43.Ebi43UnitPriceType;
-import com.helger.ebinterface.v43.Ebi43UnitType;
-import com.helger.ebinterface.v43.Ebi43VATItemType;
-import com.helger.ebinterface.v43.Ebi43VATRateType;
-import com.helger.ebinterface.v43.Ebi43VATType;
-import com.helger.ebinterface.v43.ObjectFactory;
+import com.helger.ebinterface.v43.*;
 import com.helger.peppol.codelist.ETaxSchemeID;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AllowanceChargeType;
@@ -112,15 +85,14 @@ public final class CreditNoteToEbInterface43Converter extends AbstractToEbInterf
    * @param aContentLocale
    *        The locale for the created ebInterface files. May not be
    *        <code>null</code>.
-   * @param bStrictERBMode
-   *        <code>true</code> if E-RECHNUNG.GV.AT specific checks should be
-   *        performed
+   * @param aSettings
+   *        Conversion settings to be used. May not be <code>null</code>.
    */
   public CreditNoteToEbInterface43Converter (@Nonnull final Locale aDisplayLocale,
                                              @Nonnull final Locale aContentLocale,
-                                             final boolean bStrictERBMode)
+                                             @Nonnull final ToEbinterfaceSettings aSettings)
   {
-    super (aDisplayLocale, aContentLocale, bStrictERBMode);
+    super (aDisplayLocale, aContentLocale, aSettings);
   }
 
   @Nonnull
@@ -276,7 +248,7 @@ public final class CreditNoteToEbInterface43Converter extends AbstractToEbInterf
 
       // Disabled because field is optional
       if (false)
-        if (m_bStrictERBMode && StringHelper.hasNoText (aEbiBiller.getInvoiceRecipientsBillerID ()))
+        if (StringHelper.hasNoText (aEbiBiller.getInvoiceRecipientsBillerID ()))
         {
           // Mandatory field
           aTransformationErrorList.add (SingleError.builderError ()
@@ -304,7 +276,8 @@ public final class CreditNoteToEbInterface43Converter extends AbstractToEbInterf
 
         // Ensure a fake biller email address is present
         if (StringHelper.hasNoText (aEbiBiller.getAddress ().getEmail ()))
-          aEbiBiller.getAddress ().setEmail (PEPPOL_FAKE_BILLER_EMAIL_ADDRESS);
+          if (m_aSettings.isEnforceSupplierEmailAddress ())
+            aEbiBiller.getAddress ().setEmail (m_aSettings.getEnforcedSupplierEmailAddress ());
       }
 
       // Add contract reference as further identification
@@ -471,7 +444,7 @@ public final class CreditNoteToEbInterface43Converter extends AbstractToEbInterf
 
       if (StringHelper.hasNoText (sUBLOrderReferenceID))
       {
-        if (m_bStrictERBMode)
+        if (m_aSettings.isOrderReferenceIDMandatory ())
           aTransformationErrorList.add (SingleError.builderError ()
                                                    .setErrorFieldName ("OrderReference/ID")
                                                    .setErrorText (EText.ORDER_REFERENCE_MISSING.getDisplayText (m_aDisplayLocale))
@@ -479,17 +452,20 @@ public final class CreditNoteToEbInterface43Converter extends AbstractToEbInterf
       }
       else
       {
-        if (m_bStrictERBMode)
-          if (sUBLOrderReferenceID.length () > ORDER_REFERENCE_MAX_LENGTH)
+        if (m_aSettings.hasOrderReferenceMaxLength ())
+        {
+          final int nMaxLen = m_aSettings.getOrderReferenceMaxLength ();
+          if (sUBLOrderReferenceID.length () > nMaxLen)
           {
             aTransformationErrorList.add (SingleError.builderWarn ()
                                                      .setErrorFieldName ("OrderReference/ID")
                                                      .setErrorText (EText.ORDER_REFERENCE_TOO_LONG.getDisplayTextWithArgs (m_aDisplayLocale,
                                                                                                                            sUBLOrderReferenceID,
-                                                                                                                           Integer.valueOf (ORDER_REFERENCE_MAX_LENGTH)))
+                                                                                                                           Integer.valueOf (nMaxLen)))
                                                      .build ());
-            sUBLOrderReferenceID = sUBLOrderReferenceID.substring (0, ORDER_REFERENCE_MAX_LENGTH);
+            sUBLOrderReferenceID = sUBLOrderReferenceID.substring (0, nMaxLen);
           }
+        }
 
         final Ebi43OrderReferenceType aEbiOrderReference = new Ebi43OrderReferenceType ();
         aEbiOrderReference.setOrderID (sUBLOrderReferenceID);
@@ -1209,7 +1185,7 @@ public final class CreditNoteToEbInterface43Converter extends AbstractToEbInterf
       }
     }
 
-    if (m_bStrictERBMode)
+    if (m_aSettings.isDeliveryDateMandatory ())
     {
       if (aEbiDelivery.getDate () == null && aEbiDelivery.getPeriod () == null)
         aTransformationErrorList.add (SingleError.builderError ()

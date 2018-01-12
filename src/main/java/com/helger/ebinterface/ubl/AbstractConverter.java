@@ -34,7 +34,6 @@ import com.helger.peppol.codelist.ETaxSchemeID;
 @Immutable
 public abstract class AbstractConverter
 {
-  public static final int ORDER_REFERENCE_MAX_LENGTH = 54;
   public static final String SCHEME_BIC = "BIC";
   public static final String REGEX_BIC = "[0-9A-Za-z]{8}([0-9A-Za-z]{3})?";
   public static final String SCHEME_IBAN = "IBAN";
