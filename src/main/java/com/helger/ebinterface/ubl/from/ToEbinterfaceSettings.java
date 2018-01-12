@@ -105,7 +105,7 @@ public class ToEbinterfaceSettings implements IToEbinterfaceSettings
   }
 
   @Nonnull
-  public IToEbinterfaceSettings setEnforcedSupplierEmailAddress (@Nonnull @Nonempty final String s)
+  public ToEbinterfaceSettings setEnforcedSupplierEmailAddress (@Nonnull @Nonempty final String s)
   {
     ValueEnforcer.notEmpty (s, "EmailAddress");
     m_sEnforcedSupplierEmailAddress = s;
@@ -125,6 +125,10 @@ public class ToEbinterfaceSettings implements IToEbinterfaceSettings
     return this;
   }
 
+  /**
+   * @return Settings similar to what eRechnung.gv.at uses - mainly for testing
+   *         purposes.
+   */
   @Nonnull
   public static ToEbinterfaceSettings getERechnungGvAtSettings ()
   {
