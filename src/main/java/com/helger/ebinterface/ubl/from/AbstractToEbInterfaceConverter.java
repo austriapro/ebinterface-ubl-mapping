@@ -457,8 +457,20 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
     return "AE".equals (sUBLTaxCategoryID) || "E".equals (sUBLTaxCategoryID) || "O".equals (sUBLTaxCategoryID);
   }
 
+  /**
+   * Get a string in the form
+   * [string][sep][string][sep][string][or][last-string]. So the last and the
+   * second last entries are separated by " or " whereas the other entries are
+   * separated by the provided separator.
+   * 
+   * @param sSep
+   *        Separator to use. May not be <code>null</code>.
+   * @param aValues
+   *        Values to be combined.
+   * @return
+   */
   @Nonnull
-  protected String getOrString (final String sSep, @Nullable final String... aValues)
+  protected String getOrString (@Nonnull final String sSep, @Nullable final String... aValues)
   {
     final StringBuilder aSB = new StringBuilder ();
     if (aValues != null)
