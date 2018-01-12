@@ -171,7 +171,7 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
     }
   }
 
-  protected final ToEbinterfaceSettings m_aSettings;
+  protected final IToEbinterfaceSettings m_aSettings;
 
   /**
    * Constructor
@@ -186,7 +186,7 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
    */
   public AbstractToEbInterfaceConverter (@Nonnull final Locale aDisplayLocale,
                                          @Nonnull final Locale aContentLocale,
-                                         @Nonnull final ToEbinterfaceSettings aSettings)
+                                         @Nonnull final IToEbinterfaceSettings aSettings)
   {
     super (aDisplayLocale, aContentLocale);
     m_aSettings = ValueEnforcer.notNull (aSettings, "Settings");

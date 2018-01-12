@@ -1,13 +1,11 @@
 package com.helger.ebinterface.ubl.from;
 
-import java.io.Serializable;
-
 import javax.annotation.Nonnull;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 
-public class ToEbinterfaceSettings implements Serializable
+public class ToEbinterfaceSettings implements IToEbinterfaceSettings
 {
   /**
    * Is the OrderReference/ID element mandatory?
@@ -40,6 +38,7 @@ public class ToEbinterfaceSettings implements Serializable
   public ToEbinterfaceSettings ()
   {}
 
+  @Override
   public boolean isOrderReferenceIDMandatory ()
   {
     return m_bOrderReferenceIDMandatory;
@@ -52,11 +51,13 @@ public class ToEbinterfaceSettings implements Serializable
     return this;
   }
 
+  @Override
   public int getOrderReferenceMaxLength ()
   {
     return m_nOrderReferenceIDMaxLen;
   }
 
+  @Override
   public boolean hasOrderReferenceMaxLength ()
   {
     return m_nOrderReferenceIDMaxLen > 0;
@@ -69,6 +70,7 @@ public class ToEbinterfaceSettings implements Serializable
     return this;
   }
 
+  @Override
   public boolean isDeliveryDateMandatory ()
   {
     return m_bDeliveryDateMandatory;
@@ -81,6 +83,7 @@ public class ToEbinterfaceSettings implements Serializable
     return this;
   }
 
+  @Override
   public boolean isEnforceSupplierEmailAddress ()
   {
     return m_bEnforceSupplierEmailAddress;
@@ -93,6 +96,7 @@ public class ToEbinterfaceSettings implements Serializable
     return this;
   }
 
+  @Override
   @Nonnull
   @Nonempty
   public String getEnforcedSupplierEmailAddress ()
@@ -101,13 +105,14 @@ public class ToEbinterfaceSettings implements Serializable
   }
 
   @Nonnull
-  public ToEbinterfaceSettings setEnforcedSupplierEmailAddress (@Nonnull @Nonempty final String s)
+  public IToEbinterfaceSettings setEnforcedSupplierEmailAddress (@Nonnull @Nonempty final String s)
   {
     ValueEnforcer.notEmpty (s, "EmailAddress");
     m_sEnforcedSupplierEmailAddress = s;
     return this;
   }
 
+  @Override
   public boolean isInvoicePaymentMethodMandatory ()
   {
     return m_bInvoicePaymentMethodMandatory;

@@ -41,7 +41,7 @@ import com.helger.commons.string.StringParser;
 import com.helger.ebinterface.codelist.ETaxCode;
 import com.helger.ebinterface.ubl.from.AbstractToEbInterface43Converter;
 import com.helger.ebinterface.ubl.from.EbInterface43Helper;
-import com.helger.ebinterface.ubl.from.ToEbinterfaceSettings;
+import com.helger.ebinterface.ubl.from.IToEbinterfaceSettings;
 import com.helger.ebinterface.ubl.from.helper.SchemedID;
 import com.helger.ebinterface.ubl.from.helper.TaxCategoryKey;
 import com.helger.ebinterface.v43.*;
@@ -90,7 +90,7 @@ public final class CreditNoteToEbInterface43Converter extends AbstractToEbInterf
    */
   public CreditNoteToEbInterface43Converter (@Nonnull final Locale aDisplayLocale,
                                              @Nonnull final Locale aContentLocale,
-                                             @Nonnull final ToEbinterfaceSettings aSettings)
+                                             @Nonnull final IToEbinterfaceSettings aSettings)
   {
     super (aDisplayLocale, aContentLocale, aSettings);
   }
