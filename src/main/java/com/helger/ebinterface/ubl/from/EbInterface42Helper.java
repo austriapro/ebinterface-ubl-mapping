@@ -41,6 +41,7 @@ import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.Cus
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DeliveryType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.LocationType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyIdentificationType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyLegalEntityType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyNameType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PersonType;
@@ -341,6 +342,17 @@ public final class EbInterface42Helper
           sAddressName = StringHelper.trim (aUBLPartyName.getNameValue ());
           if (StringHelper.hasText (sAddressName))
             break;
+        }
+
+        if (StringHelper.hasNoText (sAddressName))
+        {
+          // For EN invoices
+          for (final PartyLegalEntityType aUBLPartyLegalEntity : aCustomerParty.getParty ().getPartyLegalEntity ())
+          {
+            sAddressName = StringHelper.trim (aUBLPartyLegalEntity.getRegistrationNameValue ());
+            if (StringHelper.hasText (sAddressName))
+              break;
+          }
         }
       }
       aEbiAddress.setName (sAddressName);
