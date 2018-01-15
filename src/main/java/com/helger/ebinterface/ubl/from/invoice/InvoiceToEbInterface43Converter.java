@@ -531,7 +531,7 @@ public final class InvoiceToEbInterface43Converter extends AbstractToEbInterface
         for (final PartyTaxSchemeType aUBLPartyTaxScheme : aUBLSupplier.getParty ().getPartyTaxScheme ())
         {
           // TaxScheme is a mandatory field
-          if (SUPPORTED_TAX_SCHEME_ID.getID ().equals (aUBLPartyTaxScheme.getTaxScheme ().getIDValue ()))
+          if (isVATSchemeID (aUBLPartyTaxScheme.getTaxScheme ().getIDValue ()))
           {
             aEbiBiller.setVATIdentificationNumber (StringHelper.trim (aUBLPartyTaxScheme.getCompanyIDValue ()));
             break;
@@ -622,7 +622,7 @@ public final class InvoiceToEbInterface43Converter extends AbstractToEbInterface
         for (final PartyTaxSchemeType aUBLPartyTaxScheme : aUBLCustomer.getParty ().getPartyTaxScheme ())
         {
           // TaxScheme is a mandatory field
-          if (SUPPORTED_TAX_SCHEME_ID.getID ().equals (aUBLPartyTaxScheme.getTaxScheme ().getIDValue ()))
+          if (isVATSchemeID (aUBLPartyTaxScheme.getTaxScheme ().getIDValue ()))
           {
             aEbiRecipient.setVATIdentificationNumber (StringHelper.trim (aUBLPartyTaxScheme.getCompanyIDValue ()));
             break;
@@ -683,7 +683,7 @@ public final class InvoiceToEbInterface43Converter extends AbstractToEbInterface
         for (final PartyTaxSchemeType aUBLPartyTaxScheme : aUBLBuyer.getParty ().getPartyTaxScheme ())
         {
           // TaxScheme is a mandatory field
-          if (SUPPORTED_TAX_SCHEME_ID.getID ().equals (aUBLPartyTaxScheme.getTaxScheme ().getIDValue ()))
+          if (isVATSchemeID (aUBLPartyTaxScheme.getTaxScheme ().getIDValue ()))
           {
             aEbiOrderingParty.setVATIdentificationNumber (StringHelper.trim (aUBLPartyTaxScheme.getCompanyIDValue ()));
             break;
@@ -887,93 +887,95 @@ public final class InvoiceToEbInterface43Converter extends AbstractToEbInterface
                                    aUBLPercentage);
 
           {
-            // Resolve the tax scheme ID
-            final ETaxSchemeID eUBLTaxScheme = ETaxSchemeID.getFromIDOrNull (sUBLTaxSchemeID);
-            if (eUBLTaxScheme == null)
+            // Fails for EN
+            if (false)
             {
-              aTransformationErrorList.add (SingleError.builderError ()
-                                                       .setErrorFieldName ("TaxTotal[" +
-                                                                           nTaxTotalIndex +
-                                                                           "]/TaxSubtotal[" +
-                                                                           nTaxSubtotalIndex +
-                                                                           "]/TaxCategory/TaxScheme/ID")
-                                                       .setErrorText (EText.UNSUPPORTED_TAX_SCHEME_ID.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                                              sUBLTaxSchemeID))
-                                                       .build ());
-            }
-            else
-            {
-              // Is it VAT?
-              if (SUPPORTED_TAX_SCHEME_ID.equals (eUBLTaxScheme))
+              // Resolve the tax scheme ID
+              final ETaxSchemeID eUBLTaxScheme = ETaxSchemeID.getFromIDOrNull (sUBLTaxSchemeID);
+              if (eUBLTaxScheme == null)
               {
-                if (aUBLPercentage == null)
+                aTransformationErrorList.add (SingleError.builderError ()
+                                                         .setErrorFieldName ("TaxTotal[" +
+                                                                             nTaxTotalIndex +
+                                                                             "]/TaxSubtotal[" +
+                                                                             nTaxSubtotalIndex +
+                                                                             "]/TaxCategory/TaxScheme/ID")
+                                                         .setErrorText (EText.UNSUPPORTED_TAX_SCHEME_ID.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                                sUBLTaxSchemeID))
+                                                         .build ());
+              }
+            }
+
+            // Is it VAT?
+            if (isVATSchemeID (sUBLTaxSchemeID))
+            {
+              if (aUBLPercentage == null)
+              {
+                aTransformationErrorList.add (SingleError.builderError ()
+                                                         .setErrorFieldName ("TaxTotal[" +
+                                                                             nTaxTotalIndex +
+                                                                             "]/TaxSubtotal[" +
+                                                                             nTaxSubtotalIndex +
+                                                                             "]/TaxCategory/Percent")
+                                                         .setErrorText (EText.TAX_PERCENT_MISSING.getDisplayText (m_aDisplayLocale))
+                                                         .build ());
+              }
+              else
+                if (aUBLTaxableAmount == null)
                 {
                   aTransformationErrorList.add (SingleError.builderError ()
                                                            .setErrorFieldName ("TaxTotal[" +
                                                                                nTaxTotalIndex +
                                                                                "]/TaxSubtotal[" +
                                                                                nTaxSubtotalIndex +
-                                                                               "]/TaxCategory/Percent")
-                                                           .setErrorText (EText.TAX_PERCENT_MISSING.getDisplayText (m_aDisplayLocale))
+                                                                               "]/TaxableAmount")
+                                                           .setErrorText (EText.TAXABLE_AMOUNT_MISSING.getDisplayText (m_aDisplayLocale))
                                                            .build ());
                 }
                 else
-                  if (aUBLTaxableAmount == null)
+                {
+                  // add VAT item
+                  final Ebi43VATItemType aEbiVATItem = new Ebi43VATItemType ();
+                  // Base amount
+                  aEbiVATItem.setTaxedAmount (aUBLTaxableAmount.setScale (SCALE_PRICE2, ROUNDING_MODE));
+                  if (bTaxExemption)
                   {
-                    aTransformationErrorList.add (SingleError.builderError ()
-                                                             .setErrorFieldName ("TaxTotal[" +
-                                                                                 nTaxTotalIndex +
-                                                                                 "]/TaxSubtotal[" +
-                                                                                 nTaxSubtotalIndex +
-                                                                                 "]/TaxableAmount")
-                                                             .setErrorText (EText.TAXABLE_AMOUNT_MISSING.getDisplayText (m_aDisplayLocale))
-                                                             .build ());
+                    String sReason = null;
+                    if (aUBLTaxCategory.hasTaxExemptionReasonEntries ())
+                      sReason = aUBLTaxCategory.getTaxExemptionReasonAtIndex (0).getValue ();
+                    if (sReason == null && aUBLTaxCategory.getTaxExemptionReasonCode () != null)
+                      sReason = aUBLTaxCategory.getTaxExemptionReasonCode ().getValue ();
+                    if (StringHelper.hasNoText (sReason))
+                      sReason = "Tax Exemption";
+                    final Ebi43TaxExemptionType aEbiTaxEx = new Ebi43TaxExemptionType ();
+                    aEbiTaxEx.setValue (sReason);
+                    aEbiVATItem.setTaxExemption (aEbiTaxEx);
                   }
                   else
                   {
-                    // add VAT item
-                    final Ebi43VATItemType aEbiVATItem = new Ebi43VATItemType ();
-                    // Base amount
-                    aEbiVATItem.setTaxedAmount (aUBLTaxableAmount.setScale (SCALE_PRICE2, ROUNDING_MODE));
-                    if (bTaxExemption)
-                    {
-                      String sReason = null;
-                      if (aUBLTaxCategory.hasTaxExemptionReasonEntries ())
-                        sReason = aUBLTaxCategory.getTaxExemptionReasonAtIndex (0).getValue ();
-                      if (sReason == null && aUBLTaxCategory.getTaxExemptionReasonCode () != null)
-                        sReason = aUBLTaxCategory.getTaxExemptionReasonCode ().getValue ();
-                      if (StringHelper.hasNoText (sReason))
-                        sReason = "Tax Exemption";
-                      final Ebi43TaxExemptionType aEbiTaxEx = new Ebi43TaxExemptionType ();
-                      aEbiTaxEx.setValue (sReason);
-                      aEbiVATItem.setTaxExemption (aEbiTaxEx);
-                    }
-                    else
-                    {
-                      // tax rate
-                      final Ebi43VATRateType aEbiVATVATRate = new Ebi43VATRateType ();
-                      // Optional
-                      if (false)
-                        aEbiVATVATRate.setTaxCode (sUBLTaxCategoryID);
-                      aEbiVATVATRate.setValue (aUBLPercentage);
-                      aEbiVATItem.setVATRate (aEbiVATVATRate);
-                    }
-                    // Tax amount (mandatory)
-                    aEbiVATItem.setAmount (aUBLTaxAmount.setScale (SCALE_PRICE2, ROUNDING_MODE));
-                    // Add to list
-                    aEbiVAT.addVATItem (aEbiVATItem);
+                    // tax rate
+                    final Ebi43VATRateType aEbiVATVATRate = new Ebi43VATRateType ();
+                    // Optional
+                    if (false)
+                      aEbiVATVATRate.setTaxCode (sUBLTaxCategoryID);
+                    aEbiVATVATRate.setValue (aUBLPercentage);
+                    aEbiVATItem.setVATRate (aEbiVATVATRate);
                   }
-              }
-              else
-              {
-                // Other TAX
-                final Ebi43OtherTaxType aOtherTax = new Ebi43OtherTaxType ();
-                // As no comment is present, use the scheme ID
-                aOtherTax.setComment (sUBLTaxSchemeID);
-                // Tax amount (mandatory)
-                aOtherTax.setAmount (aUBLTaxAmount.setScale (SCALE_PRICE2, ROUNDING_MODE));
-                aEbiTax.addOtherTax (aOtherTax);
-              }
+                  // Tax amount (mandatory)
+                  aEbiVATItem.setAmount (aUBLTaxAmount.setScale (SCALE_PRICE2, ROUNDING_MODE));
+                  // Add to list
+                  aEbiVAT.addVATItem (aEbiVATItem);
+                }
+            }
+            else
+            {
+              // Other TAX
+              final Ebi43OtherTaxType aOtherTax = new Ebi43OtherTaxType ();
+              // As no comment is present, use the scheme ID
+              aOtherTax.setComment (sUBLTaxSchemeID);
+              // Tax amount (mandatory)
+              aOtherTax.setAmount (aUBLTaxAmount.setScale (SCALE_PRICE2, ROUNDING_MODE));
+              aEbiTax.addOtherTax (aOtherTax);
             }
           }
           ++nTaxSubtotalIndex;
@@ -1003,8 +1005,7 @@ public final class InvoiceToEbInterface43Converter extends AbstractToEbInterface
             for (final TaxSubtotalType aUBLTaxSubTotal : aUBLTaxTotal.getTaxSubtotal ())
             {
               // Only handle VAT items
-              if (SUPPORTED_TAX_SCHEME_ID.getID ()
-                                         .equals (aUBLTaxSubTotal.getTaxCategory ().getTaxScheme ().getIDValue ()))
+              if (isVATSchemeID (aUBLTaxSubTotal.getTaxCategory ().getTaxScheme ().getIDValue ()))
               {
                 // We found one -> just use it
                 aUBLTaxCategory = aUBLTaxSubTotal.getTaxCategory ();

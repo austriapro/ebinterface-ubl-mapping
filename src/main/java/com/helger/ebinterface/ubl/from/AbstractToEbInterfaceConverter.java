@@ -456,6 +456,19 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
     return "AE".equals (sUBLTaxCategoryID) || "E".equals (sUBLTaxCategoryID) || "O".equals (sUBLTaxCategoryID);
   }
 
+  protected static boolean isVATSchemeID (final String sScheme)
+  {
+    // PEPPOL
+    if (SUPPORTED_TAX_SCHEME_ID.getID ().equals (sScheme))
+      return true;
+
+    // EN invoices
+    if ("VA".equals (sScheme))
+      return true;
+
+    return false;
+  }
+
   /**
    * Get a string in the form
    * [string][sep][string][sep][string][or][last-string]. So the last and the
