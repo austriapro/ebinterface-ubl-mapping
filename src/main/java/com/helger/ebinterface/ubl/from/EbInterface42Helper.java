@@ -135,6 +135,12 @@ public final class EbInterface42Helper
     if (aUBLPartyName != null)
       aEbiAddress.setName (StringHelper.trim (aUBLPartyName.getNameValue ()));
 
+    if (aEbiAddress.getName () == null && aUBLParty.hasPartyLegalEntityEntries ())
+    {
+      // For EN set from cac:PartyLegalEntity/cbc:RegistrationName
+      aEbiAddress.setName (StringHelper.trim (aUBLParty.getPartyLegalEntityAtIndex (0).getRegistrationNameValue ()));
+    }
+
     if (aEbiAddress.getName () == null)
       aTransformationErrorList.add (SingleError.builderError ()
                                                .setErrorFieldName (sPartyType)
