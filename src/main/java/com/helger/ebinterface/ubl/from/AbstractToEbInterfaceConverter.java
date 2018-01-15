@@ -223,12 +223,14 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
     final UBLVersionIDType aUBLVersionID = aUBLInvoice.getUBLVersionID ();
     if (aUBLVersionID == null)
     {
-      aTransformationErrorList.add (SingleError.builderError ()
-                                               .setErrorFieldName ("UBLVersionID")
-                                               .setErrorText (EText.NO_UBL_VERSION_ID.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                              UBL_VERSION_20,
-                                                                                                              UBL_VERSION_21))
-                                               .build ());
+      // For EN invoices
+      if (false)
+        aTransformationErrorList.add (SingleError.builderError ()
+                                                 .setErrorFieldName ("UBLVersionID")
+                                                 .setErrorText (EText.NO_UBL_VERSION_ID.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                UBL_VERSION_20,
+                                                                                                                UBL_VERSION_21))
+                                                 .build ());
     }
     else
     {
@@ -273,72 +275,73 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
                                                                                                                  sProfileID))
                                                  .build ());
       }
-    }
 
-    // Check CustomizationID
-    // I'm not quite sure whether the document ID or "PEPPOL" should be used!
-    // if (false)
-    // {
-    // final CustomizationIDType aCustomizationID =
-    // aUBLInvoice.getCustomizationID ();
-    // if (aCustomizationID == null)
-    // aTransformationErrorList.add (SingleError.builderError
-    // ().setErrorFieldName ("CustomizationID",
-    // EText.NO_CUSTOMIZATION_ID.getDisplayText (m_aDisplayLocale));
-    // else
-    // if (!CPeppolUBL.CUSTOMIZATION_SCHEMEID.equals
-    // (aCustomizationID.getSchemeID ()))
-    // aTransformationErrorList.add (SingleError.builderError
-    // ().setErrorFieldName ("CustomizationID/schemeID",
-    // EText.INVALID_CUSTOMIZATION_SCHEME_ID.getDisplayTextWithArgs
-    // (m_aDisplayLocale,
-    // aCustomizationID.getSchemeID (),
-    // CPeppolUBL.CUSTOMIZATION_SCHEMEID));
-    // else
-    // if (aProcID != null)
-    // {
-    // final String sCustomizationID = StringHelper.trim
-    // (aCustomizationID.getValue ());
-    // IPeppolPredefinedDocumentTypeIdentifier aMatchingDocID = null;
-    // for (final IPeppolPredefinedDocumentTypeIdentifier aDocID :
-    // aProcID.getDocumentTypeIdentifiers ())
-    // if (aDocID.getAsUBLCustomizationID ().equals (sCustomizationID))
-    // {
-    // // We found a match
-    // aMatchingDocID = aDocID;
-    // break;
-    // }
-    // if (aMatchingDocID == null)
-    // aTransformationErrorList.add (SingleError.builderError
-    // ().setErrorFieldName ("CustomizationID",
-    // EText.INVALID_CUSTOMIZATION_ID.getDisplayTextWithArgs (m_aDisplayLocale,
-    // sCustomizationID));
-    // }
-    // }
+      // Check CustomizationID
+      // I'm not quite sure whether the document ID or "PEPPOL" should be used!
+      // if (false)
+      // {
+      // final CustomizationIDType aCustomizationID =
+      // aUBLInvoice.getCustomizationID ();
+      // if (aCustomizationID == null)
+      // aTransformationErrorList.add (SingleError.builderError
+      // ().setErrorFieldName ("CustomizationID",
+      // EText.NO_CUSTOMIZATION_ID.getDisplayText (m_aDisplayLocale));
+      // else
+      // if (!CPeppolUBL.CUSTOMIZATION_SCHEMEID.equals
+      // (aCustomizationID.getSchemeID ()))
+      // aTransformationErrorList.add (SingleError.builderError
+      // ().setErrorFieldName ("CustomizationID/schemeID",
+      // EText.INVALID_CUSTOMIZATION_SCHEME_ID.getDisplayTextWithArgs
+      // (m_aDisplayLocale,
+      // aCustomizationID.getSchemeID (),
+      // CPeppolUBL.CUSTOMIZATION_SCHEMEID));
+      // else
+      // if (aProcID != null)
+      // {
+      // final String sCustomizationID = StringHelper.trim
+      // (aCustomizationID.getValue ());
+      // IPeppolPredefinedDocumentTypeIdentifier aMatchingDocID = null;
+      // for (final IPeppolPredefinedDocumentTypeIdentifier aDocID :
+      // aProcID.getDocumentTypeIdentifiers ())
+      // if (aDocID.getAsUBLCustomizationID ().equals (sCustomizationID))
+      // {
+      // // We found a match
+      // aMatchingDocID = aDocID;
+      // break;
+      // }
+      // if (aMatchingDocID == null)
+      // aTransformationErrorList.add (SingleError.builderError
+      // ().setErrorFieldName ("CustomizationID",
+      // EText.INVALID_CUSTOMIZATION_ID.getDisplayTextWithArgs
+      // (m_aDisplayLocale,
+      // sCustomizationID));
+      // }
+      // }
 
-    // Invoice type code
-    final InvoiceTypeCodeType aInvoiceTypeCode = aUBLInvoice.getInvoiceTypeCode ();
-    if (aInvoiceTypeCode == null)
-    {
-      // None present
-      aTransformationErrorList.add (SingleError.builderWarn ()
-                                               .setErrorFieldName ("InvoiceTypeCode")
-                                               .setErrorText (EText.NO_INVOICE_TYPECODE.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                                INVOICE_TYPE_CODE))
-                                               .build ());
-    }
-    else
-    {
-      // If one is present, it must match
-      final String sInvoiceTypeCode = StringHelper.trim (aInvoiceTypeCode.getValue ());
-      if (!INVOICE_TYPE_CODE.equals (sInvoiceTypeCode))
+      // Invoice type code
+      final InvoiceTypeCodeType aInvoiceTypeCode = aUBLInvoice.getInvoiceTypeCode ();
+      if (aInvoiceTypeCode == null)
       {
-        aTransformationErrorList.add (SingleError.builderError ()
+        // None present
+        aTransformationErrorList.add (SingleError.builderWarn ()
                                                  .setErrorFieldName ("InvoiceTypeCode")
-                                                 .setErrorText (EText.INVALID_INVOICE_TYPECODE.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                                       sInvoiceTypeCode,
-                                                                                                                       INVOICE_TYPE_CODE))
+                                                 .setErrorText (EText.NO_INVOICE_TYPECODE.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                  INVOICE_TYPE_CODE))
                                                  .build ());
+      }
+      else
+      {
+        // If one is present, it must match
+        final String sInvoiceTypeCode = StringHelper.trim (aInvoiceTypeCode.getValue ());
+        if (!INVOICE_TYPE_CODE.equals (sInvoiceTypeCode))
+        {
+          aTransformationErrorList.add (SingleError.builderError ()
+                                                   .setErrorFieldName ("InvoiceTypeCode")
+                                                   .setErrorText (EText.INVALID_INVOICE_TYPECODE.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                         sInvoiceTypeCode,
+                                                                                                                         INVOICE_TYPE_CODE))
+                                                   .build ());
+        }
       }
     }
   }
@@ -356,12 +359,14 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
     final UBLVersionIDType aUBLVersionID = aUBLCreditNote.getUBLVersionID ();
     if (aUBLVersionID == null)
     {
-      aTransformationErrorList.add (SingleError.builderError ()
-                                               .setErrorFieldName ("UBLVersionID")
-                                               .setErrorText (EText.NO_UBL_VERSION_ID.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                              UBL_VERSION_20,
-                                                                                                              UBL_VERSION_21))
-                                               .build ());
+      // For EN invoices
+      if (false)
+        aTransformationErrorList.add (SingleError.builderError ()
+                                                 .setErrorFieldName ("UBLVersionID")
+                                                 .setErrorText (EText.NO_UBL_VERSION_ID.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                UBL_VERSION_20,
+                                                                                                                UBL_VERSION_21))
+                                                 .build ());
     }
     else
     {
