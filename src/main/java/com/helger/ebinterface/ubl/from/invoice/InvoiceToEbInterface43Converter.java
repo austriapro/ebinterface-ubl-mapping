@@ -1080,17 +1080,29 @@ public final class InvoiceToEbInterface43Converter extends AbstractToEbInterface
 
         // Descriptions
         for (final DescriptionType aUBLDescription : aUBLLine.getItem ().getDescription ())
-          aEbiListLineItem.addDescription (StringHelper.trim (aUBLDescription.getValue ()));
+        {
+          final String sDesc = StringHelper.trim (aUBLDescription.getValue ());
+          if (StringHelper.hasText (sDesc))
+            aEbiListLineItem.addDescription (sDesc);
+        }
         if (aEbiListLineItem.hasNoDescriptionEntries ())
         {
           // Use item name as description
           final NameType aUBLName = aUBLLine.getItem ().getName ();
           if (aUBLName != null)
-            aEbiListLineItem.addDescription (StringHelper.trim (aUBLName.getValue ()));
+          {
+            final String sDesc = StringHelper.trim (aUBLName.getValue ());
+            if (StringHelper.hasText (sDesc))
+              aEbiListLineItem.addDescription (sDesc);
+          }
         }
         // Add the Note elements as well (IBM, 2016-11)
         for (final NoteType aUBLNote : aUBLLine.getNote ())
-          aEbiListLineItem.addDescription (StringHelper.trim (aUBLNote.getValue ()));
+        {
+          final String sDesc = StringHelper.trim (aUBLNote.getValue ());
+          if (StringHelper.hasText (sDesc))
+            aEbiListLineItem.addDescription (sDesc);
+        }
 
         // Quantity
         final Ebi43UnitType aEbiQuantity = new Ebi43UnitType ();
