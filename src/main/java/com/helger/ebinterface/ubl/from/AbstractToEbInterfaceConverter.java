@@ -33,7 +33,9 @@ import com.helger.commons.text.resolve.DefaultTextResolver;
 import com.helger.commons.text.util.TextHelper;
 import com.helger.ebinterface.ubl.AbstractConverter;
 import com.helger.peppol.identifier.factory.PeppolIdentifierFactory;
+import com.helger.peppol.identifier.generic.doctype.IBusdoxDocumentTypeIdentifierParts;
 import com.helger.peppol.identifier.generic.process.IProcessIdentifier;
+import com.helger.peppol.identifier.peppol.doctype.IPeppolDocumentTypeIdentifierParts;
 import com.helger.peppol.identifier.peppol.doctype.IPeppolPredefinedDocumentTypeIdentifier;
 import com.helger.peppol.identifier.peppol.process.IPeppolPredefinedProcessIdentifier;
 import com.helger.peppol.identifier.peppol.process.PredefinedProcessIdentifierManager;
@@ -431,12 +433,16 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
             final String sCustomizationID = StringHelper.trim (aCustomizationID.getValue ());
             IPeppolPredefinedDocumentTypeIdentifier aMatchingDocID = null;
             for (final IPeppolPredefinedDocumentTypeIdentifier aDocID : aProcID.getDocumentTypeIdentifiers ())
-              if (aDocID.getAsUBLCustomizationID ().equals (sCustomizationID))
-              {
-                // We found a match
-                aMatchingDocID = aDocID;
-                break;
-              }
+            {
+              final IBusdoxDocumentTypeIdentifierParts aParts = aDocID.getParts ();
+              if (aParts instanceof IPeppolDocumentTypeIdentifierParts)
+                if (((IPeppolDocumentTypeIdentifierParts) aParts).getAsUBLCustomizationID ().equals (sCustomizationID))
+                {
+                  // We found a match
+                  aMatchingDocID = aDocID;
+                  break;
+                }
+            }
             if (aMatchingDocID == null)
               aTransformationErrorList.add (SingleError.builderError ()
                                                        .setErrorFieldName ("CustomizationID")
