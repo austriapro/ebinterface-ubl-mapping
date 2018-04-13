@@ -9,6 +9,8 @@ The reason why this project is not in the [ebinterface-mappings](https://github.
 
 # News and noteworthy
 
+* v3.0.2 - 2018-04-13
+    * Updated to peppol-commons 6.0.3
 * v3.0.1 - 2018-04-06
     * Ignoring empty Description/Name/Note elements on line level
 * v3.0.0 - 2018-02-23
@@ -40,7 +42,7 @@ Add the following to your pom.xml to use this artifact:
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>ebinterface-ubl-mapping</artifactId>
-  <version>3.0.1</version>
+  <version>3.0.2</version>
 </dependency>
 ```
 
