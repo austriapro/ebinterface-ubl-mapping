@@ -33,16 +33,12 @@ import com.helger.commons.text.resolve.DefaultTextResolver;
 import com.helger.commons.text.util.TextHelper;
 import com.helger.ebinterface.ubl.AbstractConverter;
 import com.helger.peppol.identifier.factory.PeppolIdentifierFactory;
-import com.helger.peppol.identifier.generic.doctype.IBusdoxDocumentTypeIdentifierParts;
 import com.helger.peppol.identifier.generic.process.IProcessIdentifier;
-import com.helger.peppol.identifier.peppol.doctype.IPeppolDocumentTypeIdentifierParts;
-import com.helger.peppol.identifier.peppol.doctype.IPeppolPredefinedDocumentTypeIdentifier;
 import com.helger.peppol.identifier.peppol.process.IPeppolPredefinedProcessIdentifier;
 import com.helger.peppol.identifier.peppol.process.PredefinedProcessIdentifierManager;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AllowanceChargeType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.AllowanceChargeReasonType;
-import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.CustomizationIDType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.InvoiceTypeCodeType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.ProfileIDType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.UBLVersionIDType;
@@ -408,49 +404,56 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
                                                  .build ());
       }
     }
-
-    // Check CustomizationID
-    // I'm not quite sure whether the document ID or "PEPPOL" should be used!
-    if (false)
-    {
-      final CustomizationIDType aCustomizationID = aUBLCreditNote.getCustomizationID ();
-      if (aCustomizationID == null)
-        aTransformationErrorList.add (SingleError.builderError ()
-                                                 .setErrorFieldName ("CustomizationID")
-                                                 .setErrorText (EText.NO_CUSTOMIZATION_ID.getDisplayText (m_aDisplayLocale))
-                                                 .build ());
-      else
-        if (!CUSTOMIZATION_SCHEMEID.equals (aCustomizationID.getSchemeID ()))
-          aTransformationErrorList.add (SingleError.builderError ()
-                                                   .setErrorFieldName ("CustomizationID/schemeID")
-                                                   .setErrorText (EText.INVALID_CUSTOMIZATION_SCHEME_ID.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                                                aCustomizationID.getSchemeID (),
-                                                                                                                                CUSTOMIZATION_SCHEMEID))
-                                                   .build ());
-        else
-          if (aProcID != null)
-          {
-            final String sCustomizationID = StringHelper.trim (aCustomizationID.getValue ());
-            IPeppolPredefinedDocumentTypeIdentifier aMatchingDocID = null;
-            for (final IPeppolPredefinedDocumentTypeIdentifier aDocID : aProcID.getDocumentTypeIdentifiers ())
-            {
-              final IBusdoxDocumentTypeIdentifierParts aParts = aDocID.getParts ();
-              if (aParts instanceof IPeppolDocumentTypeIdentifierParts)
-                if (((IPeppolDocumentTypeIdentifierParts) aParts).getAsUBLCustomizationID ().equals (sCustomizationID))
-                {
-                  // We found a match
-                  aMatchingDocID = aDocID;
-                  break;
-                }
-            }
-            if (aMatchingDocID == null)
-              aTransformationErrorList.add (SingleError.builderError ()
-                                                       .setErrorFieldName ("CustomizationID")
-                                                       .setErrorText (EText.INVALID_CUSTOMIZATION_ID.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                                             sCustomizationID))
-                                                       .build ());
-          }
-    }
+    //
+    // // Check CustomizationID
+    // // I'm not quite sure whether the document ID or "PEPPOL" should be used!
+    // if (false)
+    // {
+    // final CustomizationIDType aCustomizationID =
+    // aUBLCreditNote.getCustomizationID ();
+    // if (aCustomizationID == null)
+    // aTransformationErrorList.add (SingleError.builderError ()
+    // .setErrorFieldName ("CustomizationID")
+    // .setErrorText (EText.NO_CUSTOMIZATION_ID.getDisplayText
+    // (m_aDisplayLocale))
+    // .build ());
+    // else
+    // if (!CUSTOMIZATION_SCHEMEID.equals (aCustomizationID.getSchemeID ()))
+    // aTransformationErrorList.add (SingleError.builderError ()
+    // .setErrorFieldName ("CustomizationID/schemeID")
+    // .setErrorText
+    // (EText.INVALID_CUSTOMIZATION_SCHEME_ID.getDisplayTextWithArgs
+    // (m_aDisplayLocale,
+    // aCustomizationID.getSchemeID (),
+    // CUSTOMIZATION_SCHEMEID))
+    // .build ());
+    // else
+    // if (aProcID != null)
+    // {
+    // final String sCustomizationID = StringHelper.trim
+    // (aCustomizationID.getValue ());
+    // IPeppolPredefinedDocumentTypeIdentifier aMatchingDocID = null;
+    // for (final IPeppolPredefinedDocumentTypeIdentifier aDocID :
+    // aProcID.getDocumentTypeIdentifiers ())
+    // {
+    // final IPeppolDocumentTypeIdentifierParts aParts = aDocID.getParts ();
+    // if (aParts instanceof IPeppolDocumentTypeIdentifierParts)
+    // if (aParts.getAsUBLCustomizationID ().equals (sCustomizationID))
+    // {
+    // // We found a match
+    // aMatchingDocID = aDocID;
+    // break;
+    // }
+    // }
+    // if (aMatchingDocID == null)
+    // aTransformationErrorList.add (SingleError.builderError ()
+    // .setErrorFieldName ("CustomizationID")
+    // .setErrorText (EText.INVALID_CUSTOMIZATION_ID.getDisplayTextWithArgs
+    // (m_aDisplayLocale,
+    // sCustomizationID))
+    // .build ());
+    // }
+    // }
   }
 
   protected static final boolean isTaxExemptionCategoryID (@Nullable final String sUBLTaxCategoryID)
