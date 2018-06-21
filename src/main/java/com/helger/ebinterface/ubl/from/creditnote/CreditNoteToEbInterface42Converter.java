@@ -854,9 +854,9 @@ public final class CreditNoteToEbInterface42Converter extends AbstractToEbInterf
         }
 
         BigDecimal aEbiUnitPriceValue = aEbiListLineItem.getUnitPrice ().getValue ();
-        final BigDecimal aBQ = aEbiListLineItem.getUnitPrice ().getBaseQuantity ();
-        if (aBQ != null && MathHelper.isNE0 (aBQ))
-          aEbiUnitPriceValue = aEbiUnitPriceValue.divide (aBQ, SCALE_PRICE4, ROUNDING_MODE);
+          final BigDecimal aBQ = aEbiListLineItem.getUnitPrice ().getBaseQuantity ();
+          if (aBQ != null && MathHelper.isNE0 (aBQ))
+            aEbiUnitPriceValue = aEbiUnitPriceValue.divide (aBQ, SCALE_PRICE4, ROUNDING_MODE);
 
         if (bTaxExemption)
         {
