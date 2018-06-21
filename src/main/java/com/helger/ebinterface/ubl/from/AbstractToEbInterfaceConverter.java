@@ -54,7 +54,7 @@ import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
 public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
 {
   @Translatable
-  public static enum EText implements IHasDisplayTextWithArgs
+  public enum EText implements IHasDisplayTextWithArgs
   {
     OR ("oder", "or"),
     NO_UBL_VERSION_ID ("Die UBLVersionID fehlt. Es wird der Wert ''{0}'' oder ''{1}'' erwartet.",

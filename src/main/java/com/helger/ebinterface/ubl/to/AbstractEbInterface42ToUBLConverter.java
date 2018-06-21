@@ -26,12 +26,7 @@ import javax.annotation.concurrent.Immutable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.annotation.Translatable;
 import com.helger.commons.string.StringHelper;
-import com.helger.commons.text.IMultilingualText;
-import com.helger.commons.text.display.IHasDisplayTextWithArgs;
-import com.helger.commons.text.resolve.DefaultTextResolver;
-import com.helger.commons.text.util.TextHelper;
 import com.helger.ebinterface.ubl.AbstractConverter;
 import com.helger.ebinterface.v42.Ebi42AddressIdentifierType;
 import com.helger.ebinterface.v42.Ebi42AddressType;
@@ -60,25 +55,6 @@ import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
 @Immutable
 public abstract class AbstractEbInterface42ToUBLConverter extends AbstractConverter
 {
-  @Translatable
-  public static enum EText implements IHasDisplayTextWithArgs
-  {
-    ;
-
-    private final IMultilingualText m_aTP;
-
-    private EText (@Nonnull final String sDE, @Nonnull final String sEN)
-    {
-      m_aTP = TextHelper.create_DE_EN (sDE, sEN);
-    }
-
-    @Nullable
-    public String getDisplayText (@Nonnull final Locale aContentLocale)
-    {
-      return DefaultTextResolver.getTextStatic (this, m_aTP, aContentLocale);
-    }
-  }
-
   private static final Logger s_aLogger = LoggerFactory.getLogger (AbstractEbInterface42ToUBLConverter.class);
 
   /**
@@ -140,15 +116,14 @@ public abstract class AbstractEbInterface42ToUBLConverter extends AbstractConver
       return null;
 
     final AddressType ret = new AddressType ();
-    for (final Ebi42AddressIdentifierType aEbiType : aEbiAddress.getAddressIdentifier ())
+    if (aEbiAddress.getAddressIdentifierCount () > 0)
     {
+      // Only one ID allowed
+      final Ebi42AddressIdentifierType aEbiType = aEbiAddress.getAddressIdentifierAtIndex (0);
       final IDType aUBLID = new IDType ();
       aUBLID.setValue (aEbiType.getValue ());
       aUBLID.setSchemeID (aEbiType.getAddressIdentifierType ().value ());
       ret.setID (aUBLID);
-
-      // Only one ID allowed
-      break;
     }
 
     if (StringHelper.hasText (aEbiAddress.getStreet ()))

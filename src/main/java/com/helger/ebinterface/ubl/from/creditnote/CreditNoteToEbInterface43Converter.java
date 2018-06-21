@@ -685,6 +685,7 @@ public final class CreditNoteToEbInterface43Converter extends AbstractToEbInterf
         {
           // No direct tax category -> check if it is somewhere in the tax total
           outer: for (final TaxTotalType aUBLTaxTotal : aUBLLine.getTaxTotal ())
+          {
             for (final TaxSubtotalType aUBLTaxSubTotal : aUBLTaxTotal.getTaxSubtotal ())
             {
               // Only handle VAT items
@@ -695,6 +696,7 @@ public final class CreditNoteToEbInterface43Converter extends AbstractToEbInterf
                 break outer;
               }
             }
+          }
         }
 
         // Try to resolve tax percentage
@@ -751,7 +753,7 @@ public final class CreditNoteToEbInterface43Converter extends AbstractToEbInterf
         BigInteger aUBLPositionNumber = StringParser.parseBigInteger (sUBLPositionNumber);
         if (aUBLPositionNumber == null)
         {
-          aUBLPositionNumber = BigInteger.valueOf (nLineIndex + 1);
+          aUBLPositionNumber = BigInteger.valueOf (nLineIndex + 1L);
           aTransformationErrorList.add (SingleError.builderWarn ()
                                                    .setErrorFieldName ("CreditNoteLine[" + nLineIndex + "]/ID")
                                                    .setErrorText (EText.DETAILS_INVALID_POSITION.getDisplayTextWithArgs (m_aDisplayLocale,

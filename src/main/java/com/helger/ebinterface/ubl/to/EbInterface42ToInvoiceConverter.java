@@ -25,64 +25,10 @@ import javax.xml.bind.JAXBElement;
 import com.helger.commons.CGlobal;
 import com.helger.commons.math.MathHelper;
 import com.helger.commons.string.StringHelper;
-import com.helger.ebinterface.v42.Ebi42AccountType;
-import com.helger.ebinterface.v42.Ebi42AdditionalInformationType;
-import com.helger.ebinterface.v42.Ebi42ArticleNumberType;
-import com.helger.ebinterface.v42.Ebi42BelowTheLineItemType;
-import com.helger.ebinterface.v42.Ebi42BillerType;
-import com.helger.ebinterface.v42.Ebi42CancelledOriginalDocumentType;
-import com.helger.ebinterface.v42.Ebi42ClassificationType;
-import com.helger.ebinterface.v42.Ebi42DetailsType;
-import com.helger.ebinterface.v42.Ebi42DirectDebitType;
-import com.helger.ebinterface.v42.Ebi42DiscountType;
-import com.helger.ebinterface.v42.Ebi42FurtherIdentificationType;
-import com.helger.ebinterface.v42.Ebi42InvoiceRecipientType;
-import com.helger.ebinterface.v42.Ebi42InvoiceType;
-import com.helger.ebinterface.v42.Ebi42ItemListType;
-import com.helger.ebinterface.v42.Ebi42ListLineItemType;
-import com.helger.ebinterface.v42.Ebi42NoPaymentType;
-import com.helger.ebinterface.v42.Ebi42OrderReferenceDetailType;
-import com.helger.ebinterface.v42.Ebi42OrderReferenceType;
-import com.helger.ebinterface.v42.Ebi42OrderingPartyType;
-import com.helger.ebinterface.v42.Ebi42OtherTaxType;
-import com.helger.ebinterface.v42.Ebi42OtherVATableTaxBaseType;
-import com.helger.ebinterface.v42.Ebi42OtherVATableTaxType;
-import com.helger.ebinterface.v42.Ebi42PaymentConditionsType;
-import com.helger.ebinterface.v42.Ebi42PaymentMethodType;
-import com.helger.ebinterface.v42.Ebi42ReductionAndSurchargeBaseType;
-import com.helger.ebinterface.v42.Ebi42ReductionAndSurchargeType;
-import com.helger.ebinterface.v42.Ebi42RelatedDocumentType;
-import com.helger.ebinterface.v42.Ebi42SEPADirectDebitType;
-import com.helger.ebinterface.v42.Ebi42UniversalBankTransactionType;
-import com.helger.ebinterface.v42.Ebi42VATItemType;
+import com.helger.ebinterface.v42.*;
 import com.helger.peppol.codelist.ETaxSchemeID;
 
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AllowanceChargeType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.BranchType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CommodityClassificationType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CustomerPartyType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DeliveryType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DocumentReferenceType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.FinancialAccountType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.FinancialInstitutionType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.InvoiceLineType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.ItemIdentificationType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.ItemType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.MonetaryTotalType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.OrderLineReferenceType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.OrderReferenceType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyIdentificationType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyTaxSchemeType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PaymentMeansType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PaymentTermsType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PeriodType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PriceType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.SupplierPartyType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxCategoryType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxSchemeType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxSubtotalType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxTotalType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.*;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.AdditionalAccountIDType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.AllowanceChargeReasonType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.CompanyIDType;
@@ -288,7 +234,7 @@ public class EbInterface42ToInvoiceConverter extends AbstractEbInterface42ToUBLC
 
     // Attributes
     // GeneratingSystem cannot be mapped
-    aUBLDoc.setInvoiceTypeCode (getTypeCode (aEbiDoc.getDocumentType (), () -> new InvoiceTypeCodeType ()));
+    aUBLDoc.setInvoiceTypeCode (getTypeCode (aEbiDoc.getDocumentType (), InvoiceTypeCodeType::new));
     final DocumentCurrencyCodeType aUBLCurrency = aUBLDoc.setDocumentCurrencyCode (sCurrency);
     aUBLCurrency.setListAgencyID ("6");
     aUBLCurrency.setListID ("ISO 4217 Alpha");
@@ -311,8 +257,7 @@ public class EbInterface42ToInvoiceConverter extends AbstractEbInterface42ToUBLC
         aUBLDocRef.setID (aEbiCancelledDoc.getInvoiceNumber ());
         aUBLDocRef.setIssueDate (aEbiCancelledDoc.getInvoiceDate ());
         aUBLDocRef.setDocumentType ("CancelledOriginalDocument");
-        aUBLDocRef.setDocumentTypeCode (getTypeCode (aEbiCancelledDoc.getDocumentType (),
-                                                     () -> new DocumentTypeCodeType ()));
+        aUBLDocRef.setDocumentTypeCode (getTypeCode (aEbiCancelledDoc.getDocumentType (), DocumentTypeCodeType::new));
         if (StringHelper.hasText (aEbiCancelledDoc.getComment ()))
           aUBLDocRef.addDocumentDescription (new DocumentDescriptionType (aEbiCancelledDoc.getComment ()));
         aUBLDoc.addAdditionalDocumentReference (aUBLDocRef);
@@ -327,8 +272,7 @@ public class EbInterface42ToInvoiceConverter extends AbstractEbInterface42ToUBLC
         aUBLDocRef.setID (aEbiRelatedItem.getInvoiceNumber ());
         aUBLDocRef.setIssueDate (aEbiRelatedItem.getInvoiceDate ());
         aUBLDocRef.setDocumentType ("RelatedDocument");
-        aUBLDocRef.setDocumentTypeCode (getTypeCode (aEbiRelatedItem.getDocumentType (),
-                                                     () -> new DocumentTypeCodeType ()));
+        aUBLDocRef.setDocumentTypeCode (getTypeCode (aEbiRelatedItem.getDocumentType (), DocumentTypeCodeType::new));
         if (StringHelper.hasText (aEbiRelatedItem.getComment ()))
           aUBLDocRef.addDocumentDescription (new DocumentDescriptionType (aEbiRelatedItem.getComment ()));
         aUBLDoc.addAdditionalDocumentReference (aUBLDocRef);

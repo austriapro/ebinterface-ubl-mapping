@@ -686,6 +686,7 @@ public final class CreditNoteToEbInterface42Converter extends AbstractToEbInterf
         {
           // No direct tax category -> check if it is somewhere in the tax total
           outer: for (final TaxTotalType aUBLTaxTotal : aUBLLine.getTaxTotal ())
+          {
             for (final TaxSubtotalType aUBLTaxSubTotal : aUBLTaxTotal.getTaxSubtotal ())
             {
               // Only handle VAT items
@@ -696,6 +697,7 @@ public final class CreditNoteToEbInterface42Converter extends AbstractToEbInterf
                 break outer;
               }
             }
+          }
         }
 
         // Try to resolve tax percentage
@@ -752,7 +754,7 @@ public final class CreditNoteToEbInterface42Converter extends AbstractToEbInterf
         BigInteger aUBLPositionNumber = StringParser.parseBigInteger (sUBLPositionNumber);
         if (aUBLPositionNumber == null)
         {
-          aUBLPositionNumber = BigInteger.valueOf (nLineIndex + 1);
+          aUBLPositionNumber = BigInteger.valueOf (nLineIndex + 1L);
           aTransformationErrorList.add (SingleError.builderWarn ()
                                                    .setErrorFieldName ("CreditNoteLine[" + nLineIndex + "]/ID")
                                                    .setErrorText (EText.DETAILS_INVALID_POSITION.getDisplayTextWithArgs (m_aDisplayLocale,
@@ -854,9 +856,9 @@ public final class CreditNoteToEbInterface42Converter extends AbstractToEbInterf
         }
 
         BigDecimal aEbiUnitPriceValue = aEbiListLineItem.getUnitPrice ().getValue ();
-          final BigDecimal aBQ = aEbiListLineItem.getUnitPrice ().getBaseQuantity ();
-          if (aBQ != null && MathHelper.isNE0 (aBQ))
-            aEbiUnitPriceValue = aEbiUnitPriceValue.divide (aBQ, SCALE_PRICE4, ROUNDING_MODE);
+        final BigDecimal aBQ = aEbiListLineItem.getUnitPrice ().getBaseQuantity ();
+        if (aBQ != null && MathHelper.isNE0 (aBQ))
+          aEbiUnitPriceValue = aEbiUnitPriceValue.divide (aBQ, SCALE_PRICE4, ROUNDING_MODE);
 
         if (bTaxExemption)
         {

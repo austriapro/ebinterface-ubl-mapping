@@ -1002,6 +1002,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractToEbInterface
         {
           // No direct tax category -> check if it is somewhere in the tax total
           outer: for (final TaxTotalType aUBLTaxTotal : aUBLLine.getTaxTotal ())
+          {
             for (final TaxSubtotalType aUBLTaxSubTotal : aUBLTaxTotal.getTaxSubtotal ())
             {
               // Only handle VAT items
@@ -1012,6 +1013,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractToEbInterface
                 break outer;
               }
             }
+          }
         }
 
         // Try to resolve tax percentage
@@ -1068,7 +1070,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractToEbInterface
         BigInteger aUBLPositionNumber = StringParser.parseBigInteger (sUBLPositionNumber);
         if (aUBLPositionNumber == null)
         {
-          aUBLPositionNumber = BigInteger.valueOf (nLineIndex + 1);
+          aUBLPositionNumber = BigInteger.valueOf (nLineIndex + 1L);
           aTransformationErrorList.add (SingleError.builderWarn ()
                                                    .setErrorFieldName ("InvoiceLine[" + nLineIndex + "]/ID")
                                                    .setErrorText (EText.DETAILS_INVALID_POSITION.getDisplayTextWithArgs (m_aDisplayLocale,
@@ -1170,11 +1172,9 @@ public final class InvoiceToEbInterface42Converter extends AbstractToEbInterface
         }
 
         BigDecimal aEbiUnitPriceValue = aEbiListLineItem.getUnitPrice ().getValue ();
-        BigDecimal aBQ = aEbiListLineItem.getUnitPrice ().getBaseQuantity ();
-      if (aBQ != null && MathHelper.isNE0 (aBQ))
-        aEbiUnitPriceValue = aEbiUnitPriceValue.divide (aBQ,
-                                                          SCALE_PRICE4,
-                                                          ROUNDING_MODE);
+        final BigDecimal aBQ = aEbiListLineItem.getUnitPrice ().getBaseQuantity ();
+        if (aBQ != null && MathHelper.isNE0 (aBQ))
+          aEbiUnitPriceValue = aEbiUnitPriceValue.divide (aBQ, SCALE_PRICE4, ROUNDING_MODE);
 
         if (bTaxExemption)
         {
