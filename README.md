@@ -9,7 +9,7 @@ The reason why this project is not in the [ebinterface-mappings](https://github.
 
 # News and noteworthy
 
-* v3.0.3 - work in progress
+* v3.0.3 - 2018-06-21
     * Fixed division by zero if BaseQuantity is 0
 * v3.0.2 - 2018-04-13
     * Updated to peppol-commons 6.0.3
@@ -44,7 +44,7 @@ Add the following to your pom.xml to use this artifact:
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>ebinterface-ubl-mapping</artifactId>
-  <version>3.0.2</version>
+  <version>3.0.3</version>
 </dependency>
 ```
 
