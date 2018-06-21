@@ -98,7 +98,8 @@ public abstract class AbstractEbInterface43ToUBLConverter extends AbstractConver
 
     if (sID == null)
     {
-      s_aLogger.warn ("Failed to resolve document type " + eType);
+      if (s_aLogger.isWarnEnabled ())
+        s_aLogger.warn ("Failed to resolve document type " + eType);
       return null;
     }
 
