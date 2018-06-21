@@ -1170,10 +1170,9 @@ public final class InvoiceToEbInterface42Converter extends AbstractToEbInterface
         }
 
         BigDecimal aEbiUnitPriceValue = aEbiListLineItem.getUnitPrice ().getValue ();
-        if (aEbiListLineItem.getUnitPrice ().getBaseQuantity () != null)
-          aEbiUnitPriceValue = aEbiUnitPriceValue.divide (aEbiListLineItem.getUnitPrice ().getBaseQuantity (),
-                                                          SCALE_PRICE4,
-                                                          ROUNDING_MODE);
+        final BigDecimal aBQ = aEbiListLineItem.getUnitPrice ().getBaseQuantity ();
+        if (aBQ != null && MathHelper.isNE0 (aBQ))
+          aEbiUnitPriceValue = aEbiUnitPriceValue.divide (aBQ, SCALE_PRICE4, ROUNDING_MODE);
 
         if (bTaxExemption)
         {

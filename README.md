@@ -9,6 +9,8 @@ The reason why this project is not in the [ebinterface-mappings](https://github.
 
 # News and noteworthy
 
+* v3.0.3 - work in progress
+    * Fixed division by zero if BaseQuantity is 0
 * v3.0.2 - 2018-04-13
     * Updated to peppol-commons 6.0.3
 * v3.0.1 - 2018-04-06
