@@ -11,8 +11,9 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 /target/
-/generated-ebi41-files/
-/generated-ebi42-files/
-/generated-ebi43-files/
+/generated-ebi*-files/
 /**/.pmd
 /**/*.iml
+/.settings/
+/.project
+/.classpath
