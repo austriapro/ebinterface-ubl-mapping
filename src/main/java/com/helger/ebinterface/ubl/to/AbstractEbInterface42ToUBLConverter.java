@@ -55,7 +55,7 @@ import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
 @Immutable
 public abstract class AbstractEbInterface42ToUBLConverter extends AbstractConverter
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (AbstractEbInterface42ToUBLConverter.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (AbstractEbInterface42ToUBLConverter.class);
 
   /**
    * Constructor
@@ -98,8 +98,8 @@ public abstract class AbstractEbInterface42ToUBLConverter extends AbstractConver
 
     if (sID == null)
     {
-      if (s_aLogger.isWarnEnabled ())
-        s_aLogger.warn ("Failed to resolve document type " + eType);
+      if (LOGGER.isWarnEnabled ())
+        LOGGER.warn ("Failed to resolve document type " + eType);
       return null;
     }
 

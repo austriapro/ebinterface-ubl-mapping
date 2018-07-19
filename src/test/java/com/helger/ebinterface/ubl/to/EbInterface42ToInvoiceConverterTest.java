@@ -47,7 +47,7 @@ import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
  */
 public final class EbInterface42ToInvoiceConverterTest
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (EbInterface42ToInvoiceConverterTest.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (EbInterface42ToInvoiceConverterTest.class);
 
   @Test
   public void testBasic ()
@@ -64,7 +64,7 @@ public final class EbInterface42ToInvoiceConverterTest
 
     for (final File aFile : new FileSystemIterator ("src/test/resources/ebi42").withFilter (IFileFilter.filenameEndsWith (".xml")))
     {
-      s_aLogger.info (aFile.getAbsolutePath ());
+      LOGGER.info (aFile.getAbsolutePath ());
 
       final Ebi42InvoiceType aEbi = EbInterfaceReader.ebInterface42 ().read (aFile);
       assertNotNull (aEbi);
@@ -87,7 +87,7 @@ public final class EbInterface42ToInvoiceConverterTest
       final String sEbi2 = aEbiWriter.getAsString (aEbi2);
 
       if (false)
-        s_aLogger.info (sEbi1 + "\n" + sUBL + "\n" + sEbi2);
+        LOGGER.info (sEbi1 + "\n" + sUBL + "\n" + sEbi2);
 
       // Won't work :)
       if (false)

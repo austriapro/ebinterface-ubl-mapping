@@ -53,7 +53,7 @@ import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
  */
 public final class InvoiceToEbInterface43ConverterTest
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (InvoiceToEbInterface43ConverterTest.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (InvoiceToEbInterface43ConverterTest.class);
   private static final String TARGET_FOLDER = "generated-ebi43-files/";
 
   @Before
@@ -72,7 +72,7 @@ public final class InvoiceToEbInterface43ConverterTest
     // For all PEPPOL test invoices
     for (final IReadableResource aRes : aTestFiles)
     {
-      s_aLogger.info (aRes.getPath ());
+      LOGGER.info (aRes.getPath ());
       assertTrue (aRes.exists ());
 
       // Read UBL
@@ -90,7 +90,7 @@ public final class InvoiceToEbInterface43ConverterTest
       assertNotNull (aEbInvoice);
 
       if (!aErrorList.isEmpty () && aErrorList.getMostSevereErrorLevel ().isGE (EErrorLevel.WARN))
-        s_aLogger.info ("  " + aErrorList.toString ());
+        LOGGER.info ("  " + aErrorList.toString ());
 
       // Convert ebInterface to XML
       assertTrue (new Ebi43TestMarshaller ().write (aEbInvoice,
@@ -110,7 +110,7 @@ public final class InvoiceToEbInterface43ConverterTest
     // For all PEPPOL test invoices
     for (final IReadableResource aRes : aTestFiles)
     {
-      s_aLogger.info (aRes.getPath ());
+      LOGGER.info (aRes.getPath ());
       assertTrue (aRes.exists ());
 
       // Read UBL
@@ -128,7 +128,7 @@ public final class InvoiceToEbInterface43ConverterTest
       assertNotNull (aEbInvoice);
 
       if (aErrorList.getMostSevereErrorLevel ().isGE (EErrorLevel.WARN))
-        s_aLogger.info ("  " + aErrorList.toString ());
+        LOGGER.info ("  " + aErrorList.toString ());
 
       // Convert ebInterface to XML
       assertTrue (new Ebi43TestMarshaller ().write (aEbInvoice,
@@ -148,7 +148,7 @@ public final class InvoiceToEbInterface43ConverterTest
     // For all PEPPOL test invoices
     for (final IReadableResource aRes : aTestFiles)
     {
-      s_aLogger.info (aRes.getPath ());
+      LOGGER.info (aRes.getPath ());
       assertTrue (aRes.exists ());
 
       // Read UBL

@@ -51,7 +51,7 @@ import oasis.names.specification.ubl.schema.xsd.creditnote_21.CreditNoteType;
  */
 public final class CreditNoteToEbInterface42ConverterTest
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (CreditNoteToEbInterface42ConverterTest.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (CreditNoteToEbInterface42ConverterTest.class);
   private static final String TARGET_FOLDER = "generated-ebi42-files/";
 
   @Before
@@ -70,7 +70,7 @@ public final class CreditNoteToEbInterface42ConverterTest
     // For all PEPPOL test invoices
     for (final IReadableResource aRes : aTestFiles)
     {
-      s_aLogger.info (aRes.getPath ());
+      LOGGER.info (aRes.getPath ());
       assertTrue (aRes.exists ());
 
       // Read UBL
@@ -88,7 +88,7 @@ public final class CreditNoteToEbInterface42ConverterTest
       assertNotNull (aEbInvoice);
 
       if (!aErrorList.isEmpty () && aErrorList.getMostSevereErrorLevel ().isGE (EErrorLevel.WARN))
-        s_aLogger.info ("  " + aErrorList.toString ());
+        LOGGER.info ("  " + aErrorList.toString ());
 
       // Convert ebInterface to XML
       assertTrue (new Ebi42TestMarshaller ().write (aEbInvoice,
@@ -108,7 +108,7 @@ public final class CreditNoteToEbInterface42ConverterTest
     // For all PEPPOL test invoices
     for (final IReadableResource aRes : aTestFiles)
     {
-      s_aLogger.info (aRes.getPath ());
+      LOGGER.info (aRes.getPath ());
       assertTrue (aRes.exists ());
 
       // Read UBL
@@ -126,7 +126,7 @@ public final class CreditNoteToEbInterface42ConverterTest
       assertNotNull (aEbInvoice);
 
       if (aErrorList.getMostSevereErrorLevel ().isGE (EErrorLevel.WARN))
-        s_aLogger.info ("  " + aErrorList.toString ());
+        LOGGER.info ("  " + aErrorList.toString ());
 
       // Convert ebInterface to XML
       assertTrue (new Ebi42TestMarshaller ().write (aEbInvoice,
