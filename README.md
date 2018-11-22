@@ -9,6 +9,8 @@ The reason why this project is not in the [ebinterface-mappings](https://github.
 
 # News and noteworthy
 
+* v3.0.4 - 2018-11-22
+    * Updated to ph-commons 9.2.0
 * v3.0.3 - 2018-06-21
     * Fixed division by zero if BaseQuantity is 0
 * v3.0.2 - 2018-04-13
@@ -40,11 +42,12 @@ Additionally Eclipse project files for the latest Eclipse version are contained.
 
 # Maven usage
 Add the following to your pom.xml to use this artifact:
-```
+
+```xml
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>ebinterface-ubl-mapping</artifactId>
-  <version>3.0.3</version>
+  <version>3.0.4</version>
 </dependency>
 ```
 
