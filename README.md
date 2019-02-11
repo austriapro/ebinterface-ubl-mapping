@@ -9,6 +9,8 @@ The reason why this project is not in the [ebinterface-mappings](https://github.
 
 # News and noteworthy
 
+* v3.0.5 - 2019-02-22
+    * Handling empty `PaymentChannelCode` like if it was `null`.
 * v3.0.4 - 2018-11-22
     * Updated to ph-commons 9.2.0
 * v3.0.3 - 2018-06-21
@@ -37,17 +39,19 @@ The reason why this project is not in the [ebinterface-mappings](https://github.
     * Last version for JDK 6    
 
 # Building
+
 To build the project you need at least Java 1.8 (or newer) and Apache Maven 3.x. Build is quite easy: call `mvn clean install` in this directory and the final result will be in the `target` directory.
 Additionally Eclipse project files for the latest Eclipse version are contained.
 
 # Maven usage
+
 Add the following to your pom.xml to use this artifact:
 
 ```xml
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>ebinterface-ubl-mapping</artifactId>
-  <version>3.0.4</version>
+  <version>3.0.5</version>
 </dependency>
 ```
 
