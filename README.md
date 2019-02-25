@@ -9,6 +9,8 @@ The reason why this project is not in the [ebinterface-mappings](https://github.
 
 # News and noteworthy
 
+* v3.0.6 - 2019-02-25
+    * Improved handling of empty `TaxCategory/ID` and `TaxScheme/ID`
 * v3.0.5 - 2019-02-22
     * Handling empty `PaymentChannelCode` like if it was `null`.
 * v3.0.4 - 2018-11-22
@@ -51,7 +53,7 @@ Add the following to your pom.xml to use this artifact:
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>ebinterface-ubl-mapping</artifactId>
-  <version>3.0.5</version>
+  <version>3.0.6</version>
 </dependency>
 ```
 
