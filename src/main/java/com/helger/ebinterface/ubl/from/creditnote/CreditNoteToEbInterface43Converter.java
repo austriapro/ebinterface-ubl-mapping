@@ -44,7 +44,35 @@ import com.helger.ebinterface.ubl.from.EbInterface43Helper;
 import com.helger.ebinterface.ubl.from.IToEbinterfaceSettings;
 import com.helger.ebinterface.ubl.from.helper.SchemedID;
 import com.helger.ebinterface.ubl.from.helper.TaxCategoryKey;
-import com.helger.ebinterface.v43.*;
+import com.helger.ebinterface.v43.Ebi43BillerType;
+import com.helger.ebinterface.v43.Ebi43DeliveryType;
+import com.helger.ebinterface.v43.Ebi43DetailsType;
+import com.helger.ebinterface.v43.Ebi43DocumentTypeType;
+import com.helger.ebinterface.v43.Ebi43FurtherIdentificationType;
+import com.helger.ebinterface.v43.Ebi43InvoiceRecipientType;
+import com.helger.ebinterface.v43.Ebi43InvoiceType;
+import com.helger.ebinterface.v43.Ebi43ItemListType;
+import com.helger.ebinterface.v43.Ebi43ListLineItemType;
+import com.helger.ebinterface.v43.Ebi43NoPaymentType;
+import com.helger.ebinterface.v43.Ebi43OrderReferenceDetailType;
+import com.helger.ebinterface.v43.Ebi43OrderReferenceType;
+import com.helger.ebinterface.v43.Ebi43OrderingPartyType;
+import com.helger.ebinterface.v43.Ebi43OtherTaxType;
+import com.helger.ebinterface.v43.Ebi43PaymentConditionsType;
+import com.helger.ebinterface.v43.Ebi43PaymentMethodType;
+import com.helger.ebinterface.v43.Ebi43PeriodType;
+import com.helger.ebinterface.v43.Ebi43ReductionAndSurchargeBaseType;
+import com.helger.ebinterface.v43.Ebi43ReductionAndSurchargeDetailsType;
+import com.helger.ebinterface.v43.Ebi43ReductionAndSurchargeListLineItemDetailsType;
+import com.helger.ebinterface.v43.Ebi43ReductionAndSurchargeType;
+import com.helger.ebinterface.v43.Ebi43TaxExemptionType;
+import com.helger.ebinterface.v43.Ebi43TaxType;
+import com.helger.ebinterface.v43.Ebi43UnitPriceType;
+import com.helger.ebinterface.v43.Ebi43UnitType;
+import com.helger.ebinterface.v43.Ebi43VATItemType;
+import com.helger.ebinterface.v43.Ebi43VATRateType;
+import com.helger.ebinterface.v43.Ebi43VATType;
+import com.helger.ebinterface.v43.ObjectFactory;
 import com.helger.peppol.codelist.ETaxSchemeID;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AllowanceChargeType;
@@ -63,6 +91,7 @@ import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.Tax
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxTotalType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.AdditionalAccountIDType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.DescriptionType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.NameType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.NoteType;
 import oasis.names.specification.ubl.schema.xsd.creditnote_21.CreditNoteType;
@@ -535,10 +564,33 @@ public final class CreditNoteToEbInterface43Converter extends AbstractToEbInterf
           }
 
           // Save item and put in map
-          final String sUBLTaxSchemeSchemeID = StringHelper.trim (aUBLTaxCategory.getTaxScheme ()
-                                                                                 .getID ()
-                                                                                 .getSchemeID ());
-          final String sUBLTaxSchemeID = StringHelper.trim (aUBLTaxCategory.getTaxScheme ().getIDValue ());
+          final IDType aUBLTaxSchemeID = aUBLTaxCategory.getTaxScheme ().getID ();
+          if (aUBLTaxSchemeID == null)
+          {
+            aTransformationErrorList.add (SingleError.builderError ()
+                                                     .setErrorFieldName ("TaxTotal[" +
+                                                                         nTaxTotalIndex +
+                                                                         "]/TaxSubtotal[" +
+                                                                         nTaxSubtotalIndex +
+                                                                         "]/TaxCategory/TaxScheme/ID")
+                                                     .setErrorText (EText.MISSING_TAXCATEGORY_TAXSCHEME_ID.getDisplayText (m_aDisplayLocale))
+                                                     .build ());
+            break;
+          }
+          final String sUBLTaxSchemeSchemeID = StringHelper.trim (aUBLTaxSchemeID.getSchemeID ());
+          final String sUBLTaxSchemeID = StringHelper.trim (aUBLTaxSchemeID.getValue ());
+          if (StringHelper.hasNoText (sUBLTaxSchemeID))
+          {
+            aTransformationErrorList.add (SingleError.builderError ()
+                                                     .setErrorFieldName ("TaxTotal[" +
+                                                                         nTaxTotalIndex +
+                                                                         "]/TaxSubtotal[" +
+                                                                         nTaxSubtotalIndex +
+                                                                         "]/TaxCategory/TaxScheme/ID")
+                                                     .setErrorText (EText.MISSING_TAXCATEGORY_TAXSCHEME_ID_VALUE.getDisplayText (m_aDisplayLocale))
+                                                     .build ());
+            break;
+          }
 
           if (aUBLTaxCategory.getID () == null)
           {
@@ -723,9 +775,14 @@ public final class CreditNoteToEbInterface43Converter extends AbstractToEbInterf
 
             final String sUBLTaxCategorySchemeID = StringHelper.trim (aUBLTaxCategory.getID ().getSchemeID ());
 
-            final TaxCategoryKey aKey = new TaxCategoryKey (new SchemedID (sUBLTaxSchemeSchemeID, sUBLTaxSchemeID),
-                                                            new SchemedID (sUBLTaxCategorySchemeID, sUBLTaxCategoryID));
-            aUBLPercent = aTaxCategoryPercMap.get (aKey);
+            // Avoid Exception
+            if (StringHelper.hasText (sUBLTaxSchemeID) && StringHelper.hasText (sUBLTaxCategoryID))
+            {
+              final TaxCategoryKey aKey = new TaxCategoryKey (new SchemedID (sUBLTaxSchemeSchemeID, sUBLTaxSchemeID),
+                                                              new SchemedID (sUBLTaxCategorySchemeID,
+                                                                             sUBLTaxCategoryID));
+              aUBLPercent = aTaxCategoryPercMap.get (aKey);
+            }
           }
         }
 
@@ -886,8 +943,8 @@ public final class CreditNoteToEbInterface43Converter extends AbstractToEbInterf
         }
 
         // Line item amount (quantity * unit price +- reduction / surcharge)
-        aEbiListLineItem.setLineItemAmount (aUBLLine.getLineExtensionAmountValue ().setScale (SCALE_PRICE2,
-                                                                                              ROUNDING_MODE));
+        aEbiListLineItem.setLineItemAmount (aUBLLine.getLineExtensionAmountValue ()
+                                                    .setScale (SCALE_PRICE2, ROUNDING_MODE));
 
         // Special handling in case no VAT item is present
         if (MathHelper.isEQ0 (aUBLPercent))
@@ -1136,8 +1193,8 @@ public final class CreditNoteToEbInterface43Converter extends AbstractToEbInterf
 
     // Total gross amount
     if (aUBLMonetaryTotal.getTaxInclusiveAmountValue () != null)
-      aEbiDoc.setTotalGrossAmount (aUBLMonetaryTotal.getTaxInclusiveAmountValue ().setScale (SCALE_PRICE2,
-                                                                                             ROUNDING_MODE));
+      aEbiDoc.setTotalGrossAmount (aUBLMonetaryTotal.getTaxInclusiveAmountValue ()
+                                                    .setScale (SCALE_PRICE2, ROUNDING_MODE));
     else
       aEbiDoc.setTotalGrossAmount (aUBLMonetaryTotal.getPayableAmountValue ().setScale (SCALE_PRICE2, ROUNDING_MODE));
 

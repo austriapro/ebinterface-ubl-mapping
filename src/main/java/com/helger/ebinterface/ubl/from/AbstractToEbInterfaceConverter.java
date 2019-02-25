@@ -153,7 +153,9 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
     PREPAID_NOT_SUPPORTED ("Das Element <PrepaidAmount> wird nicht unterstützt.",
                            "The <PrepaidAmount> element is not supported!"),
     MISSING_TAXCATEGORY_ID ("Das Element <ID> fehlt.", "Element <ID> is missing."),
-    MISSING_TAXCATEGORY_ID_VALUE ("Das Element <ID> hat keinen Wert.", "Element <ID> has no value.");
+    MISSING_TAXCATEGORY_ID_VALUE ("Das Element <ID> hat keinen Wert.", "Element <ID> has no value."),
+    MISSING_TAXCATEGORY_TAXSCHEME_ID ("Das Element <ID> fehlt.", "Element <ID> is missing."),
+    MISSING_TAXCATEGORY_TAXSCHEME_ID_VALUE ("Das Element <ID> hat keinen Wert.", "Element <ID> has no value.");
 
     private final IMultilingualText m_aTP;
 
@@ -479,10 +481,9 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
   }
 
   /**
-   * Get a string in the form
-   * [string][sep][string][sep][string][or][last-string]. So the last and the
-   * second last entries are separated by " or " whereas the other entries are
-   * separated by the provided separator.
+   * Get a string in the form [string][sep][string][sep][string][or][last-string].
+   * So the last and the second last entries are separated by " or " whereas the
+   * other entries are separated by the provided separator.
    *
    * @param sSep
    *        Separator to use. May not be <code>null</code>.
