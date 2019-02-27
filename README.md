@@ -9,6 +9,8 @@ The reason why this project is not in the [ebinterface-mappings](https://github.
 
 # News and noteworthy
 
+* v3.0.7 - work in progress
+    * Avoid creating negative `Percent` element values
 * v3.0.6 - 2019-02-25
     * Improved handling of empty `TaxCategory/ID` and `TaxScheme/ID`
 * v3.0.5 - 2019-02-22
