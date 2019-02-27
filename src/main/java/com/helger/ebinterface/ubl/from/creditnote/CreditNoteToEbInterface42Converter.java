@@ -1024,7 +1024,7 @@ public final class CreditNoteToEbInterface42Converter extends AbstractToEbInterf
               // Percentage is optional
               final BigDecimal aPerc = aUBLAllowanceCharge.getMultiplierFactorNumericValue ()
                                                           .multiply (CGlobal.BIGDEC_100);
-              aEbiRSItem.setPercentage (bSwapSigns ? aPerc.negate () : aPerc);
+              aEbiRSItem.setPercentage (aPerc);
             }
 
             if (eSurcharge.isTrue ())

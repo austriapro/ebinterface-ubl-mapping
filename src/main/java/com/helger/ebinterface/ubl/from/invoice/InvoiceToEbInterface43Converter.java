@@ -1367,7 +1367,7 @@ public final class InvoiceToEbInterface43Converter extends AbstractToEbInterface
               // Percentage is optional
               final BigDecimal aPerc = aUBLAllowanceCharge.getMultiplierFactorNumericValue ()
                                                           .multiply (CGlobal.BIGDEC_100);
-              aEbiRSItem.setPercentage (bSwapSigns ? aPerc.negate () : aPerc);
+              aEbiRSItem.setPercentage (aPerc);
             }
 
             if (eSurcharge.isTrue ())
