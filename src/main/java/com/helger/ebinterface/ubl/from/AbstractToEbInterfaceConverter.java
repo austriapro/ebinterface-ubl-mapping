@@ -34,7 +34,6 @@ import com.helger.commons.text.util.TextHelper;
 import com.helger.ebinterface.ubl.AbstractConverter;
 import com.helger.peppol.identifier.factory.PeppolIdentifierFactory;
 import com.helger.peppol.identifier.generic.process.IProcessIdentifier;
-import com.helger.peppol.identifier.peppol.process.IPeppolPredefinedProcessIdentifier;
 import com.helger.peppol.identifier.peppol.process.PredefinedProcessIdentifierManager;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AllowanceChargeType;
@@ -275,73 +274,33 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
                                                                                                                  sProfileID))
                                                  .build ());
       }
+    }
 
-      // Check CustomizationID
-      // I'm not quite sure whether the document ID or "PEPPOL" should be used!
-      // if (false)
-      // {
-      // final CustomizationIDType aCustomizationID =
-      // aUBLInvoice.getCustomizationID ();
-      // if (aCustomizationID == null)
-      // aTransformationErrorList.add (SingleError.builderError
-      // ().setErrorFieldName ("CustomizationID",
-      // EText.NO_CUSTOMIZATION_ID.getDisplayText (m_aDisplayLocale));
-      // else
-      // if (!CPeppolUBL.CUSTOMIZATION_SCHEMEID.equals
-      // (aCustomizationID.getSchemeID ()))
-      // aTransformationErrorList.add (SingleError.builderError
-      // ().setErrorFieldName ("CustomizationID/schemeID",
-      // EText.INVALID_CUSTOMIZATION_SCHEME_ID.getDisplayTextWithArgs
-      // (m_aDisplayLocale,
-      // aCustomizationID.getSchemeID (),
-      // CPeppolUBL.CUSTOMIZATION_SCHEMEID));
-      // else
-      // if (aProcID != null)
-      // {
-      // final String sCustomizationID = StringHelper.trim
-      // (aCustomizationID.getValue ());
-      // IPeppolPredefinedDocumentTypeIdentifier aMatchingDocID = null;
-      // for (final IPeppolPredefinedDocumentTypeIdentifier aDocID :
-      // aProcID.getDocumentTypeIdentifiers ())
-      // if (aDocID.getAsUBLCustomizationID ().equals (sCustomizationID))
-      // {
-      // // We found a match
-      // aMatchingDocID = aDocID;
-      // break;
-      // }
-      // if (aMatchingDocID == null)
-      // aTransformationErrorList.add (SingleError.builderError
-      // ().setErrorFieldName ("CustomizationID",
-      // EText.INVALID_CUSTOMIZATION_ID.getDisplayTextWithArgs
-      // (m_aDisplayLocale,
-      // sCustomizationID));
-      // }
-      // }
+    // The CustomizationID can be basically anything - we don't care here
 
-      // Invoice type code
-      final InvoiceTypeCodeType aInvoiceTypeCode = aUBLInvoice.getInvoiceTypeCode ();
-      if (aInvoiceTypeCode == null)
+    // Invoice type code
+    final InvoiceTypeCodeType aInvoiceTypeCode = aUBLInvoice.getInvoiceTypeCode ();
+    if (aInvoiceTypeCode == null)
+    {
+      // None present
+      aTransformationErrorList.add (SingleError.builderWarn ()
+                                               .setErrorFieldName ("InvoiceTypeCode")
+                                               .setErrorText (EText.NO_INVOICE_TYPECODE.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                INVOICE_TYPE_CODE))
+                                               .build ());
+    }
+    else
+    {
+      // If one is present, it must match
+      final String sInvoiceTypeCode = StringHelper.trim (aInvoiceTypeCode.getValue ());
+      if (!INVOICE_TYPE_CODE.equals (sInvoiceTypeCode))
       {
-        // None present
-        aTransformationErrorList.add (SingleError.builderWarn ()
+        aTransformationErrorList.add (SingleError.builderError ()
                                                  .setErrorFieldName ("InvoiceTypeCode")
-                                                 .setErrorText (EText.NO_INVOICE_TYPECODE.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                                  INVOICE_TYPE_CODE))
+                                                 .setErrorText (EText.INVALID_INVOICE_TYPECODE.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                       sInvoiceTypeCode,
+                                                                                                                       INVOICE_TYPE_CODE))
                                                  .build ());
-      }
-      else
-      {
-        // If one is present, it must match
-        final String sInvoiceTypeCode = StringHelper.trim (aInvoiceTypeCode.getValue ());
-        if (!INVOICE_TYPE_CODE.equals (sInvoiceTypeCode))
-        {
-          aTransformationErrorList.add (SingleError.builderError ()
-                                                   .setErrorFieldName ("InvoiceTypeCode")
-                                                   .setErrorText (EText.INVALID_INVOICE_TYPECODE.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                                         sInvoiceTypeCode,
-                                                                                                                         INVOICE_TYPE_CODE))
-                                                   .build ());
-        }
       }
     }
   }
@@ -384,7 +343,7 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
     }
 
     // Check ProfileID
-    IPeppolPredefinedProcessIdentifier aProcID = null;
+    IProcessIdentifier aProcID = null;
     final ProfileIDType aProfileID = aUBLCreditNote.getProfileID ();
     if (aProfileID == null)
     {
@@ -399,6 +358,11 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
       aProcID = PredefinedProcessIdentifierManager.getProcessIdentifierOfID (sProfileID);
       if (aProcID == null)
       {
+        // Parse basically
+        aProcID = PeppolIdentifierFactory.INSTANCE.parseProcessIdentifier (sProfileID);
+      }
+      if (aProcID == null)
+      {
         aTransformationErrorList.add (SingleError.builderError ()
                                                  .setErrorFieldName ("ProfileID")
                                                  .setErrorText (EText.INVALID_PROFILE_ID.getDisplayTextWithArgs (m_aDisplayLocale,
@@ -406,56 +370,8 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
                                                  .build ());
       }
     }
-    //
-    // // Check CustomizationID
-    // // I'm not quite sure whether the document ID or "PEPPOL" should be used!
-    // if (false)
-    // {
-    // final CustomizationIDType aCustomizationID =
-    // aUBLCreditNote.getCustomizationID ();
-    // if (aCustomizationID == null)
-    // aTransformationErrorList.add (SingleError.builderError ()
-    // .setErrorFieldName ("CustomizationID")
-    // .setErrorText (EText.NO_CUSTOMIZATION_ID.getDisplayText
-    // (m_aDisplayLocale))
-    // .build ());
-    // else
-    // if (!CUSTOMIZATION_SCHEMEID.equals (aCustomizationID.getSchemeID ()))
-    // aTransformationErrorList.add (SingleError.builderError ()
-    // .setErrorFieldName ("CustomizationID/schemeID")
-    // .setErrorText
-    // (EText.INVALID_CUSTOMIZATION_SCHEME_ID.getDisplayTextWithArgs
-    // (m_aDisplayLocale,
-    // aCustomizationID.getSchemeID (),
-    // CUSTOMIZATION_SCHEMEID))
-    // .build ());
-    // else
-    // if (aProcID != null)
-    // {
-    // final String sCustomizationID = StringHelper.trim
-    // (aCustomizationID.getValue ());
-    // IPeppolPredefinedDocumentTypeIdentifier aMatchingDocID = null;
-    // for (final IPeppolPredefinedDocumentTypeIdentifier aDocID :
-    // aProcID.getDocumentTypeIdentifiers ())
-    // {
-    // final IPeppolDocumentTypeIdentifierParts aParts = aDocID.getParts ();
-    // if (aParts instanceof IPeppolDocumentTypeIdentifierParts)
-    // if (aParts.getAsUBLCustomizationID ().equals (sCustomizationID))
-    // {
-    // // We found a match
-    // aMatchingDocID = aDocID;
-    // break;
-    // }
-    // }
-    // if (aMatchingDocID == null)
-    // aTransformationErrorList.add (SingleError.builderError ()
-    // .setErrorFieldName ("CustomizationID")
-    // .setErrorText (EText.INVALID_CUSTOMIZATION_ID.getDisplayTextWithArgs
-    // (m_aDisplayLocale,
-    // sCustomizationID))
-    // .build ());
-    // }
-    // }
+
+    // The CustomizationID can be basically anything - we don't care here
   }
 
   protected static final boolean isTaxExemptionCategoryID (@Nullable final String sUBLTaxCategoryID)
@@ -481,9 +397,10 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
   }
 
   /**
-   * Get a string in the form [string][sep][string][sep][string][or][last-string].
-   * So the last and the second last entries are separated by " or " whereas the
-   * other entries are separated by the provided separator.
+   * Get a string in the form
+   * [string][sep][string][sep][string][or][last-string]. So the last and the
+   * second last entries are separated by " or " whereas the other entries are
+   * separated by the provided separator.
    *
    * @param sSep
    *        Separator to use. May not be <code>null</code>.
