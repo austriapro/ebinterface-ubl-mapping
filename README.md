@@ -11,6 +11,7 @@ The reason why this project is not in the [ebinterface-mappings](https://github.
 
 * v3.0.8 - work in progress
     * Fixed parsing of process identifiers in "Profile" element for CreditNotes to match the Invoice rules
+    * Added support for the UBL version "2.2"
 * v3.0.7 - 2019-02-27
     * Avoid creating negative `Percent` element values
 * v3.0.6 - 2019-02-25

@@ -48,10 +48,11 @@ public abstract class AbstractConverter
   public static final int SCALE_PRICE4 = 4;
   /** Austria uses HALF_UP mode! */
   public static final RoundingMode ROUNDING_MODE = RoundingMode.HALF_UP;
-  /** The invoice type code to use */
+  /** The invoice type code to use (380) */
   public static final String INVOICE_TYPE_CODE = EInvoiceTypeCode.COMMERCIAL_INVOICE.getID ();
   public static final String UBL_VERSION_20 = "2.0";
   public static final String UBL_VERSION_21 = "2.1";
+  public static final String UBL_VERSION_22 = "2.2";
 
   /** The UBL customization ID to use */
   public static final String CUSTOMIZATION_SCHEMEID = "PEPPOL";
