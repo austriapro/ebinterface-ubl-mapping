@@ -24,9 +24,9 @@ import com.helger.ebinterface.EbInterface43Marshaller;
  *
  * @author Philip Helger
  */
-public final class Ebi43TestMarshaller extends EbInterface43Marshaller
+public final class MockEbi43Marshaller extends EbInterface43Marshaller
 {
-  public Ebi43TestMarshaller ()
+  public MockEbi43Marshaller ()
   {
     setNamespaceContext (new EbiNamespaceContext ());
   }

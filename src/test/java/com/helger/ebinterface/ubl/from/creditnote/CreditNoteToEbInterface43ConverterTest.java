@@ -37,7 +37,7 @@ import com.helger.commons.io.file.FilenameHelper;
 import com.helger.commons.io.file.IFileFilter;
 import com.helger.commons.io.resource.FileSystemResource;
 import com.helger.commons.io.resource.IReadableResource;
-import com.helger.ebinterface.ubl.from.Ebi43TestMarshaller;
+import com.helger.ebinterface.ubl.from.MockEbi43Marshaller;
 import com.helger.ebinterface.ubl.from.ToEbinterfaceSettings;
 import com.helger.ebinterface.v43.Ebi43InvoiceType;
 import com.helger.ubl21.UBL21Reader;
@@ -91,7 +91,7 @@ public final class CreditNoteToEbInterface43ConverterTest
         LOGGER.info ("  " + aErrorList.toString ());
 
       // Convert ebInterface to XML
-      assertTrue (new Ebi43TestMarshaller ().write (aEbInvoice,
+      assertTrue (new MockEbi43Marshaller ().write (aEbInvoice,
                                                     new File (TARGET_FOLDER +
                                                               FilenameHelper.getWithoutPath (aRes.getPath ())))
                                             .isSuccess ());
@@ -129,7 +129,7 @@ public final class CreditNoteToEbInterface43ConverterTest
         LOGGER.info ("  " + aErrorList.toString ());
 
       // Convert ebInterface to XML
-      assertTrue (new Ebi43TestMarshaller ().write (aEbInvoice,
+      assertTrue (new MockEbi43Marshaller ().write (aEbInvoice,
                                                     new File (TARGET_FOLDER +
                                                               FilenameHelper.getWithoutPath (aRes.getPath ())))
                                             .isSuccess ());

@@ -39,7 +39,7 @@ import com.helger.commons.io.file.FilenameHelper;
 import com.helger.commons.io.file.IFileFilter;
 import com.helger.commons.io.resource.FileSystemResource;
 import com.helger.commons.io.resource.IReadableResource;
-import com.helger.ebinterface.ubl.from.Ebi42TestMarshaller;
+import com.helger.ebinterface.ubl.from.MockEbi42Marshaller;
 import com.helger.ebinterface.ubl.from.ToEbinterfaceSettings;
 import com.helger.ebinterface.v42.Ebi42InvoiceType;
 import com.helger.ubl21.UBL21Reader;
@@ -93,7 +93,7 @@ public final class InvoiceToEbInterface42ConverterTest
         LOGGER.info ("  " + aErrorList.toString ());
 
       // Convert ebInterface to XML
-      assertTrue (new Ebi42TestMarshaller ().write (aEbInvoice,
+      assertTrue (new MockEbi42Marshaller ().write (aEbInvoice,
                                                     new File (TARGET_FOLDER +
                                                               FilenameHelper.getWithoutPath (aRes.getPath ())))
                                             .isSuccess ());
@@ -131,7 +131,7 @@ public final class InvoiceToEbInterface42ConverterTest
         LOGGER.info ("  " + aErrorList.toString ());
 
       // Convert ebInterface to XML
-      assertTrue (new Ebi42TestMarshaller ().write (aEbInvoice,
+      assertTrue (new MockEbi42Marshaller ().write (aEbInvoice,
                                                     new File (TARGET_FOLDER +
                                                               FilenameHelper.getWithoutPath (aRes.getPath ())))
                                             .isSuccess ());
@@ -166,7 +166,7 @@ public final class InvoiceToEbInterface42ConverterTest
                   !aErrorList.isEmpty () && aErrorList.getMostSevereErrorLevel ().isGE (EErrorLevel.ERROR));
 
       // Convert ebInterface to XML
-      final Document aDocEb = new Ebi42TestMarshaller ().getAsDocument (aEbInvoice);
+      final Document aDocEb = new MockEbi42Marshaller ().getAsDocument (aEbInvoice);
       assertNull (aDocEb);
     }
   }
