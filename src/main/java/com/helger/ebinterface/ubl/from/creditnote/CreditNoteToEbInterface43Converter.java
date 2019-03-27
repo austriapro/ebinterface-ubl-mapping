@@ -44,35 +44,7 @@ import com.helger.ebinterface.ubl.from.EbInterface43Helper;
 import com.helger.ebinterface.ubl.from.IToEbinterfaceSettings;
 import com.helger.ebinterface.ubl.from.helper.SchemedID;
 import com.helger.ebinterface.ubl.from.helper.TaxCategoryKey;
-import com.helger.ebinterface.v43.Ebi43BillerType;
-import com.helger.ebinterface.v43.Ebi43DeliveryType;
-import com.helger.ebinterface.v43.Ebi43DetailsType;
-import com.helger.ebinterface.v43.Ebi43DocumentTypeType;
-import com.helger.ebinterface.v43.Ebi43FurtherIdentificationType;
-import com.helger.ebinterface.v43.Ebi43InvoiceRecipientType;
-import com.helger.ebinterface.v43.Ebi43InvoiceType;
-import com.helger.ebinterface.v43.Ebi43ItemListType;
-import com.helger.ebinterface.v43.Ebi43ListLineItemType;
-import com.helger.ebinterface.v43.Ebi43NoPaymentType;
-import com.helger.ebinterface.v43.Ebi43OrderReferenceDetailType;
-import com.helger.ebinterface.v43.Ebi43OrderReferenceType;
-import com.helger.ebinterface.v43.Ebi43OrderingPartyType;
-import com.helger.ebinterface.v43.Ebi43OtherTaxType;
-import com.helger.ebinterface.v43.Ebi43PaymentConditionsType;
-import com.helger.ebinterface.v43.Ebi43PaymentMethodType;
-import com.helger.ebinterface.v43.Ebi43PeriodType;
-import com.helger.ebinterface.v43.Ebi43ReductionAndSurchargeBaseType;
-import com.helger.ebinterface.v43.Ebi43ReductionAndSurchargeDetailsType;
-import com.helger.ebinterface.v43.Ebi43ReductionAndSurchargeListLineItemDetailsType;
-import com.helger.ebinterface.v43.Ebi43ReductionAndSurchargeType;
-import com.helger.ebinterface.v43.Ebi43TaxExemptionType;
-import com.helger.ebinterface.v43.Ebi43TaxType;
-import com.helger.ebinterface.v43.Ebi43UnitPriceType;
-import com.helger.ebinterface.v43.Ebi43UnitType;
-import com.helger.ebinterface.v43.Ebi43VATItemType;
-import com.helger.ebinterface.v43.Ebi43VATRateType;
-import com.helger.ebinterface.v43.Ebi43VATType;
-import com.helger.ebinterface.v43.ObjectFactory;
+import com.helger.ebinterface.v43.*;
 import com.helger.peppol.codelist.ETaxSchemeID;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AllowanceChargeType;
@@ -129,32 +101,6 @@ public final class CreditNoteToEbInterface43Converter extends AbstractToEbInterf
   {
     m_aCustomizer = aCustomizer;
     return this;
-  }
-
-  private void _convertPayment (@Nonnull final ErrorList aTransformationErrorList,
-                                @Nonnull final Ebi43InvoiceType aEbiDoc)
-  {
-    // Always no payment
-    final Ebi43PaymentMethodType aEbiPaymentMethod = new Ebi43PaymentMethodType ();
-    final Ebi43NoPaymentType aEbiNoPayment = new Ebi43NoPaymentType ();
-    aEbiPaymentMethod.setNoPayment (aEbiNoPayment);
-    aEbiDoc.setPaymentMethod (aEbiPaymentMethod);
-
-    final Ebi43PaymentConditionsType aEbiPaymentConditions = new Ebi43PaymentConditionsType ();
-    if (aEbiPaymentConditions.getDueDate () == null)
-    {
-      // ebInterface requires due date
-      if (aEbiPaymentConditions.hasDiscountEntries ())
-        aTransformationErrorList.add (SingleError.builderError ()
-                                                 .setErrorFieldName ("PaymentMeans/PaymentDueDate")
-                                                 .setErrorText (EText.DISCOUNT_WITHOUT_DUEDATE.getDisplayText (m_aDisplayLocale))
-                                                 .build ());
-    }
-    else
-    {
-      // Independent if discounts are present or not
-      aEbiDoc.setPaymentConditions (aEbiPaymentConditions);
-    }
   }
 
   /**
@@ -1201,7 +1147,15 @@ public final class CreditNoteToEbInterface43Converter extends AbstractToEbInterf
     // Payable amount
     aEbiDoc.setPayableAmount (aUBLMonetaryTotal.getPayableAmountValue ().setScale (SCALE_PRICE2, ROUNDING_MODE));
 
-    _convertPayment (aTransformationErrorList, aEbiDoc);
+    // Payment method
+    convertPayment (aUBLDoc::getPaymentMeans,
+                    aUBLDoc::getPayeeParty,
+                    aUBLDoc::getAccountingSupplierParty,
+                    aUBLDoc::getPaymentTerms,
+                    aUBLDoc::getLegalMonetaryTotal,
+                    aTransformationErrorList,
+                    aEbiDoc,
+                    true);
 
     // Delivery
     Ebi43DeliveryType aEbiDelivery = null;

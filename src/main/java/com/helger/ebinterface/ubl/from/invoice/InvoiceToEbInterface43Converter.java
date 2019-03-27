@@ -35,7 +35,6 @@ import com.helger.commons.collection.impl.ICommonsMap;
 import com.helger.commons.error.SingleError;
 import com.helger.commons.error.list.ErrorList;
 import com.helger.commons.math.MathHelper;
-import com.helger.commons.regex.RegExHelper;
 import com.helger.commons.state.ETriState;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.StringParser;
@@ -45,59 +44,18 @@ import com.helger.ebinterface.ubl.from.EbInterface43Helper;
 import com.helger.ebinterface.ubl.from.IToEbinterfaceSettings;
 import com.helger.ebinterface.ubl.from.helper.SchemedID;
 import com.helger.ebinterface.ubl.from.helper.TaxCategoryKey;
-import com.helger.ebinterface.v43.Ebi43AccountType;
-import com.helger.ebinterface.v43.Ebi43BillerType;
-import com.helger.ebinterface.v43.Ebi43DeliveryType;
-import com.helger.ebinterface.v43.Ebi43DetailsType;
-import com.helger.ebinterface.v43.Ebi43DirectDebitType;
-import com.helger.ebinterface.v43.Ebi43DiscountType;
-import com.helger.ebinterface.v43.Ebi43DocumentTypeType;
-import com.helger.ebinterface.v43.Ebi43FurtherIdentificationType;
-import com.helger.ebinterface.v43.Ebi43InvoiceRecipientType;
-import com.helger.ebinterface.v43.Ebi43InvoiceType;
-import com.helger.ebinterface.v43.Ebi43ItemListType;
-import com.helger.ebinterface.v43.Ebi43ListLineItemType;
-import com.helger.ebinterface.v43.Ebi43NoPaymentType;
-import com.helger.ebinterface.v43.Ebi43OrderReferenceDetailType;
-import com.helger.ebinterface.v43.Ebi43OrderReferenceType;
-import com.helger.ebinterface.v43.Ebi43OrderingPartyType;
-import com.helger.ebinterface.v43.Ebi43OtherTaxType;
-import com.helger.ebinterface.v43.Ebi43PaymentConditionsType;
-import com.helger.ebinterface.v43.Ebi43PaymentMethodType;
-import com.helger.ebinterface.v43.Ebi43PaymentReferenceType;
-import com.helger.ebinterface.v43.Ebi43PeriodType;
-import com.helger.ebinterface.v43.Ebi43ReductionAndSurchargeBaseType;
-import com.helger.ebinterface.v43.Ebi43ReductionAndSurchargeDetailsType;
-import com.helger.ebinterface.v43.Ebi43ReductionAndSurchargeListLineItemDetailsType;
-import com.helger.ebinterface.v43.Ebi43ReductionAndSurchargeType;
-import com.helger.ebinterface.v43.Ebi43SEPADirectDebitType;
-import com.helger.ebinterface.v43.Ebi43SEPADirectDebitTypeType;
-import com.helger.ebinterface.v43.Ebi43TaxExemptionType;
-import com.helger.ebinterface.v43.Ebi43TaxType;
-import com.helger.ebinterface.v43.Ebi43UnitPriceType;
-import com.helger.ebinterface.v43.Ebi43UnitType;
-import com.helger.ebinterface.v43.Ebi43UniversalBankTransactionType;
-import com.helger.ebinterface.v43.Ebi43VATItemType;
-import com.helger.ebinterface.v43.Ebi43VATRateType;
-import com.helger.ebinterface.v43.Ebi43VATType;
-import com.helger.ebinterface.v43.ObjectFactory;
+import com.helger.ebinterface.v43.*;
 import com.helger.peppol.codelist.ETaxSchemeID;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AllowanceChargeType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CustomerPartyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DeliveryType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DocumentReferenceType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.FinancialAccountType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.FinancialInstitutionType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.InvoiceLineType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.MonetaryTotalType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.OrderLineReferenceType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.OrderReferenceType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyNameType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyTaxSchemeType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PaymentMeansType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PaymentTermsType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PeriodType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.SupplierPartyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxCategoryType;
@@ -106,10 +64,8 @@ import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.Tax
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.AdditionalAccountIDType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.DescriptionType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
-import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.InstructionNoteType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.NameType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.NoteType;
-import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.PaymentIDType;
 import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
 
 /**
@@ -120,8 +76,6 @@ import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
 @Immutable
 public final class InvoiceToEbInterface43Converter extends AbstractToEbInterface43Converter
 {
-  public static final int PAYMENT_REFERENCE_MAX_LENGTH = 35;
-
   private ICustomInvoiceToEbInterface43Converter m_aCustomizer;
 
   /**
@@ -147,354 +101,6 @@ public final class InvoiceToEbInterface43Converter extends AbstractToEbInterface
   {
     m_aCustomizer = aCustomizer;
     return this;
-  }
-
-  private static void _setPaymentMeansComment (@Nonnull final PaymentMeansType aUBLPaymentMeans,
-                                               @Nonnull final Ebi43PaymentMethodType aEbiPaymentMethod)
-  {
-    if (aUBLPaymentMeans.hasInstructionNoteEntries ())
-    {
-      final ICommonsList <String> aNotes = new CommonsArrayList <> ();
-      for (final InstructionNoteType aUBLNote : aUBLPaymentMeans.getInstructionNote ())
-        aNotes.add (StringHelper.trim (aUBLNote.getValue ()));
-      if (aNotes.isNotEmpty ())
-        aEbiPaymentMethod.setComment (StringHelper.getImplodedNonEmpty ('\n', aNotes));
-    }
-  }
-
-  private void _convertPayment (@Nonnull final InvoiceType aUBLDoc,
-                                @Nonnull final ErrorList aTransformationErrorList,
-                                @Nonnull final Ebi43InvoiceType aEbiDoc)
-  {
-    final Ebi43PaymentMethodType aEbiPaymentMethod = new Ebi43PaymentMethodType ();
-    final Ebi43PaymentConditionsType aEbiPaymentConditions = new Ebi43PaymentConditionsType ();
-
-    {
-      int nPaymentMeansIndex = 0;
-      for (final PaymentMeansType aUBLPaymentMeans : aUBLDoc.getPaymentMeans ())
-      {
-        // https://www.unece.org/trade/untdid/d16b/tred/tred4461.htm
-        final String sPaymentMeansCode = StringHelper.trim (aUBLPaymentMeans.getPaymentMeansCodeValue ());
-        // 30 = Credit transfer
-        // 31 = Debit transfer
-        // 42 = Payment to bank account
-        // 58 = SEPA credit transfer
-        if ("30".equals (sPaymentMeansCode) ||
-            "31".equals (sPaymentMeansCode) ||
-            "42".equals (sPaymentMeansCode) ||
-            "58".equals (sPaymentMeansCode))
-        {
-          // Is a payment channel code present?
-          final String sPaymentChannelCode = StringHelper.trim (aUBLPaymentMeans.getPaymentChannelCodeValue ());
-          // null/empty for standard PEPPOL BIS
-          if (StringHelper.hasNoText (sPaymentChannelCode) || PAYMENT_CHANNEL_CODE_IBAN.equals (sPaymentChannelCode))
-          {
-            _setPaymentMeansComment (aUBLPaymentMeans, aEbiPaymentMethod);
-            final Ebi43UniversalBankTransactionType aEbiUBTMethod = new Ebi43UniversalBankTransactionType ();
-
-            // Find payment reference
-            int nPaymentIDIndex = 0;
-            for (final PaymentIDType aUBLPaymentID : aUBLPaymentMeans.getPaymentID ())
-            {
-              String sUBLPaymentID = StringHelper.trim (aUBLPaymentID.getValue ());
-              if (StringHelper.hasText (sUBLPaymentID))
-              {
-                if (sUBLPaymentID.length () > PAYMENT_REFERENCE_MAX_LENGTH)
-                {
-                  // Reference
-                  aTransformationErrorList.add (SingleError.builderWarn ()
-                                                           .setErrorFieldName ("PaymentMeans[" +
-                                                                               nPaymentMeansIndex +
-                                                                               "]/PaymentID[" +
-                                                                               nPaymentIDIndex +
-                                                                               "]")
-                                                           .setErrorText (EText.PAYMENT_ID_TOO_LONG_CUT.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                                                sUBLPaymentID))
-                                                           .build ());
-                  sUBLPaymentID = sUBLPaymentID.substring (0, PAYMENT_REFERENCE_MAX_LENGTH);
-                }
-
-                final Ebi43PaymentReferenceType aEbiPaymentReference = new Ebi43PaymentReferenceType ();
-                aEbiPaymentReference.setValue (sUBLPaymentID);
-                aEbiUBTMethod.setPaymentReference (aEbiPaymentReference);
-              }
-              ++nPaymentIDIndex;
-            }
-
-            // Beneficiary account
-            final Ebi43AccountType aEbiAccount = new Ebi43AccountType ();
-
-            // BIC
-            final FinancialAccountType aUBLFinancialAccount = aUBLPaymentMeans.getPayeeFinancialAccount ();
-            if (aUBLFinancialAccount != null &&
-                aUBLFinancialAccount.getFinancialInstitutionBranch () != null &&
-                aUBLFinancialAccount.getFinancialInstitutionBranch ().getFinancialInstitution () != null)
-            {
-              final FinancialInstitutionType aUBLFI = aUBLFinancialAccount.getFinancialInstitutionBranch ()
-                                                                          .getFinancialInstitution ();
-              if (aUBLFI.getID () != null)
-              {
-                final String sID = StringHelper.trim (aUBLFI.getID ().getValue ());
-                final String sScheme = StringHelper.trim (aUBLFI.getID ().getSchemeID ());
-                final boolean bIsBIC = SCHEME_BIC.equalsIgnoreCase (sScheme) || StringHelper.hasNoText (sScheme);
-
-                if (bIsBIC)
-                  aEbiAccount.setBIC (sID);
-                else
-                  aEbiAccount.setBankName (sID);
-
-                if (bIsBIC)
-                  if (StringHelper.hasNoText (sID) || !RegExHelper.stringMatchesPattern (REGEX_BIC, sID))
-                  {
-                    aTransformationErrorList.add (SingleError.builderError ()
-                                                             .setErrorFieldName ("PaymentMeans[" +
-                                                                                 nPaymentMeansIndex +
-                                                                                 "]/PayeeFinancialAccount/FinancialInstitutionBranch/FinancialInstitution/ID")
-                                                             .setErrorText (EText.BIC_INVALID.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                                      sID))
-                                                             .build ());
-                    aEbiAccount.setBIC (null);
-                  }
-              }
-            }
-
-            // IBAN
-            final String sIBAN = aUBLFinancialAccount != null ? StringHelper.trim (aUBLFinancialAccount.getIDValue ())
-                                                              : null;
-            aEbiAccount.setIBAN (sIBAN);
-            if (StringHelper.getLength (sIBAN) > IBAN_MAX_LENGTH)
-            {
-              aTransformationErrorList.add (SingleError.builderWarn ()
-                                                       .setErrorFieldName ("PaymentMeans[" +
-                                                                           nPaymentMeansIndex +
-                                                                           "]/PayeeFinancialAccount/ID")
-                                                       .setErrorText (EText.IBAN_TOO_LONG.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                                  sIBAN,
-                                                                                                                  Integer.valueOf (IBAN_MAX_LENGTH)))
-                                                       .build ());
-              aEbiAccount.setIBAN (sIBAN.substring (0, IBAN_MAX_LENGTH));
-            }
-
-            // Bank Account Owner - no field present - check PayeePart or
-            // SupplierPartyName
-            String sBankAccountOwnerName = aUBLFinancialAccount != null ? aUBLFinancialAccount.getNameValue () : null;
-            if (StringHelper.hasNoText (sBankAccountOwnerName))
-              if (aUBLDoc.getPayeeParty () != null)
-                for (final PartyNameType aPartyName : aUBLDoc.getPayeeParty ().getPartyName ())
-                {
-                  sBankAccountOwnerName = StringHelper.trim (aPartyName.getNameValue ());
-                  if (StringHelper.hasText (sBankAccountOwnerName))
-                    break;
-                }
-            if (StringHelper.hasNoText (sBankAccountOwnerName))
-            {
-              final PartyType aSupplierParty = aUBLDoc.getAccountingSupplierParty ().getParty ();
-              if (aSupplierParty != null)
-                for (final PartyNameType aPartyName : aSupplierParty.getPartyName ())
-                {
-                  sBankAccountOwnerName = StringHelper.trim (aPartyName.getNameValue ());
-                  if (StringHelper.hasText (sBankAccountOwnerName))
-                    break;
-                }
-            }
-            aEbiAccount.setBankAccountOwner (sBankAccountOwnerName);
-
-            aEbiUBTMethod.addBeneficiaryAccount (aEbiAccount);
-            aEbiPaymentMethod.setUniversalBankTransaction (aEbiUBTMethod);
-            aEbiDoc.setPaymentMethod (aEbiPaymentMethod);
-
-            // Set due date (optional)
-            aEbiPaymentConditions.setDueDate (aUBLPaymentMeans.getPaymentDueDateValue ());
-
-            break;
-          }
-
-          aTransformationErrorList.add (SingleError.builderWarn ()
-                                                   .setErrorFieldName ("PaymentMeans[" + nPaymentMeansIndex + "]")
-                                                   .setErrorText (EText.PAYMENTMEANS_UNSUPPORTED_CHANNELCODE.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                                                     sPaymentChannelCode))
-                                                   .build ());
-        }
-        else
-          // 49 = Direct debit
-          if ("49".equals (sPaymentMeansCode))
-          {
-            _setPaymentMeansComment (aUBLPaymentMeans, aEbiPaymentMethod);
-            final Ebi43DirectDebitType aEbiDirectDebit = new Ebi43DirectDebitType ();
-            aEbiPaymentMethod.setDirectDebit (aEbiDirectDebit);
-            aEbiDoc.setPaymentMethod (aEbiPaymentMethod);
-
-            // Set due date (optional)
-            aEbiPaymentConditions.setDueDate (aUBLPaymentMeans.getPaymentDueDateValue ());
-
-            break;
-          }
-          else
-            // 59 = SEPA direct debit
-            if ("59".equals (sPaymentMeansCode))
-            {
-              _setPaymentMeansComment (aUBLPaymentMeans, aEbiPaymentMethod);
-              // TODO use SEPA fields
-              if (true)
-              {
-                final Ebi43DirectDebitType aEbiDirectDebit = new Ebi43DirectDebitType ();
-                aEbiPaymentMethod.setDirectDebit (aEbiDirectDebit);
-                aEbiDoc.setPaymentMethod (aEbiPaymentMethod);
-              }
-              else
-              {
-                final Ebi43SEPADirectDebitType aEbiDirectDebit = new Ebi43SEPADirectDebitType ();
-                aEbiDirectDebit.setType (Ebi43SEPADirectDebitTypeType.B_2_C);
-                aEbiPaymentMethod.setSEPADirectDebit (aEbiDirectDebit);
-                aEbiDoc.setPaymentMethod (aEbiPaymentMethod);
-              }
-
-              // Set due date (optional)
-              aEbiPaymentConditions.setDueDate (aUBLPaymentMeans.getPaymentDueDateValue ());
-
-              break;
-            }
-            else
-            {
-              // No supported payment means code
-              if (MathHelper.isEQ0 (aEbiDoc.getPayableAmount ()))
-              {
-                // As nothing is to be paid we can safely use NoPayment
-                _setPaymentMeansComment (aUBLPaymentMeans, aEbiPaymentMethod);
-                final Ebi43NoPaymentType aEbiNoPayment = new Ebi43NoPaymentType ();
-                aEbiPaymentMethod.setNoPayment (aEbiNoPayment);
-                break;
-              }
-
-              aTransformationErrorList.add (SingleError.builderError ()
-                                                       .setErrorFieldName ("PaymentMeans[" + nPaymentMeansIndex + "]")
-                                                       .setErrorText (EText.PAYMENTMEANS_CODE_INVALID.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                                              sPaymentMeansCode,
-                                                                                                                              getOrString (", ",
-                                                                                                                                           "30",
-                                                                                                                                           "31",
-                                                                                                                                           "42",
-                                                                                                                                           "58"),
-                                                                                                                              getOrString (", ",
-                                                                                                                                           "49",
-                                                                                                                                           "59")))
-                                                       .build ());
-            }
-
-        ++nPaymentMeansIndex;
-      }
-    }
-
-    if (m_aSettings.isInvoicePaymentMethodMandatory ())
-    {
-      if (aEbiDoc.getPaymentMethod () == null)
-        aTransformationErrorList.add (SingleError.builderError ()
-                                                 .setErrorFieldName ("Invoice")
-                                                 .setErrorText (EText.ERB_NO_PAYMENT_METHOD.getDisplayText (m_aDisplayLocale))
-                                                 .build ());
-    }
-
-    // Payment terms
-    {
-      final ICommonsList <String> aPaymentConditionsNotes = new CommonsArrayList <> ();
-      int nPaymentTermsIndex = 0;
-      for (final PaymentTermsType aUBLPaymentTerms : aUBLDoc.getPaymentTerms ())
-      {
-        // Add notes
-        for (final NoteType aUBLNote : aUBLPaymentTerms.getNote ())
-        {
-          final String sUBLNote = StringHelper.trim (aUBLNote.getValue ());
-          if (StringHelper.hasText (sUBLNote))
-            aPaymentConditionsNotes.add (sUBLNote);
-        }
-
-        if (aUBLPaymentTerms.getPaymentDueDate () != null)
-        {
-          final XMLGregorianCalendar aUBLDueDate = aUBLPaymentTerms.getPaymentDueDateValue ();
-          final XMLGregorianCalendar aEbiDueDate = aEbiPaymentConditions.getDueDate ();
-          if (aUBLDueDate != null && aEbiDueDate != null)
-          {
-            // Error only if due dates differ
-            if (!aEbiDueDate.equals (aUBLDueDate))
-              aTransformationErrorList.add (SingleError.builderWarn ()
-                                                       .setErrorFieldName ("PaymentTerms[" +
-                                                                           nPaymentTermsIndex +
-                                                                           "]/PaymentDueDate")
-                                                       .setErrorText (EText.PAYMENT_DUE_DATE_ALREADY_CONTAINED.getDisplayText (m_aDisplayLocale))
-                                                       .build ());
-          }
-          else
-            aEbiPaymentConditions.setDueDate (aUBLDueDate);
-
-          final BigDecimal aUBLPaymentPerc = aUBLPaymentTerms.getPaymentPercentValue ();
-          if (aUBLPaymentPerc != null && MathHelper.isGT0 (aUBLPaymentPerc) && MathHelper.isLT100 (aUBLPaymentPerc))
-          {
-            final BigDecimal aBaseAmount = aUBLDoc.getLegalMonetaryTotal () == null ? null
-                                                                                    : aUBLDoc.getLegalMonetaryTotal ()
-                                                                                             .getPayableAmountValue ();
-            if (aBaseAmount != null)
-            {
-              final BigDecimal aMinimumPayment = MathHelper.getPercentValue (aBaseAmount,
-                                                                             aUBLPaymentPerc,
-                                                                             SCALE_PRICE2,
-                                                                             ROUNDING_MODE);
-              aEbiPaymentConditions.setMinimumPayment (aMinimumPayment);
-            }
-          }
-        }
-        else
-          if (aUBLPaymentTerms.getSettlementDiscountPercent () != null)
-          {
-            if (aUBLPaymentTerms.getSettlementPeriod () == null ||
-                aUBLPaymentTerms.getSettlementPeriod ().getEndDate () == null)
-            {
-              aTransformationErrorList.add (SingleError.builderWarn ()
-                                                       .setErrorFieldName ("PaymentTerms[" +
-                                                                           nPaymentTermsIndex +
-                                                                           "]/SettlementPeriod")
-                                                       .setErrorText (EText.SETTLEMENT_PERIOD_MISSING.getDisplayText (m_aDisplayLocale))
-                                                       .build ());
-            }
-            else
-            {
-              final Ebi43DiscountType aEbiDiscount = new Ebi43DiscountType ();
-              aEbiDiscount.setPaymentDate (aUBLPaymentTerms.getSettlementPeriod ().getEndDateValue ());
-              aEbiDiscount.setPercentage (aUBLPaymentTerms.getSettlementDiscountPercentValue ());
-              // Optional amount value
-              aEbiDiscount.setAmount (aUBLPaymentTerms.getAmountValue ());
-              aEbiPaymentConditions.addDiscount (aEbiDiscount);
-            }
-          }
-          else
-            if (aUBLPaymentTerms.getPenaltySurchargePercent () != null)
-            {
-              aTransformationErrorList.add (SingleError.builderWarn ()
-                                                       .setErrorFieldName ("PaymentTerms[" + nPaymentTermsIndex + "]")
-                                                       .setErrorText (EText.PENALTY_NOT_ALLOWED.getDisplayText (m_aDisplayLocale))
-                                                       .build ());
-            }
-
-        ++nPaymentTermsIndex;
-      }
-
-      if (!aPaymentConditionsNotes.isEmpty ())
-        aEbiPaymentConditions.setComment (StringHelper.getImploded ('\n', aPaymentConditionsNotes));
-    }
-
-    if (aEbiPaymentConditions.getDueDate () == null)
-    {
-      // ebInterface requires due date
-      if (aEbiPaymentConditions.hasDiscountEntries ())
-        aTransformationErrorList.add (SingleError.builderError ()
-                                                 .setErrorFieldName ("PaymentMeans/PaymentDueDate")
-                                                 .setErrorText (EText.DISCOUNT_WITHOUT_DUEDATE.getDisplayText (m_aDisplayLocale))
-                                                 .build ());
-    }
-    else
-    {
-      // Independent if discounts are present or not
-      aEbiDoc.setPaymentConditions (aEbiPaymentConditions);
-    }
   }
 
   /**
@@ -1544,7 +1150,14 @@ public final class InvoiceToEbInterface43Converter extends AbstractToEbInterface
     aEbiDoc.setPayableAmount (aUBLMonetaryTotal.getPayableAmountValue ().setScale (SCALE_PRICE2, ROUNDING_MODE));
 
     // Payment method
-    _convertPayment (aUBLDoc, aTransformationErrorList, aEbiDoc);
+    convertPayment (aUBLDoc::getPaymentMeans,
+                    aUBLDoc::getPayeeParty,
+                    aUBLDoc::getAccountingSupplierParty,
+                    aUBLDoc::getPaymentTerms,
+                    aUBLDoc::getLegalMonetaryTotal,
+                    aTransformationErrorList,
+                    aEbiDoc,
+                    false);
 
     // Delivery
     Ebi43DeliveryType aEbiDelivery = null;

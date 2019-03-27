@@ -1148,6 +1148,7 @@ public final class CreditNoteToEbInterface42Converter extends AbstractToEbInterf
     // Payable amount
     aEbiDoc.setPayableAmount (aUBLMonetaryTotal.getPayableAmountValue ().setScale (SCALE_PRICE2, ROUNDING_MODE));
 
+    // Payment method
     convertPayment (aUBLDoc::getPaymentMeans,
                     aUBLDoc::getPayeeParty,
                     aUBLDoc::getAccountingSupplierParty,
