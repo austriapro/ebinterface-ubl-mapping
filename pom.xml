@@ -171,6 +171,8 @@
             <exclude>src/test/resources/ebi42/**</exclude>
             <exclude>src/test/resources/ebi43/**</exclude>
             <exclude>src/test/resources/ubl20/**</exclude>
+            <exclude>generated-ebi42-files/*</exclude>
+            <exclude>generated-ebi43-files/*</exclude>
           </excludes>
         </configuration>
       </plugin>
