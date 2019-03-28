@@ -213,7 +213,9 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
    * Check if the passed UBL invoice is transformable
    *
    * @param aUBLInvoice
-   *        The UBL invoice to check
+   *        The UBL invoice to check. May not be <code>null</code>.
+   * @param aTransformationErrorList
+   *        The error list to be filled. May not be <code>null</code>.
    */
   protected final void checkInvoiceConsistency (@Nonnull final InvoiceType aUBLInvoice,
                                                 @Nonnull final ErrorList aTransformationErrorList)
@@ -313,7 +315,9 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
    * Check if the passed UBL invoice is transformable
    *
    * @param aUBLCreditNote
-   *        The UBL invoice to check
+   *        The UBL invoice to check. May not be <code>null</code>.
+   * @param aTransformationErrorList
+   *        The error list to be filled. May not be <code>null</code>.
    */
   protected final void checkCreditNoteConsistency (@Nonnull final CreditNoteType aUBLCreditNote,
                                                    @Nonnull final ErrorList aTransformationErrorList)
@@ -414,10 +418,10 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
    *        Separator to use. May not be <code>null</code>.
    * @param aValues
    *        Values to be combined.
-   * @return
+   * @return The combined string. Never <code>null</code>.
    */
   @Nonnull
-  protected String getOrString (@Nonnull final String sSep, @Nullable final String... aValues)
+  protected final String getOrString (@Nonnull final String sSep, @Nullable final String... aValues)
   {
     final StringBuilder aSB = new StringBuilder ();
     if (aValues != null)

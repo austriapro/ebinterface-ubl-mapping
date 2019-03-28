@@ -1,15 +1,14 @@
 # ebinterface-ubl-mapping
 
 Mapping ebInterface 4.2/4.3 from and to UBL 2.1 and vice versa.
-Author: Philip Helger
 
-This project is based on the project `ubl2ebinterface` which resides on Joinup (and will not be developed any further).
+Author: Philip Helger
 
 The reason why this project is not in the [ebinterface-mappings](https://github.com/austriapro/ebinterface-mappings) project is the totally different software stack used and the requirement of this project to be published on Maven central. Therefore the group name is still "com.helger" as I only have rights to publish below this tree node to Maven central.
 
 # News and noteworthy
 
-* v3.0.8 - work in progress
+* v3.0.8 - 2019-03-28
     * Fixed parsing of process identifiers in "Profile" element for CreditNotes to match the Invoice rules
     * Added support for the UBL version "2.2"
     * CreditNotes now also transform the `PaymentMethod` if present but fallback to `NoPayment` if none is provided
@@ -59,7 +58,7 @@ Add the following to your pom.xml to use this artifact:
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>ebinterface-ubl-mapping</artifactId>
-  <version>3.0.7</version>
+  <version>3.0.8</version>
 </dependency>
 ```
 
