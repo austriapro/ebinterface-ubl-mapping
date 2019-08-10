@@ -65,7 +65,7 @@ import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.Payment
 /**
  * Base class for PEPPOL UBL to ebInterface 4.2 converter
  *
- * @author philip
+ * @author Philip Helger
  */
 @Immutable
 public abstract class AbstractToEbInterface42Converter extends AbstractToEbInterfaceConverter

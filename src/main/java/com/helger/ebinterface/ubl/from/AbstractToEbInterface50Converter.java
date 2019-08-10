@@ -37,7 +37,7 @@ import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.Documen
 /**
  * Base class for PEPPOL UBL to ebInterface 5.0 converter
  *
- * @author philip
+ * @author Philip Helger
  */
 @Immutable
 public abstract class AbstractToEbInterface50Converter extends AbstractToEbInterfaceConverter

@@ -33,19 +33,19 @@ import com.helger.commons.error.list.ErrorList;
 import com.helger.commons.math.MathHelper;
 import com.helger.commons.regex.RegExHelper;
 import com.helger.commons.string.StringHelper;
-import com.helger.ebinterface.v43.Ebi43AccountType;
-import com.helger.ebinterface.v43.Ebi43DirectDebitType;
-import com.helger.ebinterface.v43.Ebi43DiscountType;
-import com.helger.ebinterface.v43.Ebi43DocumentTypeType;
-import com.helger.ebinterface.v43.Ebi43InvoiceType;
-import com.helger.ebinterface.v43.Ebi43NoPaymentType;
-import com.helger.ebinterface.v43.Ebi43PaymentConditionsType;
-import com.helger.ebinterface.v43.Ebi43PaymentMethodType;
-import com.helger.ebinterface.v43.Ebi43PaymentReferenceType;
-import com.helger.ebinterface.v43.Ebi43RelatedDocumentType;
-import com.helger.ebinterface.v43.Ebi43SEPADirectDebitType;
-import com.helger.ebinterface.v43.Ebi43SEPADirectDebitTypeType;
-import com.helger.ebinterface.v43.Ebi43UniversalBankTransactionType;
+import com.helger.ebinterface.v41.Ebi41AccountType;
+import com.helger.ebinterface.v41.Ebi41DirectDebitType;
+import com.helger.ebinterface.v41.Ebi41DiscountType;
+import com.helger.ebinterface.v41.Ebi41DocumentTypeType;
+import com.helger.ebinterface.v41.Ebi41InvoiceType;
+import com.helger.ebinterface.v41.Ebi41NoPaymentType;
+import com.helger.ebinterface.v41.Ebi41PaymentConditionsType;
+import com.helger.ebinterface.v41.Ebi41PaymentMethodType;
+import com.helger.ebinterface.v41.Ebi41PaymentReferenceType;
+import com.helger.ebinterface.v41.Ebi41RelatedDocumentType;
+import com.helger.ebinterface.v41.Ebi41SEPADirectDebitType;
+import com.helger.ebinterface.v41.Ebi41SEPADirectDebitTypeType;
+import com.helger.ebinterface.v41.Ebi41UniversalBankTransactionType;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.BillingReferenceType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DocumentReferenceType;
@@ -63,16 +63,16 @@ import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.NoteTyp
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.PaymentIDType;
 
 /**
- * Base class for PEPPOL UBL to ebInterface 4.3 converter
+ * Base class for PEPPOL UBL to ebInterface 4.1 converter
  *
  * @author Philip Helger
  */
 @Immutable
-public abstract class AbstractToEbInterface43Converter extends AbstractToEbInterfaceConverter
+public abstract class AbstractToEbInterface41Converter extends AbstractToEbInterfaceConverter
 {
   public static final int PAYMENT_REFERENCE_MAX_LENGTH = 35;
 
-  public AbstractToEbInterface43Converter (@Nonnull final Locale aDisplayLocale,
+  public AbstractToEbInterface41Converter (@Nonnull final Locale aDisplayLocale,
                                            @Nonnull final Locale aContentLocale,
                                            @Nonnull final IToEbinterfaceSettings aSettings)
   {
@@ -80,7 +80,7 @@ public abstract class AbstractToEbInterface43Converter extends AbstractToEbInter
   }
 
   @Nullable
-  protected static final Ebi43DocumentTypeType getAsDocumentTypeType (@Nullable final String... aValues)
+  protected static final Ebi41DocumentTypeType getAsDocumentTypeType (@Nullable final String... aValues)
   {
     if (aValues != null)
       for (final String s : aValues)
@@ -88,7 +88,7 @@ public abstract class AbstractToEbInterface43Converter extends AbstractToEbInter
           try
           {
             // The first match wins
-            return Ebi43DocumentTypeType.fromValue (s);
+            return Ebi41DocumentTypeType.fromValue (s);
           }
           catch (final IllegalArgumentException ex)
           {
@@ -98,28 +98,28 @@ public abstract class AbstractToEbInterface43Converter extends AbstractToEbInter
   }
 
   protected static void convertRelatedDocuments (@Nonnull final List <BillingReferenceType> aUBLBillingReferences,
-                                                 @Nonnull final Ebi43InvoiceType aEbiDoc)
+                                                 @Nonnull final Ebi41InvoiceType aEbiDoc)
   {
     for (final BillingReferenceType aUBLBillingReference : aUBLBillingReferences)
     {
       if (aUBLBillingReference.getInvoiceDocumentReference () != null &&
           aUBLBillingReference.getInvoiceDocumentReference ().getIDValue () != null)
       {
-        final Ebi43RelatedDocumentType aEbiRelatedDocument = new Ebi43RelatedDocumentType ();
+        final Ebi41RelatedDocumentType aEbiRelatedDocument = new Ebi41RelatedDocumentType ();
         aEbiRelatedDocument.setInvoiceNumber (aUBLBillingReference.getInvoiceDocumentReference ().getIDValue ());
         aEbiRelatedDocument.setInvoiceDate (aUBLBillingReference.getInvoiceDocumentReference ().getIssueDateValue ());
-        aEbiRelatedDocument.setDocumentType (Ebi43DocumentTypeType.INVOICE);
+        aEbiRelatedDocument.setDocumentType (Ebi41DocumentTypeType.INVOICE);
         aEbiDoc.addRelatedDocument (aEbiRelatedDocument);
       }
       else
         if (aUBLBillingReference.getCreditNoteDocumentReference () != null &&
             aUBLBillingReference.getCreditNoteDocumentReference ().getIDValue () != null)
         {
-          final Ebi43RelatedDocumentType aEbiRelatedDocument = new Ebi43RelatedDocumentType ();
+          final Ebi41RelatedDocumentType aEbiRelatedDocument = new Ebi41RelatedDocumentType ();
           aEbiRelatedDocument.setInvoiceNumber (aUBLBillingReference.getCreditNoteDocumentReference ().getIDValue ());
           aEbiRelatedDocument.setInvoiceDate (aUBLBillingReference.getCreditNoteDocumentReference ()
                                                                   .getIssueDateValue ());
-          aEbiRelatedDocument.setDocumentType (Ebi43DocumentTypeType.CREDIT_MEMO);
+          aEbiRelatedDocument.setDocumentType (Ebi41DocumentTypeType.CREDIT_MEMO);
           aEbiDoc.addRelatedDocument (aEbiRelatedDocument);
         }
       // Ignore other values
@@ -127,12 +127,12 @@ public abstract class AbstractToEbInterface43Converter extends AbstractToEbInter
   }
 
   protected static void convertReferencedDocuments (@Nonnull final List <DocumentReferenceType> aUBLDocumentReferences,
-                                                    @Nonnull final Ebi43InvoiceType aEbiDoc)
+                                                    @Nonnull final Ebi41InvoiceType aEbiDoc)
   {
     for (final DocumentReferenceType aUBLDocumentReference : aUBLDocumentReferences)
       if (StringHelper.hasText (aUBLDocumentReference.getIDValue ()) && aUBLDocumentReference.getAttachment () == null)
       {
-        final Ebi43RelatedDocumentType aEbiRelatedDocument = new Ebi43RelatedDocumentType ();
+        final Ebi41RelatedDocumentType aEbiRelatedDocument = new Ebi41RelatedDocumentType ();
         aEbiRelatedDocument.setInvoiceNumber (aUBLDocumentReference.getIDValue ());
         aEbiRelatedDocument.setInvoiceDate (aUBLDocumentReference.getIssueDateValue ());
         final ICommonsList <String> aComments = new CommonsArrayList <> ();
@@ -150,7 +150,7 @@ public abstract class AbstractToEbInterface43Converter extends AbstractToEbInter
   }
 
   private static void _setPaymentMeansComment (@Nonnull final PaymentMeansType aUBLPaymentMeans,
-                                               @Nonnull final Ebi43PaymentMethodType aEbiPaymentMethod)
+                                               @Nonnull final Ebi41PaymentMethodType aEbiPaymentMethod)
   {
     if (aUBLPaymentMeans.hasInstructionNoteEntries ())
     {
@@ -168,25 +168,24 @@ public abstract class AbstractToEbInterface43Converter extends AbstractToEbInter
                                  @Nonnull final Supplier <List <PaymentTermsType>> aUBLDocPaymentTerms,
                                  @Nonnull final Supplier <MonetaryTotalType> aUBLDocLegalMonetaryTotal,
                                  @Nonnull final ErrorList aTransformationErrorList,
-                                 @Nonnull final Ebi43InvoiceType aEbiDoc,
+                                 @Nonnull final Ebi41InvoiceType aEbiDoc,
                                  final boolean bIsCreditNote)
   {
-    final Ebi43PaymentMethodType aEbiPaymentMethod = new Ebi43PaymentMethodType ();
-    final Ebi43PaymentConditionsType aEbiPaymentConditions = new Ebi43PaymentConditionsType ();
+    final Ebi41PaymentMethodType aEbiPaymentMethod = new Ebi41PaymentMethodType ();
+    final Ebi41PaymentConditionsType aEbiPaymentConditions = new Ebi41PaymentConditionsType ();
 
     {
       int nPaymentMeansIndex = 0;
       for (final PaymentMeansType aUBLPaymentMeans : aUBLDocPaymentMeans.get ())
       {
-        // https://www.unece.org/trade/untdid/d16b/tred/tred4461.htm
         final String sPaymentMeansCode = StringHelper.trim (aUBLPaymentMeans.getPaymentMeansCodeValue ());
         // 30 = Credit transfer
         // 31 = Debit transfer
-        // 42 = Payment to bank account
+        // 41 = Payment to bank account
         // 58 = SEPA credit transfer
         if ("30".equals (sPaymentMeansCode) ||
             "31".equals (sPaymentMeansCode) ||
-            "42".equals (sPaymentMeansCode) ||
+            "41".equals (sPaymentMeansCode) ||
             "58".equals (sPaymentMeansCode))
         {
           // Is a payment channel code present?
@@ -195,7 +194,7 @@ public abstract class AbstractToEbInterface43Converter extends AbstractToEbInter
           if (StringHelper.hasNoText (sPaymentChannelCode) || PAYMENT_CHANNEL_CODE_IBAN.equals (sPaymentChannelCode))
           {
             _setPaymentMeansComment (aUBLPaymentMeans, aEbiPaymentMethod);
-            final Ebi43UniversalBankTransactionType aEbiUBTMethod = new Ebi43UniversalBankTransactionType ();
+            final Ebi41UniversalBankTransactionType aEbiUBTMethod = new Ebi41UniversalBankTransactionType ();
 
             // Find payment reference
             int nPaymentIDIndex = 0;
@@ -219,7 +218,7 @@ public abstract class AbstractToEbInterface43Converter extends AbstractToEbInter
                   sUBLPaymentID = sUBLPaymentID.substring (0, PAYMENT_REFERENCE_MAX_LENGTH);
                 }
 
-                final Ebi43PaymentReferenceType aEbiPaymentReference = new Ebi43PaymentReferenceType ();
+                final Ebi41PaymentReferenceType aEbiPaymentReference = new Ebi41PaymentReferenceType ();
                 aEbiPaymentReference.setValue (sUBLPaymentID);
                 aEbiUBTMethod.setPaymentReference (aEbiPaymentReference);
               }
@@ -227,7 +226,7 @@ public abstract class AbstractToEbInterface43Converter extends AbstractToEbInter
             }
 
             // Beneficiary account
-            final Ebi43AccountType aEbiAccount = new Ebi43AccountType ();
+            final Ebi41AccountType aEbiAccount = new Ebi41AccountType ();
 
             // BIC
             final FinancialAccountType aUBLFinancialAccount = aUBLPaymentMeans.getPayeeFinancialAccount ();
@@ -328,7 +327,7 @@ public abstract class AbstractToEbInterface43Converter extends AbstractToEbInter
           if ("49".equals (sPaymentMeansCode))
           {
             _setPaymentMeansComment (aUBLPaymentMeans, aEbiPaymentMethod);
-            final Ebi43DirectDebitType aEbiDirectDebit = new Ebi43DirectDebitType ();
+            final Ebi41DirectDebitType aEbiDirectDebit = new Ebi41DirectDebitType ();
             aEbiPaymentMethod.setDirectDebit (aEbiDirectDebit);
             aEbiDoc.setPaymentMethod (aEbiPaymentMethod);
 
@@ -345,14 +344,14 @@ public abstract class AbstractToEbInterface43Converter extends AbstractToEbInter
               // TODO use SEPA fields
               if (true)
               {
-                final Ebi43DirectDebitType aEbiDirectDebit = new Ebi43DirectDebitType ();
+                final Ebi41DirectDebitType aEbiDirectDebit = new Ebi41DirectDebitType ();
                 aEbiPaymentMethod.setDirectDebit (aEbiDirectDebit);
                 aEbiDoc.setPaymentMethod (aEbiPaymentMethod);
               }
               else
               {
-                final Ebi43SEPADirectDebitType aEbiDirectDebit = new Ebi43SEPADirectDebitType ();
-                aEbiDirectDebit.setType (Ebi43SEPADirectDebitTypeType.B_2_C);
+                final Ebi41SEPADirectDebitType aEbiDirectDebit = new Ebi41SEPADirectDebitType ();
+                aEbiDirectDebit.setType (Ebi41SEPADirectDebitTypeType.B_2_C);
                 aEbiPaymentMethod.setSEPADirectDebit (aEbiDirectDebit);
                 aEbiDoc.setPaymentMethod (aEbiPaymentMethod);
               }
@@ -369,7 +368,7 @@ public abstract class AbstractToEbInterface43Converter extends AbstractToEbInter
               {
                 // As nothing is to be paid we can safely use NoPayment
                 _setPaymentMeansComment (aUBLPaymentMeans, aEbiPaymentMethod);
-                final Ebi43NoPaymentType aEbiNoPayment = new Ebi43NoPaymentType ();
+                final Ebi41NoPaymentType aEbiNoPayment = new Ebi41NoPaymentType ();
                 aEbiPaymentMethod.setNoPayment (aEbiNoPayment);
                 break;
               }
@@ -381,7 +380,7 @@ public abstract class AbstractToEbInterface43Converter extends AbstractToEbInter
                                                                                                                               getOrString (", ",
                                                                                                                                            "30",
                                                                                                                                            "31",
-                                                                                                                                           "42",
+                                                                                                                                           "41",
                                                                                                                                            "58"),
                                                                                                                               getOrString (", ",
                                                                                                                                            "49",
@@ -401,7 +400,7 @@ public abstract class AbstractToEbInterface43Converter extends AbstractToEbInter
         if (bIsCreditNote)
         {
           // Create a no-payment as fallback
-          final Ebi43NoPaymentType aEbiNoPayment = new Ebi43NoPaymentType ();
+          final Ebi41NoPaymentType aEbiNoPayment = new Ebi41NoPaymentType ();
           aEbiPaymentMethod.setNoPayment (aEbiNoPayment);
           aEbiDoc.setPaymentMethod (aEbiPaymentMethod);
         }
@@ -414,6 +413,7 @@ public abstract class AbstractToEbInterface43Converter extends AbstractToEbInter
         }
       }
     }
+
     // Payment terms
     {
       final ICommonsList <String> aPaymentConditionsNotes = new CommonsArrayList <> ();
@@ -476,7 +476,7 @@ public abstract class AbstractToEbInterface43Converter extends AbstractToEbInter
             }
             else
             {
-              final Ebi43DiscountType aEbiDiscount = new Ebi43DiscountType ();
+              final Ebi41DiscountType aEbiDiscount = new Ebi41DiscountType ();
               aEbiDiscount.setPaymentDate (aUBLPaymentTerms.getSettlementPeriod ().getEndDateValue ());
               aEbiDiscount.setPercentage (aUBLPaymentTerms.getSettlementDiscountPercentValue ());
               // Optional amount value
