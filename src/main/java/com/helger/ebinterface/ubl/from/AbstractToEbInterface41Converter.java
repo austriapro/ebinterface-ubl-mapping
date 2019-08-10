@@ -145,7 +145,7 @@ public abstract class AbstractToEbInterface41Converter extends AbstractToEbInter
                                                                                            .getName (),
                                                                       aUBLDocumentReference.getDocumentTypeCodeValue ()));
         }
-        aEbiDoc.getRelatedDocument ().add (aEbiRelatedDocument);
+        aEbiDoc.addRelatedDocument (aEbiRelatedDocument);
       }
   }
 
@@ -179,14 +179,7 @@ public abstract class AbstractToEbInterface41Converter extends AbstractToEbInter
       for (final PaymentMeansType aUBLPaymentMeans : aUBLDocPaymentMeans.get ())
       {
         final String sPaymentMeansCode = StringHelper.trim (aUBLPaymentMeans.getPaymentMeansCodeValue ());
-        // 30 = Credit transfer
-        // 31 = Debit transfer
-        // 41 = Payment to bank account
-        // 58 = SEPA credit transfer
-        if ("30".equals (sPaymentMeansCode) ||
-            "31".equals (sPaymentMeansCode) ||
-            "41".equals (sPaymentMeansCode) ||
-            "58".equals (sPaymentMeansCode))
+        if (isUniversalBankTransaction (sPaymentMeansCode))
         {
           // Is a payment channel code present?
           final String sPaymentChannelCode = StringHelper.trim (aUBLPaymentMeans.getPaymentChannelCodeValue ());
@@ -323,8 +316,7 @@ public abstract class AbstractToEbInterface41Converter extends AbstractToEbInter
                                                    .build ());
         }
         else
-          // 49 = Direct debit
-          if ("49".equals (sPaymentMeansCode))
+          if (isDirectDebit (sPaymentMeansCode))
           {
             _setPaymentMeansComment (aUBLPaymentMeans, aEbiPaymentMethod);
             final Ebi41DirectDebitType aEbiDirectDebit = new Ebi41DirectDebitType ();
@@ -337,8 +329,7 @@ public abstract class AbstractToEbInterface41Converter extends AbstractToEbInter
             break;
           }
           else
-            // 59 = SEPA direct debit
-            if ("59".equals (sPaymentMeansCode))
+            if (isSEPADirectDebit (sPaymentMeansCode))
             {
               _setPaymentMeansComment (aUBLPaymentMeans, aEbiPaymentMethod);
               // TODO use SEPA fields

@@ -441,4 +441,28 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
     }
     return aSB.toString ();
   }
+
+  protected static boolean isUniversalBankTransaction (@Nullable final String sPaymentMeansCode)
+  {
+    // 30 = Credit transfer
+    // 31 = Debit transfer
+    // 41 = Payment to bank account
+    // 58 = SEPA credit transfer
+    return "30".equals (sPaymentMeansCode) ||
+           "31".equals (sPaymentMeansCode) ||
+           "41".equals (sPaymentMeansCode) ||
+           "58".equals (sPaymentMeansCode);
+  }
+
+  protected static boolean isDirectDebit (@Nullable final String sPaymentMeansCode)
+  {
+    // 49 = Direct debit
+    return "49".equals (sPaymentMeansCode);
+  }
+
+  protected static boolean isSEPADirectDebit (@Nullable final String sPaymentMeansCode)
+  {
+    // 59 = SEPA direct debit
+    return "59".equals (sPaymentMeansCode);
+  }
 }

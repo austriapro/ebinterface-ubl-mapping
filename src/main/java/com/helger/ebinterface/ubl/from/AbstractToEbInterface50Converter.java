@@ -115,7 +115,7 @@ public abstract class AbstractToEbInterface50Converter extends AbstractToEbInter
                                                                                            .getName (),
                                                                       aUBLDocumentReference.getDocumentTypeCodeValue ()));
         }
-        aEbiDoc.getRelatedDocument ().add (aEbiRelatedDocument);
+        aEbiDoc.addRelatedDocument (aEbiRelatedDocument);
       }
   }
 }
