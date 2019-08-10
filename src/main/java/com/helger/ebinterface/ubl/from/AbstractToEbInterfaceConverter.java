@@ -100,6 +100,8 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
                                    "Failed to get invoice recipient VAT identification number. Use 'ATU00000000' for Austrian invoice recipients if no VAT identification number is required."),
     INVOICE_RECIPIENT_PARTY_MISSING ("Die Adressdaten des Rechnungsempfängers fehlen.",
                                      "The party information of the invoice recipient are missing."),
+    INVOICE_RECIPIENT_PARTY_SUPPLIER_ASSIGNED_ACCOUNT_ID_MISSING ("Die ID des Auftraggebers im System des Rechnungsstellers fehlt.",
+                                                                  "Failed to get supplier assigned account ID."),
     ORDERING_PARTY_VAT_MISSING ("Die UID-Nummer des Auftraggebers fehlt. Verwenden Sie 'ATU00000000' für österreichische Empfänger an wenn keine UID-Nummer notwendig ist.",
                                 "Failed to get ordering party VAT identification number. Use 'ATU00000000' for Austrian invoice recipients if no VAT identification number is required."),
     ORDERING_PARTY_PARTY_MISSING ("Die Adressdaten des Auftraggebers fehlen.",
@@ -154,7 +156,9 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
     MISSING_TAXCATEGORY_ID ("Das Element <ID> fehlt.", "Element <ID> is missing."),
     MISSING_TAXCATEGORY_ID_VALUE ("Das Element <ID> hat keinen Wert.", "Element <ID> has no value."),
     MISSING_TAXCATEGORY_TAXSCHEME_ID ("Das Element <ID> fehlt.", "Element <ID> is missing."),
-    MISSING_TAXCATEGORY_TAXSCHEME_ID_VALUE ("Das Element <ID> hat keinen Wert.", "Element <ID> has no value.");
+    MISSING_TAXCATEGORY_TAXSCHEME_ID_VALUE ("Das Element <ID> hat keinen Wert.", "Element <ID> has no value."),
+    EBI40_CANNOT_MIX_VAT_EXEMPTION ("In ebInterface 4.0 können nicht USt-Informationen und Steuerbefreiungen gemischt werden",
+                                    "ebInterface 4.0 cannot mix VAT information and tax exemptions");
 
     private final IMultilingualText m_aTP;
 

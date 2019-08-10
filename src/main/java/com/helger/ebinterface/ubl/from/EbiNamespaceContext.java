@@ -36,7 +36,11 @@ public class EbiNamespaceContext extends MapBasedNamespaceContext
     addMapping ("eb30", CEbInterface.EBINTERFACE_30_NS);
     addMapping ("eb302", CEbInterface.EBINTERFACE_302_NS);
     addMapping ("eb40", CEbInterface.EBINTERFACE_40_NS);
+    addMapping ("eb40e", "http://www.ebinterface.at/schema/4p0/extensions/ext");
+    addMapping ("eb40s", "http://www.ebinterface.at/schema/4p0/extensions/sv");
     addMapping ("eb41", CEbInterface.EBINTERFACE_41_NS);
+    addMapping ("eb41e", "http://www.ebinterface.at/schema/4p1/extensions/ext");
+    addMapping ("eb41s", "http://www.ebinterface.at/schema/4p1/extensions/sv");
     addMapping ("eb42", CEbInterface.EBINTERFACE_42_NS);
     addMapping ("eb43", CEbInterface.EBINTERFACE_43_NS);
     addMapping ("eb50", CEbInterface.EBINTERFACE_50_NS);

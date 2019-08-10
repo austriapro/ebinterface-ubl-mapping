@@ -99,6 +99,7 @@
     </cac:Party>
   </cac:AccountingSupplierParty>
   <cac:AccountingCustomerParty>
+    <cbc:SupplierAssignedAccountID>0987654321</cbc:SupplierAssignedAccountID>
     <cac:Party>
       <cbc:EndpointID schemeAgencyID="9" schemeID="GLN">1234567987654</cbc:EndpointID>
       <cac:PartyIdentification>
