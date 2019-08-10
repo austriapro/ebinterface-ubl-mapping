@@ -101,6 +101,7 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/X
 		</cac:Party>
 	</cac:AccountingSupplierParty>
 	<cac:AccountingCustomerParty>
+    <cbc:SupplierAssignedAccountID>0987654321</cbc:SupplierAssignedAccountID>
 		<cac:Party>
 			<cbc:EndpointID schemeID="GLN" schemeAgencyID="9">1234567890128</cbc:EndpointID>
 			<cac:PartyIdentification>

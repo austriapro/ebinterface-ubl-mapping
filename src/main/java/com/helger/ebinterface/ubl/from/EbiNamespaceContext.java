@@ -42,7 +42,11 @@ public class EbiNamespaceContext extends MapBasedNamespaceContext
     addMapping ("eb41e", "http://www.ebinterface.at/schema/4p1/extensions/ext");
     addMapping ("eb41s", "http://www.ebinterface.at/schema/4p1/extensions/sv");
     addMapping ("eb42", CEbInterface.EBINTERFACE_42_NS);
+    addMapping ("eb42e", "http://www.ebinterface.at/schema/4p2/extensions/ext");
+    addMapping ("eb42s", "http://www.ebinterface.at/schema/4p2/extensions/sv");
     addMapping ("eb43", CEbInterface.EBINTERFACE_43_NS);
+    addMapping ("eb43e", "http://www.ebinterface.at/schema/4p3/extensions/ext");
+    addMapping ("eb43s", "http://www.ebinterface.at/schema/4p3/extensions/sv");
     addMapping ("eb50", CEbInterface.EBINTERFACE_50_NS);
     addMapping ("dsig", "http://www.w3.org/2000/09/xmldsig#");
   }
