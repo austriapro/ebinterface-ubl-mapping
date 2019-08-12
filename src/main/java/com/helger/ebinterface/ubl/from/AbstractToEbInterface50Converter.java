@@ -129,9 +129,22 @@ public abstract class AbstractToEbInterface50Converter extends AbstractToEbInter
     }
   }
 
+  public static void validateContactData (@Nonnull final Ebi50ContactType aEbiContact,
+                                          @Nonnull final String sPartyType,
+                                          @Nonnull final ErrorList aTransformationErrorList,
+                                          @Nonnull final Locale aDisplayLocale)
+  {
+    if (aEbiContact.getName () == null)
+      aTransformationErrorList.add (SingleError.builderError ()
+                                               .setErrorFieldName (sPartyType + "/Contact/Name")
+                                               .setErrorText (EText.CONTACT_NO_NAME.getDisplayText (aDisplayLocale))
+                                               .build ());
+  }
+
   @Nullable
   public static Ebi50ContactType convertContact (@Nonnull final PartyType aUBLParty,
                                                  @Nonnull final String sPartyType,
+                                                 @Nullable final String sAddressNameFallback,
                                                  @Nonnull final ErrorList aTransformationErrorList,
                                                  @Nonnull final Locale aDisplayLocale,
                                                  final boolean bValidate)
@@ -171,15 +184,11 @@ public abstract class AbstractToEbInterface50Converter extends AbstractToEbInter
     }
     if (ebContacts.isNotEmpty ())
       aEbiContact.setName (StringHelper.getImplodedNonEmpty ('\n', ebContacts));
+    if (aEbiContact.getName () == null)
+      aEbiContact.setName (sAddressNameFallback);
 
     if (bValidate)
-    {
-      if (aEbiContact.getName () == null)
-        aTransformationErrorList.add (SingleError.builderError ()
-                                                 .setErrorFieldName (sPartyType + "/Contact/Name")
-                                                 .setErrorText (EText.CONTACT_NO_NAME.getDisplayText (aDisplayLocale))
-                                                 .build ());
-    }
+      validateContactData (aEbiContact, sPartyType, aTransformationErrorList, aDisplayLocale);
 
     return aEbiContact;
   }
@@ -352,6 +361,13 @@ public abstract class AbstractToEbInterface50Converter extends AbstractToEbInter
                                   aDisplayLocale,
                                   false);
       aEbiDelivery.setAddress (aEbiAddress);
+
+      aEbiDelivery.setContact (convertContact (aUBLParty,
+                                               "DeliveryParty",
+                                               aEbiAddress.getName (),
+                                               aTransformationErrorList,
+                                               aDisplayLocale,
+                                               true));
     }
 
     // Address present?

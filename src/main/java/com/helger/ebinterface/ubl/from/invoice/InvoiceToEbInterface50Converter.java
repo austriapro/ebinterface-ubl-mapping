@@ -248,6 +248,7 @@ public final class InvoiceToEbInterface50Converter extends AbstractToEbInterface
                                              true));
         aEbiBiller.setContact (convertContact (aUBLSupplier.getParty (),
                                                "AccountingSupplierParty",
+                                               aEbiBiller.getAddress ().getName (),
                                                aTransformationErrorList,
                                                m_aDisplayLocale,
                                                true));
@@ -327,6 +328,7 @@ public final class InvoiceToEbInterface50Converter extends AbstractToEbInterface
                                                 true));
         aEbiRecipient.setContact (convertContact (aUBLCustomer.getParty (),
                                                   "AccountingCustomerParty",
+                                                  aEbiRecipient.getAddress ().getName (),
                                                   aTransformationErrorList,
                                                   m_aDisplayLocale,
                                                   true));
@@ -370,6 +372,7 @@ public final class InvoiceToEbInterface50Converter extends AbstractToEbInterface
                                                     true));
         aEbiOrderingParty.setContact (convertContact (aUBLBuyer.getParty (),
                                                       "BuyerCustomerParty",
+                                                      aEbiOrderingParty.getAddress ().getName (),
                                                       aTransformationErrorList,
                                                       m_aDisplayLocale,
                                                       true));

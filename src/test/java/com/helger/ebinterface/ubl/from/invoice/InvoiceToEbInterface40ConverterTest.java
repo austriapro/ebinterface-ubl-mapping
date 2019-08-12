@@ -58,12 +58,6 @@ public final class InvoiceToEbInterface40ConverterTest
   private static final Logger LOGGER = LoggerFactory.getLogger (InvoiceToEbInterface40ConverterTest.class);
   private static final String TARGET_FOLDER = "generated-ebi40-files/";
 
-  @Before
-  public void onInit ()
-  {
-    FileOperations.createDirRecursiveIfNotExisting (new File (TARGET_FOLDER));
-  }
-
   private static final ICommonsSet <String> IGNORED_FILES = new CommonsHashSet <> ("20120822125754.482.xml",
                                                                                    "delivery-per-item.xml",
                                                                                    "invoice-with-all-elements.xml",
@@ -72,6 +66,12 @@ public final class InvoiceToEbInterface40ConverterTest
                                                                                    "test-at-gov-new-creditorid.xml",
                                                                                    "test-at-gov-reverse-charge.xml",
                                                                                    "test-at-gov.xml");
+
+  @Before
+  public void onInit ()
+  {
+    FileOperations.createDirRecursiveIfNotExisting (new File (TARGET_FOLDER));
+  }
 
   @Test
   public void testConvertPEPPOLInvoiceLax ()
