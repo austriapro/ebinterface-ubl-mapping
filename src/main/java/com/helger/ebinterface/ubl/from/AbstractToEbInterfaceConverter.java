@@ -77,6 +77,7 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
     ADDRESS_INVALID_COUNTRY ("Der angegebene Ländercode ''{0}'' ist ungültig.",
                              "The provided country code ''{0}'' is invalid."),
     ADDRESS_NO_COUNTRY ("In der Adresse fehlt der Name des Landes.", "Address is missing a country."),
+    CONTACT_NO_NAME ("Im Kontakt fehlr der Name.", "Contact is missing a name."),
     MULTIPLE_PARTIES ("Es sind mehrere Partynamen vorhanden - nur der erste wird verwendet.",
                       "Multiple party names present - only the first one is used."),
     PARTY_NO_NAME ("Der Name der Party fehlt.", "Party name is missing."),
