@@ -125,8 +125,7 @@ public abstract class AbstractToEbInterface40Converter extends AbstractToEbInter
           final Ebi40UniversalBankTransactionType aEbiPaymentMethod = new Ebi40UniversalBankTransactionType ();
           // Is a payment channel code present?
           final String sPaymentChannelCode = StringHelper.trim (aUBLPaymentMeans.getPaymentChannelCodeValue ());
-          // null/empty for standard PEPPOL BIS
-          if (StringHelper.hasNoText (sPaymentChannelCode) || PAYMENT_CHANNEL_CODE_IBAN.equals (sPaymentChannelCode))
+          if (isIBAN (sPaymentChannelCode))
           {
             _setPaymentMeansComment (aUBLPaymentMeans, aEbiPaymentMethod);
             final Ebi40UniversalBankTransactionType aEbiUBTMethod = new Ebi40UniversalBankTransactionType ();
@@ -175,7 +174,7 @@ public abstract class AbstractToEbInterface40Converter extends AbstractToEbInter
               {
                 final String sID = StringHelper.trim (aUBLFI.getID ().getValue ());
                 final String sScheme = StringHelper.trim (aUBLFI.getID ().getSchemeID ());
-                final boolean bIsBIC = SCHEME_BIC.equalsIgnoreCase (sScheme) || StringHelper.hasNoText (sScheme);
+                final boolean bIsBIC = isBIC (sScheme);
 
                 if (bIsBIC)
                   aEbiAccount.setBIC (sID);
@@ -207,9 +206,9 @@ public abstract class AbstractToEbInterface40Converter extends AbstractToEbInter
                                                        .setErrorFieldName ("PaymentMeans[" +
                                                                            nPaymentMeansIndex +
                                                                            "]/PayeeFinancialAccount/ID")
-                                                       .setErrorText (EText.IBAN_TOO_LONG.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                                  sIBAN,
-                                                                                                                  Integer.valueOf (IBAN_MAX_LENGTH)))
+                                                       .setErrorText (EText.IBAN_TOO_LONG_STRIPPING.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                            sIBAN,
+                                                                                                                            Integer.valueOf (IBAN_MAX_LENGTH)))
                                                        .build ());
               aEbiAccount.setIBAN (sIBAN.substring (0, IBAN_MAX_LENGTH));
             }
