@@ -1030,7 +1030,7 @@ public final class InvoiceToEbInterface43Converter extends AbstractToEbInterface
     if (aEbiVAT.hasNoVATItemEntries ())
     {
       aTransformationErrorList.add (SingleError.builderError ()
-                                               .setErrorFieldName ("InvoiceLine")
+                                               .setErrorFieldName ("Invoice")
                                                .setErrorText (EText.VAT_ITEM_MISSING.getDisplayText (m_aDisplayLocale))
                                                .build ());
       if (false)

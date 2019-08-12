@@ -1026,7 +1026,7 @@ public final class CreditNoteToEbInterface43Converter extends AbstractToEbInterf
     if (aEbiVAT.hasNoVATItemEntries ())
     {
       aTransformationErrorList.add (SingleError.builderError ()
-                                               .setErrorFieldName ("CreditNoteLine")
+                                               .setErrorFieldName ("CreditNote")
                                                .setErrorText (EText.VAT_ITEM_MISSING.getDisplayText (m_aDisplayLocale))
                                                .build ());
       if (false)
