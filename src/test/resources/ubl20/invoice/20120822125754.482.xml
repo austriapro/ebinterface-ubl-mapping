@@ -187,7 +187,7 @@
     </cac:DeliveryParty>
   </cac:Delivery>
   <cac:PaymentMeans>
-    <cbc:PaymentMeansCode listAgencyID="NES" listID="UN/ECE 4461 Subset">49</cbc:PaymentMeansCode>
+    <cbc:PaymentMeansCode listAgencyID="NES" listID="UN/ECE 4461 Subset">59</cbc:PaymentMeansCode>
     <cbc:PaymentDueDate>2009-12-31</cbc:PaymentDueDate>
     <cbc:PaymentChannelCode>SW</cbc:PaymentChannelCode>
     <cbc:PaymentID>Payref1</cbc:PaymentID>
