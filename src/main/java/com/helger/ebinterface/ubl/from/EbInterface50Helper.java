@@ -16,7 +16,6 @@
  */
 package com.helger.ebinterface.ubl.from;
 
-import java.util.List;
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
@@ -89,14 +88,14 @@ public final class EbInterface50Helper
   }
 
   @Nullable
-  public static Ebi50ContactType convertContact (@Nullable final ContactType aUBLContact,
-                                                 @Nonnull final List <PersonType> aUBLPersons,
+  public static Ebi50ContactType convertContact (@Nonnull final PartyType aUBLParty,
                                                  @Nonnull final String sPartyType,
                                                  @Nonnull final ErrorList aTransformationErrorList,
                                                  @Nonnull final Locale aDisplayLocale,
                                                  final boolean bValidate)
   {
-    if (aUBLContact == null && aUBLPersons.isEmpty ())
+    final ContactType aUBLContact = aUBLParty.getContact ();
+    if (aUBLContact == null && aUBLParty.getPerson ().isEmpty ())
       return null;
 
     final Ebi50ContactType aEbiContact = new Ebi50ContactType ();
@@ -117,7 +116,7 @@ public final class EbInterface50Helper
     if (aUBLContact != null)
       if (StringHelper.hasTextAfterTrim (aUBLContact.getNameValue ()))
         ebContacts.add (StringHelper.trim (aUBLContact.getNameValue ()));
-    for (final PersonType aUBLPerson : aUBLPersons)
+    for (final PersonType aUBLPerson : aUBLParty.getPerson ())
     {
       if (StringHelper.hasNoText (aEbiContact.getSalutation ()))
         aEbiContact.setSalutation (StringHelper.trim (aUBLPerson.getGenderCodeValue ()));
@@ -222,7 +221,7 @@ public final class EbInterface50Helper
           final Ebi50AddressIdentifierType aEbiType = new Ebi50AddressIdentifierType ();
           aEbiType.setAddressIdentifierType (sSchemeIDToSearch);
           aEbiType.setValue (sEndpointID);
-          aEbiAddress.getAddressIdentifier ().add (aEbiType);
+          aEbiAddress.addAddressIdentifier (aEbiType);
         }
 
         if (aEbiAddress.hasNoAddressIdentifierEntries ())
@@ -248,7 +247,7 @@ public final class EbInterface50Helper
           final Ebi50AddressIdentifierType aEbiType = new Ebi50AddressIdentifierType ();
           aEbiType.setAddressIdentifierType (aUBLPartyID.getID ().getSchemeID ());
           aEbiType.setValue (sUBLPartyID);
-          aEbiAddress.getAddressIdentifier ().add (aEbiType);
+          aEbiAddress.addAddressIdentifier (aEbiType);
         }
         if (aEbiAddress.hasNoAddressIdentifierEntries ())
           aTransformationErrorList.add (SingleError.builderWarn ()

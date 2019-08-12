@@ -195,7 +195,7 @@ public final class EbInterface42Helper
             final Ebi42AddressIdentifierType aEbiType = new Ebi42AddressIdentifierType ();
             aEbiType.setAddressIdentifierType (eType);
             aEbiType.setValue (sEndpointID);
-            aEbiAddress.getAddressIdentifier ().add (aEbiType);
+            aEbiAddress.addAddressIdentifier (aEbiType);
           }
 
         if (aEbiAddress.hasNoAddressIdentifierEntries ())
@@ -223,7 +223,7 @@ public final class EbInterface42Helper
             final Ebi42AddressIdentifierType aEbiType = new Ebi42AddressIdentifierType ();
             aEbiType.setAddressIdentifierType (eType);
             aEbiType.setValue (sUBLPartyID);
-            aEbiAddress.getAddressIdentifier ().add (aEbiType);
+            aEbiAddress.addAddressIdentifier (aEbiType);
           }
         if (aEbiAddress.hasNoAddressIdentifierEntries ())
           aTransformationErrorList.add (SingleError.builderWarn ()
