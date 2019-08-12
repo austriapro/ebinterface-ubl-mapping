@@ -40,7 +40,6 @@ import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.StringParser;
 import com.helger.ebinterface.codelist.ETaxCode;
 import com.helger.ebinterface.ubl.from.AbstractToEbInterface41Converter;
-import com.helger.ebinterface.ubl.from.EbInterface41Helper;
 import com.helger.ebinterface.ubl.from.IToEbinterfaceSettings;
 import com.helger.ebinterface.ubl.from.helper.SchemedID;
 import com.helger.ebinterface.ubl.from.helper.TaxCategoryKey;
@@ -140,7 +139,7 @@ public final class InvoiceToEbInterface41Converter extends AbstractToEbInterface
     // have the 2letter code!
 
     final String sUBLCurrencyCode = StringHelper.trim (aUBLDoc.getDocumentCurrencyCodeValue ());
-    aEbiDoc.setInvoiceCurrency (EbInterface41Helper.getCurrencyCode (sUBLCurrencyCode));
+    aEbiDoc.setInvoiceCurrency (getCurrencyCode (sUBLCurrencyCode));
 
     // Invoice Number
     final String sInvoiceNumber = StringHelper.trim (aUBLDoc.getIDValue ());
@@ -242,12 +241,12 @@ public final class InvoiceToEbInterface41Converter extends AbstractToEbInterface
 
       if (aUBLSupplier.getParty () != null)
       {
-        aEbiBiller.setAddress (EbInterface41Helper.convertParty (aUBLSupplier.getParty (),
-                                                                 "AccountingSupplierParty",
-                                                                 aTransformationErrorList,
-                                                                 m_aContentLocale,
-                                                                 m_aDisplayLocale,
-                                                                 true));
+        aEbiBiller.setAddress (convertParty (aUBLSupplier.getParty (),
+                                             "AccountingSupplierParty",
+                                             aTransformationErrorList,
+                                             m_aContentLocale,
+                                             m_aDisplayLocale,
+                                             true));
 
         // Ensure a fake biller email address is present
         if (StringHelper.hasNoText (aEbiBiller.getAddress ().getEmail ()))
@@ -315,12 +314,12 @@ public final class InvoiceToEbInterface41Converter extends AbstractToEbInterface
       }
 
       if (aUBLCustomer.getParty () != null)
-        aEbiRecipient.setAddress (EbInterface41Helper.convertParty (aUBLCustomer.getParty (),
-                                                                    "AccountingCustomerParty",
-                                                                    aTransformationErrorList,
-                                                                    m_aContentLocale,
-                                                                    m_aDisplayLocale,
-                                                                    true));
+        aEbiRecipient.setAddress (convertParty (aUBLCustomer.getParty (),
+                                                "AccountingCustomerParty",
+                                                aTransformationErrorList,
+                                                m_aContentLocale,
+                                                m_aDisplayLocale,
+                                                true));
       if (aEbiRecipient.getAddress () == null)
       {
         // Required by ebInterface
@@ -359,12 +358,12 @@ public final class InvoiceToEbInterface41Converter extends AbstractToEbInterface
       }
 
       if (aUBLBuyer.getParty () != null)
-        aEbiOrderingParty.setAddress (EbInterface41Helper.convertParty (aUBLBuyer.getParty (),
-                                                                        "BuyerCustomerParty",
-                                                                        aTransformationErrorList,
-                                                                        m_aContentLocale,
-                                                                        m_aDisplayLocale,
-                                                                        true));
+        aEbiOrderingParty.setAddress (convertParty (aUBLBuyer.getParty (),
+                                                    "BuyerCustomerParty",
+                                                    aTransformationErrorList,
+                                                    m_aContentLocale,
+                                                    m_aDisplayLocale,
+                                                    true));
       if (aEbiOrderingParty.getAddress () == null)
       {
         // Required by ebInterface
@@ -1002,16 +1001,16 @@ public final class InvoiceToEbInterface41Converter extends AbstractToEbInterface
 
           if (aUBLDelivery.getActualDeliveryDate () != null)
           {
-            final Ebi41DeliveryType aEbiDelivery = EbInterface41Helper.convertDelivery (aUBLDelivery,
-                                                                                        "InvoiceLine[" +
-                                                                                                      nLineIndex +
-                                                                                                      "]/Delivery[" +
-                                                                                                      nDeliveryIndex +
-                                                                                                      "]",
-                                                                                        aUBLDoc.getAccountingCustomerParty (),
-                                                                                        aTransformationErrorList,
-                                                                                        m_aContentLocale,
-                                                                                        m_aDisplayLocale);
+            final Ebi41DeliveryType aEbiDelivery = convertDelivery (aUBLDelivery,
+                                                                    "InvoiceLine[" +
+                                                                                  nLineIndex +
+                                                                                  "]/Delivery[" +
+                                                                                  nDeliveryIndex +
+                                                                                  "]",
+                                                                    aUBLDoc.getAccountingCustomerParty (),
+                                                                    aTransformationErrorList,
+                                                                    m_aContentLocale,
+                                                                    m_aDisplayLocale);
             aEbiListLineItem.setDelivery (aEbiDelivery);
           }
         }
@@ -1170,12 +1169,12 @@ public final class InvoiceToEbInterface41Converter extends AbstractToEbInterface
         // Use the first delivery with a delivery date
         if (aUBLDelivery.getActualDeliveryDate () != null)
         {
-          aEbiDelivery = EbInterface41Helper.convertDelivery (aUBLDelivery,
-                                                              "Delivery[" + nDeliveryIndex + "]",
-                                                              aUBLDoc.getAccountingCustomerParty (),
-                                                              aTransformationErrorList,
-                                                              m_aContentLocale,
-                                                              m_aDisplayLocale);
+          aEbiDelivery = convertDelivery (aUBLDelivery,
+                                          "Delivery[" + nDeliveryIndex + "]",
+                                          aUBLDoc.getAccountingCustomerParty (),
+                                          aTransformationErrorList,
+                                          m_aContentLocale,
+                                          m_aDisplayLocale);
           break;
         }
         ++nDeliveryIndex;

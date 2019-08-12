@@ -25,7 +25,7 @@
     <version>1.10.9</version>
   </parent>
   <artifactId>ebinterface-ubl-mapping</artifactId>
-  <version>3.0.9-SNAPSHOT</version>
+  <version>4.0.0-SNAPSHOT</version>
   <packaging>bundle</packaging>
   <name>ebinterface-ubl-mapping</name>
   <inceptionYear>2010</inceptionYear>
