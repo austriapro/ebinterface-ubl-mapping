@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eb:Invoice xmlns:eb="http://www.ebinterface.at/schema/4p1/"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://www.ebinterface.at/schema/4p1/ http://www.ebinterface.at/schema/4p1/Invoice.xsd"
+            eb:GeneratingSystem="DAM-EDV Software - Schulung - Organisation  Seering 5  8141 Unterpremstaetten"
+            eb:DocumentType="Invoice"
+            eb:InvoiceCurrency="EUR"
+            eb:Language="ger">
+  <eb:InvoiceNumber>5027</eb:InvoiceNumber>
+  <eb:InvoiceDate>2015-02-01</eb:InvoiceDate>
+  <eb:Delivery>
+     <eb:Date>2015-02-01</eb:Date>
+     <eb:Address>
+        <eb:Salutation>Firma</eb:Salutation>
+        <eb:Name>DAM-EDV Ges.m.b.H.</eb:Name>
+        <eb:Street>Seering 5</eb:Street>
+        <eb:Town>Unterpremstaetten</eb:Town>
+        <eb:ZIP>8141</eb:ZIP>
+        <eb:Country eb:CountryCode="AT">OEsterreich</eb:Country>
+        <eb:Contact>Werner Dam</eb:Contact>
+     </eb:Address>
+  </eb:Delivery>
+  <eb:Biller>
+    <eb:VATIdentificationNumber>ATU28798307</eb:VATIdentificationNumber>
+   <eb:Address>
+      <eb:Salutation>Firma</eb:Salutation>
+      <eb:Name>DAM-EDV Ges.m.b.H.</eb:Name>
+      <eb:Street>Seering 5</eb:Street>
+      <eb:Town>Unterpremstaetten</eb:Town>
+      <eb:ZIP>8141</eb:ZIP>
+      <eb:Country eb:CountryCode="AT">OEsterreich</eb:Country>
+      <eb:Email>info@damedv.at</eb:Email>
+      <eb:Contact>Werner Dam</eb:Contact>
+      <eb:AddressExtension>Software - Schulung - Organisation</eb:AddressExtension>
+   </eb:Address>
+   <eb:InvoiceRecipientsBillerID>11019428</eb:InvoiceRecipientsBillerID>
+  </eb:Biller>
+  <eb:InvoiceRecipient>
+    <eb:VATIdentificationNumber>ATU38092504</eb:VATIdentificationNumber>
+    <eb:OrderReference>
+      <eb:OrderID>N48</eb:OrderID>
+      <eb:ReferenceDate>2014-01-01</eb:ReferenceDate>
+      <eb:Description>Softwarebetreuungsabkommen</eb:Description>
+    </eb:OrderReference>
+    <eb:Address>
+      <eb:Salutation></eb:Salutation>
+      <eb:Name>HLFS fuer Forstwirtschaft Bruck/Mur</eb:Name>
+      <eb:Street>Dr. Theodor Koerner Str. 44</eb:Street>
+      <eb:Town>Bruck/Mur</eb:Town>
+      <eb:ZIP>8600</eb:ZIP>
+      <eb:Country eb:CountryCode="AT">OEsterreich</eb:Country>
+      <eb:Phone>0664 8109902</eb:Phone>
+      <eb:Email>klemens.pretterhofer@forstschule.at</eb:Email>
+      <eb:Contact>Herr Pretterhofer</eb:Contact>
+      <eb:AddressExtension></eb:AddressExtension>
+    </eb:Address>
+  </eb:InvoiceRecipient>
+   <eb:Details>
+      <eb:HeaderDescription>Faktura ueber nachstehende Lieferungen</eb:HeaderDescription>
+      <eb:ItemList>
+        <eb:HeaderDescription>Softwarebetreuungsabkommen fuer die Programme Finanzbuchhaltung, Kostenrechnung, Personal-verrechnung und Rundholzprogramm gueltig vom Februar 2015 bis Jaenner 2016.</eb:HeaderDescription>
+      <eb:ListLineItem>
+        <eb:Description>Pauschale</eb:Description>
+        <eb:ArticleNumber eb:ArticleNumberType="BillersArticleNumber">2</eb:ArticleNumber>
+        <eb:Quantity eb:Unit="Pauschale">1.000</eb:Quantity>
+        <eb:UnitPrice>637.19</eb:UnitPrice>
+        <eb:VATRate>20.00</eb:VATRate>
+        <eb:DiscountFlag>0</eb:DiscountFlag>
+        <eb:Delivery>
+           <eb:Date>2015-02-01</eb:Date>
+        </eb:Delivery>
+        <eb:LineItemAmount>637.19</eb:LineItemAmount>
+      </eb:ListLineItem>
+      </eb:ItemList>
+      <eb:ItemList>
+        <eb:HeaderDescription>plus 1,04 %  Indexerhoehung von 1.2.2014 - 1.2.2015 Index alt: 181,90 12/2013Index neu: 183,80 12/2014 Indextabelle 1986</eb:HeaderDescription>
+      <eb:ListLineItem>
+        <eb:Description>Pauschale</eb:Description>
+        <eb:ArticleNumber eb:ArticleNumberType="BillersArticleNumber">2</eb:ArticleNumber>
+        <eb:Quantity eb:Unit="Pauschale">1.000</eb:Quantity>
+        <eb:UnitPrice>6.63</eb:UnitPrice>
+        <eb:VATRate>20.00</eb:VATRate>
+        <eb:DiscountFlag>0</eb:DiscountFlag>
+        <eb:Delivery>
+           <eb:Date>2015-02-01</eb:Date>
+        </eb:Delivery>
+        <eb:LineItemAmount>6.63</eb:LineItemAmount>
+      </eb:ListLineItem>
+      </eb:ItemList>
+   </eb:Details>
+   <eb:Tax>
+       <eb:VAT>
+           <eb:VATItem>
+           <eb:TaxedAmount>643.82</eb:TaxedAmount>
+           <eb:VATRate>20</eb:VATRate>
+           <eb:Amount>128.76</eb:Amount>
+           </eb:VATItem>
+       </eb:VAT>
+   </eb:Tax>
+   <eb:TotalGrossAmount>772.58</eb:TotalGrossAmount>
+   <eb:PayableAmount>772.58</eb:PayableAmount>
+   <eb:PaymentMethod>
+     <eb:Comment>Zahlbar netto Kassa nach Rechnungserhalt.</eb:Comment>
+     <eb:UniversalBankTransaction>
+       <eb:BeneficiaryAccount>
+         <eb:BIC>RZSTAT2G477</eb:BIC>
+         <eb:IBAN>AT843847700000007120</eb:IBAN>
+         <eb:BankAccountOwner>DAM-EDV Ges.m.b.H.</eb:BankAccountOwner>
+       </eb:BeneficiaryAccount>
+     </eb:UniversalBankTransaction>
+   </eb:PaymentMethod>
+   <eb:PaymentConditions>
+    <eb:DueDate>2015-02-08</eb:DueDate>
+  </eb:PaymentConditions>
+  <eb:Comment></eb:Comment>
+</eb:Invoice>

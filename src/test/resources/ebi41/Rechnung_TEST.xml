@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eb:Invoice xmlns:eb="http://www.ebinterface.at/schema/4p1/" xmlns:sv="http://www.ebinterface.at/schema/4p1/extensions/sv" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ext="http://www.ebinterface.at/schema/4p1/extensions/ext" eb:GeneratingSystem="EDICOM Generating System" eb:DocumentType="Invoice" eb:InvoiceCurrency="EUR" eb:ManualProcessing="true" eb:DocumentTitle="Eine Rechnung" eb:Language="ger" eb:IsDuplicate="false">
+    <eb:InvoiceNumber>Rechnung TEST</eb:InvoiceNumber>
+    <eb:InvoiceDate>2015-11-26</eb:InvoiceDate>
+    <eb:Biller>
+        <eb:VATIdentificationNumber>VATIdentificationNumber Biller</eb:VATIdentificationNumber>
+        <eb:Address>
+            <eb:Name>Name Biller</eb:Name>
+            <eb:Street>Street Biller</eb:Street>
+            <eb:POBox>PO Box Biller</eb:POBox>
+            <eb:Town>Town Biller</eb:Town>
+            <eb:ZIP>Zip Biller</eb:ZIP>
+            <eb:Country eb:CountryCode="ES">Spanien</eb:Country>
+        </eb:Address>
+    </eb:Biller>
+    <eb:InvoiceRecipient>
+        <eb:VATIdentificationNumber>VATIdentificationNumber Invoice Recipient</eb:VATIdentificationNumber>
+        <eb:Address>
+            <eb:Name>Name Invoice Recipient</eb:Name>
+            <eb:Street>Street Invoice Recipient</eb:Street>
+            <eb:POBox>PO Box Invoice Recipient</eb:POBox>
+            <eb:Town>Town Invoice Recipient</eb:Town>
+            <eb:ZIP>Zip Invoice Recipient</eb:ZIP>
+            <eb:Country eb:CountryCode="ES">Spanien</eb:Country>
+        </eb:Address>
+    </eb:InvoiceRecipient>
+    <eb:OrderingParty>
+        <eb:VATIdentificationNumber>VATIdentificationNumber Ordering Party</eb:VATIdentificationNumber>
+        <eb:Address>
+            <eb:Name>Name Ordering Party</eb:Name>
+            <eb:Street>Street Ordering Party</eb:Street>
+            <eb:POBox>PO Box Ordering Party</eb:POBox>
+            <eb:Town>Town Ordering Party</eb:Town>
+            <eb:ZIP>Zip Ordering Party</eb:ZIP>
+            <eb:Country eb:CountryCode="ES">Spanien</eb:Country>
+        </eb:Address>
+        <eb:BillersOrderingPartyID>BillersOrderingPartyID</eb:BillersOrderingPartyID>
+    </eb:OrderingParty>
+    <eb:Details>
+        <eb:ItemList>
+            <eb:ListLineItem>
+                <eb:Description>ITEM Description</eb:Description>
+                <eb:Quantity eb:Unit="Unit">1</eb:Quantity>
+                <eb:UnitPrice eb:BaseQuantity="1">1000</eb:UnitPrice>
+                <eb:VATRate>10</eb:VATRate>
+                <eb:DiscountFlag>false</eb:DiscountFlag>
+                <eb:LineItemAmount>1000</eb:LineItemAmount>
+                <ext:ListLineItemExtension>
+                    <sv:ListLineItemExtension>
+                        <sv:BeneficiarySocialInsuranceNumber>0000000000</sv:BeneficiarySocialInsuranceNumber>
+                    </sv:ListLineItemExtension>
+                </ext:ListLineItemExtension>
+            </eb:ListLineItem>
+        </eb:ItemList>
+    </eb:Details>
+    <eb:Tax>
+        <eb:VAT>
+            <eb:VATItem>
+                <eb:TaxedAmount>1000</eb:TaxedAmount>
+                <eb:VATRate>10</eb:VATRate>
+                <eb:Amount>100</eb:Amount>
+            </eb:VATItem>
+        </eb:VAT>
+    </eb:Tax>
+    <eb:TotalGrossAmount>1100</eb:TotalGrossAmount>
+    <eb:PayableAmount>1100</eb:PayableAmount>
+    <eb:PaymentMethod>
+        <eb:UniversalBankTransaction>
+            <eb:BeneficiaryAccount>
+                <eb:BankName> false</eb:BankName>
+            </eb:BeneficiaryAccount>
+        </eb:UniversalBankTransaction>
+    </eb:PaymentMethod>
+    <eb:PresentationDetails>
+        <eb:LogoURL>http://www.edicomonline.com/en/index.htm</eb:LogoURL>
+    </eb:PresentationDetails>
+    <eb:Comment>false</eb:Comment>
+</eb:Invoice>

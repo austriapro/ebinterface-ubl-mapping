@@ -123,7 +123,8 @@ public abstract class AbstractEbInterface42ToUBLConverter extends AbstractConver
       final Ebi42AddressIdentifierType aEbiType = aEbiAddress.getAddressIdentifierAtIndex (0);
       final IDType aUBLID = new IDType ();
       aUBLID.setValue (aEbiType.getValue ());
-      aUBLID.setSchemeID (aEbiType.getAddressIdentifierType ().value ());
+      if (aEbiType.getAddressIdentifierType () != null)
+        aUBLID.setSchemeID (aEbiType.getAddressIdentifierType ().value ());
       ret.setID (aUBLID);
     }
 

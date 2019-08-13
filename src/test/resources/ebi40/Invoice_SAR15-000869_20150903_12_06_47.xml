@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<eb:Invoice xmlns:eb="http://www.ebinterface.at/schema/4p0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" eb:GeneratingSystem="ERP System MS Dynamics NAV" eb:DocumentType="Invoice" eb:InvoiceCurrency="EUR" eb:Language="ger">
+  <eb:InvoiceNumber>SAR15-000869</eb:InvoiceNumber>
+  <eb:InvoiceDate>2015-09-03</eb:InvoiceDate>
+  <eb:Delivery>
+    <eb:DeliveryID>SLS15-000868</eb:DeliveryID>
+    <eb:Date>2015-09-03</eb:Date>
+    <eb:Address>
+      <eb:Name>Forsttechnischer Dienst Wildbach und Lawinen Verbauung</eb:Name>
+      <eb:Street>Neunkirchnerstraße 125 </eb:Street>
+      <eb:Town>Wiener Neustadt</eb:Town>
+      <eb:ZIP>2700</eb:ZIP>
+      <eb:Country eb:CountryCode="AT">Österreich</eb:Country>
+      <eb:Contact>Herr Heißenberger</eb:Contact>
+    </eb:Address>
+  </eb:Delivery>
+  <eb:Biller>
+    <eb:VATIdentificationNumber>ATU 49723009</eb:VATIdentificationNumber>
+    <eb:FurtherIdentification eb:IdentificationType="GZ">27090102168</eb:FurtherIdentification>
+    <eb:ConsolidatorsBillerID>127652</eb:ConsolidatorsBillerID>
+    <eb:InvoiceRecipientsBillerID>11004400</eb:InvoiceRecipientsBillerID>
+    <eb:Address>
+      <eb:Salutation>Firma</eb:Salutation>
+      <eb:Name>Kögl GmbH</eb:Name>
+      <eb:Street>Marktstraße </eb:Street>
+      <eb:Town>Eisenstadt</eb:Town>
+      <eb:ZIP>7000</eb:ZIP>
+      <eb:Country eb:CountryCode="AT">Österreich</eb:Country>
+      <eb:Phone>+43 590104600</eb:Phone>
+      <eb:Email>nadine.kopfensteiner@koegl.at</eb:Email>
+    </eb:Address>
+  </eb:Biller>
+  <eb:InvoiceRecipient>
+    <eb:VATIdentificationNumber />
+    <eb:BillersInvoiceRecipientID>11004400</eb:BillersInvoiceRecipientID>
+    <eb:OrderReference>
+      <eb:OrderID>N70:PRÜFUNG VOM 20.08.2014</eb:OrderID>
+      <eb:ReferenceDate>2015-09-03</eb:ReferenceDate>
+    </eb:OrderReference>
+    <eb:Address>
+      <eb:Name>Forsttechnischer Dienst Wildbach und Lawinen Verbauung</eb:Name>
+      <eb:Street>Neunkirchnerstraße 125 </eb:Street>
+      <eb:Town>Wiener Neustadt</eb:Town>
+      <eb:ZIP>2700</eb:ZIP>
+      <eb:Country eb:CountryCode="AT">Österreich</eb:Country>
+      <eb:Contact>Frau Lang</eb:Contact>
+    </eb:Address>
+  </eb:InvoiceRecipient>
+  <eb:Details>
+    <eb:ItemList>
+      <eb:ListLineItem>
+        <eb:Description>Laufkatze </eb:Description>
+        <eb:ArticleNumber eb:ArticleNumberType="BillersArticleNumber">231</eb:ArticleNumber>
+        <eb:Quantity eb:Unit="Wiederk. P">1.00</eb:Quantity>
+        <eb:UnitPrice>108.00</eb:UnitPrice>
+        <eb:TaxRate>20.00</eb:TaxRate>
+        <eb:DiscountFlag>1</eb:DiscountFlag>
+        <eb:InvoiceRecipientsOrderReference>
+          <eb:OrderID>N70:PRÜFUNG VOM 20.08.2014</eb:OrderID>
+          <eb:OrderPositionNumber>1</eb:OrderPositionNumber>
+        </eb:InvoiceRecipientsOrderReference>
+        <eb:LineItemAmount>108.00</eb:LineItemAmount>
+      </eb:ListLineItem>
+      <eb:ListLineItem>
+        <eb:Description>Schiebetor </eb:Description>
+        <eb:ArticleNumber eb:ArticleNumberType="BillersArticleNumber">14</eb:ArticleNumber>
+        <eb:Quantity eb:Unit="Wiederk. P">1.00</eb:Quantity>
+        <eb:UnitPrice>108.00</eb:UnitPrice>
+        <eb:TaxRate>20.00</eb:TaxRate>
+        <eb:DiscountFlag>1</eb:DiscountFlag>
+        <eb:InvoiceRecipientsOrderReference>
+          <eb:OrderID>N70:PRÜFUNG VOM 20.08.2014</eb:OrderID>
+          <eb:OrderPositionNumber>2</eb:OrderPositionNumber>
+        </eb:InvoiceRecipientsOrderReference>
+        <eb:LineItemAmount>108.00</eb:LineItemAmount>
+      </eb:ListLineItem>
+    </eb:ItemList>
+  </eb:Details>
+  <eb:Tax>
+    <eb:VAT>
+      <eb:Item>
+        <eb:TaxedAmount>216.00</eb:TaxedAmount>
+        <eb:TaxRate>20.00</eb:TaxRate>
+        <eb:Amount>43.20</eb:Amount>
+      </eb:Item>
+    </eb:VAT>
+  </eb:Tax>
+  <eb:TotalGrossAmount>259.20</eb:TotalGrossAmount>
+  <eb:PaymentMethod xsi:type="eb:UniversalBankTransactionType">
+    <eb:Comment>Banküberweisung</eb:Comment>
+    <eb:BeneficiaryAccount>
+      <eb:BankName>Raiffeisenlandesbank Burgenland</eb:BankName>
+      <eb:BankCode eb:BankCodeType="AT">33000</eb:BankCode>
+      <eb:BIC>RLBBAT2E</eb:BIC>
+      <eb:BankAccountNr>1221100</eb:BankAccountNr>
+      <eb:IBAN>AT523300000001221100</eb:IBAN>
+      <eb:BankAccountOwner>Kögl GmbH</eb:BankAccountOwner>
+    </eb:BeneficiaryAccount>
+  </eb:PaymentMethod>
+  <eb:PaymentConditions>
+    <eb:DueDate>2015-09-17</eb:DueDate>
+  </eb:PaymentConditions>
+</eb:Invoice>

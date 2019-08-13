@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eb:Invoice xmlns:eb="http://www.ebinterface.at/schema/4p1/"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://www.ebinterface.at/schema/4p1/ http://www.ebinterface.at/schema/4p1/Invoice.xsd"
+            eb:GeneratingSystem="DAM-EDV Software - Schulung - Organisation  Seering 5  8141 Unterpremstaetten"
+            eb:DocumentType="Invoice"
+            eb:InvoiceCurrency="EUR"
+            eb:Language="ger">
+  <eb:InvoiceNumber>10055</eb:InvoiceNumber>
+  <eb:InvoiceDate>2014-01-28</eb:InvoiceDate>
+   <eb:Delivery>
+     <eb:Date>2015-02-01</eb:Date>
+     <eb:Address>
+        <eb:Salutation>Firma</eb:Salutation>
+        <eb:Name>DAM-EDV Ges.m.b.H.</eb:Name>
+        <eb:Street>Seering 5</eb:Street>
+        <eb:Town>Unterpremstaetten</eb:Town>
+        <eb:ZIP>8141</eb:ZIP>
+        <eb:Country eb:CountryCode="AT">OEsterreich</eb:Country>
+        <eb:Contact>Werner Dam</eb:Contact>
+     </eb:Address>
+  </eb:Delivery>
+  <eb:Biller>
+    <eb:VATIdentificationNumber>ATU28798307</eb:VATIdentificationNumber>
+   <eb:Address>
+      <eb:Salutation>Firma</eb:Salutation>
+      <eb:Name>DAM-EDV Ges.m.b.H.</eb:Name>
+      <eb:Street>Seering 5</eb:Street>
+      <eb:Town>Unterpremstaetten</eb:Town>
+      <eb:ZIP>8141</eb:ZIP>
+      <eb:Country eb:CountryCode="AT">OEsterreich</eb:Country>
+      <eb:Email>info@damedv.at</eb:Email>
+      <eb:Contact>Werner Dam</eb:Contact>
+      <eb:AddressExtension>Software - Schulung - Organisation</eb:AddressExtension>
+   </eb:Address>
+   <eb:InvoiceRecipientsBillerID>11019428</eb:InvoiceRecipientsBillerID>
+  </eb:Biller>
+  <eb:InvoiceRecipient>
+    <eb:VATIdentificationNumber>ATU39122007</eb:VATIdentificationNumber>
+    <eb:OrderReference>
+      <eb:OrderID>N73</eb:OrderID>
+      <eb:ReferenceDate>2014-01-01</eb:ReferenceDate>
+      <eb:Description>Materiallieferung</eb:Description>
+    </eb:OrderReference>
+    <eb:Address>
+      <eb:Salutation></eb:Salutation>
+      <eb:Name>Wildbach- und Lawinenverbauung</eb:Name>
+      <eb:Street>Conrad v. Hoetzendorf-Strasse 127</eb:Street>
+      <eb:Town>Graz</eb:Town>
+      <eb:ZIP>8010</eb:ZIP>
+      <eb:Country eb:CountryCode="AT">OEsterreich</eb:Country>
+      <eb:Phone>+43316425817-0</eb:Phone>
+      <eb:Email>sektion.steiermark@die-wildbach.at</eb:Email>
+      <eb:Contact>HR DI Gerhard Baumann</eb:Contact>
+      <eb:AddressExtension>Gebietsbauleitung Ost- u. Weststeiermark</eb:AddressExtension>
+    </eb:Address>
+  </eb:InvoiceRecipient>
+   <eb:Details>
+      <eb:HeaderDescription>Faktura ueber nachstehende Lieferungen im: Jaenner 2014 fuer Baustelle: Gaisfeld</eb:HeaderDescription>
+      <eb:ItemList>
+      <eb:ListLineItem>
+        <eb:Description>C25/30 B2 GK22 F45 CEM II 42,5N</eb:Description>
+        <eb:ArticleNumber eb:ArticleNumberType="BillersArticleNumber">3052000000</eb:ArticleNumber>
+        <eb:Quantity eb:Unit="M3">6.500</eb:Quantity>
+        <eb:UnitPrice>67.2</eb:UnitPrice>
+        <eb:VATRate>20.00</eb:VATRate>
+        <eb:DiscountFlag>1</eb:DiscountFlag>
+        <eb:Delivery>
+           <eb:Date>2014-01-15</eb:Date>
+        </eb:Delivery>
+        <eb:LineItemAmount>436.8</eb:LineItemAmount>
+      </eb:ListLineItem>
+      </eb:ItemList>
+      <eb:ItemList>
+      <eb:ListLineItem>
+        <eb:Description>Wintererschwerniszuschlag</eb:Description>
+        <eb:ArticleNumber eb:ArticleNumberType="BillersArticleNumber">340</eb:ArticleNumber>
+        <eb:Quantity eb:Unit="M3">6.500</eb:Quantity>
+        <eb:UnitPrice>6.5</eb:UnitPrice>
+        <eb:VATRate>20.00</eb:VATRate>
+        <eb:DiscountFlag>1</eb:DiscountFlag>
+        <eb:Delivery>
+           <eb:Date>2014-01-15</eb:Date>
+        </eb:Delivery>
+        <eb:LineItemAmount>42.25</eb:LineItemAmount>
+      </eb:ListLineItem>
+      </eb:ItemList>
+   </eb:Details>
+   <eb:Tax>
+       <eb:VAT>
+           <eb:VATItem>
+           <eb:TaxedAmount>479.05</eb:TaxedAmount>
+           <eb:VATRate>20</eb:VATRate>
+           <eb:Amount>95.81</eb:Amount>
+           </eb:VATItem>
+       </eb:VAT>
+   </eb:Tax>
+   <eb:TotalGrossAmount>574.86</eb:TotalGrossAmount>
+   <eb:PayableAmount>574.86</eb:PayableAmount>
+   <eb:PaymentMethod>
+     <eb:Comment>Zahlbar bis 18/02/2014 mit  3,00% Skonto von mit % gekenn- zeichneten Betraegen = EUR          17,25    inclusive Ust oder bis 27/02/2014 NETTO KASSA.  Bei Zahlungsverzug werden 12 % Verzugszinsen verrechnet.</eb:Comment>
+     <eb:UniversalBankTransaction>
+       <eb:BeneficiaryAccount>
+         <eb:BIC>STSPAT2GXXX</eb:BIC>
+         <eb:IBAN>AT032081510701901539</eb:IBAN>
+         <eb:BankAccountOwner> K. Schwarzl Betriebsges.m.b.H.</eb:BankAccountOwner>
+       </eb:BeneficiaryAccount>
+     </eb:UniversalBankTransaction>
+   </eb:PaymentMethod>
+   <eb:PaymentConditions>
+    <eb:DueDate>2014-02-27</eb:DueDate>
+    <eb:Discount>
+      <eb:PaymentDate>2014-02-18</eb:PaymentDate>
+      <eb:BaseAmount>574.86</eb:BaseAmount>
+      <eb:Percentage>3</eb:Percentage>
+      <eb:Amount>17.25</eb:Amount>
+    </eb:Discount>
+  </eb:PaymentConditions>
+  <eb:Comment></eb:Comment>
+</eb:Invoice>

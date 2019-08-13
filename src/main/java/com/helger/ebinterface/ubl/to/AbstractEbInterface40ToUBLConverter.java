@@ -28,10 +28,10 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.commons.string.StringHelper;
 import com.helger.ebinterface.ubl.AbstractConverter;
-import com.helger.ebinterface.v41.Ebi41AddressIdentifierType;
-import com.helger.ebinterface.v41.Ebi41AddressType;
-import com.helger.ebinterface.v41.Ebi41DeliveryType;
-import com.helger.ebinterface.v41.Ebi41DocumentTypeType;
+import com.helger.ebinterface.v40.Ebi40AddressIdentifierType;
+import com.helger.ebinterface.v40.Ebi40AddressType;
+import com.helger.ebinterface.v40.Ebi40DeliveryType;
+import com.helger.ebinterface.v40.Ebi40DocumentTypeType;
 import com.helger.xsds.ccts.cct.schemamodule.CodeType;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AddressType;
@@ -53,9 +53,9 @@ import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
  * @author philip
  */
 @Immutable
-public abstract class AbstractEbInterface41ToUBLConverter extends AbstractConverter
+public abstract class AbstractEbInterface40ToUBLConverter extends AbstractConverter
 {
-  private static final Logger LOGGER = LoggerFactory.getLogger (AbstractEbInterface41ToUBLConverter.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (AbstractEbInterface40ToUBLConverter.class);
 
   /**
    * Constructor
@@ -66,14 +66,14 @@ public abstract class AbstractEbInterface41ToUBLConverter extends AbstractConver
    *        The locale for the created ebInterface files. May not be
    *        <code>null</code>.
    */
-  public AbstractEbInterface41ToUBLConverter (@Nonnull final Locale aDisplayLocale,
+  public AbstractEbInterface40ToUBLConverter (@Nonnull final Locale aDisplayLocale,
                                               @Nonnull final Locale aContentLocale)
   {
     super (aDisplayLocale, aContentLocale);
   }
 
   @Nullable
-  protected static <T extends CodeType> T getTypeCode (@Nullable final Ebi41DocumentTypeType eType,
+  protected static <T extends CodeType> T getTypeCode (@Nullable final Ebi40DocumentTypeType eType,
                                                        @Nonnull final Supplier <T> aFactory)
   {
     String sID = null;
@@ -111,18 +111,18 @@ public abstract class AbstractEbInterface41ToUBLConverter extends AbstractConver
   }
 
   @Nullable
-  protected static AddressType convertAddress (@Nullable final Ebi41AddressType aEbiAddress)
+  protected static AddressType convertAddress (@Nullable final Ebi40AddressType aEbiAddress)
   {
     if (aEbiAddress == null)
       return null;
 
     final AddressType ret = new AddressType ();
-    if (aEbiAddress.getAddressIdentifierCount () > 0)
+    if (aEbiAddress.getAddressIdentifier () != null)
     {
       // Only one ID allowed
-      final Ebi41AddressIdentifierType aEbiType = aEbiAddress.getAddressIdentifierAtIndex (0);
+      final Ebi40AddressIdentifierType aEbiType = aEbiAddress.getAddressIdentifier ();
       final IDType aUBLID = new IDType ();
-      aUBLID.setValue (aEbiType.getValue ());
+      aUBLID.setValue (aEbiType.getContent ());
       if (aEbiType.getAddressIdentifierType () != null)
         aUBLID.setSchemeID (aEbiType.getAddressIdentifierType ().value ());
       ret.setID (aUBLID);
@@ -150,7 +150,7 @@ public abstract class AbstractEbInterface41ToUBLConverter extends AbstractConver
   }
 
   @Nullable
-  protected static PartyType convertParty (@Nullable final Ebi41AddressType aEbiAddress)
+  protected static PartyType convertParty (@Nullable final Ebi40AddressType aEbiAddress)
   {
     if (aEbiAddress == null)
       return null;
@@ -196,7 +196,7 @@ public abstract class AbstractEbInterface41ToUBLConverter extends AbstractConver
   }
 
   @Nullable
-  protected static DeliveryType convertDelivery (@Nullable final Ebi41DeliveryType aEbiDelivery)
+  protected static DeliveryType convertDelivery (@Nullable final Ebi40DeliveryType aEbiDelivery)
   {
     if (aEbiDelivery == null)
       return null;
