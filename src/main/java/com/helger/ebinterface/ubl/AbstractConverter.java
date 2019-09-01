@@ -39,6 +39,7 @@ public abstract class AbstractConverter
   public static final String SCHEME_IBAN = "IBAN";
   public static final int IBAN_MAX_LENGTH = 34;
   public static final String PAYMENT_CHANNEL_CODE_IBAN = "IBAN";
+  public static final String UOM_DEFAULT = "C62";
   public static final String SUPPORTED_TAX_SCHEME_SCHEME_ID = "UN/ECE 5153";
   public static final ETaxSchemeID SUPPORTED_TAX_SCHEME_ID = ETaxSchemeID.VALUE_ADDED_TAX;
   public static final String EBI_GENERATING_SYSTEM_40 = "UBL 2.1 to ebInterface 4.0 converter";

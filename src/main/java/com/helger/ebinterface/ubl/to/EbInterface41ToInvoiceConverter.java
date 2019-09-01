@@ -456,7 +456,7 @@ public class EbInterface41ToInvoiceConverter extends AbstractEbInterface41ToUBLC
 
         String sUOM = StringHelper.trim (aEbiItem.getQuantity ().getUnit ());
         if (sUOM == null)
-          sUOM = "C62";
+          sUOM = UOM_DEFAULT;
 
         aUBLLine.setInvoicedQuantity (aEbiItem.getQuantity ().getValue ()).setUnitCode (sUOM);
         aUBLLine.setLineExtensionAmount (aEbiItem.getLineItemAmount ()).setCurrencyID (sCurrency);
@@ -669,7 +669,7 @@ public class EbInterface41ToInvoiceConverter extends AbstractEbInterface41ToUBLC
         final InvoiceLineType aUBLLine = new InvoiceLineType ();
         aUBLLine.setID ("BTL" + nBelowTheLineIndex);
         aUBLLine.addNote (new NoteType ("BelowTheLineItem"));
-        aUBLLine.setInvoicedQuantity (BigDecimal.ONE).setUnitCode ("C62");
+        aUBLLine.setInvoicedQuantity (BigDecimal.ONE).setUnitCode (UOM_DEFAULT);
         aUBLLine.setLineExtensionAmount (aEbiItem.getLineItemAmount ()).setCurrencyID (sCurrency);
 
         final PriceType aUBLPrice = new PriceType ();

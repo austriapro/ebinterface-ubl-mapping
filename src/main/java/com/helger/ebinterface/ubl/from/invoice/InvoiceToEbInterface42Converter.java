@@ -806,7 +806,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractToEbInterface
         if (aEbiQuantity.getUnit () == null)
         {
           // ebInterface requires a quantity!
-          aEbiQuantity.setUnit ("C62");
+          aEbiQuantity.setUnit (UOM_DEFAULT);
           aTransformationErrorList.add (SingleError.builderWarn ()
                                                    .setErrorFieldName ("InvoiceLine[" +
                                                                        nLineIndex +

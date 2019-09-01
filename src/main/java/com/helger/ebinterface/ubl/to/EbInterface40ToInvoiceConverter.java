@@ -381,7 +381,7 @@ public class EbInterface40ToInvoiceConverter extends AbstractEbInterface40ToUBLC
 
         String sUOM = StringHelper.trim (aEbiItem.getQuantity ().getUnit ());
         if (sUOM == null)
-          sUOM = "C62";
+          sUOM = UOM_DEFAULT;
 
         aUBLLine.setInvoicedQuantity (aEbiItem.getQuantity ().getValue ()).setUnitCode (sUOM);
         aUBLLine.setLineExtensionAmount (aEbiItem.getLineItemAmount ()).setCurrencyID (sCurrency);
