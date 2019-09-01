@@ -25,6 +25,18 @@ import com.helger.commons.annotation.Nonempty;
 
 public interface IToEbinterfaceSettings extends Serializable
 {
+  /**
+   * @return <code>true</code> if the element "UBLVersionID" is mandatory,
+   *         <code>false</code> if not.
+   */
+  boolean isUBLVersionIDMandatory ();
+
+  /**
+   * @return <code>true</code> if the element "ProfileID" is mandatory,
+   *         <code>false</code> if not.
+   */
+  boolean isUBLProfileIDMandatory ();
+
   boolean isOrderReferenceIDMandatory ();
 
   @CheckForSigned

@@ -24,6 +24,14 @@ import com.helger.commons.annotation.Nonempty;
 public class ToEbinterfaceSettings implements IToEbinterfaceSettings
 {
   /**
+   * Is the "UBLVersionID" element mandatory?
+   */
+  private boolean m_bUBLVersionIDMandatory = false;
+  /**
+   * Is the "ProfileID" element mandatory?
+   */
+  private boolean m_bUBLProfileIDMandatory = true;
+  /**
    * Is the OrderReference/ID element mandatory?
    */
   private boolean m_bOrderReferenceIDMandatory = false;
@@ -54,7 +62,30 @@ public class ToEbinterfaceSettings implements IToEbinterfaceSettings
   public ToEbinterfaceSettings ()
   {}
 
-  @Override
+  public boolean isUBLVersionIDMandatory ()
+  {
+    return m_bUBLVersionIDMandatory;
+  }
+
+  @Nonnull
+  public ToEbinterfaceSettings setUBLVersionIDMandatory (final boolean bUBLVersionIDMandatory)
+  {
+    m_bUBLVersionIDMandatory = bUBLVersionIDMandatory;
+    return this;
+  }
+
+  public boolean isUBLProfileIDMandatory ()
+  {
+    return m_bUBLProfileIDMandatory;
+  }
+
+  @Nonnull
+  public ToEbinterfaceSettings setUBLProfileIDMandatory (final boolean bUBLProfileIDMandatory)
+  {
+    m_bUBLProfileIDMandatory = bUBLProfileIDMandatory;
+    return this;
+  }
+
   public boolean isOrderReferenceIDMandatory ()
   {
     return m_bOrderReferenceIDMandatory;
@@ -67,13 +98,11 @@ public class ToEbinterfaceSettings implements IToEbinterfaceSettings
     return this;
   }
 
-  @Override
   public int getOrderReferenceMaxLength ()
   {
     return m_nOrderReferenceIDMaxLen;
   }
 
-  @Override
   public boolean hasOrderReferenceMaxLength ()
   {
     return m_nOrderReferenceIDMaxLen > 0;
@@ -86,7 +115,6 @@ public class ToEbinterfaceSettings implements IToEbinterfaceSettings
     return this;
   }
 
-  @Override
   public boolean isDeliveryDateMandatory ()
   {
     return m_bDeliveryDateMandatory;
@@ -99,7 +127,6 @@ public class ToEbinterfaceSettings implements IToEbinterfaceSettings
     return this;
   }
 
-  @Override
   public boolean isEnforceSupplierEmailAddress ()
   {
     return m_bEnforceSupplierEmailAddress;
@@ -112,7 +139,6 @@ public class ToEbinterfaceSettings implements IToEbinterfaceSettings
     return this;
   }
 
-  @Override
   @Nonnull
   @Nonempty
   public String getEnforcedSupplierEmailAddress ()
@@ -128,7 +154,6 @@ public class ToEbinterfaceSettings implements IToEbinterfaceSettings
     return this;
   }
 
-  @Override
   public boolean isInvoicePaymentMethodMandatory ()
   {
     return m_bInvoicePaymentMethodMandatory;
@@ -148,7 +173,9 @@ public class ToEbinterfaceSettings implements IToEbinterfaceSettings
   @Nonnull
   public static ToEbinterfaceSettings getERechnungGvAtSettings ()
   {
-    return new ToEbinterfaceSettings ().setOrderReferenceIDMandatory (true)
+    return new ToEbinterfaceSettings ().setUBLVersionIDMandatory (false)
+                                       .setUBLProfileIDMandatory (true)
+                                       .setOrderReferenceIDMandatory (true)
                                        .setOrderReferenceIDMaxLength (54)
                                        .setDeliveryDateMandatory (true)
                                        .setEnforceSupplierEmailAddress (true)
