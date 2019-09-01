@@ -333,7 +333,7 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
     if (aUBLVersionID == null)
     {
       // For EN invoices
-      if (false)
+      if (m_aSettings.isUBLVersionIDMandatory ())
         aTransformationErrorList.add (SingleError.builderError ()
                                                  .setErrorFieldName ("UBLVersionID")
                                                  .setErrorText (EText.NO_UBL_VERSION_ID.getDisplayTextWithArgs (m_aDisplayLocale,
@@ -365,10 +365,11 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
     final ProfileIDType aProfileID = aUBLCreditNote.getProfileID ();
     if (aProfileID == null)
     {
-      aTransformationErrorList.add (SingleError.builderError ()
-                                               .setErrorFieldName ("ProfileID")
-                                               .setErrorText (EText.NO_PROFILE_ID.getDisplayText (m_aDisplayLocale))
-                                               .build ());
+      if (m_aSettings.isUBLProfileIDMandatory ())
+        aTransformationErrorList.add (SingleError.builderError ()
+                                                 .setErrorFieldName ("ProfileID")
+                                                 .setErrorText (EText.NO_PROFILE_ID.getDisplayText (m_aDisplayLocale))
+                                                 .build ());
     }
     else
     {
