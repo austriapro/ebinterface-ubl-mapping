@@ -86,13 +86,13 @@ public abstract class AbstractEbInterface43ToUBLConverter extends AbstractConver
         case INVOICE_FOR_ADVANCE_PAYMENT:
         case SUBSEQUENT_CREDIT:
         case SUBSEQUENT_DEBIT:
-          sID = "380";
+          sID = INVOICE_TYPE_CODE_INVOICE;
           break;
         case INVOICE_FOR_PARTIAL_DELIVERY:
-          sID = "326";
+          sID = INVOICE_TYPE_CODE_PARTIAL;
           break;
         case SELF_BILLING:
-          sID = "389";
+          sID = INVOICE_TYPE_CODE_SELF_BILLING;
           break;
       }
 

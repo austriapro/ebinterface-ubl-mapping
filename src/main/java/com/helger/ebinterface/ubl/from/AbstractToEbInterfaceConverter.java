@@ -67,10 +67,10 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
                                      "Invalid CustomizationID schemeID value ''{0}'' present. It must be ''{1}''."),
     INVALID_CUSTOMIZATION_ID ("Die angegebene CustomizationID ''{0}'' ist ungültig. Sie wird vom angegebenen Profil nicht unterstützt.",
                               "Invalid CustomizationID value ''{0}'' present. It is not supported by the passed profile."),
-    NO_INVOICE_TYPECODE ("Der InvoiceTypeCode fehlt. Es wird der Wert ''{0}'' erwartet.",
-                         "No InvoiceTypeCode present. It must be ''{0}''."),
-    INVALID_INVOICE_TYPECODE ("Der InvoiceTypeCode ''{0}'' ist ungültig. Dieser muss den Wert ''{1}'' haben.",
-                              "Invalid InvoiceTypeCode value ''{0}'' present. It must be ''{1}''."),
+    NO_INVOICE_TYPECODE ("Der InvoiceTypeCode fehlt. Es wird einer der Werte ''{0}'', ''{1}'' oder ''{2}'' erwartet.",
+                         "No InvoiceTypeCode present. It must be one of ''{0}'', ''{1}'' or ''{2}''."),
+    INVALID_INVOICE_TYPECODE ("Der InvoiceTypeCode ''{0}'' ist ungültig. Dieser muss einen der Werte ''{1}'', ''{2}'' oder ''{3}'' haben.",
+                              "Invalid InvoiceTypeCode value ''{0}'' present. It must be one of ''{1}'', ''{2}'' or ''{3}''."),
     ADDRESS_NO_STREET ("In der Adresse fehlt die Straße.", "Address is missing a street name."),
     ADDRESS_NO_CITY ("In der Adresse fehlt der Name der Stadt.", "Address is missing a city name."),
     ADDRESS_NO_ZIPCODE ("In der Adresse fehlt die PLZ.", "Address is missing a ZIP code."),
@@ -298,20 +298,26 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
       aTransformationErrorList.add (SingleError.builderWarn ()
                                                .setErrorFieldName ("InvoiceTypeCode")
                                                .setErrorText (EText.NO_INVOICE_TYPECODE.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                                INVOICE_TYPE_CODE))
+                                                                                                                INVOICE_TYPE_CODE_INVOICE,
+                                                                                                                INVOICE_TYPE_CODE_PARTIAL,
+                                                                                                                INVOICE_TYPE_CODE_SELF_BILLING))
                                                .build ());
     }
     else
     {
       // If one is present, it must match
       final String sInvoiceTypeCode = StringHelper.trim (aInvoiceTypeCode.getValue ());
-      if (!INVOICE_TYPE_CODE.equals (sInvoiceTypeCode))
+      if (!INVOICE_TYPE_CODE_INVOICE.equals (sInvoiceTypeCode) &&
+          !INVOICE_TYPE_CODE_PARTIAL.equals (sInvoiceTypeCode) &&
+          !INVOICE_TYPE_CODE_SELF_BILLING.equals (sInvoiceTypeCode))
       {
         aTransformationErrorList.add (SingleError.builderError ()
                                                  .setErrorFieldName ("InvoiceTypeCode")
                                                  .setErrorText (EText.INVALID_INVOICE_TYPECODE.getDisplayTextWithArgs (m_aDisplayLocale,
                                                                                                                        sInvoiceTypeCode,
-                                                                                                                       INVOICE_TYPE_CODE))
+                                                                                                                       INVOICE_TYPE_CODE_INVOICE,
+                                                                                                                       INVOICE_TYPE_CODE_PARTIAL,
+                                                                                                                       INVOICE_TYPE_CODE_SELF_BILLING))
                                                  .build ());
       }
     }

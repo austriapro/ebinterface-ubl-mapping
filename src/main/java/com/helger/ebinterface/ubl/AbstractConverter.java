@@ -42,18 +42,25 @@ public abstract class AbstractConverter
   public static final String UOM_DEFAULT = "C62";
   public static final String SUPPORTED_TAX_SCHEME_SCHEME_ID = "UN/ECE 5153";
   public static final ETaxSchemeID SUPPORTED_TAX_SCHEME_ID = ETaxSchemeID.VALUE_ADDED_TAX;
+
   public static final String EBI_GENERATING_SYSTEM_40 = "UBL 2.1 to ebInterface 4.0 converter";
   public static final String EBI_GENERATING_SYSTEM_41 = "UBL 2.1 to ebInterface 4.1 converter";
   public static final String EBI_GENERATING_SYSTEM_42 = "UBL 2.1 to ebInterface 4.2 converter";
   public static final String EBI_GENERATING_SYSTEM_43 = "UBL 2.1 to ebInterface 4.3 converter";
   public static final String EBI_GENERATING_SYSTEM_50 = "UBL 2.1 to ebInterface 5.0 converter";
+
   public static final int SCALE_PERC = 2;
   public static final int SCALE_PRICE2 = 2;
   public static final int SCALE_PRICE4 = 4;
+
   /** Austria uses HALF_UP mode! */
   public static final RoundingMode ROUNDING_MODE = RoundingMode.HALF_UP;
+
   /** The invoice type code to use (380) */
-  public static final String INVOICE_TYPE_CODE = EInvoiceTypeCode.COMMERCIAL_INVOICE.getID ();
+  public static final String INVOICE_TYPE_CODE_INVOICE = EInvoiceTypeCode.COMMERCIAL_INVOICE.getID ();
+  public static final String INVOICE_TYPE_CODE_PARTIAL = "326";
+  public static final String INVOICE_TYPE_CODE_SELF_BILLING = "389";
+
   public static final String UBL_VERSION_20 = "2.0";
   public static final String UBL_VERSION_21 = "2.1";
   public static final String UBL_VERSION_22 = "2.2";
