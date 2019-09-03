@@ -118,8 +118,7 @@ public final class InvoiceToEbInterface41Converter extends AbstractToEbInterface
   {
     ValueEnforcer.notNull (aUBLDoc, "UBLInvoice");
     ValueEnforcer.notNull (aTransformationErrorList, "TransformationErrorList");
-    if (!aTransformationErrorList.isEmpty ())
-      throw new IllegalArgumentException ("TransformationErrorList must be empty!");
+    ValueEnforcer.isTrue (aTransformationErrorList.isEmpty (), "TransformationErrorList must be empty!");
 
     // Consistency check before starting the conversion
     checkInvoiceConsistency (aUBLDoc, aTransformationErrorList);
@@ -934,6 +933,17 @@ public final class InvoiceToEbInterface41Converter extends AbstractToEbInterface
               {
                 aEbiOrderRefDetail.setOrderPositionNumber (sOrderPosNumber);
               }
+            }
+            if (StringHelper.hasText (aEbiOrderRefDetail.getOrderPositionNumber ()) &&
+                StringHelper.hasNoText (sUBLLineOrderReferenceID))
+            {
+              // The line order reference is mandatory
+              aTransformationErrorList.add (SingleError.builderError ()
+                                                       .setErrorFieldName ("InvoiceLine[" +
+                                                                           nLineIndex +
+                                                                           "]/OrderLineReference/OrderReference/ID")
+                                                       .setErrorText (EText.ORDER_REFERENCE_MISSING.getDisplayText (m_aDisplayLocale))
+                                                       .build ());
             }
             aEbiListLineItem.setInvoiceRecipientsOrderReference (aEbiOrderRefDetail);
             break;

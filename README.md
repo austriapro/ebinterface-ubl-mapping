@@ -12,6 +12,7 @@ The reason why this project is not in the [ebinterface-mappings](https://github.
     * Added code to generate ebInterface 4.0 from UBL Invoice and Credit Note
     * Added code to generate ebInterface 4.1 from UBL Invoice and Credit Note
     * Added code to generate ebInterface 5.0 from UBL Invoice and Credit Note
+    * Added check that order reference is mandatory if an order line number is used 
 * v3.0.8 - 2019-03-28
     * Fixed parsing of process identifiers in "Profile" element for CreditNotes to match the Invoice rules
     * Added support for the UBL version "2.2"
