@@ -54,6 +54,11 @@ public class ToEbinterfaceSettings implements IToEbinterfaceSettings
    */
   private String m_sEnforcedSupplierEmailAddress = "no-email-address-provided@peppol.eu";
   /**
+   * Emit an error, if the item position number is &lt; 1.
+   */
+  private boolean m_bErrorOnPositionNumber = false;
+
+  /**
    * Is the payment method of an invoice mandatory? This does not apply to
    * credit notes!
    */
@@ -151,6 +156,18 @@ public class ToEbinterfaceSettings implements IToEbinterfaceSettings
   {
     ValueEnforcer.notEmpty (s, "EmailAddress");
     m_sEnforcedSupplierEmailAddress = s;
+    return this;
+  }
+
+  public boolean isErrorOnPositionNumber ()
+  {
+    return m_bErrorOnPositionNumber;
+  }
+
+  @Nonnull
+  public ToEbinterfaceSettings setErrorOnPositionNumber (final boolean bErrorOnPositionNumber)
+  {
+    m_bErrorOnPositionNumber = bErrorOnPositionNumber;
     return this;
   }
 

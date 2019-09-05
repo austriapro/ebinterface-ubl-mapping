@@ -761,7 +761,7 @@ public final class CreditNoteToEbInterface50Converter extends AbstractToEbInterf
           aUBLPositionNumber = BigInteger.valueOf (nLineIndex + 1L);
           aTransformationErrorList.add (SingleError.builderWarn ()
                                                    .setErrorFieldName ("CreditNoteLine[" + nLineIndex + "]/ID")
-                                                   .setErrorText (EText.DETAILS_INVALID_POSITION.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                   .setErrorText (EText.DETAILS_INVALID_POSITION_SET_TO_INDEX.getDisplayTextWithArgs (m_aDisplayLocale,
                                                                                                                          sUBLPositionNumber,
                                                                                                                          aUBLPositionNumber))
                                                    .build ());

@@ -756,14 +756,32 @@ public final class InvoiceToEbInterface50Converter extends AbstractToEbInterface
         // Invoice line number
         final String sUBLPositionNumber = StringHelper.trim (aUBLLine.getIDValue ());
         BigInteger aUBLPositionNumber = StringParser.parseBigInteger (sUBLPositionNumber);
+        if (aUBLPositionNumber != null)
+        {
+          if (MathHelper.isLT1 (aUBLPositionNumber))
+            if (m_aSettings.isErrorOnPositionNumber ())
+            {
+              // Must be &gt; 0
+              aTransformationErrorList.add (SingleError.builderError ()
+                                                       .setErrorFieldName ("InvoiceLine[" + nLineIndex + "]/ID")
+                                                       .setErrorText (EText.DETAILS_INVALID_POSITION.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                             sUBLPositionNumber))
+                                                       .build ());
+            }
+            else
+            {
+              // Swallow the error
+              aUBLPositionNumber = null;
+            }
+        }
         if (aUBLPositionNumber == null)
         {
           aUBLPositionNumber = BigInteger.valueOf (nLineIndex + 1L);
           aTransformationErrorList.add (SingleError.builderWarn ()
                                                    .setErrorFieldName ("InvoiceLine[" + nLineIndex + "]/ID")
-                                                   .setErrorText (EText.DETAILS_INVALID_POSITION.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                                         sUBLPositionNumber,
-                                                                                                                         aUBLPositionNumber))
+                                                   .setErrorText (EText.DETAILS_INVALID_POSITION_SET_TO_INDEX.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                                      sUBLPositionNumber,
+                                                                                                                                      aUBLPositionNumber))
                                                    .build ());
         }
         aEbiListLineItem.setPositionNumber (aUBLPositionNumber);
@@ -945,15 +963,30 @@ public final class InvoiceToEbInterface50Converter extends AbstractToEbInterface
             if (StringHelper.hasText (aEbiOrderRefDetail.getOrderPositionNumber ()) &&
                 StringHelper.hasNoText (sUBLLineOrderReferenceID))
             {
-              // The line order reference is mandatory
-              aTransformationErrorList.add (SingleError.builderError ()
-                                                       .setErrorFieldName ("InvoiceLine[" +
-                                                                           nLineIndex +
-                                                                           "]/OrderLineReference/OrderReference/ID")
-                                                       .setErrorText (EText.ORDER_REFERENCE_MISSING.getDisplayText (m_aDisplayLocale))
-                                                       .build ());
+              if (m_aSettings.isOrderReferenceIDMandatory ())
+              {
+                // The line order reference is mandatory
+                aTransformationErrorList.add (SingleError.builderError ()
+                                                         .setErrorFieldName ("InvoiceLine[" +
+                                                                             nLineIndex +
+                                                                             "]/OrderLineReference/OrderReference/ID")
+                                                         .setErrorText (EText.ORDER_REFERENCE_MISSING.getDisplayText (m_aDisplayLocale))
+                                                         .build ());
+              }
+              else
+              {
+                aEbiOrderRefDetail.setOrderPositionNumber (null);
+                aTransformationErrorList.add (SingleError.builderWarn ()
+                                                         .setErrorFieldName ("InvoiceLine[" +
+                                                                             nLineIndex +
+                                                                             "]/OrderLineReference/OrderReference/ID")
+                                                         .setErrorText (EText.ORDER_REFERENCE_MISSING_IGNORE_ORDER_POS.getDisplayText (m_aDisplayLocale))
+                                                         .build ());
+              }
             }
-            aEbiListLineItem.setInvoiceRecipientsOrderReference (aEbiOrderRefDetail);
+
+            if (StringHelper.hasText (sUBLLineOrderReferenceID))
+              aEbiListLineItem.setInvoiceRecipientsOrderReference (aEbiOrderRefDetail);
             break;
           }
 

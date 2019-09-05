@@ -52,5 +52,11 @@ public interface IToEbinterfaceSettings extends Serializable
   @Nonempty
   String getEnforcedSupplierEmailAddress ();
 
+  /**
+   * @return <code>true</code> if invalid line numbers (row index &lt; 1) leads
+   *         to an error, <code>false</code> if not.
+   */
+  boolean isErrorOnPositionNumber ();
+
   boolean isInvoicePaymentMethodMandatory ();
 }
