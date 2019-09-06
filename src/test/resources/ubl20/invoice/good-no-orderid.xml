@@ -28,6 +28,9 @@
     <cbc:StartDate>2009-11-01</cbc:StartDate>
     <cbc:EndDate>2009-11-30</cbc:EndDate>
   </cac:InvoicePeriod>
+  <cac:OrderReference>
+    <cbc:ID>Z01</cbc:ID>
+  </cac:OrderReference>
   <cac:ContractDocumentReference>
     <cbc:ID>Contract321</cbc:ID>
     <cbc:DocumentType>Framework agreement</cbc:DocumentType>
@@ -88,9 +91,9 @@
     </cac:DeliveryParty>
   </cac:Delivery>
   <cac:PaymentMeans>
-    <cbc:PaymentMeansCode listAgencyID="NES" listID="UN/ECE 4461 Subset">49</cbc:PaymentMeansCode>
+    <cbc:PaymentMeansCode listAgencyID="NES" listID="UN/ECE 4461 Subset">30</cbc:PaymentMeansCode>
     <cbc:PaymentDueDate>2009-12-31</cbc:PaymentDueDate>
-    <cbc:PaymentChannelCode>SW</cbc:PaymentChannelCode>
+    <cbc:PaymentChannelCode>IBAN</cbc:PaymentChannelCode>
     <cbc:PaymentID>Payref1</cbc:PaymentID>
     <cac:PayeeFinancialAccount>
       <cbc:ID schemeID="IBAN">NO9386011117947</cbc:ID>

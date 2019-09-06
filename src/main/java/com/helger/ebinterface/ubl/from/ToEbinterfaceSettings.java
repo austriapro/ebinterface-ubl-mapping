@@ -57,7 +57,6 @@ public class ToEbinterfaceSettings implements IToEbinterfaceSettings
    * Emit an error, if the item position number is &lt; 1.
    */
   private boolean m_bErrorOnPositionNumber = false;
-
   /**
    * Is the payment method of an invoice mandatory? This does not apply to
    * credit notes!

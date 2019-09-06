@@ -163,11 +163,11 @@ public final class InvoiceToEbInterface50ConverterTest
                                                                                                                                    aErrorList);
       assertNotNull (aEbInvoice);
       assertTrue (aRes.getPath () + ": " + aErrorList.toString (),
-                  !aErrorList.isEmpty () && aErrorList.getMostSevereErrorLevel ().isGE (EErrorLevel.ERROR));
+                  aErrorList.isNotEmpty () && aErrorList.getMostSevereErrorLevel ().isError ());
 
       // Convert ebInterface to XML
       final Document aDocEb = new MockEbi50Marshaller ().getAsDocument (aEbInvoice);
-      assertNull (aDocEb);
+      assertNull (aRes.getPath () + ": " + aErrorList.toString (), aDocEb);
     }
   }
 }
