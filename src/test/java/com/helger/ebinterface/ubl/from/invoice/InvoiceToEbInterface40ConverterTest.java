@@ -60,6 +60,7 @@ public final class InvoiceToEbInterface40ConverterTest
 
   private static final ICommonsSet <String> IGNORED_FILES = new CommonsHashSet <> ("20120822125754.482.xml",
                                                                                    "delivery-per-item.xml",
+                                                                                   "good-no-orderid-no-ebi40.xml",
                                                                                    "invoice-with-all-elements.xml",
                                                                                    "other-tax.xml",
                                                                                    "payment-terms.xml",

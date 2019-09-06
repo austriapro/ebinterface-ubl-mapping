@@ -53,9 +53,86 @@
     </cac:Attachment>
   </cac:AdditionalDocumentReference>
   <cac:AccountingSupplierParty>
-    <cbc:CustomerAssignedAccountID>1234567890</cbc:CustomerAssignedAccountID>
+    <cbc:CustomerAssignedAccountID>11011011</cbc:CustomerAssignedAccountID>
+    <cac:Party>
+      <cbc:EndpointID schemeID="GLN" schemeAgencyID="9">1234567890123</cbc:EndpointID>
+      <cac:PartyIdentification>
+        <cbc:ID schemeID="ZZZ">Supp123</cbc:ID>
+      </cac:PartyIdentification>
+      <cac:PartyName>
+        <cbc:Name>Salescompany ltd.</cbc:Name>
+      </cac:PartyName>
+      <cac:PostalAddress>
+        <cbc:ID schemeID="GLN" schemeAgencyID="9">1231412341324</cbc:ID>
+        <cbc:Postbox>5467</cbc:Postbox>
+        <cbc:StreetName>Main street</cbc:StreetName>
+        <cbc:AdditionalStreetName>Suite 123</cbc:AdditionalStreetName>
+        <cbc:BuildingNumber>1</cbc:BuildingNumber>
+        <cbc:Department>Revenue department</cbc:Department>
+        <cbc:CityName>Big city</cbc:CityName>
+        <cbc:PostalZone>54321</cbc:PostalZone>
+        <cbc:CountrySubentityCode>RegionA</cbc:CountrySubentityCode>
+        <cac:Country>
+          <cbc:IdentificationCode listID="ISO3166-1" listAgencyID="6">NO</cbc:IdentificationCode>
+        </cac:Country>
+      </cac:PostalAddress>
+      <cac:PartyTaxScheme>
+        <cbc:CompanyID schemeID="VAT" schemeAgencyID="ZZZ">NO999999999MVA</cbc:CompanyID>
+        <cac:TaxScheme>
+          <cbc:ID schemeID="UN/ECE 5153" schemeAgencyID="6">VAT</cbc:ID>
+        </cac:TaxScheme>
+      </cac:PartyTaxScheme>
+      <cac:PartyLegalEntity>
+        <cbc:RegistrationName>The Sellercompany Incorporated</cbc:RegistrationName>
+        <cbc:CompanyID schemeID="CVR" schemeAgencyID="ZZZ">999999999</cbc:CompanyID>
+        <cac:RegistrationAddress>
+          <cbc:CityName>Big city</cbc:CityName>
+          <cbc:CountrySubentity>RegionA</cbc:CountrySubentity>
+          <cac:Country>
+            <cbc:IdentificationCode>DK</cbc:IdentificationCode>
+          </cac:Country>
+        </cac:RegistrationAddress>
+      </cac:PartyLegalEntity>
+      <cac:Contact>
+        <cbc:ID>O. Hansen</cbc:ID>
+        <cbc:Telephone>46211230</cbc:Telephone>
+        <cbc:Telefax>46211231</cbc:Telefax>
+        <cbc:ElectronicMail>antonio@salescompany.dk</cbc:ElectronicMail>
+      </cac:Contact>
+      <cac:Person>
+        <cbc:FirstName>Antonio</cbc:FirstName>
+        <cbc:FamilyName>Salemacher</cbc:FamilyName>
+        <cbc:MiddleName>M</cbc:MiddleName>
+        <cbc:JobTitle>Sales manager</cbc:JobTitle>
+      </cac:Person>
+    </cac:Party>
   </cac:AccountingSupplierParty>
   <cac:AccountingCustomerParty>
+    <cac:Party>
+      <cac:PartyName>
+        <cbc:Name>Buyercompany ltd</cbc:Name>
+      </cac:PartyName>
+      <cac:PostalAddress>
+        <cbc:ID schemeID="GLN" schemeAgencyID="9">1238764941386</cbc:ID>
+        <cbc:Postbox>123</cbc:Postbox>
+        <cbc:StreetName>Anystreet</cbc:StreetName>
+        <cbc:AdditionalStreetName>Back door</cbc:AdditionalStreetName>
+        <cbc:BuildingNumber>8</cbc:BuildingNumber>
+        <cbc:Department>Accounting department</cbc:Department>
+        <cbc:CityName>Anytown</cbc:CityName>
+        <cbc:PostalZone>101</cbc:PostalZone>
+        <cbc:CountrySubentity>RegionB</cbc:CountrySubentity>
+        <cac:Country>
+          <cbc:IdentificationCode listID="ISO3166-1" listAgencyID="6">BE</cbc:IdentificationCode>
+        </cac:Country>
+      </cac:PostalAddress>
+      <cac:PartyTaxScheme>
+        <cbc:CompanyID schemeID="VAT" schemeAgencyID="ZZZ">BE54321</cbc:CompanyID>
+        <cac:TaxScheme>
+          <cbc:ID schemeID="UN/ECE 5153" schemeAgencyID="6">VAT</cbc:ID>
+        </cac:TaxScheme>
+      </cac:PartyTaxScheme>
+    </cac:Party>
   </cac:AccountingCustomerParty>
   <cac:PayeeParty>
     <cac:PartyIdentification>
