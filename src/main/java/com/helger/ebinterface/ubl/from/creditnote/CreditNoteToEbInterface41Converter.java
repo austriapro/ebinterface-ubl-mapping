@@ -118,8 +118,7 @@ public final class CreditNoteToEbInterface41Converter extends AbstractToEbInterf
   {
     ValueEnforcer.notNull (aUBLDoc, "UBLCreditNote");
     ValueEnforcer.notNull (aTransformationErrorList, "TransformationErrorList");
-    if (!aTransformationErrorList.isEmpty ())
-      throw new IllegalArgumentException ("TransformationErrorList must be empty!");
+    ValueEnforcer.isTrue (aTransformationErrorList.isEmpty (), "TransformationErrorList must be empty!");
 
     // Consistency check before starting the conversion
     checkCreditNoteConsistency (aUBLDoc, aTransformationErrorList);
@@ -754,14 +753,32 @@ public final class CreditNoteToEbInterface41Converter extends AbstractToEbInterf
         // CreditNote line number
         final String sUBLPositionNumber = StringHelper.trim (aUBLLine.getIDValue ());
         BigInteger aUBLPositionNumber = StringParser.parseBigInteger (sUBLPositionNumber);
+        if (aUBLPositionNumber != null)
+        {
+          if (MathHelper.isLT1 (aUBLPositionNumber))
+            if (m_aSettings.isErrorOnPositionNumber ())
+            {
+              // Must be &gt; 0
+              aTransformationErrorList.add (SingleError.builderError ()
+                                                       .setErrorFieldName ("CreditNoteLine[" + nLineIndex + "]/ID")
+                                                       .setErrorText (EText.DETAILS_INVALID_POSITION.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                             sUBLPositionNumber))
+                                                       .build ());
+            }
+            else
+            {
+              // Swallow the error
+              aUBLPositionNumber = null;
+            }
+        }
         if (aUBLPositionNumber == null)
         {
           aUBLPositionNumber = BigInteger.valueOf (nLineIndex + 1L);
           aTransformationErrorList.add (SingleError.builderWarn ()
                                                    .setErrorFieldName ("CreditNoteLine[" + nLineIndex + "]/ID")
                                                    .setErrorText (EText.DETAILS_INVALID_POSITION_SET_TO_INDEX.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                                         sUBLPositionNumber,
-                                                                                                                         aUBLPositionNumber))
+                                                                                                                                      sUBLPositionNumber,
+                                                                                                                                      aUBLPositionNumber))
                                                    .build ());
         }
         aEbiListLineItem.setPositionNumber (aUBLPositionNumber);
@@ -931,7 +948,33 @@ public final class CreditNoteToEbInterface41Converter extends AbstractToEbInterf
                 aEbiOrderRefDetail.setOrderPositionNumber (sOrderPosNumber);
               }
             }
-            aEbiListLineItem.setInvoiceRecipientsOrderReference (aEbiOrderRefDetail);
+            if (StringHelper.hasText (aEbiOrderRefDetail.getOrderPositionNumber ()) &&
+                StringHelper.hasNoText (sUBLLineOrderReferenceID))
+            {
+              if (m_aSettings.isOrderReferenceIDMandatory ())
+              {
+                // The line order reference is mandatory
+                aTransformationErrorList.add (SingleError.builderError ()
+                                                         .setErrorFieldName ("CreditNoteLine[" +
+                                                                             nLineIndex +
+                                                                             "]/OrderLineReference/OrderReference/ID")
+                                                         .setErrorText (EText.ORDER_REFERENCE_MISSING.getDisplayText (m_aDisplayLocale))
+                                                         .build ());
+              }
+              else
+              {
+                aEbiOrderRefDetail.setOrderPositionNumber (null);
+                aTransformationErrorList.add (SingleError.builderWarn ()
+                                                         .setErrorFieldName ("CreditNoteLine[" +
+                                                                             nLineIndex +
+                                                                             "]/OrderLineReference/OrderReference/ID")
+                                                         .setErrorText (EText.ORDER_REFERENCE_MISSING_IGNORE_ORDER_POS.getDisplayText (m_aDisplayLocale))
+                                                         .build ());
+              }
+            }
+
+            if (StringHelper.hasText (sUBLLineOrderReferenceID))
+              aEbiListLineItem.setInvoiceRecipientsOrderReference (aEbiOrderRefDetail);
             break;
           }
 
