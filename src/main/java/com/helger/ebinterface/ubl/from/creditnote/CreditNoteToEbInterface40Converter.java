@@ -277,7 +277,11 @@ public final class CreditNoteToEbInterface40Converter extends AbstractToEbInterf
         final String sBillersInvoiceRecipientID = StringHelper.trim (aUBLCustomer.getSupplierAssignedAccountIDValue ());
         aEbiRecipient.setBillersInvoiceRecipientID (sBillersInvoiceRecipientID);
       }
-
+      if (StringHelper.hasNoText (aEbiRecipient.getBillersInvoiceRecipientID ()))
+      {
+        // Check if a fallback is present
+        aEbiRecipient.setBillersInvoiceRecipientID (m_aSettings.getFallbackBillersInvoiceRecipientID ());
+      }
       if (StringHelper.hasNoText (aEbiRecipient.getBillersInvoiceRecipientID ()))
       {
         // BillersInvoiceRecipientID is mandatory in ebi 4.0

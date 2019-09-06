@@ -276,7 +276,11 @@ public final class InvoiceToEbInterface40Converter extends AbstractToEbInterface
         // eb: Identifikation des Rechnungsempfängers beim Rechnungssteller.
         aEbiRecipient.setBillersInvoiceRecipientID (StringHelper.trim (aUBLCustomer.getSupplierAssignedAccountIDValue ()));
       }
-
+      if (StringHelper.hasNoText (aEbiRecipient.getBillersInvoiceRecipientID ()))
+      {
+        // Check if a fallback is present
+        aEbiRecipient.setBillersInvoiceRecipientID (m_aSettings.getFallbackBillersInvoiceRecipientID ());
+      }
       if (StringHelper.hasNoText (aEbiRecipient.getBillersInvoiceRecipientID ()))
       {
         // BillersInvoiceRecipientID is mandatory in ebi 4.0

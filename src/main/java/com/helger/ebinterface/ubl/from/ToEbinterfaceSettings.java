@@ -17,6 +17,7 @@
 package com.helger.ebinterface.ubl.from;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
@@ -53,6 +54,11 @@ public class ToEbinterfaceSettings implements IToEbinterfaceSettings
    * the original XML file
    */
   private String m_sEnforcedSupplierEmailAddress = "no-email-address-provided@peppol.eu";
+  /**
+   * The fallback billers invoice recipient ID to be used if none is present
+   * (for ebi 4.0)
+   */
+  private String m_sFallbackBillersInvoiceRecipientID = null;
   /**
    * Emit an error, if the item position number is &lt; 1.
    */
@@ -155,6 +161,19 @@ public class ToEbinterfaceSettings implements IToEbinterfaceSettings
   {
     ValueEnforcer.notEmpty (s, "EmailAddress");
     m_sEnforcedSupplierEmailAddress = s;
+    return this;
+  }
+
+  @Nullable
+  public String getFallbackBillersInvoiceRecipientID ()
+  {
+    return m_sFallbackBillersInvoiceRecipientID;
+  }
+
+  @Nonnull
+  public ToEbinterfaceSettings setFallbackBillersInvoiceRecipientID (@Nullable final String sFallbackBillersInvoiceRecipientID)
+  {
+    m_sFallbackBillersInvoiceRecipientID = sFallbackBillersInvoiceRecipientID;
     return this;
   }
 

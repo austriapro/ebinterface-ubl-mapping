@@ -20,6 +20,7 @@ import java.io.Serializable;
 
 import javax.annotation.CheckForSigned;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.helger.commons.annotation.Nonempty;
 
@@ -51,6 +52,12 @@ public interface IToEbinterfaceSettings extends Serializable
   @Nonnull
   @Nonempty
   String getEnforcedSupplierEmailAddress ();
+
+  /**
+   * @return The fallback "BillersInvoiceRecipientID" for ebInterface 4.0 only.
+   */
+  @Nullable
+  String getFallbackBillersInvoiceRecipientID ();
 
   /**
    * @return <code>true</code> if invalid line numbers (row index &lt; 1) leads
