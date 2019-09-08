@@ -578,7 +578,11 @@ public class EbInterface40ToInvoiceConverter extends AbstractEbInterface40ToUBLC
           if (aEbiRSValue.getPercentage () != null)
             aAmount = MathHelper.getPercentValue (aEbiRSValue.getBaseAmount (), aEbiRSValue.getPercentage ());
 
-        // TODO add tax category
+        // add tax category
+        final Ebi40TaxRateType aEbiTaxItem = aEbiRSValue.getTaxRate ();
+        final TaxCategoryType aUBLTaxCategory = createTaxCategoryVAT ("S");
+        aUBLTaxCategory.setPercent (aEbiTaxItem.getValue ());
+        aUBLAC.addTaxCategory (aUBLTaxCategory);
 
         if (aAmount != null)
         {

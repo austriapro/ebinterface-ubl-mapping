@@ -603,7 +603,7 @@ public class EbInterface50ToInvoiceConverter extends AbstractEbInterface50ToUBLC
           if (StringHelper.hasText (aEbiRSValue.getComment ()))
             aUBLAC.addAllowanceChargeReason (new AllowanceChargeReasonType (aEbiRSValue.getComment ()));
 
-          // TODO add tax category
+          // add tax category
           final TaxCategoryType aUBLTaxCategory = createTaxCategoryOther ();
           aUBLTaxCategory.setPercent (aEbiRSValue.getTaxPercentValue ());
           aUBLAC.addTaxCategory (aUBLTaxCategory);
@@ -625,7 +625,7 @@ public class EbInterface50ToInvoiceConverter extends AbstractEbInterface50ToUBLC
           if (StringHelper.hasText (aEbiRSValue.getComment ()))
             aUBLAC.addAllowanceChargeReason (new AllowanceChargeReasonType (aEbiRSValue.getComment ()));
 
-          // TODO add tax category
+          // add tax category
           final Ebi50TaxItemType aEbiTaxItem = aEbiRSValue.getTaxItem ();
           final TaxCategoryType aUBLTaxCategory = createTaxCategoryVAT (aEbiTaxItem.getTaxPercent ()
                                                                                    .getTaxCategoryCode ());

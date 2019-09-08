@@ -723,6 +723,11 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
             aUBLAC.setAllowanceChargeReasonCode (aEbiRSValue.getTaxID ());
           if (StringHelper.hasText (aEbiRSValue.getComment ()))
             aUBLAC.addAllowanceChargeReason (new AllowanceChargeReasonType (aEbiRSValue.getComment ()));
+
+          // add tax category
+          final TaxCategoryType aUBLTaxCategory = createTaxCategoryOther ();
+          aUBLTaxCategory.setPercent (aEbiRSValue.getPercentage ());
+          aUBLAC.addTaxCategory (aUBLTaxCategory);
         }
         else
         {
@@ -742,7 +747,11 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
           if (StringHelper.hasText (aEbiRSValue.getComment ()))
             aUBLAC.addAllowanceChargeReason (new AllowanceChargeReasonType (aEbiRSValue.getComment ()));
 
-          // TODO add tax category
+          // add tax category
+          final Ebi43VATRateType aEbiTaxItem = aEbiRSValue.getVATRate ();
+          final TaxCategoryType aUBLTaxCategory = createTaxCategoryVAT ("S");
+          aUBLTaxCategory.setPercent (aEbiTaxItem.getValue ());
+          aUBLAC.addTaxCategory (aUBLTaxCategory);
         }
 
         if (aAmount != null)
