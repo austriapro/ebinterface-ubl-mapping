@@ -26,7 +26,6 @@ import com.helger.commons.CGlobal;
 import com.helger.commons.math.MathHelper;
 import com.helger.commons.string.StringHelper;
 import com.helger.ebinterface.v41.*;
-import com.helger.peppol.codelist.ETaxSchemeID;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.*;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.AdditionalAccountIDType;
@@ -495,7 +494,6 @@ public class EbInterface41ToInvoiceConverter extends AbstractEbInterface41ToUBLC
               if (StringHelper.hasText (aEbiItem.getVATRate ().getTaxCode ()))
                 aUBLTaxCategory.setName (aEbiItem.getVATRate ().getTaxCode ());
             }
-            aUBLTaxCategory.setTaxScheme (createTaxSchemeVAT ());
 
             aUBLItem.addClassifiedTaxCategory (aUBLTaxCategory);
           }
@@ -687,8 +685,6 @@ public class EbInterface41ToInvoiceConverter extends AbstractEbInterface41ToUBLC
             // Exempt
             final TaxCategoryType aUBLTaxCategory = createTaxCategoryVAT ("E");
             aUBLTaxCategory.setPercent (BigDecimal.ZERO);
-            aUBLTaxCategory.setTaxScheme (createTaxSchemeVAT ());
-
             aUBLTaxCategory.addTaxExemptionReason (new TaxExemptionReasonType ("BelowTheLine - tax already handled"));
 
             aUBLItem.addClassifiedTaxCategory (aUBLTaxCategory);
@@ -751,6 +747,8 @@ public class EbInterface41ToInvoiceConverter extends AbstractEbInterface41ToUBLC
               aAmount = MathHelper.getPercentValue (aEbiRSValue.getBaseAmount (), aEbiRSValue.getPercentage ());
           if (StringHelper.hasText (aEbiRSValue.getComment ()))
             aUBLAC.addAllowanceChargeReason (new AllowanceChargeReasonType (aEbiRSValue.getComment ()));
+
+          // TODO add tax category
         }
 
         if (aAmount != null)
@@ -793,7 +791,6 @@ public class EbInterface41ToInvoiceConverter extends AbstractEbInterface41ToUBLC
           if (StringHelper.hasText (aEbiVATItem.getVATRate ().getTaxCode ()))
             aUBLTaxCategory.setName (aEbiVATItem.getVATRate ().getTaxCode ());
         }
-        aUBLTaxCategory.setTaxScheme (createTaxSchemeVAT ());
         aUBLTaxSubtotal.setTaxCategory (aUBLTaxCategory);
         aUBLTaxTotal.addTaxSubtotal (aUBLTaxSubtotal);
 
@@ -804,16 +801,10 @@ public class EbInterface41ToInvoiceConverter extends AbstractEbInterface41ToUBLC
         final TaxSubtotalType aUBLTaxSubtotal = new TaxSubtotalType ();
         aUBLTaxSubtotal.setTaxableAmount (aEbiOtherTax.getAmount ()).setCurrencyID (sCurrency);
 
-        {
-          final TaxCategoryType aUBLTaxCategory = new TaxCategoryType ();
-
-          final TaxSchemeType aUBLTaxScheme = createTaxScheme (ETaxSchemeID.OTHER_TAXES.getID ());
-          if (StringHelper.hasText (aEbiOtherTax.getComment ()))
-            aUBLTaxScheme.setName (aEbiOtherTax.getComment ());
-          aUBLTaxCategory.setTaxScheme (aUBLTaxScheme);
-
-          aUBLTaxSubtotal.setTaxCategory (aUBLTaxCategory);
-        }
+        final TaxCategoryType aUBLTaxCategory = createTaxCategoryOther ();
+        if (StringHelper.hasText (aEbiOtherTax.getComment ()))
+          aUBLTaxCategory.getTaxScheme ().setName (aEbiOtherTax.getComment ());
+        aUBLTaxSubtotal.setTaxCategory (aUBLTaxCategory);
 
         aUBLTaxTotal.addTaxSubtotal (aUBLTaxSubtotal);
 

@@ -27,7 +27,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.string.StringHelper;
-import com.helger.ebinterface.ubl.AbstractConverter;
 import com.helger.ebinterface.v42.Ebi42AddressIdentifierType;
 import com.helger.ebinterface.v42.Ebi42AddressType;
 import com.helger.ebinterface.v42.Ebi42DeliveryType;
@@ -38,22 +37,19 @@ import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.Add
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.ContactType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CountryType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DeliveryType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.ItemPropertyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyNameType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PeriodType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PersonType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxCategoryType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxSchemeType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
 
 /**
  * Base class for ebInterface to PEPPOL UBL converter
  *
- * @author philip
+ * @author Philip Helger
  */
 @Immutable
-public abstract class AbstractEbInterface42ToUBLConverter extends AbstractConverter
+public abstract class AbstractEbInterface42ToUBLConverter extends AbstractEbInterfaceToUBLConverter
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (AbstractEbInterface42ToUBLConverter.class);
 
@@ -218,42 +214,5 @@ public abstract class AbstractEbInterface42ToUBLConverter extends AbstractConver
     aUBLDelivery.setDeliveryAddress (convertAddress (aEbiDelivery.getAddress ()));
     aUBLDelivery.setDeliveryParty (convertParty (aEbiDelivery.getAddress ()));
     return aUBLDelivery;
-  }
-
-  @Nonnull
-  protected static TaxSchemeType createTaxScheme (@Nonnull final String sID)
-  {
-    final TaxSchemeType aUBLTaxScheme = new TaxSchemeType ();
-    final IDType aUBLTSID = aUBLTaxScheme.setID (sID);
-    aUBLTSID.setSchemeAgencyID ("6");
-    aUBLTSID.setSchemeID (SUPPORTED_TAX_SCHEME_SCHEME_ID);
-    return aUBLTaxScheme;
-  }
-
-  @Nonnull
-  protected static TaxSchemeType createTaxSchemeVAT ()
-  {
-    return createTaxScheme (SUPPORTED_TAX_SCHEME_ID.getID ());
-  }
-
-  @Nonnull
-  protected static TaxCategoryType createTaxCategoryVAT (@Nonnull final String sID)
-  {
-    final TaxCategoryType aUBLTaxCategory = new TaxCategoryType ();
-    final IDType aUBLTCID = aUBLTaxCategory.setID (sID);
-    aUBLTCID.setSchemeAgencyID ("6");
-    aUBLTCID.setSchemeID (SUPPORTED_TAX_SCHEME_SCHEME_ID);
-    // Set default scheme
-    aUBLTaxCategory.setTaxScheme (createTaxSchemeVAT ());
-    return aUBLTaxCategory;
-  }
-
-  @Nonnull
-  protected static ItemPropertyType createItemProperty (@Nullable final String sName, @Nullable final String sValue)
-  {
-    final ItemPropertyType ret = new ItemPropertyType ();
-    ret.setName (sName);
-    ret.setValue (sValue);
-    return ret;
   }
 }

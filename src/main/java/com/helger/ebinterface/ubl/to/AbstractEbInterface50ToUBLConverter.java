@@ -27,10 +27,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.string.StringHelper;
-import com.helger.ebinterface.v43.Ebi43AddressIdentifierType;
-import com.helger.ebinterface.v43.Ebi43AddressType;
-import com.helger.ebinterface.v43.Ebi43DeliveryType;
-import com.helger.ebinterface.v43.Ebi43DocumentTypeType;
+import com.helger.ebinterface.v50.Ebi50AddressIdentifierType;
+import com.helger.ebinterface.v50.Ebi50AddressType;
+import com.helger.ebinterface.v50.Ebi50ContactType;
+import com.helger.ebinterface.v50.Ebi50DeliveryType;
+import com.helger.ebinterface.v50.Ebi50DocumentTypeType;
 import com.helger.xsds.ccts.cct.schemamodule.CodeType;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AddressType;
@@ -49,9 +50,9 @@ import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
  * @author Philip Helger
  */
 @Immutable
-public abstract class AbstractEbInterface43ToUBLConverter extends AbstractEbInterfaceToUBLConverter
+public abstract class AbstractEbInterface50ToUBLConverter extends AbstractEbInterfaceToUBLConverter
 {
-  private static final Logger LOGGER = LoggerFactory.getLogger (AbstractEbInterface43ToUBLConverter.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (AbstractEbInterface50ToUBLConverter.class);
 
   /**
    * Constructor
@@ -62,14 +63,14 @@ public abstract class AbstractEbInterface43ToUBLConverter extends AbstractEbInte
    *        The locale for the created ebInterface files. May not be
    *        <code>null</code>.
    */
-  public AbstractEbInterface43ToUBLConverter (@Nonnull final Locale aDisplayLocale,
+  public AbstractEbInterface50ToUBLConverter (@Nonnull final Locale aDisplayLocale,
                                               @Nonnull final Locale aContentLocale)
   {
     super (aDisplayLocale, aContentLocale);
   }
 
   @Nullable
-  protected static <T extends CodeType> T getTypeCode (@Nullable final Ebi43DocumentTypeType eType,
+  protected static <T extends CodeType> T getTypeCode (@Nullable final Ebi50DocumentTypeType eType,
                                                        @Nonnull final Supplier <T> aFactory)
   {
     String sID = null;
@@ -107,7 +108,7 @@ public abstract class AbstractEbInterface43ToUBLConverter extends AbstractEbInte
   }
 
   @Nullable
-  protected static AddressType convertAddress (@Nullable final Ebi43AddressType aEbiAddress)
+  protected static AddressType convertAddress (@Nullable final Ebi50AddressType aEbiAddress)
   {
     if (aEbiAddress == null)
       return null;
@@ -116,11 +117,11 @@ public abstract class AbstractEbInterface43ToUBLConverter extends AbstractEbInte
     if (aEbiAddress.getAddressIdentifierCount () > 0)
     {
       // Only one ID allowed
-      final Ebi43AddressIdentifierType aEbiType = aEbiAddress.getAddressIdentifierAtIndex (0);
+      final Ebi50AddressIdentifierType aEbiType = aEbiAddress.getAddressIdentifierAtIndex (0);
       final IDType aUBLID = new IDType ();
       aUBLID.setValue (aEbiType.getValue ());
       if (aEbiType.getAddressIdentifierType () != null)
-        aUBLID.setSchemeID (aEbiType.getAddressIdentifierType ().value ());
+        aUBLID.setSchemeID (aEbiType.getAddressIdentifierType ());
       ret.setID (aUBLID);
     }
 
@@ -146,53 +147,60 @@ public abstract class AbstractEbInterface43ToUBLConverter extends AbstractEbInte
   }
 
   @Nullable
-  protected static PartyType convertParty (@Nullable final Ebi43AddressType aEbiAddress)
+  protected static PartyType convertParty (@Nullable final Ebi50AddressType aEbiAddress,
+                                           @Nullable final Ebi50ContactType aEbiContact)
   {
-    if (aEbiAddress == null)
+    if (aEbiAddress == null && aEbiContact == null)
       return null;
 
     final PartyType ret = new PartyType ();
-    if (StringHelper.hasText (aEbiAddress.getName ()))
+    if (aEbiAddress != null)
     {
-      final PartyNameType aUBLPartyName = new PartyNameType ();
-      aUBLPartyName.setName (aEbiAddress.getName ());
-      ret.addPartyName (aUBLPartyName);
+      if (StringHelper.hasText (aEbiAddress.getName ()))
+      {
+        final PartyNameType aUBLPartyName = new PartyNameType ();
+        aUBLPartyName.setName (aEbiAddress.getName ());
+        ret.addPartyName (aUBLPartyName);
+      }
+
+      ret.setPostalAddress (convertAddress (aEbiAddress));
     }
 
-    final ContactType aUBLContact = new ContactType ();
-    boolean bHasData = false;
-    if (StringHelper.hasText (aEbiAddress.getContact ()))
+    if (aEbiContact != null)
     {
-      aUBLContact.setName (aEbiAddress.getContact ());
-      bHasData = true;
-    }
-    if (StringHelper.hasText (aEbiAddress.getEmail ()))
-    {
-      aUBLContact.setElectronicMail (aEbiAddress.getEmail ());
-      bHasData = true;
-    }
-    if (StringHelper.hasText (aEbiAddress.getPhone ()))
-    {
-      aUBLContact.setTelephone (aEbiAddress.getPhone ());
-      bHasData = true;
-    }
-    if (bHasData)
-      ret.setContact (aUBLContact);
+      final ContactType aUBLContact = new ContactType ();
+      boolean bHasData = false;
+      if (StringHelper.hasText (aEbiContact.getName ()))
+      {
+        aUBLContact.setName (aEbiContact.getName ());
+        bHasData = true;
+      }
+      if (aEbiAddress.hasEmailEntries ())
+      {
+        aUBLContact.setElectronicMail (aEbiAddress.getEmailAtIndex (0));
+        bHasData = true;
+      }
+      if (aEbiAddress.hasPhoneEntries ())
+      {
+        aUBLContact.setTelephone (aEbiAddress.getPhoneAtIndex (0));
+        bHasData = true;
+      }
+      if (bHasData)
+        ret.setContact (aUBLContact);
 
-    ret.setPostalAddress (convertAddress (aEbiAddress));
-
-    if (StringHelper.hasText (aEbiAddress.getSalutation ()))
-    {
-      final PersonType aUBLPerson = new PersonType ();
-      aUBLPerson.setGenderCode (aEbiAddress.getSalutation ());
-      ret.addPerson (aUBLPerson);
+      if (StringHelper.hasText (aEbiContact.getSalutation ()))
+      {
+        final PersonType aUBLPerson = new PersonType ();
+        aUBLPerson.setGenderCode (aEbiContact.getSalutation ());
+        ret.addPerson (aUBLPerson);
+      }
     }
 
     return ret;
   }
 
   @Nullable
-  protected static DeliveryType convertDelivery (@Nullable final Ebi43DeliveryType aEbiDelivery)
+  protected static DeliveryType convertDelivery (@Nullable final Ebi50DeliveryType aEbiDelivery)
   {
     if (aEbiDelivery == null)
       return null;
@@ -212,7 +220,7 @@ public abstract class AbstractEbInterface43ToUBLConverter extends AbstractEbInte
         aUBLDelivery.setRequestedDeliveryPeriod (aUBLPeriod);
       }
     aUBLDelivery.setDeliveryAddress (convertAddress (aEbiDelivery.getAddress ()));
-    aUBLDelivery.setDeliveryParty (convertParty (aEbiDelivery.getAddress ()));
+    aUBLDelivery.setDeliveryParty (convertParty (aEbiDelivery.getAddress (), aEbiDelivery.getContact ()));
     return aUBLDelivery;
   }
 }
