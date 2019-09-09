@@ -23,6 +23,7 @@ import javax.annotation.Nonnull;
 import javax.xml.bind.JAXBElement;
 
 import com.helger.commons.CGlobal;
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.math.MathHelper;
 import com.helger.commons.string.StringHelper;
 import com.helger.ebinterface.v40.*;
@@ -203,6 +204,8 @@ public class EbInterface40ToInvoiceConverter extends AbstractEbInterface40ToUBLC
   @Nonnull
   public InvoiceType convertInvoice (@Nonnull final Ebi40InvoiceType aEbiDoc)
   {
+    ValueEnforcer.notNull (aEbiDoc, "ebInterfaceDocument");
+
     final String sCurrency = aEbiDoc.getInvoiceCurrency () != null ? aEbiDoc.getInvoiceCurrency ().value () : null;
 
     final InvoiceType aUBLDoc = new InvoiceType ();
