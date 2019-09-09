@@ -650,7 +650,13 @@ public class EbInterface40ToInvoiceConverter extends AbstractEbInterface40ToUBLC
 
     // Monetary Totals
     {
+      // LineExtensionAmount
+      BigDecimal aSumLineExtension = BigDecimal.ZERO;
+      for (final InvoiceLineType aInvoiceLine : aUBLDoc.getInvoiceLine ())
+        aSumLineExtension = aSumLineExtension.add (aInvoiceLine.getLineExtensionAmountValue ());
+
       final MonetaryTotalType aUBLMT = new MonetaryTotalType ();
+      aUBLMT.setLineExtensionAmount (aSumLineExtension).setCurrencyID (sCurrency);
       aUBLMT.setAllowanceTotalAmount (aSumAllowances).setCurrencyID (sCurrency);
       aUBLMT.setChargeTotalAmount (aSumCharges).setCurrencyID (sCurrency);
       aUBLMT.setTaxExclusiveAmount (aTaxExclusiveAmount).setCurrencyID (sCurrency);
