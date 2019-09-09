@@ -62,7 +62,7 @@ public final class EbInterface42ToInvoiceConverterTest
                                                                              .setFormattedOutput (true);
     final UBL21WriterBuilder <InvoiceType> aUBLWriter = UBL21Writer.invoice ().setFormattedOutput (true);
 
-    for (final File aFile : new FileSystemIterator ("src/test/resources/ebi42").withFilter (IFileFilter.filenameEndsWith (".xml")))
+    for (final File aFile : new FileSystemIterator ("src/test/resources/ebinterface/ebi42").withFilter (IFileFilter.filenameEndsWith (".xml")))
     {
       LOGGER.info (aFile.getAbsolutePath ());
 
