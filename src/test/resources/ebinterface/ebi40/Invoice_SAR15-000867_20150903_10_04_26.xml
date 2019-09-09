@@ -26,15 +26,15 @@
       <eb:Town>Eisenstadt</eb:Town>
       <eb:ZIP>7000</eb:ZIP>
       <eb:Country eb:CountryCode="AT">Österreich</eb:Country>
-      <eb:Phone>+43 590104600</eb:Phone>
-      <eb:Email>nadine.kopfensteiner@koegl.at</eb:Email>
+      <eb:Phone>+43 1234567</eb:Phone>
+      <eb:Email>example@example.org</eb:Email>
     </eb:Address>
   </eb:Biller>
   <eb:InvoiceRecipient>
     <eb:VATIdentificationNumber />
     <eb:BillersInvoiceRecipientID>11004400</eb:BillersInvoiceRecipientID>
     <eb:OrderReference>
-      <eb:OrderID>604:BMEIA-AT6.11.10/0289-VI.4/2014</eb:OrderID>
+      <eb:OrderID>604</eb:OrderID>
       <eb:ReferenceDate>2015-09-03</eb:ReferenceDate>
     </eb:OrderReference>
     <eb:Address>
@@ -43,7 +43,7 @@
       <eb:Town>Wien</eb:Town>
       <eb:ZIP>1014</eb:ZIP>
       <eb:Country eb:CountryCode="AT">Österreich</eb:Country>
-      <eb:Contact>Karl Gundinger</eb:Contact>
+      <eb:Contact>Karla Gundinger</eb:Contact>
     </eb:Address>
   </eb:InvoiceRecipient>
   <eb:Details>

@@ -14,8 +14,8 @@
       <eb:Town>Mauerbach</eb:Town>
       <eb:ZIP>3001</eb:ZIP>
       <eb:Country>AT</eb:Country>
-      <eb:Phone>+43 (699) 17925908</eb:Phone>
-      <eb:Email>josef@bogad.at</eb:Email>
+      <eb:Phone>+43 (1) 1234567</eb:Phone>
+      <eb:Email>info@example.org</eb:Email>
       <eb:Contact>Josef Bogad</eb:Contact>
     </eb:Address>
   </eb:Biller>

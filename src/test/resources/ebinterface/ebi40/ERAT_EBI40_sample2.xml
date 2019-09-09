@@ -1,1 +1,127 @@
-﻿<?xml version="1.0" encoding="utf-8"?><Invoice xmlns="http://www.ebinterface.at/schema/4p0/" xmlns:asx="http://www.sap.com/abapxml" xmlns:ext="http://www.ebinterface.at/schema/4p0/extensions/ext" xmlns:n1="http://www.ebinterface.at/schema/4p0/" xmlns:sv="http://www.ebinterface.at/schema/4p0/extensions/sv" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" n1:DocumentType="Invoice" n1:GeneratingSystem="SA2" n1:InvoiceCurrency="EUR" xsi:schemaLocation="http://www.ebinterface.at/schema/4p0/ http://www.ebinterface.at/schema/4p0/Invoice.xsd http://xsd.xicrypt.com/directory http://www.ebinterface.at/download/invoiceexample/2p1/directory.xsd"><InvoiceNumber>0090000098</InvoiceNumber><InvoiceDate>2015-04-25</InvoiceDate><Delivery><DeliveryID>0080000131</DeliveryID><Date>2015-04-25</Date><Address><Name>RAB-Warenempfänger</Name><Street>Warenempfängerstraße</Street><Town>Wien</Town><ZIP>1112</ZIP><Country n1:CountryCode="AT">Österreich</Country><Phone>+431234567890</Phone></Address></Delivery><Biller><VATIdentificationNumber>ATU16090307</VATIdentificationNumber><FurtherIdentification n1:IdentificationType="GZ">12345678901234</FurtherIdentification><ConsolidatorsBillerID>123038</ConsolidatorsBillerID><InvoiceRecipientsBillerID>1234567890</InvoiceRecipientsBillerID><Address><Name>Sn@P Consulting GmbH</Name><Street>Dannebergplatz</Street><Town>Wien</Town><ZIP>1030</ZIP><Country n1:CountryCode="AT">Österreich</Country><Phone>0043 1 123123</Phone><Email>e-Rechnung@so1.snapconsult.at</Email></Address></Biller><InvoiceRecipient><VATIdentificationNumber>ATU28609501</VATIdentificationNumber><BillersInvoiceRecipientID>112092</BillersInvoiceRecipientID><OrderReference><OrderID>4700005678</OrderID><ReferenceDate>2015-03-16</ReferenceDate></OrderReference><Address><Name>RAB-Rechnungsempfänger</Name><Street>Rechnungsempfängerstraße</Street><Town>Wien</Town><ZIP>1114</ZIP><Country>AT</Country><Email>rechnungsepfaenger@x.at</Email></Address></InvoiceRecipient><OrderingParty><VATIdentificationNumber>ATU88436709</VATIdentificationNumber><BillersOrderingPartyID>112092</BillersOrderingPartyID><OrderReference><OrderID>4700005678</OrderID></OrderReference><Address><Name>Sn@P Consulting GmbH</Name><Street>Dannebergplatz</Street><Town>Wien</Town><ZIP>1030</ZIP><Country n1:CountryCode="AT">Österreich</Country><Phone>0043 1 123123</Phone><Email>e-Rechnung@so1.snapconsult.at</Email></Address></OrderingParty><Details><ItemList><ListLineItem><PositionNumber>000010</PositionNumber><Description>AKINETON TBL 2MG 50 ST</Description><ArticleNumber>000000000090005639</ArticleNumber><Quantity n1:Unit="OP">3.000</Quantity><UnitPrice>1.39</UnitPrice><TaxRate>20.00</TaxRate><ReductionAndSurchargeListLineItemDetails/><BillersOrderReference><OrderID>4700005678</OrderID></BillersOrderReference><InvoiceRecipientsOrderReference><OrderID>4700005678</OrderID><OrderPositionNumber>000010</OrderPositionNumber></InvoiceRecipientsOrderReference><AdditionalInformation><Weight n1:Unit="KG">30.000 </Weight></AdditionalInformation><LineItemAmount>4.17</LineItemAmount></ListLineItem><ListLineItem><PositionNumber>000020</PositionNumber><Description>Testmaterial Verkaufsprozess</Description><ArticleNumber>000000000090062482</ArticleNumber><Quantity n1:Unit="ST">10.000</Quantity><UnitPrice>22.00</UnitPrice><TaxRate>20.00</TaxRate><ReductionAndSurchargeListLineItemDetails/><BillersOrderReference><OrderID>4700005678</OrderID></BillersOrderReference><InvoiceRecipientsOrderReference><OrderID>4700005678</OrderID><OrderPositionNumber>000020</OrderPositionNumber></InvoiceRecipientsOrderReference><AdditionalInformation><Weight n1:Unit="KG">0.000 </Weight></AdditionalInformation><LineItemAmount>220.00</LineItemAmount></ListLineItem></ItemList></Details><ReductionAndSurchargeDetails/><Tax><VAT><Item><TaxedAmount>224.17</TaxedAmount><TaxRate>20.0</TaxRate><Amount>44.83</Amount></Item></VAT></Tax><TotalGrossAmount>269.00</TotalGrossAmount><PaymentMethod xsi:type="DirectDebitType"><Comment>Test</Comment></PaymentMethod><PresentationDetails/></Invoice>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Invoice xmlns="http://www.ebinterface.at/schema/4p0/" xmlns:asx="http://www.sap.com/abapxml"
+  xmlns:ext="http://www.ebinterface.at/schema/4p0/extensions/ext" xmlns:n1="http://www.ebinterface.at/schema/4p0/"
+  xmlns:sv="http://www.ebinterface.at/schema/4p0/extensions/sv" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  n1:DocumentType="Invoice" n1:GeneratingSystem="SA2" n1:InvoiceCurrency="EUR"
+  xsi:schemaLocation="http://www.ebinterface.at/schema/4p0/ http://www.ebinterface.at/schema/4p0/Invoice.xsd http://xsd.xicrypt.com/directory http://www.ebinterface.at/download/invoiceexample/2p1/directory.xsd">
+  <InvoiceNumber>0090000098</InvoiceNumber>
+  <InvoiceDate>2015-04-25</InvoiceDate>
+  <Delivery>
+    <DeliveryID>0080000131</DeliveryID>
+    <Date>2015-04-25</Date>
+    <Address>
+      <Name>RAB-Warenempfänger</Name>
+      <Street>Warenempfängerstraße</Street>
+      <Town>Wien</Town>
+      <ZIP>1112</ZIP>
+      <Country n1:CountryCode="AT">Österreich</Country>
+      <Phone>+431234567890</Phone>
+    </Address>
+  </Delivery>
+  <Biller>
+    <VATIdentificationNumber>ATU16090307</VATIdentificationNumber>
+    <FurtherIdentification n1:IdentificationType="GZ">12345678901234</FurtherIdentification>
+    <ConsolidatorsBillerID>123038</ConsolidatorsBillerID>
+    <InvoiceRecipientsBillerID>1234567890</InvoiceRecipientsBillerID>
+    <Address>
+      <Name>Consulting GmbH</Name>
+      <Street>Dannebergplatz</Street>
+      <Town>Wien</Town>
+      <ZIP>1030</ZIP>
+      <Country n1:CountryCode="AT">Österreich</Country>
+      <Phone>0043 1 123123</Phone>
+      <Email>e-Rechnung@example.org</Email>
+    </Address>
+  </Biller>
+  <InvoiceRecipient>
+    <VATIdentificationNumber>ATU28609501</VATIdentificationNumber>
+    <BillersInvoiceRecipientID>112092</BillersInvoiceRecipientID>
+    <OrderReference>
+      <OrderID>4700005678</OrderID>
+      <ReferenceDate>2015-03-16</ReferenceDate>
+    </OrderReference>
+    <Address>
+      <Name>RAB-Rechnungsempfänger</Name>
+      <Street>Rechnungsempfängerstraße</Street>
+      <Town>Wien</Town>
+      <ZIP>1114</ZIP>
+      <Country>AT</Country>
+      <Email>rechnungsepfaenger@x.at</Email>
+    </Address>
+  </InvoiceRecipient>
+  <OrderingParty>
+    <VATIdentificationNumber>ATU88436709</VATIdentificationNumber>
+    <BillersOrderingPartyID>112092</BillersOrderingPartyID>
+    <OrderReference>
+      <OrderID>4700005678</OrderID>
+    </OrderReference>
+    <Address>
+      <Name>Consulting GmbH</Name>
+      <Street>Dannebergplatz</Street>
+      <Town>Wien</Town>
+      <ZIP>1030</ZIP>
+      <Country n1:CountryCode="AT">Österreich</Country>
+      <Phone>0043 1 123123</Phone>
+      <Email>example@example.org</Email>
+    </Address>
+  </OrderingParty>
+  <Details>
+    <ItemList>
+      <ListLineItem>
+        <PositionNumber>000010</PositionNumber>
+        <Description>AKINETON TBL 2MG 50 ST</Description>
+        <ArticleNumber>000000000090005639</ArticleNumber>
+        <Quantity n1:Unit="OP">3.000</Quantity>
+        <UnitPrice>1.39</UnitPrice>
+        <TaxRate>20.00</TaxRate>
+        <ReductionAndSurchargeListLineItemDetails />
+        <BillersOrderReference>
+          <OrderID>4700005678</OrderID>
+        </BillersOrderReference>
+        <InvoiceRecipientsOrderReference>
+          <OrderID>4700005678</OrderID>
+          <OrderPositionNumber>000010</OrderPositionNumber>
+        </InvoiceRecipientsOrderReference>
+        <AdditionalInformation>
+          <Weight n1:Unit="KG">30.000 </Weight>
+        </AdditionalInformation>
+        <LineItemAmount>4.17</LineItemAmount>
+      </ListLineItem>
+      <ListLineItem>
+        <PositionNumber>000020</PositionNumber>
+        <Description>Testmaterial Verkaufsprozess</Description>
+        <ArticleNumber>000000000090062482</ArticleNumber>
+        <Quantity n1:Unit="ST">10.000</Quantity>
+        <UnitPrice>22.00</UnitPrice>
+        <TaxRate>20.00</TaxRate>
+        <ReductionAndSurchargeListLineItemDetails />
+        <BillersOrderReference>
+          <OrderID>4700005678</OrderID>
+        </BillersOrderReference>
+        <InvoiceRecipientsOrderReference>
+          <OrderID>4700005678</OrderID>
+          <OrderPositionNumber>000020</OrderPositionNumber>
+        </InvoiceRecipientsOrderReference>
+        <AdditionalInformation>
+          <Weight n1:Unit="KG">0.000 </Weight>
+        </AdditionalInformation>
+        <LineItemAmount>220.00</LineItemAmount>
+      </ListLineItem>
+    </ItemList>
+  </Details>
+  <ReductionAndSurchargeDetails />
+  <Tax>
+    <VAT>
+      <Item>
+        <TaxedAmount>224.17</TaxedAmount>
+        <TaxRate>20.0</TaxRate>
+        <Amount>44.83</Amount>
+      </Item>
+    </VAT>
+  </Tax>
+  <TotalGrossAmount>269.00</TotalGrossAmount>
+  <PaymentMethod xsi:type="DirectDebitType">
+    <Comment>Test</Comment>
+  </PaymentMethod>
+  <PresentationDetails />
+</Invoice>

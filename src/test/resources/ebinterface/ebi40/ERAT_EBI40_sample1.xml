@@ -1,1 +1,107 @@
-﻿<?xml version="1.0" encoding="utf-8"?><Invoice xmlns="http://www.ebinterface.at/schema/4p0/" xmlns:asx="http://www.sap.com/abapxml" xmlns:ext="http://www.ebinterface.at/schema/4p0/extensions/ext" xmlns:n1="http://www.ebinterface.at/schema/4p0/" xmlns:sv="http://www.ebinterface.at/schema/4p0/extensions/sv" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" n1:DocumentType="Invoice" n1:GeneratingSystem="SA2" n1:InvoiceCurrency="EUR" xsi:schemaLocation="http://www.ebinterface.at/schema/4p0/ http://www.ebinterface.at/schema/4p0/Invoice.xsd http://xsd.xicrypt.com/directory http://www.ebinterface.at/download/invoiceexample/2p1/directory.xsd"><InvoiceNumber>0090000097</InvoiceNumber><InvoiceDate>2015-03-23</InvoiceDate><Delivery><DeliveryID>0080000131</DeliveryID><Date>2015-03-23</Date><Address><Name>RAB-Warenempfänger</Name><Street>Warenempfängerstraße</Street><Town>Wien</Town><ZIP>1112</ZIP><Country n1:CountryCode="AT">Österreich</Country><Phone>+431234567890</Phone></Address></Delivery><Biller><VATIdentificationNumber>ATU16090307</VATIdentificationNumber><FurtherIdentification n1:IdentificationType="GZ">12345678901234</FurtherIdentification><ConsolidatorsBillerID>123038</ConsolidatorsBillerID><InvoiceRecipientsBillerID>1234567890</InvoiceRecipientsBillerID><Address><Name>Sn@P Consulting GmbH</Name><Street>Dannebergplatz</Street><Town>Wien</Town><ZIP>1030</ZIP><Country n1:CountryCode="AT">Österreich</Country><Phone>0043 1 123123</Phone><Email>e-Rechnung@so1.snapconsult.at</Email></Address></Biller><InvoiceRecipient><VATIdentificationNumber>ATU28609501</VATIdentificationNumber><BillersInvoiceRecipientID>112092</BillersInvoiceRecipientID><OrderReference><OrderID>4700005678</OrderID><ReferenceDate>2015-03-16</ReferenceDate></OrderReference><Address><Name>RAB-Rechnungsempfänger</Name><Street>Rechnungsempfängerstraße</Street><Town>Wien</Town><ZIP>1114</ZIP><Country>AT</Country><Email>rechnungsepfaenger@x.at</Email></Address></InvoiceRecipient><OrderingParty><VATIdentificationNumber>ATU88436709</VATIdentificationNumber><BillersOrderingPartyID>112092</BillersOrderingPartyID><OrderReference><OrderID>4700005678</OrderID></OrderReference><Address><Name>Sn@P Consulting GmbH</Name><Street>Dannebergplatz</Street><Town>Wien</Town><ZIP>1030</ZIP><Country n1:CountryCode="AT">Österreich</Country><Phone>0043 1 123123</Phone><Email>e-Rechnung@so1.snapconsult.at</Email></Address></OrderingParty><Details><ItemList><ListLineItem><PositionNumber>000030</PositionNumber><Description>Stuhl &quot;blau&quot; Modell KK</Description><ArticleNumber>000000000090062533</ArticleNumber><Quantity n1:Unit="KAR">1.000</Quantity><UnitPrice>73.00</UnitPrice><TaxRate>20.00</TaxRate><ReductionAndSurchargeListLineItemDetails/><BillersOrderReference><OrderID>4700005678</OrderID></BillersOrderReference><InvoiceRecipientsOrderReference><OrderID>4700005678</OrderID><OrderPositionNumber>000030</OrderPositionNumber></InvoiceRecipientsOrderReference><AdditionalInformation><Weight n1:Unit="KG">7.650 </Weight></AdditionalInformation><LineItemAmount>73.00</LineItemAmount></ListLineItem></ItemList></Details><ReductionAndSurchargeDetails/><Tax><VAT><Item><TaxedAmount>73.00</TaxedAmount><TaxRate>20.0</TaxRate><Amount>14.60</Amount></Item></VAT></Tax><TotalGrossAmount>87.60</TotalGrossAmount><PaymentMethod xsi:type="DirectDebitType"><Comment>Test</Comment></PaymentMethod><PresentationDetails/></Invoice>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Invoice xmlns="http://www.ebinterface.at/schema/4p0/" xmlns:asx="http://www.sap.com/abapxml"
+  xmlns:ext="http://www.ebinterface.at/schema/4p0/extensions/ext" xmlns:n1="http://www.ebinterface.at/schema/4p0/"
+  xmlns:sv="http://www.ebinterface.at/schema/4p0/extensions/sv" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  n1:DocumentType="Invoice" n1:GeneratingSystem="SA2" n1:InvoiceCurrency="EUR"
+  xsi:schemaLocation="http://www.ebinterface.at/schema/4p0/ http://www.ebinterface.at/schema/4p0/Invoice.xsd http://xsd.xicrypt.com/directory http://www.ebinterface.at/download/invoiceexample/2p1/directory.xsd">
+  <InvoiceNumber>0090000097</InvoiceNumber>
+  <InvoiceDate>2015-03-23</InvoiceDate>
+  <Delivery>
+    <DeliveryID>0080000131</DeliveryID>
+    <Date>2015-03-23</Date>
+    <Address>
+      <Name>RAB-Warenempfänger</Name>
+      <Street>Warenempfängerstraße</Street>
+      <Town>Wien</Town>
+      <ZIP>1112</ZIP>
+      <Country n1:CountryCode="AT">Österreich</Country>
+      <Phone>+431234567890</Phone>
+    </Address>
+  </Delivery>
+  <Biller>
+    <VATIdentificationNumber>ATU16090307</VATIdentificationNumber>
+    <FurtherIdentification n1:IdentificationType="GZ">12345678901234</FurtherIdentification>
+    <ConsolidatorsBillerID>123038</ConsolidatorsBillerID>
+    <InvoiceRecipientsBillerID>1234567890</InvoiceRecipientsBillerID>
+    <Address>
+      <Name>Consulting GmbH</Name>
+      <Street>Dannebergplatz</Street>
+      <Town>Wien</Town>
+      <ZIP>1030</ZIP>
+      <Country n1:CountryCode="AT">Österreich</Country>
+      <Phone>0043 1 123123</Phone>
+      <Email>e-Rechnung@example.org</Email>
+    </Address>
+  </Biller>
+  <InvoiceRecipient>
+    <VATIdentificationNumber>ATU28609501</VATIdentificationNumber>
+    <BillersInvoiceRecipientID>112092</BillersInvoiceRecipientID>
+    <OrderReference>
+      <OrderID>4700005678</OrderID>
+      <ReferenceDate>2015-03-16</ReferenceDate>
+    </OrderReference>
+    <Address>
+      <Name>RAB-Rechnungsempfänger</Name>
+      <Street>Rechnungsempfängerstraße</Street>
+      <Town>Wien</Town>
+      <ZIP>1114</ZIP>
+      <Country>AT</Country>
+      <Email>rechnungsepfaenger@x.at</Email>
+    </Address>
+  </InvoiceRecipient>
+  <OrderingParty>
+    <VATIdentificationNumber>ATU88436709</VATIdentificationNumber>
+    <BillersOrderingPartyID>112092</BillersOrderingPartyID>
+    <OrderReference>
+      <OrderID>4700005678</OrderID>
+    </OrderReference>
+    <Address>
+      <Name>Consulting GmbH</Name>
+      <Street>Dannebergplatz</Street>
+      <Town>Wien</Town>
+      <ZIP>1030</ZIP>
+      <Country n1:CountryCode="AT">Österreich</Country>
+      <Phone>0043 1 123123</Phone>
+      <Email>example@example.org</Email>
+    </Address>
+  </OrderingParty>
+  <Details>
+    <ItemList>
+      <ListLineItem>
+        <PositionNumber>000030</PositionNumber>
+        <Description>Stuhl &quot;blau&quot; Modell KK</Description>
+        <ArticleNumber>000000000090062533</ArticleNumber>
+        <Quantity n1:Unit="KAR">1.000</Quantity>
+        <UnitPrice>73.00</UnitPrice>
+        <TaxRate>20.00</TaxRate>
+        <ReductionAndSurchargeListLineItemDetails />
+        <BillersOrderReference>
+          <OrderID>4700005678</OrderID>
+        </BillersOrderReference>
+        <InvoiceRecipientsOrderReference>
+          <OrderID>4700005678</OrderID>
+          <OrderPositionNumber>000030</OrderPositionNumber>
+        </InvoiceRecipientsOrderReference>
+        <AdditionalInformation>
+          <Weight n1:Unit="KG">7.650 </Weight>
+        </AdditionalInformation>
+        <LineItemAmount>73.00</LineItemAmount>
+      </ListLineItem>
+    </ItemList>
+  </Details>
+  <ReductionAndSurchargeDetails />
+  <Tax>
+    <VAT>
+      <Item>
+        <TaxedAmount>73.00</TaxedAmount>
+        <TaxRate>20.0</TaxRate>
+        <Amount>14.60</Amount>
+      </Item>
+    </VAT>
+  </Tax>
+  <TotalGrossAmount>87.60</TotalGrossAmount>
+  <PaymentMethod xsi:type="DirectDebitType">
+    <Comment>Test</Comment>
+  </PaymentMethod>
+  <PresentationDetails />
+</Invoice>

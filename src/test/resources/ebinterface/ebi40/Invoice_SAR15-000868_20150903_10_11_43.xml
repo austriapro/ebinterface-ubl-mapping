@@ -26,15 +26,15 @@
       <eb:Town>Eisenstadt</eb:Town>
       <eb:ZIP>7000</eb:ZIP>
       <eb:Country eb:CountryCode="AT">Österreich</eb:Country>
-      <eb:Phone>+43 590104600</eb:Phone>
-      <eb:Email>nadine.kopfensteiner@koegl.at</eb:Email>
+      <eb:Phone>+43 50 1234567</eb:Phone>
+      <eb:Email>example@example.org</eb:Email>
     </eb:Address>
   </eb:Biller>
   <eb:InvoiceRecipient>
     <eb:VATIdentificationNumber />
     <eb:BillersInvoiceRecipientID>11004400</eb:BillersInvoiceRecipientID>
     <eb:OrderReference>
-      <eb:OrderID>N56:637B-150727-00001</eb:OrderID>
+      <eb:OrderID>N56</eb:OrderID>
       <eb:ReferenceDate>2015-09-03</eb:ReferenceDate>
     </eb:OrderReference>
     <eb:Address>

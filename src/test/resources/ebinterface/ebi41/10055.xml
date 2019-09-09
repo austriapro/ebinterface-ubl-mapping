@@ -29,7 +29,7 @@
       <eb:Town>Unterpremstaetten</eb:Town>
       <eb:ZIP>8141</eb:ZIP>
       <eb:Country eb:CountryCode="AT">OEsterreich</eb:Country>
-      <eb:Email>info@damedv.at</eb:Email>
+      <eb:Email>info@example.org</eb:Email>
       <eb:Contact>Werner Dam</eb:Contact>
       <eb:AddressExtension>Software - Schulung - Organisation</eb:AddressExtension>
    </eb:Address>

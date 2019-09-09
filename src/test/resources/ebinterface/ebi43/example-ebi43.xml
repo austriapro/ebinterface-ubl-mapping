@@ -53,6 +53,7 @@ THE SOFTWARE.
       <eb:Town>Graz</eb:Town>
       <eb:ZIP>8010</eb:ZIP>
       <eb:Country eb:CountryCode="AT">Österreich</eb:Country>
+      <eb:Phone>+43 1 1234567</eb:Phone>
       <!-- An die folgende E-Mail-Adresse werden die E-Mails gesendet: -->
       <eb:Email>kontakt@example.org</eb:Email>
       <eb:Contact>Hr. Max Mustermann</eb:Contact>
