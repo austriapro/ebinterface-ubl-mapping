@@ -279,7 +279,7 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
 
     // Handle Delivery
     {
-      final DeliveryType aUBLDelivery = convertDelivery (aEbiDoc.getDelivery ());
+      final DeliveryType aUBLDelivery = convertDelivery (aEbiDoc.getDelivery (), m_aContentLocale);
       if (aUBLDelivery != null)
       {
         // Remember in invoice
@@ -296,7 +296,7 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
       if (aEbiBiller != null)
       {
         final SupplierPartyType aUBLSupplier = new SupplierPartyType ();
-        PartyType aUBLParty = convertParty (aEbiBiller.getAddress ());
+        PartyType aUBLParty = convertParty (aEbiBiller.getAddress (), m_aContentLocale);
         if (StringHelper.hasText (aEbiBiller.getVATIdentificationNumber ()))
         {
           if (aUBLParty == null)
@@ -342,7 +342,7 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
       if (aEbiIR != null)
       {
         final CustomerPartyType aUBLCustomer = new CustomerPartyType ();
-        PartyType aUBLParty = convertParty (aEbiIR.getAddress ());
+        PartyType aUBLParty = convertParty (aEbiIR.getAddress (), m_aContentLocale);
         if (StringHelper.hasText (aEbiIR.getVATIdentificationNumber ()))
         {
           if (aUBLParty == null)
@@ -397,7 +397,7 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
       if (aEbiOrdering != null)
       {
         final CustomerPartyType aUBLCustomer = new CustomerPartyType ();
-        PartyType aUBLParty = convertParty (aEbiOrdering.getAddress ());
+        PartyType aUBLParty = convertParty (aEbiOrdering.getAddress (), m_aContentLocale);
         if (StringHelper.hasText (aEbiOrdering.getVATIdentificationNumber ()))
         {
           if (aUBLParty == null)
@@ -464,7 +464,7 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
         aUBLLine.setPrice (aUBLPrice);
 
         if (aEbiItem.getDelivery () != null)
-          aUBLLine.addDelivery (convertDelivery (aEbiItem.getDelivery ()));
+          aUBLLine.addDelivery (convertDelivery (aEbiItem.getDelivery (), m_aContentLocale));
 
         {
           final ItemType aUBLItem = new ItemType ();

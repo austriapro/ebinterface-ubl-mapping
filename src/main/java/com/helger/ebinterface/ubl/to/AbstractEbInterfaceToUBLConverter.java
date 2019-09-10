@@ -22,10 +22,14 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
+import com.helger.commons.locale.country.CountryCache;
+import com.helger.commons.string.StringHelper;
 import com.helger.ebinterface.codelist.ETaxCategoryCode;
 import com.helger.ebinterface.ubl.AbstractConverter;
+import com.helger.ebinterface.ubl.helper.MultilingualCountryCache;
 import com.helger.peppol.codelist.ETaxSchemeID;
 
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CountryType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.ItemPropertyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxCategoryType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxSchemeType;
@@ -39,6 +43,7 @@ import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
 @Immutable
 public abstract class AbstractEbInterfaceToUBLConverter extends AbstractConverter
 {
+
   /**
    * Constructor
    *
@@ -104,6 +109,41 @@ public abstract class AbstractEbInterfaceToUBLConverter extends AbstractConverte
     final ItemPropertyType ret = new ItemPropertyType ();
     ret.setName (sName);
     ret.setValue (sValue);
+    return ret;
+  }
+
+  @Nullable
+  protected static final CountryType createCountry (@Nullable final String sCode,
+                                                    @Nullable final String sName,
+                                                    @Nonnull final Locale aContentLocale)
+  {
+    final String sRealCode;
+    final String sRealName;
+    if (StringHelper.hasNoText (sCode))
+    {
+      if (StringHelper.hasNoText (sName))
+        return null;
+
+      // Find code from name
+      sRealCode = MultilingualCountryCache.getRealCountryCode (sName);
+      sRealName = sName;
+    }
+    else
+      if (StringHelper.hasNoText (sName))
+      {
+        // Find name from code
+        sRealCode = sCode;
+        sRealName = CountryCache.getInstance ().getCountry (sRealCode).getDisplayCountry (aContentLocale);
+      }
+      else
+      {
+        sRealCode = sCode;
+        sRealName = sName;
+      }
+
+    final CountryType ret = new CountryType ();
+    ret.setIdentificationCode (sRealCode);
+    ret.setName (sRealName);
     return ret;
   }
 }

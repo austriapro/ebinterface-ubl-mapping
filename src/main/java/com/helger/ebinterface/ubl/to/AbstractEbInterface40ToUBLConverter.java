@@ -35,7 +35,6 @@ import com.helger.xsds.ccts.cct.schemamodule.CodeType;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AddressType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.ContactType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CountryType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DeliveryType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyNameType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyType;
@@ -107,7 +106,8 @@ public abstract class AbstractEbInterface40ToUBLConverter extends AbstractEbInte
   }
 
   @Nullable
-  protected static AddressType convertAddress (@Nullable final Ebi40AddressType aEbiAddress)
+  protected static AddressType convertAddress (@Nullable final Ebi40AddressType aEbiAddress,
+                                               @Nonnull final Locale aContentLocale)
   {
     if (aEbiAddress == null)
       return null;
@@ -135,18 +135,20 @@ public abstract class AbstractEbInterface40ToUBLConverter extends AbstractEbInte
 
     if (aEbiAddress.getCountry () != null)
     {
-      final CountryType aUBLCountry = new CountryType ();
-      if (aEbiAddress.getCountry ().getCountryCode () != null)
-        aUBLCountry.setIdentificationCode (aEbiAddress.getCountry ().getCountryCode ().value ());
-      aUBLCountry.setName (aEbiAddress.getCountry ().getContent ());
-      ret.setCountry (aUBLCountry);
+      ret.setCountry (createCountry (aEbiAddress.getCountry ().getCountryCode () != null ? aEbiAddress.getCountry ()
+                                                                                                      .getCountryCode ()
+                                                                                                      .value ()
+                                                                                         : null,
+                                     aEbiAddress.getCountry ().getContent (),
+                                     aContentLocale));
     }
 
     return ret;
   }
 
   @Nullable
-  protected static PartyType convertParty (@Nullable final Ebi40AddressType aEbiAddress)
+  protected static PartyType convertParty (@Nullable final Ebi40AddressType aEbiAddress,
+                                           @Nonnull final Locale aContentLocale)
   {
     if (aEbiAddress == null)
       return null;
@@ -179,7 +181,7 @@ public abstract class AbstractEbInterface40ToUBLConverter extends AbstractEbInte
     if (bHasData)
       ret.setContact (aUBLContact);
 
-    ret.setPostalAddress (convertAddress (aEbiAddress));
+    ret.setPostalAddress (convertAddress (aEbiAddress, aContentLocale));
 
     if (StringHelper.hasText (aEbiAddress.getSalutation ()))
     {
@@ -192,7 +194,8 @@ public abstract class AbstractEbInterface40ToUBLConverter extends AbstractEbInte
   }
 
   @Nullable
-  protected static DeliveryType convertDelivery (@Nullable final Ebi40DeliveryType aEbiDelivery)
+  protected static DeliveryType convertDelivery (@Nullable final Ebi40DeliveryType aEbiDelivery,
+                                                 @Nonnull final Locale aContentLocale)
   {
     if (aEbiDelivery == null)
       return null;
@@ -211,8 +214,8 @@ public abstract class AbstractEbInterface40ToUBLConverter extends AbstractEbInte
         aUBLPeriod.setEndDate (aEbiDelivery.getPeriod ().getToDate ());
         aUBLDelivery.setRequestedDeliveryPeriod (aUBLPeriod);
       }
-    aUBLDelivery.setDeliveryAddress (convertAddress (aEbiDelivery.getAddress ()));
-    aUBLDelivery.setDeliveryParty (convertParty (aEbiDelivery.getAddress ()));
+    aUBLDelivery.setDeliveryAddress (convertAddress (aEbiDelivery.getAddress (), aContentLocale));
+    aUBLDelivery.setDeliveryParty (convertParty (aEbiDelivery.getAddress (), aContentLocale));
     return aUBLDelivery;
   }
 }
