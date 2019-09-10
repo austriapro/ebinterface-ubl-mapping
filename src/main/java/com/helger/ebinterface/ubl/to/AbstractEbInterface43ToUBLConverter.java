@@ -58,8 +58,7 @@ public abstract class AbstractEbInterface43ToUBLConverter extends AbstractEbInte
    * @param aDisplayLocale
    *        The locale for error messages. May not be <code>null</code>.
    * @param aContentLocale
-   *        The locale for the created ebInterface files. May not be
-   *        <code>null</code>.
+   *        The locale for the created UBL files. May not be <code>null</code>.
    */
   public AbstractEbInterface43ToUBLConverter (@Nonnull final Locale aDisplayLocale,
                                               @Nonnull final Locale aContentLocale)

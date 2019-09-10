@@ -75,10 +75,10 @@ public abstract class AbstractConverter
    * Constructor
    *
    * @param aDisplayLocale
-   *        The locale for error messages. May not be <code>null</code>.
-   * @param aContentLocale
-   *        The locale for the created ebInterface files. May not be
+   *        The locale for error messages (the locale of the user). May not be
    *        <code>null</code>.
+   * @param aContentLocale
+   *        The locale for the created payload. May not be <code>null</code>.
    */
   public AbstractConverter (@Nonnull final Locale aDisplayLocale, @Nonnull final Locale aContentLocale)
   {

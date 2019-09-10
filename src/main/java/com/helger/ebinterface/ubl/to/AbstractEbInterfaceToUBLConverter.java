@@ -50,8 +50,7 @@ public abstract class AbstractEbInterfaceToUBLConverter extends AbstractConverte
    * @param aDisplayLocale
    *        The locale for error messages. May not be <code>null</code>.
    * @param aContentLocale
-   *        The locale for the created ebInterface files. May not be
-   *        <code>null</code>.
+   *        The locale for the created UBL files. May not be <code>null</code>.
    */
   public AbstractEbInterfaceToUBLConverter (@Nonnull final Locale aDisplayLocale, @Nonnull final Locale aContentLocale)
   {
@@ -126,7 +125,7 @@ public abstract class AbstractEbInterfaceToUBLConverter extends AbstractConverte
 
       // Find code from name
       sRealCode = MultilingualCountryCache.getRealCountryCode (sName);
-      sRealName = sName;
+      sRealName = CountryCache.getInstance ().getCountry (sRealCode).getDisplayCountry (aContentLocale);
     }
     else
       if (StringHelper.hasNoText (sName))
