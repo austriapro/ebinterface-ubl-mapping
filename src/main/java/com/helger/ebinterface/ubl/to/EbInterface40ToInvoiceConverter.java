@@ -633,7 +633,7 @@ public class EbInterface40ToInvoiceConverter extends AbstractEbInterface40ToUBLC
       for (final Ebi40OtherTaxType aEbiOtherTax : aEbiDoc.getTax ().getOtherTax ())
       {
         final TaxSubtotalType aUBLTaxSubtotal = new TaxSubtotalType ();
-        aUBLTaxSubtotal.setTaxableAmount (aEbiOtherTax.getAmount ()).setCurrencyID (sCurrency);
+        aUBLTaxSubtotal.setTaxAmount (aEbiOtherTax.getAmount ()).setCurrencyID (sCurrency);
 
         final TaxCategoryType aUBLTaxCategory = createTaxCategoryOther ();
         if (StringHelper.hasText (aEbiOtherTax.getComment ()))

@@ -668,7 +668,7 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
         aUBLLine.setLineExtensionAmount (aEbiItem.getLineItemAmount ()).setCurrencyID (sCurrency);
 
         final PriceType aUBLPrice = new PriceType ();
-        aUBLPrice.setPriceAmount (aEbiItem.getLineItemAmount ());
+        aUBLPrice.setPriceAmount (aEbiItem.getLineItemAmount ()).setCurrencyID (sCurrency);
         aUBLPrice.setBaseQuantity (BigDecimal.ONE);
         aUBLLine.setPrice (aUBLPrice);
 
@@ -805,7 +805,7 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
       for (final Ebi43OtherTaxType aEbiOtherTax : aEbiDoc.getTax ().getOtherTax ())
       {
         final TaxSubtotalType aUBLTaxSubtotal = new TaxSubtotalType ();
-        aUBLTaxSubtotal.setTaxableAmount (aEbiOtherTax.getAmount ()).setCurrencyID (sCurrency);
+        aUBLTaxSubtotal.setTaxAmount (aEbiOtherTax.getAmount ()).setCurrencyID (sCurrency);
 
         final TaxCategoryType aUBLTaxCategory = createTaxCategoryOther ();
         if (StringHelper.hasText (aEbiOtherTax.getComment ()))
