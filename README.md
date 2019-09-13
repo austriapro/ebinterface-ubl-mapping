@@ -8,7 +8,7 @@ The reason why this project is not in the [ebinterface-mappings](https://github.
 
 # News and noteworthy
 
-* v4.0.0 - work in progress
+* v4.0.0 - 2019-09-13
     * Added code to convert UBL Invoice/CreditNote to ebInterface 4.0, 4.1 and 5.0
     * Added code to convert ebInterface 4.0, 4.1 and 5.0 to UBL Invoice
     * Added check that order reference is mandatory if an order position number is used
@@ -64,7 +64,7 @@ Add the following to your pom.xml to use this artifact:
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>ebinterface-ubl-mapping</artifactId>
-  <version>3.0.8</version>
+  <version>4.0.0</version>
 </dependency>
 ```
 
