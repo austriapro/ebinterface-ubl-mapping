@@ -43,7 +43,6 @@ import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
 @Immutable
 public abstract class AbstractEbInterfaceToUBLConverter extends AbstractConverter
 {
-
   /**
    * Constructor
    *
@@ -125,14 +124,22 @@ public abstract class AbstractEbInterfaceToUBLConverter extends AbstractConverte
 
       // Find code from name
       sRealCode = MultilingualCountryCache.getRealCountryCode (sName);
-      sRealName = CountryCache.getInstance ().getCountry (sRealCode).getDisplayCountry (aContentLocale);
+      final Locale aResolvedCountry = CountryCache.getInstance ().getCountry (sRealCode);
+      if (aResolvedCountry != null)
+        sRealName = aResolvedCountry.getDisplayCountry (aContentLocale);
+      else
+        sRealName = sName;
     }
     else
       if (StringHelper.hasNoText (sName))
       {
         // Find name from code
         sRealCode = sCode;
-        sRealName = CountryCache.getInstance ().getCountry (sRealCode).getDisplayCountry (aContentLocale);
+        final Locale aResolvedCountry = CountryCache.getInstance ().getCountry (sRealCode);
+        if (aResolvedCountry != null)
+          sRealName = aResolvedCountry.getDisplayCountry (aContentLocale);
+        else
+          sRealName = sCode;
       }
       else
       {
