@@ -8,7 +8,7 @@ The reason why this project is not in the [ebinterface-mappings](https://github.
 
 # News and noteworthy
 
-* v4.0.1 - work in progress
+* v4.0.1 - 2019-09-18
     * Fixed potential NPE in county code mapping from ebInterface to UBL
 * v4.0.0 - 2019-09-13
     * Added code to convert UBL Invoice/CreditNote to ebInterface 4.0, 4.1 and 5.0
@@ -66,7 +66,7 @@ Add the following to your pom.xml to use this artifact:
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>ebinterface-ubl-mapping</artifactId>
-  <version>4.0.0</version>
+  <version>4.0.1</version>
 </dependency>
 ```
 
