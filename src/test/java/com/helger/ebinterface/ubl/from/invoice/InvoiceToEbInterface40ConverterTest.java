@@ -66,7 +66,8 @@ public final class InvoiceToEbInterface40ConverterTest
                                                                                    "payment-terms.xml",
                                                                                    "test-at-gov-new-creditorid.xml",
                                                                                    "test-at-gov-reverse-charge.xml",
-                                                                                   "test-at-gov.xml");
+                                                                                   "test-at-gov.xml",
+                                                                                   "testbed-test-invoice.xml");
 
   @Before
   public void onInit ()
