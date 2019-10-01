@@ -4,10 +4,14 @@ Mapping ebInterface 4.x/5.0 from and to UBL 2.1.
 
 Author: Philip Helger
 
-The reason why this project is not in the [ebinterface-mappings](https://github.com/austriapro/ebinterface-mappings) project is the totally different software stack used and the requirement of this project to be published on Maven central. Therefore the group name is still "com.helger" as I only have rights to publish below this tree node to Maven central.
+The reason why this project is not in the [ebinterface-mappings](https://github.com/austriapro/ebinterface-mappings) project is the totally different software stack used and the requirement of this project to be published on Maven central. 
+Since v4.5.0 the Maven group ID changed to `at.austriapro` - before that, the group ID was "com.helger" because I only had rights to publish below this name to Maven central.
 
 # News and noteworthy
 
+* v4.5.0 - 2019-10-01
+    * Changed all package names to `at.austriapro`
+    * Changed the Maven group `at.austriapro`
 * v4.0.1 - 2019-09-18
     * Fixed potential NPE in county code mapping from ebInterface to UBL
 * v4.0.0 - 2019-09-13
@@ -61,6 +65,16 @@ Additionally Eclipse project files for the latest Eclipse version are contained.
 # Maven usage
 
 Add the following to your pom.xml to use this artifact:
+
+```xml
+<dependency>
+  <groupId>at.austriapro</groupId>
+  <artifactId>ebinterface-ubl-mapping</artifactId>
+  <version>4.5.0</version>
+</dependency>
+```
+
+Up to and including v4.0.1:
 
 ```xml
 <dependency>

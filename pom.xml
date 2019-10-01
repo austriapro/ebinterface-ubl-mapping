@@ -24,8 +24,9 @@
     <artifactId>parent-pom</artifactId>
     <version>1.10.9</version>
   </parent>
+  <groupId>at.austriapro</groupId>
   <artifactId>ebinterface-ubl-mapping</artifactId>
-  <version>4.0.2-SNAPSHOT</version>
+  <version>4.5.0-SNAPSHOT</version>
   <packaging>bundle</packaging>
   <name>ebinterface-ubl-mapping</name>
   <inceptionYear>2010</inceptionYear>
@@ -154,8 +155,8 @@
         <extensions>true</extensions>
         <configuration>
           <instructions>
-            <Automatic-Module-Name>com.helger.ebinterface.ubl</Automatic-Module-Name>
-            <Export-Package>com.helger.ebinterface.ubl.*</Export-Package>
+            <Automatic-Module-Name>at.austriapro.ebinterface.ubl</Automatic-Module-Name>
+            <Export-Package>at.austriapro.ebinterface.ubl.*</Export-Package>
             <Import-Package>!javax.annotation.*,*</Import-Package>
           </instructions>
         </configuration>
