@@ -30,7 +30,9 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 
 import com.helger.commons.collection.impl.CommonsArrayList;
+import com.helger.commons.collection.impl.CommonsHashSet;
 import com.helger.commons.collection.impl.ICommonsList;
+import com.helger.commons.collection.impl.ICommonsSet;
 import com.helger.commons.error.level.EErrorLevel;
 import com.helger.commons.error.list.ErrorList;
 import com.helger.commons.io.file.FileOperations;
@@ -44,7 +46,6 @@ import com.helger.ubl21.UBL21Reader;
 
 import at.austriapro.ebinterface.ubl.from.MockEbi50Marshaller;
 import at.austriapro.ebinterface.ubl.from.ToEbinterfaceSettings;
-import at.austriapro.ebinterface.ubl.from.invoice.InvoiceToEbInterface50Converter;
 import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
 
 /**
@@ -57,6 +58,8 @@ public final class InvoiceToEbInterface50ConverterTest
   private static final Logger LOGGER = LoggerFactory.getLogger (InvoiceToEbInterface50ConverterTest.class);
   private static final String TARGET_FOLDER = "generated-ebi50-files/";
 
+  private static final ICommonsSet <String> IGNORED_FILES = new CommonsHashSet <> ("test-paymentmeans-code-49.xml");
+
   @Before
   public void onInit ()
   {
@@ -68,7 +71,8 @@ public final class InvoiceToEbInterface50ConverterTest
   {
     final ICommonsList <IReadableResource> aTestFiles = new CommonsArrayList <> ();
     for (final File aFile : new FileSystemIterator (new File ("src/test/resources/ubl/invoice")).withFilter (IFileFilter.filenameEndsWith (".xml")))
-      aTestFiles.add (new FileSystemResource (aFile));
+      if (!IGNORED_FILES.contains (aFile.getName ()))
+        aTestFiles.add (new FileSystemResource (aFile));
 
     // For all PEPPOL test invoices
     for (final IReadableResource aRes : aTestFiles)
@@ -106,7 +110,8 @@ public final class InvoiceToEbInterface50ConverterTest
   {
     final ICommonsList <IReadableResource> aTestFiles = new CommonsArrayList <> ();
     for (final File aFile : new FileSystemIterator (new File ("src/test/resources/ubl/invoice")).withFilter (IFileFilter.filenameEndsWith (".xml")))
-      aTestFiles.add (new FileSystemResource (aFile));
+      if (!IGNORED_FILES.contains (aFile.getName ()))
+        aTestFiles.add (new FileSystemResource (aFile));
 
     // For all PEPPOL test invoices
     for (final IReadableResource aRes : aTestFiles)
@@ -144,7 +149,8 @@ public final class InvoiceToEbInterface50ConverterTest
   {
     final ICommonsList <IReadableResource> aTestFiles = new CommonsArrayList <> ();
     for (final File aFile : new FileSystemIterator (new File ("src/test/resources/ubl20/invoice_bad")).withFilter (IFileFilter.filenameEndsWith (".xml")))
-      aTestFiles.add (new FileSystemResource (aFile));
+      if (!IGNORED_FILES.contains (aFile.getName ()))
+        aTestFiles.add (new FileSystemResource (aFile));
 
     // For all PEPPOL test invoices
     for (final IReadableResource aRes : aTestFiles)

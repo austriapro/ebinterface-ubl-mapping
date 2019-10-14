@@ -370,12 +370,10 @@
         <cbc:ID schemeAgencyID="9" schemeID="GTIN">1234567890125</cbc:ID>
       </cac:StandardItemIdentification>
       <cac:CommodityClassification>
-        <cbc:ItemClassificationCode listAgencyID="113" listID="UNSPSC">32344324
-        </cbc:ItemClassificationCode>
+        <cbc:ItemClassificationCode listAgencyID="113" listID="UNSPSC">32344324</cbc:ItemClassificationCode>
       </cac:CommodityClassification>
       <cac:CommodityClassification>
-        <cbc:ItemClassificationCode listAgencyID="2" listID="CPV">65434567
-        </cbc:ItemClassificationCode>
+        <cbc:ItemClassificationCode listAgencyID="2" listID="CPV">65434567</cbc:ItemClassificationCode>
       </cac:CommodityClassification>
       <cac:ClassifiedTaxCategory xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
         <cbc:ID schemeAgencyID="6" schemeID="UN/ECE 5305">AA</cbc:ID>
@@ -410,12 +408,10 @@
         <cbc:ID schemeAgencyID="9" schemeID="GTIN">1234567890126</cbc:ID>
       </cac:StandardItemIdentification>
       <cac:CommodityClassification>
-        <cbc:ItemClassificationCode listAgencyID="113" listID="UNSPSC">32344324
-        </cbc:ItemClassificationCode>
+        <cbc:ItemClassificationCode listAgencyID="113" listID="UNSPSC">32344324</cbc:ItemClassificationCode>
       </cac:CommodityClassification>
       <cac:CommodityClassification>
-        <cbc:ItemClassificationCode listAgencyID="2" listID="CPV">65434566
-        </cbc:ItemClassificationCode>
+        <cbc:ItemClassificationCode listAgencyID="2" listID="CPV">65434566</cbc:ItemClassificationCode>
       </cac:CommodityClassification>
       <cac:ClassifiedTaxCategory xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
         <cbc:ID schemeAgencyID="6" schemeID="UN/ECE 5305">AA</cbc:ID>
@@ -457,12 +453,10 @@
         <cbc:ID schemeAgencyID="9" schemeID="GTIN">1234567890127</cbc:ID>
       </cac:StandardItemIdentification>
       <cac:CommodityClassification>
-        <cbc:ItemClassificationCode listAgencyID="113" listID="UNSPSC">12344322
-        </cbc:ItemClassificationCode>
+        <cbc:ItemClassificationCode listAgencyID="113" listID="UNSPSC">12344322</cbc:ItemClassificationCode>
       </cac:CommodityClassification>
       <cac:CommodityClassification>
-        <cbc:ItemClassificationCode listAgencyID="2" listID="CPV">65434565
-        </cbc:ItemClassificationCode>
+        <cbc:ItemClassificationCode listAgencyID="2" listID="CPV">65434565</cbc:ItemClassificationCode>
       </cac:CommodityClassification>
       <cac:ClassifiedTaxCategory xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
         <cbc:ID schemeAgencyID="6" schemeID="UN/ECE 5305">E</cbc:ID>
@@ -497,12 +491,10 @@
         <cbc:ID schemeAgencyID="9" schemeID="GTIN">1234567890128</cbc:ID>
       </cac:StandardItemIdentification>
       <cac:CommodityClassification>
-        <cbc:ItemClassificationCode listAgencyID="113" listID="UNSPSC">12344325
-        </cbc:ItemClassificationCode>
+        <cbc:ItemClassificationCode listAgencyID="113" listID="UNSPSC">12344325</cbc:ItemClassificationCode>
       </cac:CommodityClassification>
       <cac:CommodityClassification>
-        <cbc:ItemClassificationCode listAgencyID="2" listID="CPV">65434564
-        </cbc:ItemClassificationCode>
+        <cbc:ItemClassificationCode listAgencyID="2" listID="CPV">65434564</cbc:ItemClassificationCode>
       </cac:CommodityClassification>
       <cac:ClassifiedTaxCategory>
         <cbc:ID schemeAgencyID="6" schemeID="UN/ECE 5305">S</cbc:ID>

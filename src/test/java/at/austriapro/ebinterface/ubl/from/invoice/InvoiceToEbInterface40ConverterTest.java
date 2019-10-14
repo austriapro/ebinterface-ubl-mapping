@@ -46,7 +46,6 @@ import com.helger.ubl21.UBL21Reader;
 
 import at.austriapro.ebinterface.ubl.from.MockEbi40Marshaller;
 import at.austriapro.ebinterface.ubl.from.ToEbinterfaceSettings;
-import at.austriapro.ebinterface.ubl.from.invoice.InvoiceToEbInterface40Converter;
 import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
 
 /**
@@ -67,7 +66,8 @@ public final class InvoiceToEbInterface40ConverterTest
                                                                                    "payment-terms.xml",
                                                                                    "test-at-gov-new-creditorid.xml",
                                                                                    "test-at-gov-reverse-charge.xml",
-                                                                                   "test-at-gov.xml",
+                                                                                   "test-base-at-gov.xml",
+                                                                                   "test-paymentmeans-code-59.xml",
                                                                                    "testbed-test-invoice.xml");
 
   @Before
