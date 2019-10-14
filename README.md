@@ -9,6 +9,8 @@ Since v4.5.0 the Maven group ID changed to `at.austriapro` - before that, the gr
 
 # News and noteworthy
 
+* v4.5.1 - 2019-10-14
+    * Fixed a regression that payment type "41" was checked instead of "42"
 * v4.5.0 - 2019-10-01
     * Changed all package names to `at.austriapro`
     * Changed the Maven group `at.austriapro`

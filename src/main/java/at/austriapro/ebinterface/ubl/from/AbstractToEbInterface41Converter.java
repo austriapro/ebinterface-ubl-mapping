@@ -711,7 +711,7 @@ public abstract class AbstractToEbInterface41Converter extends AbstractToEbInter
                                                                                                                               getOrString (", ",
                                                                                                                                            "30",
                                                                                                                                            "31",
-                                                                                                                                           "41",
+                                                                                                                                           "42",
                                                                                                                                            "58"),
                                                                                                                               getOrString (", ",
                                                                                                                                            "49",

@@ -463,11 +463,11 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
   {
     // 30 = Credit transfer
     // 31 = Debit transfer
-    // 41 = Payment to bank account
+    // 42 = Payment to bank account
     // 58 = SEPA credit transfer
     return "30".equals (sPaymentMeansCode) ||
            "31".equals (sPaymentMeansCode) ||
-           "41".equals (sPaymentMeansCode) ||
+           "42".equals (sPaymentMeansCode) ||
            "58".equals (sPaymentMeansCode);
   }
 

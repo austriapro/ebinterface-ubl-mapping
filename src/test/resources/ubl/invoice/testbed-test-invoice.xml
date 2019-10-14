@@ -71,7 +71,7 @@
     </cac:Party>
   </cac:AccountingCustomerParty>
   <cac:PaymentMeans>
-    <cbc:PaymentMeansCode listID="UNCL4461">41</cbc:PaymentMeansCode>
+    <cbc:PaymentMeansCode listID="UNCL4461">42</cbc:PaymentMeansCode>
     <cbc:PaymentDueDate>2019-12-31</cbc:PaymentDueDate>
     <cbc:PaymentID>Payref1</cbc:PaymentID>
     <cac:PayeeFinancialAccount>
