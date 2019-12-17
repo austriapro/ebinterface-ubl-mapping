@@ -38,6 +38,12 @@ public interface IToEbinterfaceSettings extends Serializable
    */
   boolean isUBLProfileIDMandatory ();
 
+  /**
+   * @return The custom process ID resolver to be used. Never <code>null</code>.
+   */
+  @Nonnull
+  IProfileIDResolver getProfileIDResolver ();
+
   boolean isOrderReferenceIDMandatory ();
 
   @CheckForSigned

@@ -32,8 +32,6 @@ import com.helger.commons.text.display.IHasDisplayTextWithArgs;
 import com.helger.commons.text.resolve.DefaultTextResolver;
 import com.helger.commons.text.util.TextHelper;
 import com.helger.peppolid.IProcessIdentifier;
-import com.helger.peppolid.factory.PeppolIdentifierFactory;
-import com.helger.peppolid.peppol.process.PredefinedProcessIdentifierManager;
 
 import at.austriapro.ebinterface.ubl.AbstractConverter;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AllowanceChargeType;
@@ -262,7 +260,6 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
     }
 
     // Check ProfileID
-    IProcessIdentifier aProcID = null;
     final ProfileIDType aProfileID = aUBLInvoice.getProfileID ();
     if (aProfileID == null)
     {
@@ -275,13 +272,7 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
     else
     {
       final String sProfileID = StringHelper.trim (aProfileID.getValue ());
-      aProcID = PredefinedProcessIdentifierManager.getProcessIdentifierOfID (sProfileID);
-      if (aProcID == null)
-      {
-        // Parse basically
-        aProcID = PeppolIdentifierFactory.INSTANCE.parseProcessIdentifier (sProfileID);
-      }
-
+      final IProcessIdentifier aProcID = m_aSettings.getProfileIDResolver ().apply (sProfileID);
       if (aProcID == null)
       {
         aTransformationErrorList.add (SingleError.builderWarn ()
@@ -371,12 +362,11 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
     }
 
     // Check ProfileID
-    IProcessIdentifier aProcID = null;
     final ProfileIDType aProfileID = aUBLCreditNote.getProfileID ();
     if (aProfileID == null)
     {
       if (m_aSettings.isUBLProfileIDMandatory ())
-        aTransformationErrorList.add (SingleError.builderError ()
+        aTransformationErrorList.add (SingleError.builderWarn ()
                                                  .setErrorFieldName ("ProfileID")
                                                  .setErrorText (EText.NO_PROFILE_ID.getDisplayText (m_aDisplayLocale))
                                                  .build ());
@@ -384,15 +374,10 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
     else
     {
       final String sProfileID = StringHelper.trim (aProfileID.getValue ());
-      aProcID = PredefinedProcessIdentifierManager.getProcessIdentifierOfID (sProfileID);
+      final IProcessIdentifier aProcID = m_aSettings.getProfileIDResolver ().apply (sProfileID);
       if (aProcID == null)
       {
-        // Parse basically
-        aProcID = PeppolIdentifierFactory.INSTANCE.parseProcessIdentifier (sProfileID);
-      }
-      if (aProcID == null)
-      {
-        aTransformationErrorList.add (SingleError.builderError ()
+        aTransformationErrorList.add (SingleError.builderWarn ()
                                                  .setErrorFieldName ("ProfileID")
                                                  .setErrorText (EText.INVALID_PROFILE_ID.getDisplayTextWithArgs (m_aDisplayLocale,
                                                                                                                  sProfileID))

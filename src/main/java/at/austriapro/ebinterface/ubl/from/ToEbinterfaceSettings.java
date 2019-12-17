@@ -33,6 +33,10 @@ public class ToEbinterfaceSettings implements IToEbinterfaceSettings
    */
   private boolean m_bUBLProfileIDMandatory = true;
   /**
+   * The resolver from profile ID to the IProcessIdentifier.
+   */
+  private IProfileIDResolver m_aProfileIDResolver = IProfileIDResolver.getDefault ();
+  /**
    * Is the OrderReference/ID element mandatory?
    */
   private boolean m_bOrderReferenceIDMandatory = false;
@@ -93,6 +97,20 @@ public class ToEbinterfaceSettings implements IToEbinterfaceSettings
   public ToEbinterfaceSettings setUBLProfileIDMandatory (final boolean bUBLProfileIDMandatory)
   {
     m_bUBLProfileIDMandatory = bUBLProfileIDMandatory;
+    return this;
+  }
+
+  @Nonnull
+  public IProfileIDResolver getProfileIDResolver ()
+  {
+    return m_aProfileIDResolver;
+  }
+
+  @Nonnull
+  public ToEbinterfaceSettings setProfileIDResolver (@Nonnull final IProfileIDResolver aProfileIDResolver)
+  {
+    ValueEnforcer.notNull (aProfileIDResolver, "ProfileIDResolver");
+    m_aProfileIDResolver = aProfileIDResolver;
     return this;
   }
 
