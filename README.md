@@ -9,6 +9,9 @@ Since v4.5.0 the Maven group ID changed to `at.austriapro` - before that, the gr
 
 # News and noteworthy
 
+* v4.5.2 - 2019-12-17
+    * Made the "profile ID to process Identifier" mapping customizable
+    * Unified error levels between Invoice and CreditNote on the ProfileID
 * v4.5.1 - 2019-10-14
     * Fixed a regression that payment type "41" was checked instead of "42"
 * v4.5.0 - 2019-10-01
@@ -72,7 +75,7 @@ Add the following to your pom.xml to use this artifact:
 <dependency>
   <groupId>at.austriapro</groupId>
   <artifactId>ebinterface-ubl-mapping</artifactId>
-  <version>4.5.1</version>
+  <version>4.5.2</version>
 </dependency>
 ```
 
