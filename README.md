@@ -11,6 +11,7 @@ Since v4.5.0 the Maven group ID changed to `at.austriapro` - before that, the gr
 
 * v4.5.3 - work in progress
     * Preferring `PaymentMeans/InstructionID` over `PaymentMeans/PaymentID`
+    * Changed the mapping of ebInterface from `PaymentReference` to `PaymentMeans/InstructionID`
 * v4.5.2 - 2019-12-17
     * Made the "profile ID to process Identifier" mapping customizable
     * Unified error levels between Invoice and CreditNote on the ProfileID

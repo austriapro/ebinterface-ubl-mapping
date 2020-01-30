@@ -37,10 +37,10 @@ import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.Documen
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.DocumentDescriptionType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.DocumentTypeCodeType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.InstructionIDType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.InstructionNoteType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.InvoiceTypeCodeType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.NoteType;
-import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.PaymentIDType;
 import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
 
 /**
@@ -142,7 +142,7 @@ public class EbInterface50ToInvoiceConverter extends AbstractEbInterface50ToUBLC
 
             // PaymentReference
             if (aEbiUBT.getPaymentReference () != null)
-              aUBLPaymentMeans.addPaymentID (new PaymentIDType (aEbiUBT.getPaymentReference ().getValue ()));
+              aUBLPaymentMeans.setInstructionID (new InstructionIDType (aEbiUBT.getPaymentReference ().getValue ()));
 
             if (aEbiPaymentConditions != null)
               aUBLPaymentMeans.setPaymentDueDate (aEbiPaymentConditions.getDueDate ());
