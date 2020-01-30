@@ -77,14 +77,14 @@ public final class InvoiceToEbInterface40ConverterTest
   }
 
   @Test
-  public void testConvertPEPPOLInvoiceLax ()
+  public void testConvertPeppolInvoiceLax ()
   {
     final ICommonsList <IReadableResource> aTestFiles = new CommonsArrayList <> ();
     for (final File aFile : new FileSystemIterator (new File ("src/test/resources/ubl/invoice")).withFilter (IFileFilter.filenameEndsWith (".xml")))
       if (!IGNORED_FILES.contains (aFile.getName ()))
         aTestFiles.add (new FileSystemResource (aFile));
 
-    // For all PEPPOL test invoices
+    // For all Peppol test invoices
     for (final IReadableResource aRes : aTestFiles)
     {
       LOGGER.info (aRes.getPath ());
@@ -116,14 +116,14 @@ public final class InvoiceToEbInterface40ConverterTest
   }
 
   @Test
-  public void testConvertPEPPOLInvoiceERB ()
+  public void testConvertPeppolInvoiceERB ()
   {
     final ICommonsList <IReadableResource> aTestFiles = new CommonsArrayList <> ();
     for (final File aFile : new FileSystemIterator (new File ("src/test/resources/ubl/invoice")).withFilter (IFileFilter.filenameEndsWith (".xml")))
       if (!IGNORED_FILES.contains (aFile.getName ()))
         aTestFiles.add (new FileSystemResource (aFile));
 
-    // For all PEPPOL test invoices
+    // For all Peppol test invoices
     for (final IReadableResource aRes : aTestFiles)
     {
       LOGGER.info (aRes.getPath ());
@@ -155,13 +155,13 @@ public final class InvoiceToEbInterface40ConverterTest
   }
 
   @Test
-  public void testConvertPEPPOLInvoiceLaxBad ()
+  public void testConvertPeppolInvoiceLaxBad ()
   {
     final ICommonsList <IReadableResource> aTestFiles = new CommonsArrayList <> ();
     for (final File aFile : new FileSystemIterator (new File ("src/test/resources/ubl20/invoice_bad")).withFilter (IFileFilter.filenameEndsWith (".xml")))
       aTestFiles.add (new FileSystemResource (aFile));
 
-    // For all PEPPOL test invoices
+    // For all Peppol test invoices
     for (final IReadableResource aRes : aTestFiles)
     {
       LOGGER.info (aRes.getPath ());

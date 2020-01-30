@@ -42,7 +42,6 @@ import com.helger.ubl21.UBL21Reader;
 
 import at.austriapro.ebinterface.ubl.from.MockEbi41Marshaller;
 import at.austriapro.ebinterface.ubl.from.ToEbinterfaceSettings;
-import at.austriapro.ebinterface.ubl.from.creditnote.CreditNoteToEbInterface41Converter;
 import oasis.names.specification.ubl.schema.xsd.creditnote_21.CreditNoteType;
 
 /**
@@ -62,13 +61,13 @@ public final class CreditNoteToEbInterface41ConverterTest
   }
 
   @Test
-  public void testConvertPEPPOLCreditNoteLax ()
+  public void testConvertPeppolCreditNoteLax ()
   {
     final ICommonsList <IReadableResource> aTestFiles = new CommonsArrayList <> ();
     for (final File aFile : new FileSystemIterator (new File ("src/test/resources/ubl/creditnote")).withFilter (IFileFilter.filenameEndsWith (".xml")))
       aTestFiles.add (new FileSystemResource (aFile));
 
-    // For all PEPPOL test invoices
+    // For all Peppol test invoices
     for (final IReadableResource aRes : aTestFiles)
     {
       LOGGER.info (aRes.getPath ());
@@ -100,13 +99,13 @@ public final class CreditNoteToEbInterface41ConverterTest
   }
 
   @Test
-  public void testConvertPEPPOLInvoiceERB ()
+  public void testConvertPeppolInvoiceERB ()
   {
     final ICommonsList <IReadableResource> aTestFiles = new CommonsArrayList <> ();
     for (final File aFile : new FileSystemIterator (new File ("src/test/resources/ubl/creditnote")).withFilter (IFileFilter.filenameEndsWith (".xml")))
       aTestFiles.add (new FileSystemResource (aFile));
 
-    // For all PEPPOL test invoices
+    // For all Peppol test invoices
     for (final IReadableResource aRes : aTestFiles)
     {
       LOGGER.info (aRes.getPath ());

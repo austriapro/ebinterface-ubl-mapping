@@ -54,7 +54,7 @@ public class ToEbinterfaceSettings implements IToEbinterfaceSettings
    */
   private boolean m_bEnforceSupplierEmailAddress = false;
   /**
-   * The fake email address used by PEPPOL when no biller email address is in
+   * The fake email address used by Peppol when no biller email address is in
    * the original XML file
    */
   private String m_sEnforcedSupplierEmailAddress = "no-email-address-provided@peppol.eu";

@@ -43,7 +43,7 @@ import oasis.names.specification.ubl.schema.xsd.creditnote_21.CreditNoteType;
 import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
 
 /**
- * Base class for PEPPOL UBL to ebInterface converter
+ * Base class for Peppol UBL to ebInterface converter
  *
  * @author philip
  */
@@ -399,7 +399,7 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
 
   protected static boolean isVATSchemeID (final String sScheme)
   {
-    // PEPPOL
+    // Peppol
     if (SUPPORTED_TAX_SCHEME_ID.getID ().equals (sScheme))
       return true;
 
@@ -470,7 +470,7 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
 
   protected static boolean isIBAN (@Nullable final String sPaymentChannelCode)
   {
-    // null/empty for standard PEPPOL BIS
+    // null/empty for standard Peppol BIS
     return StringHelper.hasNoText (sPaymentChannelCode) || PAYMENT_CHANNEL_CODE_IBAN.equals (sPaymentChannelCode);
   }
 

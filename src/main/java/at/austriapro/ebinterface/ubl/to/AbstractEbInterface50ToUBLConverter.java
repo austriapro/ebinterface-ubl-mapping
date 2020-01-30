@@ -44,7 +44,7 @@ import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.Per
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
 
 /**
- * Base class for ebInterface to PEPPOL UBL converter
+ * Base class for ebInterface to Peppol UBL converter
  *
  * @author Philip Helger
  */

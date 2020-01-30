@@ -27,7 +27,7 @@ import com.helger.peppol.codelist.EInvoiceTypeCode;
 import com.helger.peppol.codelist.ETaxSchemeID;
 
 /**
- * Base class for PEPPOL UBL to/from ebInterface converter
+ * Base class for Peppol UBL to/from ebInterface converter
  *
  * @author philip
  */

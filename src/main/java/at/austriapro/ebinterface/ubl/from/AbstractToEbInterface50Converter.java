@@ -73,12 +73,13 @@ import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.Per
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.SupplierPartyType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.DescriptionType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.DocumentDescriptionType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.InstructionIDType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.InstructionNoteType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.NoteType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.PaymentIDType;
 
 /**
- * Base class for PEPPOL UBL to ebInterface 5.0 converter
+ * Base class for Peppol UBL to ebInterface 5.0 converter
  *
  * @author Philip Helger
  */
@@ -561,32 +562,61 @@ public abstract class AbstractToEbInterface50Converter extends AbstractToEbInter
             final Ebi50UniversalBankTransactionType aEbiUBTMethod = new Ebi50UniversalBankTransactionType ();
 
             // Find payment reference
-            int nPaymentIDIndex = 0;
-            for (final PaymentIDType aUBLPaymentID : aUBLPaymentMeans.getPaymentID ())
+            final InstructionIDType aUBLInstructionID = aUBLPaymentMeans.getInstructionID ();
+            if (aUBLInstructionID != null)
             {
-              String sUBLPaymentID = StringHelper.trim (aUBLPaymentID.getValue ());
-              if (StringHelper.hasText (sUBLPaymentID))
+              // Prefer InstructionID over payment reference
+              String sUBLInstructionID = StringHelper.trim (aUBLInstructionID.getValue ());
+              if (StringHelper.hasText (sUBLInstructionID))
               {
-                if (sUBLPaymentID.length () > PAYMENT_REFERENCE_MAX_LENGTH)
+                if (sUBLInstructionID.length () > PAYMENT_REFERENCE_MAX_LENGTH)
                 {
                   // Reference
                   aTransformationErrorList.add (SingleError.builderWarn ()
                                                            .setErrorFieldName ("PaymentMeans[" +
                                                                                nPaymentMeansIndex +
-                                                                               "]/PaymentID[" +
-                                                                               nPaymentIDIndex +
-                                                                               "]")
+                                                                               "]/InstructionID")
                                                            .setErrorText (EText.PAYMENT_ID_TOO_LONG_CUT.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                                                sUBLPaymentID))
+                                                                                                                                sUBLInstructionID))
                                                            .build ());
-                  sUBLPaymentID = sUBLPaymentID.substring (0, PAYMENT_REFERENCE_MAX_LENGTH);
+                  sUBLInstructionID = sUBLInstructionID.substring (0, PAYMENT_REFERENCE_MAX_LENGTH);
                 }
 
                 final Ebi50PaymentReferenceType aEbiPaymentReference = new Ebi50PaymentReferenceType ();
-                aEbiPaymentReference.setValue (sUBLPaymentID);
+                aEbiPaymentReference.setValue (sUBLInstructionID);
                 aEbiUBTMethod.setPaymentReference (aEbiPaymentReference);
               }
-              ++nPaymentIDIndex;
+            }
+
+            if (aEbiUBTMethod.getPaymentReference () == null)
+            {
+              int nPaymentIDIndex = 0;
+              for (final PaymentIDType aUBLPaymentID : aUBLPaymentMeans.getPaymentID ())
+              {
+                String sUBLPaymentID = StringHelper.trim (aUBLPaymentID.getValue ());
+                if (StringHelper.hasText (sUBLPaymentID))
+                {
+                  if (sUBLPaymentID.length () > PAYMENT_REFERENCE_MAX_LENGTH)
+                  {
+                    // Reference
+                    aTransformationErrorList.add (SingleError.builderWarn ()
+                                                             .setErrorFieldName ("PaymentMeans[" +
+                                                                                 nPaymentMeansIndex +
+                                                                                 "]/PaymentID[" +
+                                                                                 nPaymentIDIndex +
+                                                                                 "]")
+                                                             .setErrorText (EText.PAYMENT_ID_TOO_LONG_CUT.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                                  sUBLPaymentID))
+                                                             .build ());
+                    sUBLPaymentID = sUBLPaymentID.substring (0, PAYMENT_REFERENCE_MAX_LENGTH);
+                  }
+
+                  final Ebi50PaymentReferenceType aEbiPaymentReference = new Ebi50PaymentReferenceType ();
+                  aEbiPaymentReference.setValue (sUBLPaymentID);
+                  aEbiUBTMethod.setPaymentReference (aEbiPaymentReference);
+                }
+                ++nPaymentIDIndex;
+              }
             }
 
             // Beneficiary account

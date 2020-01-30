@@ -44,7 +44,6 @@ import com.helger.ubl21.UBL21Reader;
 
 import at.austriapro.ebinterface.ubl.from.MockEbi43Marshaller;
 import at.austriapro.ebinterface.ubl.from.ToEbinterfaceSettings;
-import at.austriapro.ebinterface.ubl.from.invoice.InvoiceToEbInterface43Converter;
 import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
 
 /**
@@ -64,13 +63,13 @@ public final class InvoiceToEbInterface43ConverterTest
   }
 
   @Test
-  public void testConvertPEPPOLInvoiceLax ()
+  public void testConvertPeppolInvoiceLax ()
   {
     final ICommonsList <IReadableResource> aTestFiles = new CommonsArrayList <> ();
     for (final File aFile : new FileSystemIterator (new File ("src/test/resources/ubl/invoice")).withFilter (IFileFilter.filenameEndsWith (".xml")))
       aTestFiles.add (new FileSystemResource (aFile));
 
-    // For all PEPPOL test invoices
+    // For all Peppol test invoices
     for (final IReadableResource aRes : aTestFiles)
     {
       LOGGER.info (aRes.getPath ());
@@ -102,13 +101,13 @@ public final class InvoiceToEbInterface43ConverterTest
   }
 
   @Test
-  public void testConvertPEPPOLInvoiceERB ()
+  public void testConvertPeppolInvoiceERB ()
   {
     final ICommonsList <IReadableResource> aTestFiles = new CommonsArrayList <> ();
     for (final File aFile : new FileSystemIterator (new File ("src/test/resources/ubl/invoice")).withFilter (IFileFilter.filenameEndsWith (".xml")))
       aTestFiles.add (new FileSystemResource (aFile));
 
-    // For all PEPPOL test invoices
+    // For all Peppol test invoices
     for (final IReadableResource aRes : aTestFiles)
     {
       LOGGER.info (aRes.getPath ());
@@ -140,13 +139,13 @@ public final class InvoiceToEbInterface43ConverterTest
   }
 
   @Test
-  public void testConvertPEPPOLInvoiceLaxBad ()
+  public void testConvertPeppolInvoiceLaxBad ()
   {
     final ICommonsList <IReadableResource> aTestFiles = new CommonsArrayList <> ();
     for (final File aFile : new FileSystemIterator (new File ("src/test/resources/ubl20/invoice_bad")).withFilter (IFileFilter.filenameEndsWith (".xml")))
       aTestFiles.add (new FileSystemResource (aFile));
 
-    // For all PEPPOL test invoices
+    // For all Peppol test invoices
     for (final IReadableResource aRes : aTestFiles)
     {
       LOGGER.info (aRes.getPath ());
