@@ -132,6 +132,10 @@
     </dependency>
     <dependency>
       <groupId>com.helger</groupId>
+      <artifactId>peppol-id</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.helger</groupId>
       <artifactId>peppol-commons</artifactId>
     </dependency>
 
