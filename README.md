@@ -7,9 +7,36 @@ Author: Philip Helger
 The reason why this project is not in the [ebinterface-mappings](https://github.com/austriapro/ebinterface-mappings) project is the totally different software stack used and the requirement of this project to be published on Maven central. 
 Since v4.5.0 the Maven group ID changed to `at.austriapro` - before that, the group ID was "com.helger" because I only had rights to publish below this name to Maven central.
 
+# Building
+
+To build the project you need at least Java 1.8 (or newer) and Apache Maven 3.x. Build is quite easy: call `mvn clean install` in this directory and the final result will be in the `target` directory.
+Additionally Eclipse project files for the latest Eclipse version are contained.
+
+# Maven usage
+
+Add the following to your pom.xml to use this artifact:
+
+```xml
+<dependency>
+  <groupId>at.austriapro</groupId>
+  <artifactId>ebinterface-ubl-mapping</artifactId>
+  <version>4.5.3</version>
+</dependency>
+```
+
+Up to and including v4.0.1:
+
+```xml
+<dependency>
+  <groupId>com.helger</groupId>
+  <artifactId>ebinterface-ubl-mapping</artifactId>
+  <version>4.0.1</version>
+</dependency>
+```
+
 # News and noteworthy
 
-* v4.5.3 - work in progress
+* v4.5.3 - 2020-02-07
     * Preferring `PaymentMeans/InstructionID` over `PaymentMeans/PaymentID`
     * Changed the mapping of ebInterface from `PaymentReference` to `PaymentMeans/InstructionID`
     * Updated to peppol-commons 8.x
@@ -65,33 +92,6 @@ Since v4.5.0 the Maven group ID changed to `at.austriapro` - before that, the gr
     * Requires JDK 1.8
 * v1.1.0 - 2016-01-26
     * Last version for JDK 6    
-
-# Building
-
-To build the project you need at least Java 1.8 (or newer) and Apache Maven 3.x. Build is quite easy: call `mvn clean install` in this directory and the final result will be in the `target` directory.
-Additionally Eclipse project files for the latest Eclipse version are contained.
-
-# Maven usage
-
-Add the following to your pom.xml to use this artifact:
-
-```xml
-<dependency>
-  <groupId>at.austriapro</groupId>
-  <artifactId>ebinterface-ubl-mapping</artifactId>
-  <version>4.5.2</version>
-</dependency>
-```
-
-Up to and including v4.0.1:
-
-```xml
-<dependency>
-  <groupId>com.helger</groupId>
-  <artifactId>ebinterface-ubl-mapping</artifactId>
-  <version>4.0.1</version>
-</dependency>
-```
 
 ---
 
