@@ -22,7 +22,7 @@
   <cbc:CustomizationID schemeID="PEPPOL">urn:www.cenbii.eu:transaction:biicoretrdm010:ver1.0:#urn:www.peppol.eu:bis:peppol4a:ver1.0
   </cbc:CustomizationID>
   <cbc:ProfileID>urn:www.cenbii.eu:profile:bii04:ver1.0</cbc:ProfileID>
-  <cbc:ID>phloc-ws-test</cbc:ID>
+  <cbc:ID>ph-ws-test</cbc:ID>
   <cbc:IssueDate>2011-09-15</cbc:IssueDate>
   <cbc:InvoiceTypeCode listAgencyID="6" listID="UN/ECE 1001 Subset">380</cbc:InvoiceTypeCode>
   <cbc:DocumentCurrencyCode languageID="en" listAgencyID="6" listAgencyName="United Nations Economic Commission for Europe" listID="ISO 4217 Alpha" listName="Currency" listSchemeURI="urn:un:unece:uncefact:codelist:specification:54217:2001" listURI="http://docs.oasis-open.org/ubl/os-UBL-2.0-update/cl/gc/cefact/CurrencyCode-2.0.gc" listVersionID="2001">EUR</cbc:DocumentCurrencyCode>
@@ -36,7 +36,7 @@
     <cac:Party>
       <cbc:EndpointID schemeID="AT:VAT">ATU63968889</cbc:EndpointID>
       <cac:PartyName>
-        <cbc:Name>phloc systems</cbc:Name>
+        <cbc:Name>ph systems</cbc:Name>
       </cac:PartyName>
       <cac:PostalAddress>
         <cbc:StreetName>Zeillergasse</cbc:StreetName>
@@ -54,7 +54,7 @@
         </cac:TaxScheme>
       </cac:PartyTaxScheme>
       <cac:Contact>
-        <cbc:ElectronicMail>ph@phloc.com</cbc:ElectronicMail>
+        <cbc:ElectronicMail>ph@helger.com</cbc:ElectronicMail>
       </cac:Contact>
     </cac:Party>
   </cac:AccountingSupplierParty>
