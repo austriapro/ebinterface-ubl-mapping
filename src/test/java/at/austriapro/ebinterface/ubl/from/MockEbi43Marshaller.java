@@ -18,8 +18,6 @@ package at.austriapro.ebinterface.ubl.from;
 
 import com.helger.ebinterface.EbInterface43Marshaller;
 
-import at.austriapro.ebinterface.ubl.from.EbiNamespaceContext;
-
 /**
  * Special ebInterface 4.3 marshaller providing a default namespace prefix
  * mapper

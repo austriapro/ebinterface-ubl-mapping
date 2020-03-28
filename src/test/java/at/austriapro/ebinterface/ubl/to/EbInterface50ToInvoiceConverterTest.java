@@ -38,7 +38,6 @@ import com.helger.ubl21.UBL21WriterBuilder;
 
 import at.austriapro.ebinterface.ubl.from.ToEbinterfaceSettings;
 import at.austriapro.ebinterface.ubl.from.invoice.InvoiceToEbInterface50Converter;
-import at.austriapro.ebinterface.ubl.to.EbInterface50ToInvoiceConverter;
 import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
 
 /**
