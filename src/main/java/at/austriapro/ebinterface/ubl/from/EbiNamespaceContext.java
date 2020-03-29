@@ -20,6 +20,7 @@ import javax.xml.XMLConstants;
 
 import com.helger.ebinterface.CEbInterface;
 import com.helger.xml.namespace.MapBasedNamespaceContext;
+import com.helger.xsds.xmldsig.CXMLDSig;
 
 /**
  * A special map-based namespace context that maps XML prefixes to namespace
@@ -48,6 +49,6 @@ public class EbiNamespaceContext extends MapBasedNamespaceContext
     addMapping ("eb43e", "http://www.ebinterface.at/schema/4p3/extensions/ext");
     addMapping ("eb43s", "http://www.ebinterface.at/schema/4p3/extensions/sv");
     addMapping ("eb50", CEbInterface.EBINTERFACE_50_NS);
-    addMapping ("dsig", "http://www.w3.org/2000/09/xmldsig#");
+    addMapping (CXMLDSig.DEFAULT_PREFIX, CXMLDSig.NAMESPACE_URI);
   }
 }
