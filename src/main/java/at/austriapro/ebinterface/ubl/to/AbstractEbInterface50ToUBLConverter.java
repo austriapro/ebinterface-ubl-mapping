@@ -26,6 +26,8 @@ import javax.annotation.concurrent.Immutable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.helger.commons.collection.impl.CommonsLinkedHashSet;
+import com.helger.commons.collection.impl.ICommonsOrderedSet;
 import com.helger.commons.string.StringHelper;
 import com.helger.ebinterface.v50.Ebi50AddressIdentifierType;
 import com.helger.ebinterface.v50.Ebi50AddressType;
@@ -151,6 +153,10 @@ public abstract class AbstractEbInterface50ToUBLConverter extends AbstractEbInte
     if (aEbiAddress == null && aEbiContact == null)
       return null;
 
+    // Combine email addresses and phone numbers from Contact and Address
+    final ICommonsOrderedSet <String> aEmails = new CommonsLinkedHashSet <> ();
+    final ICommonsOrderedSet <String> aPhones = new CommonsLinkedHashSet <> ();
+
     final PartyType ret = new PartyType ();
     if (aEbiAddress != null)
     {
@@ -162,37 +168,46 @@ public abstract class AbstractEbInterface50ToUBLConverter extends AbstractEbInte
       }
 
       ret.setPostalAddress (convertAddress (aEbiAddress, aContentLocale));
+
+      aEmails.addAll (aEbiAddress.getEmail ());
+      aPhones.addAll (aEbiAddress.getPhone ());
     }
+
+    final ContactType aUBLContact = new ContactType ();
+    boolean bHasContactData = false;
 
     if (aEbiContact != null)
     {
-      final ContactType aUBLContact = new ContactType ();
-      boolean bHasData = false;
-      if (StringHelper.hasText (aEbiContact.getName ()))
-      {
-        aUBLContact.setName (aEbiContact.getName ());
-        bHasData = true;
-      }
-      if (aEbiAddress.hasEmailEntries ())
-      {
-        aUBLContact.setElectronicMail (aEbiAddress.getEmailAtIndex (0));
-        bHasData = true;
-      }
-      if (aEbiAddress.hasPhoneEntries ())
-      {
-        aUBLContact.setTelephone (aEbiAddress.getPhoneAtIndex (0));
-        bHasData = true;
-      }
-      if (bHasData)
-        ret.setContact (aUBLContact);
-
       if (StringHelper.hasText (aEbiContact.getSalutation ()))
       {
         final PersonType aUBLPerson = new PersonType ();
         aUBLPerson.setGenderCode (aEbiContact.getSalutation ());
         ret.addPerson (aUBLPerson);
       }
+
+      if (StringHelper.hasText (aEbiContact.getName ()))
+      {
+        aUBLContact.setName (aEbiContact.getName ());
+        bHasContactData = true;
+      }
+
+      aEmails.addAll (aEbiContact.getEmail ());
+      aPhones.addAll (aEbiContact.getPhone ());
     }
+
+    if (aEmails.isNotEmpty ())
+    {
+      aUBLContact.setElectronicMail (StringHelper.getImploded (' ', aEmails));
+      bHasContactData = true;
+    }
+
+    if (aPhones.isNotEmpty ())
+    {
+      aUBLContact.setTelephone (StringHelper.getImploded (' ', aPhones));
+      bHasContactData = true;
+    }
+    if (bHasContactData)
+      ret.setContact (aUBLContact);
 
     return ret;
   }
