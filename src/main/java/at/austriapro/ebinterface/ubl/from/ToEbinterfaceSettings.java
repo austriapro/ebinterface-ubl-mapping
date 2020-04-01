@@ -22,8 +22,15 @@ import javax.annotation.Nullable;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 
+/**
+ * Default implementation of {@link IToEbinterfaceSettings}.
+ *
+ * @author Philip Helger
+ */
 public class ToEbinterfaceSettings implements IToEbinterfaceSettings
 {
+  public static final String DEFAULT_ENFORCED_SUPPLIER_EMAIL_ADDRESS = "no-email-address-provided@peppol.eu";
+
   /**
    * Is the "UBLVersionID" element mandatory?
    */
@@ -57,7 +64,7 @@ public class ToEbinterfaceSettings implements IToEbinterfaceSettings
    * The fake email address used by Peppol when no biller email address is in
    * the original XML file
    */
-  private String m_sEnforcedSupplierEmailAddress = "no-email-address-provided@peppol.eu";
+  private String m_sEnforcedSupplierEmailAddress = DEFAULT_ENFORCED_SUPPLIER_EMAIL_ADDRESS;
   /**
    * The fallback billers invoice recipient ID to be used if none is present
    * (for ebi 4.0)

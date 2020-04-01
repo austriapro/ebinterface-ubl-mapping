@@ -24,6 +24,11 @@ import javax.annotation.Nullable;
 
 import com.helger.commons.annotation.Nonempty;
 
+/**
+ * Interface for the settings for the conversion from UBL to ebInterface.
+ * 
+ * @author Philip Helger
+ */
 public interface IToEbinterfaceSettings extends Serializable
 {
   /**
