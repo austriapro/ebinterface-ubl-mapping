@@ -23,12 +23,15 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.util.Locale;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.error.list.ErrorList;
+import com.helger.commons.io.file.FileOperations;
 import com.helger.commons.io.file.FileSystemIterator;
+import com.helger.commons.io.file.FilenameHelper;
 import com.helger.commons.io.file.IFileFilter;
 import com.helger.ebinterface.builder.EbInterfaceReader;
 import com.helger.ebinterface.builder.EbInterfaceWriter;
@@ -48,6 +51,13 @@ import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
 public final class EbInterface42ToInvoiceConverterTest
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (EbInterface42ToInvoiceConverterTest.class);
+  private static final String TARGET_FOLDER = "generated-ebi42-to-ubl-files/";
+
+  @Before
+  public void onInit ()
+  {
+    FileOperations.createDirRecursiveIfNotExisting (new File (TARGET_FOLDER));
+  }
 
   @Test
   public void testBasic ()
@@ -92,6 +102,10 @@ public final class EbInterface42ToInvoiceConverterTest
       // Won't work :)
       if (false)
         assertEquals ("Difference after conversion: " + sUBL, sEbi1, sEbi2);
+
+      // Write to folder
+      assertTrue (aUBLWriter.write (aInvoice, new File (TARGET_FOLDER + FilenameHelper.getWithoutPath (aFile)))
+                            .isSuccess ());
     }
   }
 }
