@@ -20,7 +20,7 @@ Add the following to your pom.xml to use this artifact:
 <dependency>
   <groupId>at.austriapro</groupId>
   <artifactId>ebinterface-ubl-mapping</artifactId>
-  <version>4.5.3</version>
+  <version>4.5.4</version>
 </dependency>
 ```
 
@@ -36,6 +36,8 @@ Up to and including v4.0.1:
 
 # News and noteworthy
 
+* v4.5.4 - 2020-04-01
+    * Now ebInterface 5.0 `Contact` email addresses and telephone numbers are also mapped to UBL (see [issue #2](https://github.com/austriapro/ebinterface-ubl-mapping/issues/2))
 * v4.5.3 - 2020-02-07
     * Preferring `PaymentMeans/InstructionID` over `PaymentMeans/PaymentID`
     * Changed the mapping of ebInterface from `PaymentReference` to `PaymentMeans/InstructionID`

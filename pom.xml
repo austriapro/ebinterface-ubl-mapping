@@ -93,7 +93,7 @@
       <dependency>
         <groupId>com.helger</groupId>
         <artifactId>ph-ebinterface</artifactId>
-        <version>6.1.2-SNAPSHOT</version>
+        <version>6.1.2</version>
       </dependency>
       <dependency>
         <groupId>com.helger</groupId>
