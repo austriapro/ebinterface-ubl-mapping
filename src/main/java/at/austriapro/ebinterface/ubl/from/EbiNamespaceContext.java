@@ -19,6 +19,7 @@ package at.austriapro.ebinterface.ubl.from;
 import javax.xml.XMLConstants;
 
 import com.helger.ebinterface.CEbInterface;
+import com.helger.xml.CXML;
 import com.helger.xml.namespace.MapBasedNamespaceContext;
 import com.helger.xsds.xmldsig.CXMLDSig;
 
@@ -32,23 +33,32 @@ public class EbiNamespaceContext extends MapBasedNamespaceContext
 {
   public EbiNamespaceContext ()
   {
-    addMapping ("xsi", XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI);
-    addMapping ("xs", XMLConstants.W3C_XML_SCHEMA_NS_URI);
-    addMapping ("eb30", CEbInterface.EBINTERFACE_30_NS);
-    addMapping ("eb302", CEbInterface.EBINTERFACE_302_NS);
-    addMapping ("eb40", CEbInterface.EBINTERFACE_40_NS);
-    addMapping ("eb40e", "http://www.ebinterface.at/schema/4p0/extensions/ext");
-    addMapping ("eb40s", "http://www.ebinterface.at/schema/4p0/extensions/sv");
-    addMapping ("eb41", CEbInterface.EBINTERFACE_41_NS);
-    addMapping ("eb41e", "http://www.ebinterface.at/schema/4p1/extensions/ext");
-    addMapping ("eb41s", "http://www.ebinterface.at/schema/4p1/extensions/sv");
-    addMapping ("eb42", CEbInterface.EBINTERFACE_42_NS);
-    addMapping ("eb42e", "http://www.ebinterface.at/schema/4p2/extensions/ext");
-    addMapping ("eb42s", "http://www.ebinterface.at/schema/4p2/extensions/sv");
-    addMapping ("eb43", CEbInterface.EBINTERFACE_43_NS);
-    addMapping ("eb43e", "http://www.ebinterface.at/schema/4p3/extensions/ext");
-    addMapping ("eb43s", "http://www.ebinterface.at/schema/4p3/extensions/sv");
-    addMapping ("eb50", CEbInterface.EBINTERFACE_50_NS);
+    addMapping (CXML.XML_NS_PREFIX_XSI, XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI);
+    addMapping (CXML.XML_NS_PREFIX_XSD, XMLConstants.W3C_XML_SCHEMA_NS_URI);
     addMapping (CXMLDSig.DEFAULT_PREFIX, CXMLDSig.NAMESPACE_URI);
+
+    addMapping ("eb30", CEbInterface.EBINTERFACE_30_NS);
+
+    addMapping ("eb302", CEbInterface.EBINTERFACE_302_NS);
+
+    addMapping ("eb40", CEbInterface.EBINTERFACE_40_NS);
+    addMapping ("eb40e", CEbInterface.EBINTERFACE_40_NS_EXT);
+    addMapping ("eb40s", CEbInterface.EBINTERFACE_40_NS_SV);
+
+    addMapping ("eb41", CEbInterface.EBINTERFACE_41_NS);
+    addMapping ("eb41e", CEbInterface.EBINTERFACE_41_NS_EXT);
+    addMapping ("eb41s", CEbInterface.EBINTERFACE_41_NS_SV);
+
+    addMapping ("eb42", CEbInterface.EBINTERFACE_42_NS);
+    addMapping ("eb42e", CEbInterface.EBINTERFACE_42_NS_EXT);
+    addMapping ("eb42s", CEbInterface.EBINTERFACE_42_NS_SV);
+
+    addMapping ("eb43", CEbInterface.EBINTERFACE_43_NS);
+    addMapping ("eb43e", CEbInterface.EBINTERFACE_43_NS_EXT);
+    addMapping ("eb43s", CEbInterface.EBINTERFACE_43_NS_SV);
+
+    addMapping ("eb50", CEbInterface.EBINTERFACE_50_NS);
+
+    addMapping ("eb60", CEbInterface.EBINTERFACE_60_NS);
   }
 }
