@@ -52,7 +52,7 @@ import oasis.names.specification.ubl.schema.xsd.creditnote_21.CreditNoteType;
 public final class CreditNoteToEbInterface41ConverterTest
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (CreditNoteToEbInterface41ConverterTest.class);
-  private static final String TARGET_FOLDER = "generated-ebi41-files/";
+  private static final String TARGET_FOLDER = "generated-ubl-to-ebi41-files/";
 
   @Before
   public void onInit ()
