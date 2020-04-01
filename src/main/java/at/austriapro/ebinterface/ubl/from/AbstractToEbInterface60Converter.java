@@ -79,7 +79,7 @@ import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.NoteTyp
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.PaymentIDType;
 
 /**
- * Base class for Peppol UBL to ebInterface 5.0 converter
+ * Base class for Peppol UBL to ebInterface 6.0 converter
  *
  * @author Philip Helger
  */
