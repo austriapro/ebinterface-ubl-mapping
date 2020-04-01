@@ -56,7 +56,7 @@ import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
 public final class InvoiceToEbInterface40ConverterTest
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (InvoiceToEbInterface40ConverterTest.class);
-  private static final String TARGET_FOLDER = "generated-ebi40-files/";
+  private static final String TARGET_FOLDER = "generated-ubl-to-ebi40-files/";
 
   private static final ICommonsSet <String> IGNORED_FILES = new CommonsHashSet <> ("20120822125754.482.xml",
                                                                                    "delivery-per-item.xml",

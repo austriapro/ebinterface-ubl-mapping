@@ -56,7 +56,7 @@ import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
 public final class InvoiceToEbInterface50ConverterTest
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (InvoiceToEbInterface50ConverterTest.class);
-  private static final String TARGET_FOLDER = "generated-ebi50-files/";
+  private static final String TARGET_FOLDER = "generated-ubl-to-ebi50-files/";
 
   private static final ICommonsSet <String> IGNORED_FILES = new CommonsHashSet <> ("test-paymentmeans-code-49.xml");
 
