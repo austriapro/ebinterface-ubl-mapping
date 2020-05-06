@@ -138,11 +138,6 @@ public class ToEbinterfaceSettings implements IToEbinterfaceSettings
     return m_nOrderReferenceIDMaxLen;
   }
 
-  public boolean hasOrderReferenceMaxLength ()
-  {
-    return m_nOrderReferenceIDMaxLen > 0;
-  }
-
   @Nonnull
   public ToEbinterfaceSettings setOrderReferenceIDMaxLength (final int n)
   {

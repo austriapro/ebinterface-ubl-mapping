@@ -26,7 +26,7 @@ import com.helger.commons.annotation.Nonempty;
 
 /**
  * Interface for the settings for the conversion from UBL to ebInterface.
- * 
+ *
  * @author Philip Helger
  */
 public interface IToEbinterfaceSettings extends Serializable
@@ -49,17 +49,43 @@ public interface IToEbinterfaceSettings extends Serializable
   @Nonnull
   IProfileIDResolver getProfileIDResolver ();
 
+  /**
+   * @return <code>true</code> if the order reference ID is mandatory,
+   *         <code>false</code> if not.
+   */
   boolean isOrderReferenceIDMandatory ();
 
+  /**
+   * @return The maximum length of the order reference or a value &le; 0 if no
+   *         length restrictions are defined.
+   * @see #hasOrderReferenceMaxLength()
+   */
   @CheckForSigned
   int getOrderReferenceMaxLength ();
 
-  boolean hasOrderReferenceMaxLength ();
+  default boolean hasOrderReferenceMaxLength ()
+  {
+    return getOrderReferenceMaxLength () > 0;
+  }
 
+  /**
+   * @return <code>true</code> if the delivery date is mandatory,
+   *         <code>false</code> if not.
+   */
   boolean isDeliveryDateMandatory ();
 
+  /**
+   * @return <code>true</code> if the supplier email address should be enforced,
+   *         if it is missing.
+   * @see #getEnforcedSupplierEmailAddress()
+   */
   boolean isEnforceSupplierEmailAddress ();
 
+  /**
+   * @return The email address to be used when
+   *         {@link #isEnforceSupplierEmailAddress()} is <code>true</code> and
+   *         an email address is missing in the invoice.
+   */
   @Nonnull
   @Nonempty
   String getEnforcedSupplierEmailAddress ();
@@ -76,5 +102,9 @@ public interface IToEbinterfaceSettings extends Serializable
    */
   boolean isErrorOnPositionNumber ();
 
+  /**
+   * @return <code>true</code> if the payment method is mandatory,
+   *         <code>false</code> if not.
+   */
   boolean isInvoicePaymentMethodMandatory ();
 }
