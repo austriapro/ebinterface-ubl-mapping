@@ -20,7 +20,7 @@ Add the following to your pom.xml to use this artifact:
 <dependency>
   <groupId>at.austriapro</groupId>
   <artifactId>ebinterface-ubl-mapping</artifactId>
-  <version>4.5.4</version>
+  <version>4.5.5</version>
 </dependency>
 ```
 
@@ -28,6 +28,7 @@ Add the following to your pom.xml to use this artifact:
 
 * v4.5.5 - 2020-05-14
     * Updated to support ebInterface 6.0
+    * Fixed a divide by zero error if payableAmount is 0
 * v4.5.4 - 2020-04-01
     * Now ebInterface 5.0 `Contact` email addresses and telephone numbers are also mapped to UBL (see [issue #2](https://github.com/austriapro/ebinterface-ubl-mapping/issues/2))
 * v4.5.3 - 2020-02-07

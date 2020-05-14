@@ -175,7 +175,7 @@
             <exclude>**/*.txt</exclude>
             <exclude>src/test/resources/ebi*/**</exclude>
             <exclude>src/test/resources/ubl*/**</exclude>
-            <exclude>generated-ebi*-files/*</exclude>
+            <exclude>generated-*-files/*</exclude>
           </excludes>
         </configuration>
       </plugin>
