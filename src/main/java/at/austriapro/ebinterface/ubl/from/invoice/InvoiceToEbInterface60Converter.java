@@ -616,9 +616,9 @@ public final class InvoiceToEbInterface60Converter extends AbstractToEbInterface
                   aEbiTaxItem.setTaxableAmount (aUBLTaxableAmount.setScale (SCALE_PRICE2, ROUNDING_MODE));
                   // Tax Category and percentage
                   final Ebi60TaxPercentType aEbiTaxPerc = new Ebi60TaxPercentType ();
+                  aEbiTaxPerc.setTaxCategoryCode (sUBLTaxCategoryID);
                   if (bTaxExemption)
                   {
-                    aEbiTaxPerc.setTaxCategoryCode (sUBLTaxCategoryID);
                     aEbiTaxPerc.setValue (BigDecimal.ZERO);
 
                     String sReason = null;
@@ -632,7 +632,6 @@ public final class InvoiceToEbInterface60Converter extends AbstractToEbInterface
                   else
                   {
                     // tax rate
-                    aEbiTaxPerc.setTaxCategoryCode (sUBLTaxCategoryID);
                     aEbiTaxPerc.setValue (aUBLPercentage);
                   }
                   aEbiTaxItem.setTaxPercent (aEbiTaxPerc);
@@ -647,7 +646,13 @@ public final class InvoiceToEbInterface60Converter extends AbstractToEbInterface
               // Other TAX
               final Ebi60OtherTaxType aOtherTax = new Ebi60OtherTaxType ();
               // Tax percentage (optional)
-              aOtherTax.setTaxPercent (aUBLPercentage);
+              if (aUBLPercentage != null)
+              {
+                final Ebi60TaxPercentType aEbiTaxPerc = new Ebi60TaxPercentType ();
+                aEbiTaxPerc.setTaxCategoryCode (sUBLTaxCategoryID);
+                aEbiTaxPerc.setValue (aUBLPercentage);
+                aOtherTax.setTaxPercent (aEbiTaxPerc);
+              }
               // Tax amount (mandatory)
               aOtherTax.setTaxAmount (aUBLTaxAmount.setScale (SCALE_PRICE2, ROUNDING_MODE));
               // As no comment is present, use the scheme ID
