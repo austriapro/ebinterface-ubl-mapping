@@ -24,18 +24,10 @@ Add the following to your pom.xml to use this artifact:
 </dependency>
 ```
 
-Up to and including v4.0.1:
-
-```xml
-<dependency>
-  <groupId>com.helger</groupId>
-  <artifactId>ebinterface-ubl-mapping</artifactId>
-  <version>4.0.1</version>
-</dependency>
-```
-
 # News and noteworthy
 
+* v4.5.5 - 2020-05-14
+    * Updated to support ebInterface 6.0
 * v4.5.4 - 2020-04-01
     * Now ebInterface 5.0 `Contact` email addresses and telephone numbers are also mapped to UBL (see [issue #2](https://github.com/austriapro/ebinterface-ubl-mapping/issues/2))
 * v4.5.3 - 2020-02-07
