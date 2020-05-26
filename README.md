@@ -14,18 +14,20 @@ Additionally Eclipse project files for the latest Eclipse version are contained.
 
 # Maven usage
 
-Add the following to your pom.xml to use this artifact:
+Add the following to your pom.xml to use this artifact, replacing `x.y.z` with the real version:
 
 ```xml
 <dependency>
   <groupId>at.austriapro</groupId>
   <artifactId>ebinterface-ubl-mapping</artifactId>
-  <version>4.5.5</version>
+  <version>x.y.z</version>
 </dependency>
 ```
 
 # News and noteworthy
 
+* v4.5.6 - 2020-05-26
+    * Updated to ph-ebinterface 6.1.5 with ph-xsds 2.3.0 (new Maven groupId)
 * v4.5.5 - 2020-05-14
     * Updated to support ebInterface 6.0
     * Fixed a divide by zero error if payableAmount is 0
