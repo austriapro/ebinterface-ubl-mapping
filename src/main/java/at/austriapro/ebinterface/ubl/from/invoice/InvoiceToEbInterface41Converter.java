@@ -673,19 +673,7 @@ public final class InvoiceToEbInterface41Converter extends AbstractToEbInterface
         if (aUBLTaxCategory == null)
         {
           // No direct tax category -> check if it is somewhere in the tax total
-          outer: for (final TaxTotalType aUBLTaxTotal : aUBLLine.getTaxTotal ())
-          {
-            for (final TaxSubtotalType aUBLTaxSubTotal : aUBLTaxTotal.getTaxSubtotal ())
-            {
-              // Only handle VAT items
-              if (isVATSchemeID (aUBLTaxSubTotal.getTaxCategory ().getTaxScheme ().getIDValue ()))
-              {
-                // We found one -> just use it
-                aUBLTaxCategory = aUBLTaxSubTotal.getTaxCategory ();
-                break outer;
-              }
-            }
-          }
+          aUBLTaxCategory = findTaxCategory (aUBLLine.getTaxTotal ());
         }
 
         // Try to resolve tax percentage
