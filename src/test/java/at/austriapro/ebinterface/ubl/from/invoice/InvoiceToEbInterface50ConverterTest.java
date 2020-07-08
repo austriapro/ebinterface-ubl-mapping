@@ -98,9 +98,7 @@ public final class InvoiceToEbInterface50ConverterTest
         LOGGER.info ("  " + aErrorList.toString ());
 
       // Convert ebInterface to XML
-      assertTrue (new MockEbi50Marshaller ().write (aEbInvoice,
-                                                    new File (TARGET_FOLDER +
-                                                              FilenameHelper.getWithoutPath (aRes.getPath ())))
+      assertTrue (new MockEbi50Marshaller ().write (aEbInvoice, new File (TARGET_FOLDER + FilenameHelper.getWithoutPath (aRes.getPath ())))
                                             .isSuccess ());
     }
   }
@@ -129,17 +127,14 @@ public final class InvoiceToEbInterface50ConverterTest
                                                                                Locale.GERMANY,
                                                                                ToEbinterfaceSettings.getERechnungGvAtSettings ()).convertToEbInterface (aUBLInvoice,
                                                                                                                                                         aErrorList);
-      assertTrue (aRes.getPath () + ": " + aErrorList.toString (),
-                  aErrorList.getMostSevereErrorLevel ().isLT (EErrorLevel.ERROR));
+      assertTrue (aRes.getPath () + ": " + aErrorList.toString (), aErrorList.getMostSevereErrorLevel ().isLT (EErrorLevel.ERROR));
       assertNotNull (aEbInvoice);
 
       if (aErrorList.getMostSevereErrorLevel ().isGE (EErrorLevel.WARN))
         LOGGER.info ("  " + aErrorList.toString ());
 
       // Convert ebInterface to XML
-      assertTrue (new MockEbi50Marshaller ().write (aEbInvoice,
-                                                    new File (TARGET_FOLDER +
-                                                              FilenameHelper.getWithoutPath (aRes.getPath ())))
+      assertTrue (new MockEbi50Marshaller ().write (aEbInvoice, new File (TARGET_FOLDER + FilenameHelper.getWithoutPath (aRes.getPath ())))
                                             .isSuccess ());
     }
   }
@@ -148,7 +143,7 @@ public final class InvoiceToEbInterface50ConverterTest
   public void testConvertPeppolInvoiceLaxBad ()
   {
     final ICommonsList <IReadableResource> aTestFiles = new CommonsArrayList <> ();
-    for (final File aFile : new FileSystemIterator (new File ("src/test/resources/ubl20/invoice_bad")).withFilter (IFileFilter.filenameEndsWith (".xml")))
+    for (final File aFile : new FileSystemIterator (new File ("src/test/resources/ubl/invoice_bad")).withFilter (IFileFilter.filenameEndsWith (".xml")))
       if (!IGNORED_FILES.contains (aFile.getName ()))
         aTestFiles.add (new FileSystemResource (aFile));
 

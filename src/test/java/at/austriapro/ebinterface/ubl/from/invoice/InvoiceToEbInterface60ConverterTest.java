@@ -143,7 +143,7 @@ public final class InvoiceToEbInterface60ConverterTest
   public void testConvertPeppolInvoiceLaxBad ()
   {
     final ICommonsList <IReadableResource> aTestFiles = new CommonsArrayList <> ();
-    for (final File aFile : new FileSystemIterator (new File ("src/test/resources/ubl20/invoice_bad")).withFilter (IFileFilter.filenameEndsWith (".xml")))
+    for (final File aFile : new FileSystemIterator (new File ("src/test/resources/ubl/invoice_bad")).withFilter (IFileFilter.filenameEndsWith (".xml")))
       if (!IGNORED_FILES.contains (aFile.getName ()))
         aTestFiles.add (new FileSystemResource (aFile));
 

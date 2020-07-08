@@ -67,6 +67,7 @@ public final class InvoiceToEbInterface40ConverterTest
                                                                                    "test-at-gov-new-creditorid.xml",
                                                                                    "test-at-gov-reverse-charge.xml",
                                                                                    "test-base-at-gov.xml",
+                                                                                   "test-duedate.xml",
                                                                                    "test-paymentmeans-code-59.xml",
                                                                                    "testbed-test-invoice.xml");
 
@@ -108,9 +109,7 @@ public final class InvoiceToEbInterface40ConverterTest
         LOGGER.info ("  " + aErrorList.toString ());
 
       // Convert ebInterface to XML
-      assertTrue (new MockEbi40Marshaller ().write (aEbInvoice,
-                                                    new File (TARGET_FOLDER +
-                                                              FilenameHelper.getWithoutPath (aRes.getPath ())))
+      assertTrue (new MockEbi40Marshaller ().write (aEbInvoice, new File (TARGET_FOLDER + FilenameHelper.getWithoutPath (aRes.getPath ())))
                                             .isSuccess ());
     }
   }
@@ -139,17 +138,14 @@ public final class InvoiceToEbInterface40ConverterTest
                                                                                Locale.GERMANY,
                                                                                ToEbinterfaceSettings.getERechnungGvAtSettings ()).convertToEbInterface (aUBLInvoice,
                                                                                                                                                         aErrorList);
-      assertTrue (aRes.getPath () + ": " + aErrorList.toString (),
-                  aErrorList.getMostSevereErrorLevel ().isLT (EErrorLevel.ERROR));
+      assertTrue (aRes.getPath () + ": " + aErrorList.toString (), aErrorList.getMostSevereErrorLevel ().isLT (EErrorLevel.ERROR));
       assertNotNull (aEbInvoice);
 
       if (aErrorList.getMostSevereErrorLevel ().isGE (EErrorLevel.WARN))
         LOGGER.info ("  " + aErrorList.toString ());
 
       // Convert ebInterface to XML
-      assertTrue (new MockEbi40Marshaller ().write (aEbInvoice,
-                                                    new File (TARGET_FOLDER +
-                                                              FilenameHelper.getWithoutPath (aRes.getPath ())))
+      assertTrue (new MockEbi40Marshaller ().write (aEbInvoice, new File (TARGET_FOLDER + FilenameHelper.getWithoutPath (aRes.getPath ())))
                                             .isSuccess ());
     }
   }
@@ -158,7 +154,7 @@ public final class InvoiceToEbInterface40ConverterTest
   public void testConvertPeppolInvoiceLaxBad ()
   {
     final ICommonsList <IReadableResource> aTestFiles = new CommonsArrayList <> ();
-    for (final File aFile : new FileSystemIterator (new File ("src/test/resources/ubl20/invoice_bad")).withFilter (IFileFilter.filenameEndsWith (".xml")))
+    for (final File aFile : new FileSystemIterator (new File ("src/test/resources/ubl/invoice_bad")).withFilter (IFileFilter.filenameEndsWith (".xml")))
       aTestFiles.add (new FileSystemResource (aFile));
 
     // For all Peppol test invoices
