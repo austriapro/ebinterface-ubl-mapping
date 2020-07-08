@@ -1,4 +1,5 @@
-dist: xenial
+dist: bionic
+group: edge
 sudo: required
 language: java
 
