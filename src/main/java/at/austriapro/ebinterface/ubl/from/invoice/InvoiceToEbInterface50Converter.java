@@ -1152,7 +1152,8 @@ public final class InvoiceToEbInterface50Converter extends AbstractToEbInterface
     aEbiDoc.setPayableAmount (aUBLMonetaryTotal.getPayableAmountValue ().setScale (SCALE_PRICE2, ROUNDING_MODE));
 
     // Payment method
-    convertPayment (aUBLDoc::getPaymentMeans,
+    convertPayment (aUBLDoc::getDueDateValue,
+                    aUBLDoc::getPaymentMeans,
                     aUBLDoc::getPayeeParty,
                     aUBLDoc::getAccountingSupplierParty,
                     aUBLDoc::getPaymentTerms,

@@ -26,6 +26,8 @@ Add the following to your pom.xml to use this artifact, replacing `x.y.z` with t
 
 # News and noteworthy
 
+* v4.5.7 - 2020-07-08
+    * Using "Invoice/DueDate" as an alternative to "Invoice/PaymentMeans/PaymentDueDate"
 * v4.5.6 - 2020-05-26
     * Updated to ph-ebinterface 6.1.5 with ph-xsds 2.3.0 (new Maven groupId)
 * v4.5.5 - 2020-05-14

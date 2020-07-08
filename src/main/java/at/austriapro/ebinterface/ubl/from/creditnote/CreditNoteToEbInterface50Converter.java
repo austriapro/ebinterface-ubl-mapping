@@ -1155,14 +1155,15 @@ public final class CreditNoteToEbInterface50Converter extends AbstractToEbInterf
     aEbiDoc.setPayableAmount (aUBLMonetaryTotal.getPayableAmountValue ().setScale (SCALE_PRICE2, ROUNDING_MODE));
 
     // Payment method
-    convertPayment (aUBLDoc::getPaymentMeans,
-                    aUBLDoc::getPayeeParty,
-                    aUBLDoc::getAccountingSupplierParty,
-                    aUBLDoc::getPaymentTerms,
-                    aUBLDoc::getLegalMonetaryTotal,
-                    aTransformationErrorList,
-                    aEbiDoc,
-                    true);
+    convertPayment ( () -> null,
+                     aUBLDoc::getPaymentMeans,
+                     aUBLDoc::getPayeeParty,
+                     aUBLDoc::getAccountingSupplierParty,
+                     aUBLDoc::getPaymentTerms,
+                     aUBLDoc::getLegalMonetaryTotal,
+                     aTransformationErrorList,
+                     aEbiDoc,
+                     true);
 
     // Delivery
     Ebi50DeliveryType aEbiDelivery = null;
