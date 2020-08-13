@@ -26,6 +26,8 @@ Add the following to your pom.xml to use this artifact, replacing `x.y.z` with t
 
 # News and noteworthy
 
+* v4.5.8 - work in progress
+    * Mapping UBL `AdditionalItemProperty` to ebInterface `AdditionalInformation` (ebInterface 5.0 or higher) on line level
 * v4.5.7 - 2020-07-08
     * Using "Invoice/DueDate" as an alternative to "Invoice/PaymentMeans/PaymentDueDate"
 * v4.5.6 - 2020-05-26

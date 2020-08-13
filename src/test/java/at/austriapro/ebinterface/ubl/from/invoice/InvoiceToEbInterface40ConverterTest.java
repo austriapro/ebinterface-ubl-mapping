@@ -64,6 +64,7 @@ public final class InvoiceToEbInterface40ConverterTest
                                                                                    "invoice-with-all-elements.xml",
                                                                                    "other-tax.xml",
                                                                                    "payment-terms.xml",
+                                                                                   "test-additional-item-property.xml",
                                                                                    "test-at-gov-new-creditorid.xml",
                                                                                    "test-at-gov-reverse-charge.xml",
                                                                                    "test-base-at-gov.xml",
@@ -109,7 +110,9 @@ public final class InvoiceToEbInterface40ConverterTest
         LOGGER.info ("  " + aErrorList.toString ());
 
       // Convert ebInterface to XML
-      assertTrue (new MockEbi40Marshaller ().write (aEbInvoice, new File (TARGET_FOLDER + FilenameHelper.getWithoutPath (aRes.getPath ())))
+      assertTrue (new MockEbi40Marshaller ().write (aEbInvoice,
+                                                    new File (TARGET_FOLDER +
+                                                              FilenameHelper.getWithoutPath (aRes.getPath ())))
                                             .isSuccess ());
     }
   }
@@ -138,14 +141,17 @@ public final class InvoiceToEbInterface40ConverterTest
                                                                                Locale.GERMANY,
                                                                                ToEbinterfaceSettings.getERechnungGvAtSettings ()).convertToEbInterface (aUBLInvoice,
                                                                                                                                                         aErrorList);
-      assertTrue (aRes.getPath () + ": " + aErrorList.toString (), aErrorList.getMostSevereErrorLevel ().isLT (EErrorLevel.ERROR));
+      assertTrue (aRes.getPath () + ": " + aErrorList.toString (),
+                  aErrorList.getMostSevereErrorLevel ().isLT (EErrorLevel.ERROR));
       assertNotNull (aEbInvoice);
 
       if (aErrorList.getMostSevereErrorLevel ().isGE (EErrorLevel.WARN))
         LOGGER.info ("  " + aErrorList.toString ());
 
       // Convert ebInterface to XML
-      assertTrue (new MockEbi40Marshaller ().write (aEbInvoice, new File (TARGET_FOLDER + FilenameHelper.getWithoutPath (aRes.getPath ())))
+      assertTrue (new MockEbi40Marshaller ().write (aEbInvoice,
+                                                    new File (TARGET_FOLDER +
+                                                              FilenameHelper.getWithoutPath (aRes.getPath ())))
                                             .isSuccess ());
     }
   }
