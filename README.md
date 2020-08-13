@@ -1,6 +1,6 @@
 # ebinterface-ubl-mapping
 
-Mapping ebInterface 4.x/5.0 from and to UBL 2.1.
+Mapping ebInterface 4.x/5.0/6.0 from and to UBL 2.1.
 
 Author: Philip Helger
 
@@ -26,7 +26,7 @@ Add the following to your pom.xml to use this artifact, replacing `x.y.z` with t
 
 # News and noteworthy
 
-* v4.5.8 - work in progress
+* v4.5.8 - 2020-08-13
     * Mapping UBL `AdditionalItemProperty` to ebInterface `AdditionalInformation` (ebInterface 5.0 or higher) on line level
 * v4.5.7 - 2020-07-08
     * Using "Invoice/DueDate" as an alternative to "Invoice/PaymentMeans/PaymentDueDate"
