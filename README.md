@@ -5,7 +5,7 @@ Mapping ebInterface 4.x/5.0/6.0 from and to UBL 2.1.
 Author: Philip Helger
 
 The reason why this project is not in the [ebinterface-mappings](https://github.com/austriapro/ebinterface-mappings) project is the totally different software stack used and the requirement of this project to be published on Maven central. 
-Since v4.5.0 the Maven group ID changed to `at.austriapro` - before that, the group ID was "com.helger" because I only had rights to publish below this name to Maven central.
+Since v4.5.0 the Maven group ID changed to `at.austriapro` - before that, the group ID was "com.helger".
 
 # Building
 
