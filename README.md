@@ -26,6 +26,9 @@ Add the following to your pom.xml to use this artifact, replacing `x.y.z` with t
 
 # News and noteworthy
 
+* v4.6.0 - 2020-08-30
+    * Updated to ph-ubl 6.4.0
+    * Updated to ph-ebinterface 6.2.0
 * v4.5.8 - 2020-08-13
     * Mapping UBL `AdditionalItemProperty` to ebInterface `AdditionalInformation` (ebInterface 5.0 or higher) on line level
 * v4.5.7 - 2020-07-08
