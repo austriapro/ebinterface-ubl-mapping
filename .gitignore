@@ -17,3 +17,5 @@ generated-*-files/
 .settings/
 .project
 .classpath
+zz
+release.properties
