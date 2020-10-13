@@ -18,11 +18,13 @@ package at.austriapro.ebinterface.ubl;
 
 import java.math.RoundingMode;
 import java.util.Locale;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.collection.impl.CommonsLinkedHashSet;
 import com.helger.peppol.codelist.EInvoiceTypeCode;
 import com.helger.peppol.codelist.ETaxSchemeID;
 
@@ -57,10 +59,55 @@ public abstract class AbstractConverter
   /** Austria uses HALF_UP mode! */
   public static final RoundingMode ROUNDING_MODE = RoundingMode.HALF_UP;
 
+  public static final String INVOICE_TYPE_CODE_PARTIAL = "326";
   /** The invoice type code to use (380) */
   public static final String INVOICE_TYPE_CODE_INVOICE = EInvoiceTypeCode.COMMERCIAL_INVOICE.getID ();
-  public static final String INVOICE_TYPE_CODE_PARTIAL = "326";
   public static final String INVOICE_TYPE_CODE_SELF_BILLING = "389";
+  // List taken from the EN 16931 validation artefacts 1.3.3
+  public static final Set <String> INVOICE_TYPE_CODES = new CommonsLinkedHashSet <> ("80",
+                                                                                     "82",
+                                                                                     "84",
+                                                                                     "130",
+                                                                                     "202",
+                                                                                     "203",
+                                                                                     "204",
+                                                                                     "211",
+                                                                                     "295",
+                                                                                     "325",
+                                                                                     INVOICE_TYPE_CODE_PARTIAL,
+                                                                                     INVOICE_TYPE_CODE_INVOICE,
+                                                                                     "383",
+                                                                                     "384",
+                                                                                     "385",
+                                                                                     "386",
+                                                                                     "387",
+                                                                                     "388",
+                                                                                     INVOICE_TYPE_CODE_SELF_BILLING,
+                                                                                     "390",
+                                                                                     "393",
+                                                                                     "394",
+                                                                                     "395",
+                                                                                     "456",
+                                                                                     "457",
+                                                                                     "527",
+                                                                                     "575",
+                                                                                     "623",
+                                                                                     "633",
+                                                                                     "751",
+                                                                                     "780",
+                                                                                     "935").getAsUnmodifiable ();
+  // List taken from the EN 16931 validation artefacts 1.3.3
+  public static final Set <String> CREDIT_NOTE_TYPE_CODES = new CommonsLinkedHashSet <> ("81",
+                                                                                         "83",
+                                                                                         "261",
+                                                                                         "262",
+                                                                                         "296",
+                                                                                         "308",
+                                                                                         "381",
+                                                                                         "396",
+                                                                                         "420",
+                                                                                         "458",
+                                                                                         "532").getAsUnmodifiable ();
 
   public static final String UBL_VERSION_20 = "2.0";
   public static final String UBL_VERSION_21 = "2.1";

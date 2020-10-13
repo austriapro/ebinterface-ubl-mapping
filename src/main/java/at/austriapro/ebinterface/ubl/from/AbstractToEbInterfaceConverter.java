@@ -69,30 +69,26 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
                                      "Invalid CustomizationID schemeID value ''{0}'' present. It must be ''{1}''."),
     INVALID_CUSTOMIZATION_ID ("Die angegebene CustomizationID ''{0}'' ist ungültig. Sie wird vom angegebenen Profil nicht unterstützt.",
                               "Invalid CustomizationID value ''{0}'' present. It is not supported by the passed profile."),
-    NO_INVOICE_TYPECODE ("Der InvoiceTypeCode fehlt. Es wird einer der Werte ''{0}'', ''{1}'' oder ''{2}'' erwartet.",
-                         "No InvoiceTypeCode present. It must be one of ''{0}'', ''{1}'' or ''{2}''."),
-    INVALID_INVOICE_TYPECODE ("Der InvoiceTypeCode ''{0}'' ist ungültig. Dieser muss einen der Werte ''{1}'', ''{2}'' oder ''{3}'' haben.",
-                              "Invalid InvoiceTypeCode value ''{0}'' present. It must be one of ''{1}'', ''{2}'' or ''{3}''."),
+    NO_INVOICE_TYPECODE ("Der InvoiceTypeCode fehlt. Es wird einer der folgenden Werte erwartet: {0}",
+                         "No InvoiceTypeCode present. It must be one of the following values: {0}"),
+    INVALID_INVOICE_TYPECODE ("Der InvoiceTypeCode ''{0}'' ist ungültig.Es wird einer der folgenden Werte erwartet: {1}",
+                              "Invalid InvoiceTypeCode value ''{0}'' present. It must be one of the following values: {1}"),
     ADDRESS_NO_STREET ("In der Adresse fehlt die Straße.", "Address is missing a street name."),
     ADDRESS_NO_CITY ("In der Adresse fehlt der Name der Stadt.", "Address is missing a city name."),
     ADDRESS_NO_ZIPCODE ("In der Adresse fehlt die PLZ.", "Address is missing a ZIP code."),
-    ADDRESS_INVALID_COUNTRY ("Der angegebene Ländercode ''{0}'' ist ungültig.",
-                             "The provided country code ''{0}'' is invalid."),
+    ADDRESS_INVALID_COUNTRY ("Der angegebene Ländercode ''{0}'' ist ungültig.", "The provided country code ''{0}'' is invalid."),
     ADDRESS_NO_COUNTRY ("In der Adresse fehlt der Name des Landes.", "Address is missing a country."),
     CONTACT_NO_NAME ("Im Kontakt fehlr der Name.", "Contact is missing a name."),
     MULTIPLE_PARTIES ("Es sind mehrere Partynamen vorhanden - nur der erste wird verwendet.",
                       "Multiple party names present - only the first one is used."),
     PARTY_NO_NAME ("Der Name der Party fehlt.", "Party name is missing."),
-    PARTY_UNSUPPORTED_ENDPOINT ("Ignoriere den Enpunkt ''{0}'' des Typs ''{1}''.",
-                                "Ignoring endpoint ID ''{0}'' of type ''{1}''."),
-    PARTY_UNSUPPORTED_ADDRESS_IDENTIFIER ("Ignoriere die ID ''{0}'' des Typs ''{1}''.",
-                                          "Ignoring identification ''{0}'' of type ''{1}''."),
+    PARTY_UNSUPPORTED_ENDPOINT ("Ignoriere den Enpunkt ''{0}'' des Typs ''{1}''.", "Ignoring endpoint ID ''{0}'' of type ''{1}''."),
+    PARTY_UNSUPPORTED_ADDRESS_IDENTIFIER ("Ignoriere die ID ''{0}'' des Typs ''{1}''.", "Ignoring identification ''{0}'' of type ''{1}''."),
     ORDERLINE_REF_ID_EMPTY ("Es muss ein Wert für die Bestellpositionsnummer angegeben werden.",
                             "A value must be provided for the order line reference ID."),
     ALPHANUM_ID_TYPE_CHANGE ("''{0}'' ist ein ungültiger Typ und wurde auf ''{1}'' geändert.",
                              "''{0}'' is an invalid value and was changed to ''{1}''."),
-    INVALID_CURRENCY_CODE ("Der angegebene Währungscode ''{0}'' ist ungültig.",
-                           "Invalid currency code ''{0}'' provided."),
+    INVALID_CURRENCY_CODE ("Der angegebene Währungscode ''{0}'' ist ungültig.", "Invalid currency code ''{0}'' provided."),
     MISSING_INVOICE_NUMBER ("Es wurde keine Rechnungsnummer angegeben.", "No invoice number was provided."),
     MISSING_INVOICE_DATE ("Es wurde keine Rechnungsdatum angegeben.", "No invoice date was provided."),
     BILLER_VAT_MISSING ("Die UID-Nummer des Rechnungsstellers fehlt. Verwenden Sie 'ATU00000000' für österreichische Rechnungssteller an wenn keine UID-Nummer notwendig ist.",
@@ -107,8 +103,7 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
                                                                   "Failed to get supplier assigned account ID."),
     ORDERING_PARTY_VAT_MISSING ("Die UID-Nummer des Auftraggebers fehlt. Verwenden Sie 'ATU00000000' für österreichische Empfänger an wenn keine UID-Nummer notwendig ist.",
                                 "Failed to get ordering party VAT identification number. Use 'ATU00000000' for Austrian invoice recipients if no VAT identification number is required."),
-    ORDERING_PARTY_PARTY_MISSING ("Die Adressdaten des Auftraggebers fehlen.",
-                                  "The party information of the ordering party are missing."),
+    ORDERING_PARTY_PARTY_MISSING ("Die Adressdaten des Auftraggebers fehlen.", "The party information of the ordering party are missing."),
     ORDERING_PARTY_SUPPLIER_ASSIGNED_ACCOUNT_ID_MISSING ("Die ID des Auftraggebers im System des Rechnungsstellers fehlt.",
                                                          "Failed to get supplier assigned account ID."),
     ORDER_REFERENCE_MISSING ("Die Auftragsreferenz fehlt.", "The order reference is missing."),
@@ -146,20 +141,17 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
     PAYMENTMEANS_UNSUPPORTED_CHANNELCODE ("Die Zahlungsart mit dem ChannelCode ''{0}'' wird ignoriert.",
                                           "The payment means with ChannelCode ''{0}'' are ignored."),
     ERB_NO_PAYMENT_METHOD ("Es muss eine Zahlungsart angegeben werden.", "A payment method must be provided."),
-    PAYMENT_DUE_DATE_ALREADY_CONTAINED ("Es wurde mehr als ein Zahlungsziel gefunden.",
-                                        "More than one payment due date was found."),
+    PAYMENT_DUE_DATE_ALREADY_CONTAINED ("Es wurde mehr als ein Zahlungsziel gefunden.", "More than one payment due date was found."),
     SETTLEMENT_PERIOD_MISSING ("Für Skontoeinträge muss mindestens ein Endedatum angegeben werden.",
                                "Discount items require a settlement end date."),
-    PENALTY_NOT_ALLOWED ("Strafzuschläge werden in ebInterface nicht unterstützt.",
-                         "Penalty surcharges are not supported in ebInterface."),
+    PENALTY_NOT_ALLOWED ("Strafzuschläge werden in ebInterface nicht unterstützt.", "Penalty surcharges are not supported in ebInterface."),
     DISCOUNT_WITHOUT_DUEDATE ("Skontoeinträge können nur angegeben werden, wenn auch ein Zahlungsziel angegeben wurde.",
                               "Discount items can only be provided if a payment due date is present."),
     DELIVERY_WITHOUT_NAME ("Wenn eine Delivery/DeliveryLocation/Address angegeben ist muss auch ein Delivery/DeliveryParty/PartyName/Name angegeben werden.",
                            "If a Delivery/DeliveryLocation/Address is present, a Delivery/DeliveryParty/PartyName/Name must also be present."),
     ERB_NO_DELIVERY_DATE ("Ein Lieferdatum oder ein Leistungszeitraum muss vorhanden sein.",
                           "A Delivery/DeliveryDate or an InvoicePeriod must be present."),
-    PREPAID_NOT_SUPPORTED ("Das Element <PrepaidAmount> wird nicht unterstützt.",
-                           "The <PrepaidAmount> element is not supported!"),
+    PREPAID_NOT_SUPPORTED ("Das Element <PrepaidAmount> wird nicht unterstützt.", "The <PrepaidAmount> element is not supported!"),
     MISSING_TAXCATEGORY_ID ("Das Element <ID> fehlt.", "Element <ID> is missing."),
     MISSING_TAXCATEGORY_ID_VALUE ("Das Element <ID> hat keinen Wert.", "Element <ID> has no value."),
     MISSING_TAXCATEGORY_TAXSCHEME_ID ("Das Element <ID> fehlt.", "Element <ID> is missing."),
@@ -228,8 +220,7 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
    * @param aTransformationErrorList
    *        The error list to be filled. May not be <code>null</code>.
    */
-  protected final void checkInvoiceConsistency (@Nonnull final InvoiceType aUBLInvoice,
-                                                @Nonnull final ErrorList aTransformationErrorList)
+  protected final void checkInvoiceConsistency (@Nonnull final InvoiceType aUBLInvoice, @Nonnull final ErrorList aTransformationErrorList)
   {
     // Check UBLVersionID
     final UBLVersionIDType aUBLVersionID = aUBLInvoice.getUBLVersionID ();
@@ -248,9 +239,7 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
     else
     {
       final String sUBLVersionID = StringHelper.trim (aUBLVersionID.getValue ());
-      if (!UBL_VERSION_20.equals (sUBLVersionID) &&
-          !UBL_VERSION_21.equals (sUBLVersionID) &&
-          !UBL_VERSION_22.equals (sUBLVersionID))
+      if (!UBL_VERSION_20.equals (sUBLVersionID) && !UBL_VERSION_21.equals (sUBLVersionID) && !UBL_VERSION_22.equals (sUBLVersionID))
       {
         aTransformationErrorList.add (SingleError.builderError ()
                                                  .setErrorFieldName ("UBLVersionID")
@@ -297,26 +286,22 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
       aTransformationErrorList.add (SingleError.builderWarn ()
                                                .setErrorFieldName ("InvoiceTypeCode")
                                                .setErrorText (EText.NO_INVOICE_TYPECODE.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                                INVOICE_TYPE_CODE_INVOICE,
-                                                                                                                INVOICE_TYPE_CODE_PARTIAL,
-                                                                                                                INVOICE_TYPE_CODE_SELF_BILLING))
+                                                                                                                StringHelper.getImploded (", ",
+                                                                                                                                          INVOICE_TYPE_CODES)))
                                                .build ());
     }
     else
     {
       // If one is present, it must match
       final String sInvoiceTypeCode = StringHelper.trim (aInvoiceTypeCode.getValue ());
-      if (!INVOICE_TYPE_CODE_INVOICE.equals (sInvoiceTypeCode) &&
-          !INVOICE_TYPE_CODE_PARTIAL.equals (sInvoiceTypeCode) &&
-          !INVOICE_TYPE_CODE_SELF_BILLING.equals (sInvoiceTypeCode))
+      if (!INVOICE_TYPE_CODES.contains (sInvoiceTypeCode))
       {
         aTransformationErrorList.add (SingleError.builderError ()
                                                  .setErrorFieldName ("InvoiceTypeCode")
                                                  .setErrorText (EText.INVALID_INVOICE_TYPECODE.getDisplayTextWithArgs (m_aDisplayLocale,
                                                                                                                        sInvoiceTypeCode,
-                                                                                                                       INVOICE_TYPE_CODE_INVOICE,
-                                                                                                                       INVOICE_TYPE_CODE_PARTIAL,
-                                                                                                                       INVOICE_TYPE_CODE_SELF_BILLING))
+                                                                                                                       StringHelper.getImploded (", ",
+                                                                                                                                                 INVOICE_TYPE_CODES)))
                                                  .build ());
       }
     }
@@ -350,9 +335,7 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
     else
     {
       final String sUBLVersionID = StringHelper.trim (aUBLVersionID.getValue ());
-      if (!UBL_VERSION_20.equals (sUBLVersionID) &&
-          !UBL_VERSION_21.equals (sUBLVersionID) &&
-          !UBL_VERSION_22.equals (sUBLVersionID))
+      if (!UBL_VERSION_20.equals (sUBLVersionID) && !UBL_VERSION_21.equals (sUBLVersionID) && !UBL_VERSION_22.equals (sUBLVersionID))
       {
         aTransformationErrorList.add (SingleError.builderError ()
                                                  .setErrorFieldName ("UBLVersionID")
