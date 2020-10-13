@@ -28,6 +28,7 @@ Add the following to your pom.xml to use this artifact, replacing `x.y.z` with t
 
 * v4.6.2 - 2020-10-13
     * Heavily extended the allowed UBL Invoice type codes. Allowed values are now: `80`, `82`, `84`, `130`, `202`, `203`, `204`, `211`, `295`, `325`, `326`, `380`, `383`, `384`, `385`, `386`, `387`, `388`, `389`, `390`, `393`, `394`, `395`, `456`, `457`, `527`, `575`, `623`, `633`, `751`, `780`, `935`
+    * Added support for UBLVersionID `2.3`
 * v4.6.1 - 2020-09-17
     * Updated to Jakarta JAXB 2.3.3
 * v4.6.0 - 2020-08-30

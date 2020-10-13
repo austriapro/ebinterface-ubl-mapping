@@ -58,10 +58,10 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
   public enum EText implements IHasDisplayTextWithArgs
   {
     OR ("oder", "or"),
-    NO_UBL_VERSION_ID ("Die UBLVersionID fehlt. Es wird der Wert ''{0}'', ''{1}'' oder ''{2}'' erwartet.",
-                       "No UBLVersionID present. It must be ''{0}'', ''{1}'' or ''{2}''."),
-    INVALID_UBL_VERSION_ID ("Die UBLVersionID ''{0}'' ist ungültig. Diese muss den Wert ''{1}'', ''{2}'' oder ''{3}'' haben.",
-                            "Invalid UBLVersionID value ''{0}'' present. It must be ''{1}'', ''{2}'' or ''{3}''."),
+    NO_UBL_VERSION_ID ("Die UBLVersionID fehlt. Es wird der Wert ''{0}'', ''{1}'', ''{2}'' oder ''{3}'' erwartet.",
+                       "No UBLVersionID present. It must be ''{0}'', ''{1}'', ''{2}'' or ''{3}''."),
+    INVALID_UBL_VERSION_ID ("Die UBLVersionID ''{0}'' ist ungültig. Diese muss den Wert ''{1}'', ''{2}'', ''{3}'' oder ''{4}'' haben.",
+                            "Invalid UBLVersionID value ''{0}'' present. It must be ''{1}'', ''{2}'', ''{3}'' or ''{4}''."),
     NO_PROFILE_ID ("Die ProfileID fehlt", "No ProfileID present."),
     INVALID_PROFILE_ID ("Die ProfileID ''{0}'' ist ungültig.", "Invalid ProfileID value ''{0}'' present."),
     NO_CUSTOMIZATION_ID ("Die CustomizationID fehlt", "No CustomizationID present."),
@@ -329,13 +329,17 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
                                                  .setErrorText (EText.NO_UBL_VERSION_ID.getDisplayTextWithArgs (m_aDisplayLocale,
                                                                                                                 UBL_VERSION_20,
                                                                                                                 UBL_VERSION_21,
-                                                                                                                UBL_VERSION_22))
+                                                                                                                UBL_VERSION_22,
+                                                                                                                UBL_VERSION_23))
                                                  .build ());
     }
     else
     {
       final String sUBLVersionID = StringHelper.trim (aUBLVersionID.getValue ());
-      if (!UBL_VERSION_20.equals (sUBLVersionID) && !UBL_VERSION_21.equals (sUBLVersionID) && !UBL_VERSION_22.equals (sUBLVersionID))
+      if (!UBL_VERSION_20.equals (sUBLVersionID) &&
+          !UBL_VERSION_21.equals (sUBLVersionID) &&
+          !UBL_VERSION_22.equals (sUBLVersionID) &&
+          !UBL_VERSION_23.equals (sUBLVersionID))
       {
         aTransformationErrorList.add (SingleError.builderError ()
                                                  .setErrorFieldName ("UBLVersionID")
@@ -343,7 +347,8 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
                                                                                                                      sUBLVersionID,
                                                                                                                      UBL_VERSION_20,
                                                                                                                      UBL_VERSION_21,
-                                                                                                                     UBL_VERSION_22))
+                                                                                                                     UBL_VERSION_22,
+                                                                                                                     UBL_VERSION_23))
                                                  .build ());
       }
     }
