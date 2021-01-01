@@ -237,23 +237,25 @@ public final class InvoiceToEbInterface50Converter extends AbstractToEbInterface
 
       if (aUBLSupplier.getParty () != null)
       {
-        aEbiBiller.setAddress (convertParty (aUBLSupplier.getParty (),
-                                             "AccountingSupplierParty",
-                                             aTransformationErrorList,
-                                             m_aContentLocale,
-                                             m_aDisplayLocale,
-                                             true));
-        aEbiBiller.setContact (convertContact (aUBLSupplier.getParty (),
-                                               "AccountingSupplierParty",
-                                               aEbiBiller.getAddress ().getName (),
-                                               aTransformationErrorList,
-                                               m_aDisplayLocale,
-                                               true));
+        final Ebi50AddressType aEbiAddress = convertParty (aUBLSupplier.getParty (),
+                                                           "AccountingSupplierParty",
+                                                           aTransformationErrorList,
+                                                           m_aContentLocale,
+                                                           m_aDisplayLocale,
+                                                           true);
+        aEbiBiller.setAddress (aEbiAddress);
+        final Ebi50ContactType aEbiContact = convertContact (aUBLSupplier.getParty (),
+                                                             "AccountingSupplierParty",
+                                                             aEbiBiller.getAddress ().getName (),
+                                                             aTransformationErrorList,
+                                                             m_aDisplayLocale,
+                                                             true);
+        aEbiBiller.setContact (aEbiContact);
 
         // Ensure a fake biller email address is present
-        if (aEbiBiller.getAddress ().hasNoEmailEntries ())
+        if (aEbiAddress.hasNoEmailEntries () && (aEbiContact == null || aEbiContact.hasNoEmailEntries ()))
           if (m_aSettings.isEnforceSupplierEmailAddress ())
-            aEbiBiller.getAddress ().addEmail (m_aSettings.getEnforcedSupplierEmailAddress ());
+            aEbiAddress.addEmail (m_aSettings.getEnforcedSupplierEmailAddress ());
       }
 
       // Add contract reference as further identification

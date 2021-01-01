@@ -26,6 +26,8 @@ Add the following to your pom.xml to use this artifact, replacing `x.y.z` with t
 
 # News and noteworthy
 
+* v4.6.3 - 2020-10-28
+    * Fixed the application of the "EnforcedSupplierEmailAddress" when converting to ebInterface 5.0 and 6.0
 * v4.6.2 - 2020-10-13
     * Heavily extended the allowed UBL Invoice type codes. Allowed values are now: `80`, `82`, `84`, `130`, `202`, `203`, `204`, `211`, `295`, `325`, `326`, `380`, `383`, `384`, `385`, `386`, `387`, `388`, `389`, `390`, `393`, `394`, `395`, `456`, `457`, `527`, `575`, `623`, `633`, `751`, `780`, `935`
     * Added support for UBLVersionID `2.3`
