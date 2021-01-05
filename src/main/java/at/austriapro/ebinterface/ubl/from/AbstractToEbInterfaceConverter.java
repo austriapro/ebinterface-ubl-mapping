@@ -233,13 +233,17 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
                                                  .setErrorText (EText.NO_UBL_VERSION_ID.getDisplayTextWithArgs (m_aDisplayLocale,
                                                                                                                 UBL_VERSION_20,
                                                                                                                 UBL_VERSION_21,
-                                                                                                                UBL_VERSION_22))
+                                                                                                                UBL_VERSION_22,
+                                                                                                                UBL_VERSION_23))
                                                  .build ());
     }
     else
     {
       final String sUBLVersionID = StringHelper.trim (aUBLVersionID.getValue ());
-      if (!UBL_VERSION_20.equals (sUBLVersionID) && !UBL_VERSION_21.equals (sUBLVersionID) && !UBL_VERSION_22.equals (sUBLVersionID))
+      if (!UBL_VERSION_20.equals (sUBLVersionID) &&
+          !UBL_VERSION_21.equals (sUBLVersionID) &&
+          !UBL_VERSION_22.equals (sUBLVersionID) &&
+          !UBL_VERSION_23.equals (sUBLVersionID))
       {
         aTransformationErrorList.add (SingleError.builderError ()
                                                  .setErrorFieldName ("UBLVersionID")
@@ -247,7 +251,8 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
                                                                                                                      sUBLVersionID,
                                                                                                                      UBL_VERSION_20,
                                                                                                                      UBL_VERSION_21,
-                                                                                                                     UBL_VERSION_22))
+                                                                                                                     UBL_VERSION_22,
+                                                                                                                     UBL_VERSION_23))
                                                  .build ());
       }
     }
