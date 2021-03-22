@@ -26,6 +26,8 @@ Add the following to your pom.xml to use this artifact, replacing `x.y.z` with t
 
 # News and noteworthy
 
+* v4.7.0 - 2021-03-22
+    * Updated to ph-commons 10
 * v4.6.3 - 2020-10-28
     * Fixed the application of the "EnforcedSupplierEmailAddress" when converting to ebInterface 5.0 and 6.0
 * v4.6.2 - 2020-10-13

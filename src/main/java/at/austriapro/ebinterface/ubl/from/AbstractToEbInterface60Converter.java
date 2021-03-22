@@ -17,7 +17,6 @@
 package at.austriapro.ebinterface.ubl.from;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.Supplier;
@@ -29,6 +28,7 @@ import javax.annotation.concurrent.Immutable;
 import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.collection.impl.ICommonsList;
+import com.helger.commons.datetime.OffsetDate;
 import com.helger.commons.error.SingleError;
 import com.helger.commons.error.list.ErrorList;
 import com.helger.commons.locale.country.CountryCache;
@@ -137,8 +137,8 @@ public abstract class AbstractToEbInterface60Converter extends AbstractToEbInter
   {
     if (aEbiContact.getName () == null)
       aTransformationErrorList.add (SingleError.builderError ()
-                                               .setErrorFieldName (sPartyType + "/Contact/Name")
-                                               .setErrorText (EText.CONTACT_NO_NAME.getDisplayText (aDisplayLocale))
+                                               .errorFieldName (sPartyType + "/Contact/Name")
+                                               .errorText (EText.CONTACT_NO_NAME.getDisplayText (aDisplayLocale))
                                                .build ());
   }
 
@@ -201,23 +201,24 @@ public abstract class AbstractToEbInterface60Converter extends AbstractToEbInter
   {
     if (aEbiAddress.getStreet () == null)
       aTransformationErrorList.add (SingleError.builderError ()
-                                               .setErrorFieldName (sPartyType + "/PostalAddress/StreetName")
-                                               .setErrorText (EText.ADDRESS_NO_STREET.getDisplayText (aDisplayLocale))
+                                               .errorFieldName (sPartyType + "/PostalAddress/StreetName")
+                                               .errorText (EText.ADDRESS_NO_STREET.getDisplayText (aDisplayLocale))
                                                .build ());
     if (aEbiAddress.getTown () == null)
       aTransformationErrorList.add (SingleError.builderError ()
-                                               .setErrorFieldName (sPartyType + "/PostalAddress/CityName")
-                                               .setErrorText (EText.ADDRESS_NO_CITY.getDisplayText (aDisplayLocale))
+                                               .errorFieldName (sPartyType + "/PostalAddress/CityName")
+                                               .errorText (EText.ADDRESS_NO_CITY.getDisplayText (aDisplayLocale))
                                                .build ());
     if (aEbiAddress.getZIP () == null)
       aTransformationErrorList.add (SingleError.builderError ()
-                                               .setErrorFieldName (sPartyType + "/PostalAddress/PostalZone")
-                                               .setErrorText (EText.ADDRESS_NO_ZIPCODE.getDisplayText (aDisplayLocale))
+                                               .errorFieldName (sPartyType + "/PostalAddress/PostalZone")
+                                               .errorText (EText.ADDRESS_NO_ZIPCODE.getDisplayText (aDisplayLocale))
                                                .build ());
     if (aEbiAddress.getCountry () == null)
       aTransformationErrorList.add (SingleError.builderError ()
-                                               .setErrorFieldName (sPartyType + "/PostalAddress/Country/IdentificationCode")
-                                               .setErrorText (EText.ADDRESS_NO_COUNTRY.getDisplayText (aDisplayLocale))
+                                               .errorFieldName (sPartyType +
+                                                                "/PostalAddress/Country/IdentificationCode")
+                                               .errorText (EText.ADDRESS_NO_COUNTRY.getDisplayText (aDisplayLocale))
                                                .build ());
   }
 
@@ -233,8 +234,8 @@ public abstract class AbstractToEbInterface60Converter extends AbstractToEbInter
 
     if (aUBLParty.getPartyNameCount () > 1)
       aTransformationErrorList.add (SingleError.builderWarn ()
-                                               .setErrorFieldName (sPartyType + "/PartyName")
-                                               .setErrorText (EText.MULTIPLE_PARTIES.getDisplayText (aDisplayLocale))
+                                               .errorFieldName (sPartyType + "/PartyName")
+                                               .errorText (EText.MULTIPLE_PARTIES.getDisplayText (aDisplayLocale))
                                                .build ());
 
     // Convert name
@@ -250,8 +251,8 @@ public abstract class AbstractToEbInterface60Converter extends AbstractToEbInter
 
     if (aEbiAddress.getName () == null)
       aTransformationErrorList.add (SingleError.builderError ()
-                                               .setErrorFieldName (sPartyType)
-                                               .setErrorText (EText.PARTY_NO_NAME.getDisplayText (aDisplayLocale))
+                                               .errorFieldName (sPartyType)
+                                               .errorText (EText.PARTY_NO_NAME.getDisplayText (aDisplayLocale))
                                                .build ());
 
     // Convert main address
@@ -277,11 +278,11 @@ public abstract class AbstractToEbInterface60Converter extends AbstractToEbInter
 
         if (aEbiAddress.hasNoAddressIdentifierEntries ())
           aTransformationErrorList.add (SingleError.builderWarn ()
-                                                   .setErrorFieldName (sPartyType)
-                                                   .setErrorText (EText.PARTY_UNSUPPORTED_ENDPOINT.getDisplayTextWithArgs (aDisplayLocale,
-                                                                                                                           sEndpointID,
-                                                                                                                           aUBLParty.getEndpointID ()
-                                                                                                                                    .getSchemeID ()))
+                                                   .errorFieldName (sPartyType)
+                                                   .errorText (EText.PARTY_UNSUPPORTED_ENDPOINT.getDisplayTextWithArgs (aDisplayLocale,
+                                                                                                                        sEndpointID,
+                                                                                                                        aUBLParty.getEndpointID ()
+                                                                                                                                 .getSchemeID ()))
                                                    .build ());
       }
     }
@@ -302,14 +303,14 @@ public abstract class AbstractToEbInterface60Converter extends AbstractToEbInter
         }
         if (aEbiAddress.hasNoAddressIdentifierEntries ())
           aTransformationErrorList.add (SingleError.builderWarn ()
-                                                   .setErrorFieldName (sPartyType +
-                                                                       "/PartyIdentification[" +
-                                                                       nPartyIdentificationIndex +
-                                                                       "]")
-                                                   .setErrorText (EText.PARTY_UNSUPPORTED_ADDRESS_IDENTIFIER.getDisplayTextWithArgs (aDisplayLocale,
-                                                                                                                                     sUBLPartyID,
-                                                                                                                                     aUBLPartyID.getID ()
-                                                                                                                                                .getSchemeID ()))
+                                                   .errorFieldName (sPartyType +
+                                                                    "/PartyIdentification[" +
+                                                                    nPartyIdentificationIndex +
+                                                                    "]")
+                                                   .errorText (EText.PARTY_UNSUPPORTED_ADDRESS_IDENTIFIER.getDisplayTextWithArgs (aDisplayLocale,
+                                                                                                                                  sUBLPartyID,
+                                                                                                                                  aUBLPartyID.getID ()
+                                                                                                                                             .getSchemeID ()))
                                                    .build ());
         ++nPartyIdentificationIndex;
       }
@@ -354,7 +355,12 @@ public abstract class AbstractToEbInterface60Converter extends AbstractToEbInter
     Ebi60AddressType aEbiAddress = null;
     if (aUBLParty != null)
     {
-      aEbiAddress = convertParty (aUBLParty, "DeliveryParty", aTransformationErrorList, aContentLocale, aDisplayLocale, false);
+      aEbiAddress = convertParty (aUBLParty,
+                                  "DeliveryParty",
+                                  aTransformationErrorList,
+                                  aContentLocale,
+                                  aDisplayLocale,
+                                  false);
       aEbiDelivery.setAddress (aEbiAddress);
 
       aEbiDelivery.setContact (convertContact (aUBLParty,
@@ -436,8 +442,8 @@ public abstract class AbstractToEbInterface60Converter extends AbstractToEbInter
 
       if (StringHelper.hasNoText (aEbiAddress.getName ()))
         aTransformationErrorList.add (SingleError.builderError ()
-                                                 .setErrorFieldName (sDeliveryType + "/DeliveryParty")
-                                                 .setErrorText (EText.DELIVERY_WITHOUT_NAME.getDisplayText (aDisplayLocale))
+                                                 .errorFieldName (sDeliveryType + "/DeliveryParty")
+                                                 .errorText (EText.DELIVERY_WITHOUT_NAME.getDisplayText (aDisplayLocale))
                                                  .build ());
       validateAddressData (aEbiAddress, sDeliveryType + "/DeliveryParty", aTransformationErrorList, aDisplayLocale);
     }
@@ -483,7 +489,8 @@ public abstract class AbstractToEbInterface60Converter extends AbstractToEbInter
         {
           final Ebi60RelatedDocumentType aEbiRelatedDocument = new Ebi60RelatedDocumentType ();
           aEbiRelatedDocument.setInvoiceNumber (aUBLBillingReference.getCreditNoteDocumentReference ().getIDValue ());
-          aEbiRelatedDocument.setInvoiceDate (aUBLBillingReference.getCreditNoteDocumentReference ().getIssueDateValue ());
+          aEbiRelatedDocument.setInvoiceDate (aUBLBillingReference.getCreditNoteDocumentReference ()
+                                                                  .getIssueDateValue ());
           aEbiRelatedDocument.setDocumentType (Ebi60DocumentTypeType.CREDIT_MEMO);
           aEbiDoc.addRelatedDocument (aEbiRelatedDocument);
         }
@@ -506,7 +513,8 @@ public abstract class AbstractToEbInterface60Converter extends AbstractToEbInter
         aEbiRelatedDocument.setComment (StringHelper.getImplodedNonEmpty ('\n', aComments));
         if (aUBLDocumentReference.getDocumentTypeCode () != null)
         {
-          aEbiRelatedDocument.setDocumentType (getAsDocumentTypeType (aUBLDocumentReference.getDocumentTypeCode ().getName (),
+          aEbiRelatedDocument.setDocumentType (getAsDocumentTypeType (aUBLDocumentReference.getDocumentTypeCode ()
+                                                                                           .getName (),
                                                                       aUBLDocumentReference.getDocumentTypeCodeValue ()));
         }
         aEbiDoc.addRelatedDocument (aEbiRelatedDocument);
@@ -526,7 +534,7 @@ public abstract class AbstractToEbInterface60Converter extends AbstractToEbInter
     }
   }
 
-  protected void convertPayment (@Nonnull final Supplier <LocalDate> aUBLTopLevelDueDate,
+  protected void convertPayment (@Nonnull final Supplier <OffsetDate> aUBLTopLevelDueDate,
                                  @Nonnull final Supplier <List <PaymentMeansType>> aUBLDocPaymentMeans,
                                  @Nonnull final Supplier <PartyType> aUBLDocPayeeParty,
                                  @Nonnull final Supplier <SupplierPartyType> aUBLDocAccountingSupplierParty,
@@ -566,9 +574,11 @@ public abstract class AbstractToEbInterface60Converter extends AbstractToEbInter
                 {
                   // Reference
                   aTransformationErrorList.add (SingleError.builderWarn ()
-                                                           .setErrorFieldName ("PaymentMeans[" + nPaymentMeansIndex + "]/InstructionID")
-                                                           .setErrorText (EText.PAYMENT_ID_TOO_LONG_CUT.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                                                sUBLInstructionID))
+                                                           .errorFieldName ("PaymentMeans[" +
+                                                                            nPaymentMeansIndex +
+                                                                            "]/InstructionID")
+                                                           .errorText (EText.PAYMENT_ID_TOO_LONG_CUT.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                             sUBLInstructionID))
                                                            .build ());
                   sUBLInstructionID = sUBLInstructionID.substring (0, PAYMENT_REFERENCE_MAX_LENGTH);
                 }
@@ -591,13 +601,13 @@ public abstract class AbstractToEbInterface60Converter extends AbstractToEbInter
                   {
                     // Reference
                     aTransformationErrorList.add (SingleError.builderWarn ()
-                                                             .setErrorFieldName ("PaymentMeans[" +
-                                                                                 nPaymentMeansIndex +
-                                                                                 "]/PaymentID[" +
-                                                                                 nPaymentIDIndex +
-                                                                                 "]")
-                                                             .setErrorText (EText.PAYMENT_ID_TOO_LONG_CUT.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                                                  sUBLPaymentID))
+                                                             .errorFieldName ("PaymentMeans[" +
+                                                                              nPaymentMeansIndex +
+                                                                              "]/PaymentID[" +
+                                                                              nPaymentIDIndex +
+                                                                              "]")
+                                                             .errorText (EText.PAYMENT_ID_TOO_LONG_CUT.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                               sUBLPaymentID))
                                                              .build ());
                     sUBLPaymentID = sUBLPaymentID.substring (0, PAYMENT_REFERENCE_MAX_LENGTH);
                   }
@@ -619,7 +629,8 @@ public abstract class AbstractToEbInterface60Converter extends AbstractToEbInter
                 aUBLFinancialAccount.getFinancialInstitutionBranch () != null &&
                 aUBLFinancialAccount.getFinancialInstitutionBranch ().getFinancialInstitution () != null)
             {
-              final FinancialInstitutionType aUBLFI = aUBLFinancialAccount.getFinancialInstitutionBranch ().getFinancialInstitution ();
+              final FinancialInstitutionType aUBLFI = aUBLFinancialAccount.getFinancialInstitutionBranch ()
+                                                                          .getFinancialInstitution ();
               if (aUBLFI.getID () != null)
               {
                 final String sID = StringHelper.trim (aUBLFI.getID ().getValue ());
@@ -635,11 +646,11 @@ public abstract class AbstractToEbInterface60Converter extends AbstractToEbInter
                   if (StringHelper.hasNoText (sID) || !RegExHelper.stringMatchesPattern (REGEX_BIC, sID))
                   {
                     aTransformationErrorList.add (SingleError.builderError ()
-                                                             .setErrorFieldName ("PaymentMeans[" +
-                                                                                 nPaymentMeansIndex +
-                                                                                 "]/PayeeFinancialAccount/FinancialInstitutionBranch/FinancialInstitution/ID")
-                                                             .setErrorText (EText.BIC_INVALID.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                                      sID))
+                                                             .errorFieldName ("PaymentMeans[" +
+                                                                              nPaymentMeansIndex +
+                                                                              "]/PayeeFinancialAccount/FinancialInstitutionBranch/FinancialInstitution/ID")
+                                                             .errorText (EText.BIC_INVALID.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                   sID))
                                                              .build ());
                     aEbiAccount.setBIC (null);
                   }
@@ -647,17 +658,18 @@ public abstract class AbstractToEbInterface60Converter extends AbstractToEbInter
             }
 
             // IBAN
-            final String sIBAN = aUBLFinancialAccount != null ? StringHelper.trim (aUBLFinancialAccount.getIDValue ()) : null;
+            final String sIBAN = aUBLFinancialAccount != null ? StringHelper.trim (aUBLFinancialAccount.getIDValue ())
+                                                              : null;
             aEbiAccount.setIBAN (sIBAN);
             if (StringHelper.getLength (sIBAN) > IBAN_MAX_LENGTH)
             {
               aTransformationErrorList.add (SingleError.builderWarn ()
-                                                       .setErrorFieldName ("PaymentMeans[" +
-                                                                           nPaymentMeansIndex +
-                                                                           "]/PayeeFinancialAccount/ID")
-                                                       .setErrorText (EText.IBAN_TOO_LONG_STRIPPING.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                                            sIBAN,
-                                                                                                                            Integer.valueOf (IBAN_MAX_LENGTH)))
+                                                       .errorFieldName ("PaymentMeans[" +
+                                                                        nPaymentMeansIndex +
+                                                                        "]/PayeeFinancialAccount/ID")
+                                                       .errorText (EText.IBAN_TOO_LONG_STRIPPING.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                         sIBAN,
+                                                                                                                         Integer.valueOf (IBAN_MAX_LENGTH)))
                                                        .build ());
               aEbiAccount.setIBAN (sIBAN.substring (0, IBAN_MAX_LENGTH));
             }
@@ -700,9 +712,9 @@ public abstract class AbstractToEbInterface60Converter extends AbstractToEbInter
           }
 
           aTransformationErrorList.add (SingleError.builderWarn ()
-                                                   .setErrorFieldName ("PaymentMeans[" + nPaymentMeansIndex + "]")
-                                                   .setErrorText (EText.PAYMENTMEANS_UNSUPPORTED_CHANNELCODE.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                                                     sPaymentChannelCode))
+                                                   .errorFieldName ("PaymentMeans[" + nPaymentMeansIndex + "]")
+                                                   .errorText (EText.PAYMENTMEANS_UNSUPPORTED_CHANNELCODE.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                                  sPaymentChannelCode))
                                                    .build ());
         }
         else
@@ -717,7 +729,7 @@ public abstract class AbstractToEbInterface60Converter extends AbstractToEbInter
             aEbiDirectDebit.setBankAccountOwner (null);
             aEbiDirectDebit.setCreditorID (null);
             aEbiDirectDebit.setMandateReference (null);
-            aEbiDirectDebit.setDebitCollectionDate (null);
+            aEbiDirectDebit.setDebitCollectionDate ((OffsetDate) null);
             aEbiPaymentMethod.setSEPADirectDebit (aEbiDirectDebit);
             aEbiDoc.setPaymentMethod (aEbiPaymentMethod);
 
@@ -739,16 +751,16 @@ public abstract class AbstractToEbInterface60Converter extends AbstractToEbInter
             }
 
             aTransformationErrorList.add (SingleError.builderError ()
-                                                     .setErrorFieldName ("PaymentMeans[" + nPaymentMeansIndex + "]")
-                                                     .setErrorText (EText.PAYMENTMEANS_CODE_INVALID.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                                            sPaymentMeansCode,
-                                                                                                                            getOrString (", ",
-                                                                                                                                         "30",
-                                                                                                                                         "31",
-                                                                                                                                         "42",
-                                                                                                                                         "58"),
-                                                                                                                            getOrString (", ",
-                                                                                                                                         "59")))
+                                                     .errorFieldName ("PaymentMeans[" + nPaymentMeansIndex + "]")
+                                                     .errorText (EText.PAYMENTMEANS_CODE_INVALID.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                         sPaymentMeansCode,
+                                                                                                                         getOrString (", ",
+                                                                                                                                      "30",
+                                                                                                                                      "31",
+                                                                                                                                      "42",
+                                                                                                                                      "58"),
+                                                                                                                         getOrString (", ",
+                                                                                                                                      "59")))
                                                      .build ());
           }
 
@@ -771,8 +783,8 @@ public abstract class AbstractToEbInterface60Converter extends AbstractToEbInter
         else
         {
           aTransformationErrorList.add (SingleError.builderError ()
-                                                   .setErrorFieldName (bIsCreditNote ? "CreditNote" : "Invoice")
-                                                   .setErrorText (EText.ERB_NO_PAYMENT_METHOD.getDisplayText (m_aDisplayLocale))
+                                                   .errorFieldName (bIsCreditNote ? "CreditNote" : "Invoice")
+                                                   .errorText (EText.ERB_NO_PAYMENT_METHOD.getDisplayText (m_aDisplayLocale))
                                                    .build ());
         }
       }
@@ -798,15 +810,17 @@ public abstract class AbstractToEbInterface60Converter extends AbstractToEbInter
 
         if (aUBLPaymentTerms.getPaymentDueDate () != null)
         {
-          final LocalDate aUBLDueDate = aUBLPaymentTerms.getPaymentDueDateValue ();
-          final LocalDate aEbiDueDate = aEbiPaymentConditions.getDueDate ();
+          final OffsetDate aUBLDueDate = aUBLPaymentTerms.getPaymentDueDateValue ();
+          final OffsetDate aEbiDueDate = aEbiPaymentConditions.getDueDate ();
           if (aUBLDueDate != null && aEbiDueDate != null)
           {
             // Error only if due dates differ
             if (!aEbiDueDate.equals (aUBLDueDate))
               aTransformationErrorList.add (SingleError.builderWarn ()
-                                                       .setErrorFieldName ("PaymentTerms[" + nPaymentTermsIndex + "]/PaymentDueDate")
-                                                       .setErrorText (EText.PAYMENT_DUE_DATE_ALREADY_CONTAINED.getDisplayText (m_aDisplayLocale))
+                                                       .errorFieldName ("PaymentTerms[" +
+                                                                        nPaymentTermsIndex +
+                                                                        "]/PaymentDueDate")
+                                                       .errorText (EText.PAYMENT_DUE_DATE_ALREADY_CONTAINED.getDisplayText (m_aDisplayLocale))
                                                        .build ());
           }
           else
@@ -819,7 +833,10 @@ public abstract class AbstractToEbInterface60Converter extends AbstractToEbInter
             final BigDecimal aBaseAmount = aUBLTotal == null ? null : aUBLTotal.getPayableAmountValue ();
             if (aBaseAmount != null)
             {
-              final BigDecimal aMinimumPayment = MathHelper.getPercentValue (aBaseAmount, aUBLPaymentPerc, SCALE_PRICE2, ROUNDING_MODE);
+              final BigDecimal aMinimumPayment = MathHelper.getPercentValue (aBaseAmount,
+                                                                             aUBLPaymentPerc,
+                                                                             SCALE_PRICE2,
+                                                                             ROUNDING_MODE);
               aEbiPaymentConditions.setMinimumPayment (aMinimumPayment);
             }
           }
@@ -827,11 +844,14 @@ public abstract class AbstractToEbInterface60Converter extends AbstractToEbInter
         else
           if (aUBLPaymentTerms.getSettlementDiscountPercent () != null)
           {
-            if (aUBLPaymentTerms.getSettlementPeriod () == null || aUBLPaymentTerms.getSettlementPeriod ().getEndDate () == null)
+            if (aUBLPaymentTerms.getSettlementPeriod () == null ||
+                aUBLPaymentTerms.getSettlementPeriod ().getEndDate () == null)
             {
               aTransformationErrorList.add (SingleError.builderWarn ()
-                                                       .setErrorFieldName ("PaymentTerms[" + nPaymentTermsIndex + "]/SettlementPeriod")
-                                                       .setErrorText (EText.SETTLEMENT_PERIOD_MISSING.getDisplayText (m_aDisplayLocale))
+                                                       .errorFieldName ("PaymentTerms[" +
+                                                                        nPaymentTermsIndex +
+                                                                        "]/SettlementPeriod")
+                                                       .errorText (EText.SETTLEMENT_PERIOD_MISSING.getDisplayText (m_aDisplayLocale))
                                                        .build ());
             }
             else
@@ -848,8 +868,8 @@ public abstract class AbstractToEbInterface60Converter extends AbstractToEbInter
             if (aUBLPaymentTerms.getPenaltySurchargePercent () != null)
             {
               aTransformationErrorList.add (SingleError.builderWarn ()
-                                                       .setErrorFieldName ("PaymentTerms[" + nPaymentTermsIndex + "]")
-                                                       .setErrorText (EText.PENALTY_NOT_ALLOWED.getDisplayText (m_aDisplayLocale))
+                                                       .errorFieldName ("PaymentTerms[" + nPaymentTermsIndex + "]")
+                                                       .errorText (EText.PENALTY_NOT_ALLOWED.getDisplayText (m_aDisplayLocale))
                                                        .build ());
             }
 
@@ -865,8 +885,8 @@ public abstract class AbstractToEbInterface60Converter extends AbstractToEbInter
       // ebInterface requires due date
       if (aEbiPaymentConditions.hasDiscountEntries ())
         aTransformationErrorList.add (SingleError.builderError ()
-                                                 .setErrorFieldName ("PaymentMeans/PaymentDueDate")
-                                                 .setErrorText (EText.DISCOUNT_WITHOUT_DUEDATE.getDisplayText (m_aDisplayLocale))
+                                                 .errorFieldName ("PaymentMeans/PaymentDueDate")
+                                                 .errorText (EText.DISCOUNT_WITHOUT_DUEDATE.getDisplayText (m_aDisplayLocale))
                                                  .build ());
     }
     else
