@@ -26,7 +26,7 @@ Add the following to your pom.xml to use this artifact, replacing `x.y.z` with t
 
 # News and noteworthy
 
-* v4.8.0 - 2021-05-02
+* v4.8.0 - 2021-05-03
     * Updated to ph-commons 10.1
 * v4.7.0 - 2021-03-22
     * Updated to ph-commons 10
