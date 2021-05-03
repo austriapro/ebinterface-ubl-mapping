@@ -29,7 +29,7 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.collection.impl.CommonsHashMap;
 import com.helger.commons.collection.impl.ICommonsMap;
-import com.helger.commons.datetime.OffsetDate;
+import com.helger.commons.datetime.XMLOffsetDate;
 import com.helger.commons.error.SingleError;
 import com.helger.commons.error.list.ErrorList;
 import com.helger.commons.math.MathHelper;
@@ -1168,8 +1168,8 @@ public final class CreditNoteToEbInterface40Converter extends AbstractToEbInterf
       final PeriodType aUBLCreditNotePeriod = CollectionHelper.getAtIndex (aUBLDoc.getInvoicePeriod (), 0);
       if (aUBLCreditNotePeriod != null)
       {
-        final OffsetDate aStartDate = aUBLCreditNotePeriod.getStartDateValue ();
-        final OffsetDate aEndDate = aUBLCreditNotePeriod.getEndDateValue ();
+        final XMLOffsetDate aStartDate = aUBLCreditNotePeriod.getStartDateValue ();
+        final XMLOffsetDate aEndDate = aUBLCreditNotePeriod.getEndDateValue ();
         if (aStartDate != null)
         {
           if (aEndDate == null)
@@ -1187,7 +1187,7 @@ public final class CreditNoteToEbInterface40Converter extends AbstractToEbInterf
             aEbiPeriod.setToDate (aEndDate);
             aEbiDelivery.setPeriod (aEbiPeriod);
             // Has precedence over date!
-            aEbiDelivery.setDate ((OffsetDate) null);
+            aEbiDelivery.setDate ((XMLOffsetDate) null);
           }
         }
       }

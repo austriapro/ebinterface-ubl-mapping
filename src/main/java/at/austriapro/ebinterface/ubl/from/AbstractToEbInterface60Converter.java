@@ -28,7 +28,7 @@ import javax.annotation.concurrent.Immutable;
 import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.datetime.OffsetDate;
+import com.helger.commons.datetime.XMLOffsetDate;
 import com.helger.commons.error.SingleError;
 import com.helger.commons.error.list.ErrorList;
 import com.helger.commons.locale.country.CountryCache;
@@ -534,7 +534,7 @@ public abstract class AbstractToEbInterface60Converter extends AbstractToEbInter
     }
   }
 
-  protected void convertPayment (@Nonnull final Supplier <OffsetDate> aUBLTopLevelDueDate,
+  protected void convertPayment (@Nonnull final Supplier <XMLOffsetDate> aUBLTopLevelDueDate,
                                  @Nonnull final Supplier <List <PaymentMeansType>> aUBLDocPaymentMeans,
                                  @Nonnull final Supplier <PartyType> aUBLDocPayeeParty,
                                  @Nonnull final Supplier <SupplierPartyType> aUBLDocAccountingSupplierParty,
@@ -729,7 +729,7 @@ public abstract class AbstractToEbInterface60Converter extends AbstractToEbInter
             aEbiDirectDebit.setBankAccountOwner (null);
             aEbiDirectDebit.setCreditorID (null);
             aEbiDirectDebit.setMandateReference (null);
-            aEbiDirectDebit.setDebitCollectionDate ((OffsetDate) null);
+            aEbiDirectDebit.setDebitCollectionDate ((XMLOffsetDate) null);
             aEbiPaymentMethod.setSEPADirectDebit (aEbiDirectDebit);
             aEbiDoc.setPaymentMethod (aEbiPaymentMethod);
 
@@ -810,8 +810,8 @@ public abstract class AbstractToEbInterface60Converter extends AbstractToEbInter
 
         if (aUBLPaymentTerms.getPaymentDueDate () != null)
         {
-          final OffsetDate aUBLDueDate = aUBLPaymentTerms.getPaymentDueDateValue ();
-          final OffsetDate aEbiDueDate = aEbiPaymentConditions.getDueDate ();
+          final XMLOffsetDate aUBLDueDate = aUBLPaymentTerms.getPaymentDueDateValue ();
+          final XMLOffsetDate aEbiDueDate = aEbiPaymentConditions.getDueDate ();
           if (aUBLDueDate != null && aEbiDueDate != null)
           {
             // Error only if due dates differ

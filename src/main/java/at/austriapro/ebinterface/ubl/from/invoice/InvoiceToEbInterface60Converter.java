@@ -31,7 +31,7 @@ import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.collection.impl.CommonsHashMap;
 import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.collection.impl.ICommonsMap;
-import com.helger.commons.datetime.OffsetDate;
+import com.helger.commons.datetime.XMLOffsetDate;
 import com.helger.commons.error.SingleError;
 import com.helger.commons.error.list.ErrorList;
 import com.helger.commons.math.MathHelper;
@@ -1248,8 +1248,8 @@ public final class InvoiceToEbInterface60Converter extends AbstractToEbInterface
       final PeriodType aUBLInvoicePeriod = CollectionHelper.getAtIndex (aUBLDoc.getInvoicePeriod (), 0);
       if (aUBLInvoicePeriod != null)
       {
-        final OffsetDate aStartDate = aUBLInvoicePeriod.getStartDateValue ();
-        final OffsetDate aEndDate = aUBLInvoicePeriod.getEndDateValue ();
+        final XMLOffsetDate aStartDate = aUBLInvoicePeriod.getStartDateValue ();
+        final XMLOffsetDate aEndDate = aUBLInvoicePeriod.getEndDateValue ();
         if (aStartDate != null)
         {
           if (aEndDate == null)
@@ -1267,7 +1267,7 @@ public final class InvoiceToEbInterface60Converter extends AbstractToEbInterface
             aEbiPeriod.setToDate (aEndDate);
             aEbiDelivery.setPeriod (aEbiPeriod);
             // Has precedence over date!
-            aEbiDelivery.setDate ((OffsetDate) null);
+            aEbiDelivery.setDate ((XMLOffsetDate) null);
           }
         }
       }
