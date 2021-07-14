@@ -65,7 +65,7 @@
       <dependency>
         <groupId>com.helger.commons</groupId>
         <artifactId>ph-commons-parent-pom</artifactId>
-        <version>10.1.1</version>
+        <version>10.1.2</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -84,14 +84,14 @@
       <dependency>
         <groupId>com.helger.ubl</groupId>
         <artifactId>ph-ubl-parent-pom</artifactId>
-        <version>6.6.0</version>
+        <version>6.6.2</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>com.helger.peppol</groupId>
         <artifactId>peppol-commons-parent-pom</artifactId>
-        <version>8.6.0</version>
+        <version>8.6.2</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
