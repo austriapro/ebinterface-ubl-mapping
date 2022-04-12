@@ -63,15 +63,13 @@ public abstract class AbstractEbInterface60ToUBLConverter extends AbstractEbInte
    * @param aContentLocale
    *        The locale for the created UBL files. May not be <code>null</code>.
    */
-  public AbstractEbInterface60ToUBLConverter (@Nonnull final Locale aDisplayLocale,
-                                              @Nonnull final Locale aContentLocale)
+  public AbstractEbInterface60ToUBLConverter (@Nonnull final Locale aDisplayLocale, @Nonnull final Locale aContentLocale)
   {
     super (aDisplayLocale, aContentLocale);
   }
 
   @Nullable
-  protected static <T extends CodeType> T getTypeCode (@Nullable final Ebi60DocumentTypeType eType,
-                                                       @Nonnull final Supplier <T> aFactory)
+  protected static <T extends CodeType> T getTypeCode (@Nullable final Ebi60DocumentTypeType eType, @Nonnull final Supplier <T> aFactory)
   {
     String sID = null;
     if (eType != null)
@@ -80,13 +78,15 @@ public abstract class AbstractEbInterface60ToUBLConverter extends AbstractEbInte
         case INVOICE:
         case CREDIT_MEMO:
         case FINAL_SETTLEMENT:
-        case INVOICE_FOR_ADVANCE_PAYMENT:
         case SUBSEQUENT_CREDIT:
         case SUBSEQUENT_DEBIT:
           sID = INVOICE_TYPE_CODE_INVOICE;
           break;
         case INVOICE_FOR_PARTIAL_DELIVERY:
           sID = INVOICE_TYPE_CODE_PARTIAL;
+          break;
+        case INVOICE_FOR_ADVANCE_PAYMENT:
+          sID = INVOICE_TYPE_CODE_PREPAYMENT_INVOICE;
           break;
         case SELF_BILLING:
           sID = INVOICE_TYPE_CODE_SELF_BILLING;
@@ -108,8 +108,7 @@ public abstract class AbstractEbInterface60ToUBLConverter extends AbstractEbInte
   }
 
   @Nullable
-  protected static AddressType convertAddress (@Nullable final Ebi60AddressType aEbiAddress,
-                                               @Nonnull final Locale aContentLocale)
+  protected static AddressType convertAddress (@Nullable final Ebi60AddressType aEbiAddress, @Nonnull final Locale aContentLocale)
   {
     if (aEbiAddress == null)
       return null;
@@ -137,9 +136,7 @@ public abstract class AbstractEbInterface60ToUBLConverter extends AbstractEbInte
 
     if (aEbiAddress.getCountry () != null)
     {
-      ret.setCountry (createCountry (aEbiAddress.getCountry ().getCountryCode (),
-                                     aEbiAddress.getCountry ().getValue (),
-                                     aContentLocale));
+      ret.setCountry (createCountry (aEbiAddress.getCountry ().getCountryCode (), aEbiAddress.getCountry ().getValue (), aContentLocale));
     }
 
     return ret;
@@ -213,8 +210,7 @@ public abstract class AbstractEbInterface60ToUBLConverter extends AbstractEbInte
   }
 
   @Nullable
-  protected static DeliveryType convertDelivery (@Nullable final Ebi60DeliveryType aEbiDelivery,
-                                                 @Nonnull final Locale aContentLocale)
+  protected static DeliveryType convertDelivery (@Nullable final Ebi60DeliveryType aEbiDelivery, @Nonnull final Locale aContentLocale)
   {
     if (aEbiDelivery == null)
       return null;
@@ -234,9 +230,7 @@ public abstract class AbstractEbInterface60ToUBLConverter extends AbstractEbInte
         aUBLDelivery.setRequestedDeliveryPeriod (aUBLPeriod);
       }
     aUBLDelivery.setDeliveryAddress (convertAddress (aEbiDelivery.getAddress (), aContentLocale));
-    aUBLDelivery.setDeliveryParty (convertParty (aEbiDelivery.getAddress (),
-                                                 aEbiDelivery.getContact (),
-                                                 aContentLocale));
+    aUBLDelivery.setDeliveryParty (convertParty (aEbiDelivery.getAddress (), aEbiDelivery.getContact (), aContentLocale));
     return aUBLDelivery;
   }
 }

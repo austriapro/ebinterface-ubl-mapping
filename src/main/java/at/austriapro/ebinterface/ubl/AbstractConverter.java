@@ -62,6 +62,7 @@ public abstract class AbstractConverter
   public static final String INVOICE_TYPE_CODE_PARTIAL = "326";
   /** The invoice type code to use (380) */
   public static final String INVOICE_TYPE_CODE_INVOICE = EInvoiceTypeCode.COMMERCIAL_INVOICE.getID ();
+  public static final String INVOICE_TYPE_CODE_PREPAYMENT_INVOICE = "386";
   public static final String INVOICE_TYPE_CODE_SELF_BILLING = "389";
   // List taken from the EN 16931 validation artefacts 1.3.3
   // Also matching
@@ -81,7 +82,7 @@ public abstract class AbstractConverter
                                                                                      "383",
                                                                                      "384",
                                                                                      "385",
-                                                                                     "386",
+                                                                                     INVOICE_TYPE_CODE_PREPAYMENT_INVOICE,
                                                                                      "387",
                                                                                      "388",
                                                                                      INVOICE_TYPE_CODE_SELF_BILLING,
