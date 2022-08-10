@@ -165,9 +165,7 @@ public class EbInterface40ToInvoiceConverter extends AbstractEbInterface40ToUBLC
         if (aEbiPaymentConditions.getMinimumPayment () != null)
         {
           final BigDecimal aPerc = aEbiPaymentConditions.getMinimumPayment ()
-                                                        .divide (aEbiDoc.getTotalGrossAmount (),
-                                                                 SCALE_PRICE4,
-                                                                 ROUNDING_MODE)
+                                                        .divide (aEbiDoc.getTotalGrossAmount (), SCALE_PRICE4, ROUNDING_MODE)
                                                         .multiply (CGlobal.BIGDEC_100);
           aUBLPaymentTerms.setPaymentPercent (aPerc);
         }
@@ -256,7 +254,7 @@ public class EbInterface40ToInvoiceConverter extends AbstractEbInterface40ToUBLC
           final PartyTaxSchemeType aPTS = new PartyTaxSchemeType ();
           aPTS.setTaxScheme (createTaxSchemeVAT ());
           final CompanyIDType aCID = aPTS.setCompanyID (aEbiBiller.getVATIdentificationNumber ());
-          aCID.setSchemeID (SUPPORTED_TAX_SCHEME_ID.getID ());
+          aCID.setSchemeID (SUPPORTED_TAX_SCHEME_ID);
           aUBLParty.addPartyTaxScheme (aPTS);
         }
         if (StringHelper.hasText (aEbiBiller.getInvoiceRecipientsBillerID ()))
@@ -302,7 +300,7 @@ public class EbInterface40ToInvoiceConverter extends AbstractEbInterface40ToUBLC
           final PartyTaxSchemeType aPTS = new PartyTaxSchemeType ();
           aPTS.setTaxScheme (createTaxSchemeVAT ());
           final CompanyIDType aCID = aPTS.setCompanyID (aEbiIR.getVATIdentificationNumber ());
-          aCID.setSchemeID (SUPPORTED_TAX_SCHEME_ID.getID ());
+          aCID.setSchemeID (SUPPORTED_TAX_SCHEME_ID);
           aUBLParty.addPartyTaxScheme (aPTS);
         }
         if (StringHelper.hasText (aEbiIR.getBillersInvoiceRecipientID ()))
@@ -348,7 +346,7 @@ public class EbInterface40ToInvoiceConverter extends AbstractEbInterface40ToUBLC
           final PartyTaxSchemeType aPTS = new PartyTaxSchemeType ();
           aPTS.setTaxScheme (createTaxSchemeVAT ());
           final CompanyIDType aCID = aPTS.setCompanyID (aEbiOrdering.getVATIdentificationNumber ());
-          aCID.setSchemeID (SUPPORTED_TAX_SCHEME_ID.getID ());
+          aCID.setSchemeID (SUPPORTED_TAX_SCHEME_ID);
           aUBLParty.addPartyTaxScheme (aPTS);
         }
         if (StringHelper.hasText (aEbiOrdering.getBillersOrderingPartyID ()))
@@ -426,8 +424,7 @@ public class EbInterface40ToInvoiceConverter extends AbstractEbInterface40ToUBLC
                 aUBLAC.setAmount (aEbiRSValue.getAmount ()).setCurrencyID (sCurrency);
               else
                 if (aEbiRSValue.getPercentage () != null)
-                  aUBLAC.setAmount (MathHelper.getPercentValue (aEbiRSValue.getBaseAmount (),
-                                                                aEbiRSValue.getPercentage ()))
+                  aUBLAC.setAmount (MathHelper.getPercentValue (aEbiRSValue.getBaseAmount (), aEbiRSValue.getPercentage ()))
                         .setCurrencyID (sCurrency);
 
               aUBLLine.addAllowanceCharge (aUBLAC);
@@ -444,8 +441,7 @@ public class EbInterface40ToInvoiceConverter extends AbstractEbInterface40ToUBLC
                 aUBLAC.setAmount (aEbiRSValue.getAmount ()).setCurrencyID (sCurrency);
               else
                 if (aEbiRSValue.getPercentage () != null)
-                  aUBLAC.setAmount (MathHelper.getPercentValue (aEbiRSValue.getBaseAmount (),
-                                                                aEbiRSValue.getPercentage ()))
+                  aUBLAC.setAmount (MathHelper.getPercentValue (aEbiRSValue.getBaseAmount (), aEbiRSValue.getPercentage ()))
                         .setCurrencyID (sCurrency);
 
               aUBLLine.addAllowanceCharge (aUBLAC);
@@ -500,15 +496,11 @@ public class EbInterface40ToInvoiceConverter extends AbstractEbInterface40ToUBLC
             }
             if (aEbiAdditionalInfo.getWeight () != null)
             {
-              aUBLItem.addAdditionalItemProperty (createItemProperty ("Weight",
-                                                                      aEbiAdditionalInfo.getWeight ()
-                                                                                        .getValue ()
-                                                                                        .toString ()));
+              aUBLItem.addAdditionalItemProperty (createItemProperty ("Weight", aEbiAdditionalInfo.getWeight ().getValue ().toString ()));
             }
             if (aEbiAdditionalInfo.getBoxes () != null)
             {
-              aUBLItem.addAdditionalItemProperty (createItemProperty ("Boxes",
-                                                                      aEbiAdditionalInfo.getBoxes ().toString ()));
+              aUBLItem.addAdditionalItemProperty (createItemProperty ("Boxes", aEbiAdditionalInfo.getBoxes ().toString ()));
             }
             if (aEbiAdditionalInfo.getColor () != null)
             {

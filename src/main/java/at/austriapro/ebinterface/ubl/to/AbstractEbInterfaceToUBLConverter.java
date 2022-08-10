@@ -25,7 +25,6 @@ import javax.annotation.concurrent.Immutable;
 import com.helger.commons.locale.country.CountryCache;
 import com.helger.commons.string.StringHelper;
 import com.helger.ebinterface.codelist.ETaxCategoryCode;
-import com.helger.peppol.codelist.ETaxSchemeID;
 
 import at.austriapro.ebinterface.ubl.AbstractConverter;
 import at.austriapro.ebinterface.ubl.helper.MultilingualCountryCache;
@@ -69,7 +68,7 @@ public abstract class AbstractEbInterfaceToUBLConverter extends AbstractConverte
   @Nonnull
   protected static final TaxSchemeType createTaxSchemeVAT ()
   {
-    return createTaxScheme (SUPPORTED_TAX_SCHEME_ID.getID ());
+    return createTaxScheme (SUPPORTED_TAX_SCHEME_ID);
   }
 
   @Nonnull
@@ -96,13 +95,12 @@ public abstract class AbstractEbInterfaceToUBLConverter extends AbstractConverte
   {
     final TaxCategoryType aUBLTaxCategory = createTaxCategory (ETaxCategoryCode.O.getID ());
     // Set default scheme
-    aUBLTaxCategory.setTaxScheme (createTaxScheme (ETaxSchemeID.OTHER_TAXES.getID ()));
+    aUBLTaxCategory.setTaxScheme (createTaxScheme (OTHER_TAX_SCHEME_ID));
     return aUBLTaxCategory;
   }
 
   @Nonnull
-  protected static final ItemPropertyType createItemProperty (@Nullable final String sName,
-                                                              @Nullable final String sValue)
+  protected static final ItemPropertyType createItemProperty (@Nullable final String sName, @Nullable final String sValue)
   {
     final ItemPropertyType ret = new ItemPropertyType ();
     ret.setName (sName);

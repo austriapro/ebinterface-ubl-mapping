@@ -190,9 +190,7 @@ public class EbInterface41ToInvoiceConverter extends AbstractEbInterface41ToUBLC
         if (aEbiPaymentConditions.getMinimumPayment () != null)
         {
           final BigDecimal aPerc = aEbiPaymentConditions.getMinimumPayment ()
-                                                        .divide (aEbiDoc.getPayableAmount (),
-                                                                 SCALE_PRICE4,
-                                                                 ROUNDING_MODE)
+                                                        .divide (aEbiDoc.getPayableAmount (), SCALE_PRICE4, ROUNDING_MODE)
                                                         .multiply (CGlobal.BIGDEC_100);
           aUBLPaymentTerms.setPaymentPercent (aPerc);
         }
@@ -311,7 +309,7 @@ public class EbInterface41ToInvoiceConverter extends AbstractEbInterface41ToUBLC
           final PartyTaxSchemeType aPTS = new PartyTaxSchemeType ();
           aPTS.setTaxScheme (createTaxSchemeVAT ());
           final CompanyIDType aCID = aPTS.setCompanyID (aEbiBiller.getVATIdentificationNumber ());
-          aCID.setSchemeID (SUPPORTED_TAX_SCHEME_ID.getID ());
+          aCID.setSchemeID (SUPPORTED_TAX_SCHEME_ID);
           aUBLParty.addPartyTaxScheme (aPTS);
         }
         if (StringHelper.hasText (aEbiBiller.getInvoiceRecipientsBillerID ()))
@@ -357,7 +355,7 @@ public class EbInterface41ToInvoiceConverter extends AbstractEbInterface41ToUBLC
           final PartyTaxSchemeType aPTS = new PartyTaxSchemeType ();
           aPTS.setTaxScheme (createTaxSchemeVAT ());
           final CompanyIDType aCID = aPTS.setCompanyID (aEbiIR.getVATIdentificationNumber ());
-          aCID.setSchemeID (SUPPORTED_TAX_SCHEME_ID.getID ());
+          aCID.setSchemeID (SUPPORTED_TAX_SCHEME_ID);
           aUBLParty.addPartyTaxScheme (aPTS);
         }
         if (StringHelper.hasText (aEbiIR.getBillersInvoiceRecipientID ()))
@@ -412,7 +410,7 @@ public class EbInterface41ToInvoiceConverter extends AbstractEbInterface41ToUBLC
           final PartyTaxSchemeType aPTS = new PartyTaxSchemeType ();
           aPTS.setTaxScheme (createTaxSchemeVAT ());
           final CompanyIDType aCID = aPTS.setCompanyID (aEbiOrdering.getVATIdentificationNumber ());
-          aCID.setSchemeID (SUPPORTED_TAX_SCHEME_ID.getID ());
+          aCID.setSchemeID (SUPPORTED_TAX_SCHEME_ID);
           aUBLParty.addPartyTaxScheme (aPTS);
         }
         if (StringHelper.hasText (aEbiOrdering.getBillersOrderingPartyID ()))
@@ -486,8 +484,7 @@ public class EbInterface41ToInvoiceConverter extends AbstractEbInterface41ToUBLC
               aUBLTaxCategory = createTaxCategoryVAT ("E");
               aUBLTaxCategory.setPercent (BigDecimal.ZERO);
               if (StringHelper.hasText (aEbiItem.getTaxExemption ().getValue ()))
-                aUBLTaxCategory.addTaxExemptionReason (new TaxExemptionReasonType (aEbiItem.getTaxExemption ()
-                                                                                           .getValue ()));
+                aUBLTaxCategory.addTaxExemptionReason (new TaxExemptionReasonType (aEbiItem.getTaxExemption ().getValue ()));
             }
             else
             {
@@ -521,8 +518,7 @@ public class EbInterface41ToInvoiceConverter extends AbstractEbInterface41ToUBLC
                   aUBLAC.setAmount (aEbiRSValue.getAmount ()).setCurrencyID (sCurrency);
                 else
                   if (aEbiRSValue.getPercentage () != null)
-                    aUBLAC.setAmount (MathHelper.getPercentValue (aEbiRSValue.getBaseAmount (),
-                                                                  aEbiRSValue.getPercentage ()))
+                    aUBLAC.setAmount (MathHelper.getPercentValue (aEbiRSValue.getBaseAmount (), aEbiRSValue.getPercentage ()))
                           .setCurrencyID (sCurrency);
                 if (StringHelper.hasText (aEbiRSValue.getTaxID ()))
                   aUBLAC.setAllowanceChargeReasonCode (aEbiRSValue.getTaxID ());
@@ -543,8 +539,7 @@ public class EbInterface41ToInvoiceConverter extends AbstractEbInterface41ToUBLC
                   aUBLAC.setAmount (aEbiRSValue.getAmount ()).setCurrencyID (sCurrency);
                 else
                   if (aEbiRSValue.getPercentage () != null)
-                    aUBLAC.setAmount (MathHelper.getPercentValue (aEbiRSValue.getBaseAmount (),
-                                                                  aEbiRSValue.getPercentage ()))
+                    aUBLAC.setAmount (MathHelper.getPercentValue (aEbiRSValue.getBaseAmount (), aEbiRSValue.getPercentage ()))
                           .setCurrencyID (sCurrency);
                 if (StringHelper.hasText (aEbiRSValue.getComment ()))
                   aUBLAC.addAllowanceChargeReason (new AllowanceChargeReasonType (aEbiRSValue.getComment ()));
@@ -601,15 +596,11 @@ public class EbInterface41ToInvoiceConverter extends AbstractEbInterface41ToUBLC
             }
             if (aEbiAdditionalInfo.getWeight () != null)
             {
-              aUBLItem.addAdditionalItemProperty (createItemProperty ("Weight",
-                                                                      aEbiAdditionalInfo.getWeight ()
-                                                                                        .getValue ()
-                                                                                        .toString ()));
+              aUBLItem.addAdditionalItemProperty (createItemProperty ("Weight", aEbiAdditionalInfo.getWeight ().getValue ().toString ()));
             }
             if (aEbiAdditionalInfo.getBoxes () != null)
             {
-              aUBLItem.addAdditionalItemProperty (createItemProperty ("Boxes",
-                                                                      aEbiAdditionalInfo.getBoxes ().toString ()));
+              aUBLItem.addAdditionalItemProperty (createItemProperty ("Boxes", aEbiAdditionalInfo.getBoxes ().toString ()));
             }
             if (aEbiAdditionalInfo.getColor () != null)
             {
@@ -708,8 +699,7 @@ public class EbInterface41ToInvoiceConverter extends AbstractEbInterface41ToUBLC
     BigDecimal aSumCharges = BigDecimal.ZERO;
     BigDecimal aSumAllowances = BigDecimal.ZERO;
     if (aEbiDoc.getReductionAndSurchargeDetails () != null)
-      for (final JAXBElement <?> aEbiRS : aEbiDoc.getReductionAndSurchargeDetails ()
-                                                 .getReductionOrSurchargeOrOtherVATableTax ())
+      for (final JAXBElement <?> aEbiRS : aEbiDoc.getReductionAndSurchargeDetails ().getReductionOrSurchargeOrOtherVATableTax ())
       {
         final Object aValue = aEbiRS.getValue ();
         final AllowanceChargeType aUBLAC = new AllowanceChargeType ();
@@ -792,8 +782,7 @@ public class EbInterface41ToInvoiceConverter extends AbstractEbInterface41ToUBLC
           aUBLTaxCategory = createTaxCategoryVAT ("E");
           aUBLTaxCategory.setPercent (BigDecimal.ZERO);
           if (StringHelper.hasText (aEbiVATItem.getTaxExemption ().getValue ()))
-            aUBLTaxCategory.addTaxExemptionReason (new TaxExemptionReasonType (aEbiVATItem.getTaxExemption ()
-                                                                                          .getValue ()));
+            aUBLTaxCategory.addTaxExemptionReason (new TaxExemptionReasonType (aEbiVATItem.getTaxExemption ().getValue ()));
         }
         else
         {

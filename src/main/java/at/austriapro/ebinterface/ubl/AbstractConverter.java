@@ -25,8 +25,6 @@ import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.collection.impl.CommonsLinkedHashSet;
-import com.helger.peppol.codelist.EInvoiceTypeCode;
-import com.helger.peppol.codelist.ETaxSchemeID;
 
 /**
  * Base class for Peppol UBL to/from ebInterface converter
@@ -43,7 +41,8 @@ public abstract class AbstractConverter
   public static final String PAYMENT_CHANNEL_CODE_IBAN = "IBAN";
   public static final String UOM_DEFAULT = "C62";
   public static final String SUPPORTED_TAX_SCHEME_SCHEME_ID = "UN/ECE 5153";
-  public static final ETaxSchemeID SUPPORTED_TAX_SCHEME_ID = ETaxSchemeID.VALUE_ADDED_TAX;
+  public static final String SUPPORTED_TAX_SCHEME_ID = "VAT";
+  public static final String OTHER_TAX_SCHEME_ID = "OTH";
 
   public static final String EBI_GENERATING_SYSTEM_40 = "UBL 2.1 to ebInterface 4.0 converter";
   public static final String EBI_GENERATING_SYSTEM_41 = "UBL 2.1 to ebInterface 4.1 converter";
@@ -61,7 +60,7 @@ public abstract class AbstractConverter
 
   public static final String INVOICE_TYPE_CODE_PARTIAL = "326";
   /** The invoice type code to use (380) */
-  public static final String INVOICE_TYPE_CODE_INVOICE = EInvoiceTypeCode.COMMERCIAL_INVOICE.getID ();
+  public static final String INVOICE_TYPE_CODE_INVOICE = "380";
   public static final String INVOICE_TYPE_CODE_PREPAYMENT_INVOICE = "386";
   public static final String INVOICE_TYPE_CODE_SELF_BILLING = "389";
   // List taken from the EN 16931 validation artefacts 1.3.3
