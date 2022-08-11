@@ -60,5 +60,7 @@ public class EbiNamespaceContext extends MapBasedNamespaceContext
     addMapping ("eb50", CEbInterface.EBINTERFACE_50_NS);
 
     addMapping ("eb60", CEbInterface.EBINTERFACE_60_NS);
+
+    addMapping ("eb61", CEbInterface.EBINTERFACE_61_NS);
   }
 }

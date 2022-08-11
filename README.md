@@ -26,8 +26,9 @@ Add the following to your pom.xml to use this artifact, replacing `x.y.z` with t
 
 # News and noteworthy
 
-* v4.8.2 - work in progress
+* v4.8.2 - 2022-08-11
     * Updated to peppol-commons 8.7.6
+    * Added support for ebInterface 6.1
 * v4.8.1 - 2022-04-12
     * Added specific support for `InvoiceTypeCode` mapping of `326`, `386` and `389` from UBL to ebInterface
 * v4.8.0 - 2021-05-03
