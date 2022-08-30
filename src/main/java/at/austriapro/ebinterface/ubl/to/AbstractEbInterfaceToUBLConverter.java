@@ -50,7 +50,8 @@ public abstract class AbstractEbInterfaceToUBLConverter extends AbstractConverte
    * @param aContentLocale
    *        The locale for the created UBL files. May not be <code>null</code>.
    */
-  public AbstractEbInterfaceToUBLConverter (@Nonnull final Locale aDisplayLocale, @Nonnull final Locale aContentLocale)
+  protected AbstractEbInterfaceToUBLConverter (@Nonnull final Locale aDisplayLocale,
+                                               @Nonnull final Locale aContentLocale)
   {
     super (aDisplayLocale, aContentLocale);
   }
@@ -100,7 +101,8 @@ public abstract class AbstractEbInterfaceToUBLConverter extends AbstractConverte
   }
 
   @Nonnull
-  protected static final ItemPropertyType createItemProperty (@Nullable final String sName, @Nullable final String sValue)
+  protected static final ItemPropertyType createItemProperty (@Nullable final String sName,
+                                                              @Nullable final String sValue)
   {
     final ItemPropertyType ret = new ItemPropertyType ();
     ret.setName (sName);
