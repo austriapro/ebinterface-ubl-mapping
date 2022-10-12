@@ -26,8 +26,9 @@ Add the following to your pom.xml to use this artifact, replacing `x.y.z` with t
 
 # News and noteworthy
 
-* v4.8.3 - work in progress
+* v4.8.3 - 2022-10-12
     * Added mapping of `BelowTheLineItem` in ebInterface 6.1 as done in 4.3 and previously
+    * Extracted shared customization base interfaces
 * v4.8.2 - 2022-08-11
     * Updated to peppol-commons 8.7.6
     * Added support for ebInterface 6.1
