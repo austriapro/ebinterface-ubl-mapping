@@ -559,6 +559,7 @@ public final class CreditNoteToEbInterface43Converter extends AbstractToEbInterf
                                    aUBLPercentage);
 
           {
+            // Is it VAT?
             if (isVATSchemeID (sUBLTaxSchemeID))
             {
               if (aUBLPercentage == null)
@@ -843,13 +844,15 @@ public final class CreditNoteToEbInterface43Converter extends AbstractToEbInterf
         }
         else
         {
-          // Tax rate (mandatory)
+          // VAT rate (mandatory)
           final Ebi43VATRateType aEbiVATRate = new Ebi43VATRateType ();
           aEbiVATRate.setValue (aUBLPercent);
           if (aUBLTaxCategory != null)
+          {
             // Optional
             if (false)
               aEbiVATRate.setTaxCode (aUBLTaxCategory.getIDValue ());
+          }
           aEbiListLineItem.setVATRate (aEbiVATRate);
         }
 

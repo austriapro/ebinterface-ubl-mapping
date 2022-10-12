@@ -16,44 +16,16 @@
  */
 package at.austriapro.ebinterface.ubl.from.invoice;
 
-import javax.annotation.Nonnull;
-
 import com.helger.ebinterface.v50.Ebi50InvoiceType;
 import com.helger.ebinterface.v50.Ebi50ListLineItemType;
-
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.InvoiceLineType;
-import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
 
 /**
  * Customization extension interface
  *
  * @author Philip Helger
  */
-public interface ICustomInvoiceToEbInterface50Converter
+public interface ICustomInvoiceToEbInterface50Converter extends
+                                                        ICustomInvoiceToEbInterfaceConverter <Ebi50InvoiceType, Ebi50ListLineItemType>
 {
-  /**
-   * Perform optional mapping after the conversion of a single details item
-   * finished.
-   *
-   * @param aUBLInvoiceLine
-   *        Existing UBL invoice line. Never <code>null</code>.
-   * @param aEbiInvoiceLine
-   *        Existing pre-filled ebInterface invoice line. Never
-   *        <code>null</code>.
-   */
-  default void additionalItemMapping (@Nonnull final InvoiceLineType aUBLInvoiceLine,
-                                      @Nonnull final Ebi50ListLineItemType aEbiInvoiceLine)
-  {}
-
-  /**
-   * Perform optional mapping after the whole conversion finished.
-   *
-   * @param aUBLInvoice
-   *        Existing UBL invoice. Never <code>null</code>.
-   * @param aEbiInvoice
-   *        Existing pre-filled ebInterface invoice. Never <code>null</code>.
-   */
-  default void additionalGlobalMapping (@Nonnull final InvoiceType aUBLInvoice,
-                                        @Nonnull final Ebi50InvoiceType aEbiInvoice)
-  {}
+  /* empty */
 }

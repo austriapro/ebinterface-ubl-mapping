@@ -16,44 +16,16 @@
  */
 package at.austriapro.ebinterface.ubl.from.creditnote;
 
-import javax.annotation.Nonnull;
-
 import com.helger.ebinterface.v50.Ebi50InvoiceType;
 import com.helger.ebinterface.v50.Ebi50ListLineItemType;
-
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CreditNoteLineType;
-import oasis.names.specification.ubl.schema.xsd.creditnote_21.CreditNoteType;
 
 /**
  * Customization extension interface
  *
  * @author Philip Helger
  */
-public interface ICustomCreditNoteToEbInterface50Converter
+public interface ICustomCreditNoteToEbInterface50Converter extends
+                                                           ICustomCreditNoteToEbInterfaceConverter <Ebi50InvoiceType, Ebi50ListLineItemType>
 {
-  /**
-   * Perform optional mapping after the conversion of a single details item
-   * finished.
-   *
-   * @param aUBLCreditNoteLine
-   *        Existing UBL credit note line. Never <code>null</code>.
-   * @param aEbiInvoiceLine
-   *        Existing pre-filled ebInterface invoice line. Never
-   *        <code>null</code>.
-   */
-  default void additionalItemMapping (@Nonnull final CreditNoteLineType aUBLCreditNoteLine,
-                                      @Nonnull final Ebi50ListLineItemType aEbiInvoiceLine)
-  {}
-
-  /**
-   * Perform optional mapping.
-   *
-   * @param aUBLCreditNote
-   *        Existing UBL credit note. Never <code>null</code>.
-   * @param aEbiInvoice
-   *        Existing pre-filled ebInterface invoice. Never <code>null</code>.
-   */
-  default void additionalGlobalMapping (@Nonnull final CreditNoteType aUBLCreditNote,
-                                        @Nonnull final Ebi50InvoiceType aEbiInvoice)
-  {}
+  /* empty */
 }
