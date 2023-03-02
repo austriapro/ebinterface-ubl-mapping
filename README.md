@@ -26,6 +26,10 @@ Add the following to your pom.xml to use this artifact, replacing `x.y.z` with t
 
 # News and noteworthy
 
+* v5.0.0 - work in progress
+    * Using Java 11 as the baseline
+    * Updated to ph-commons 11
+    * Using JAXB 4.0 as the baseline
 * v4.8.3 - 2022-10-12
     * Added mapping of `BelowTheLineItem` in ebInterface 6.1 as done in 4.3 and previously
     * Extracted shared customization base interfaces

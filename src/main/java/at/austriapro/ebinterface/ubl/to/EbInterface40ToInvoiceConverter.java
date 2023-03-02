@@ -20,7 +20,6 @@ import java.math.BigDecimal;
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
-import javax.xml.bind.JAXBElement;
 
 import com.helger.commons.CGlobal;
 import com.helger.commons.ValueEnforcer;
@@ -29,6 +28,7 @@ import com.helger.commons.string.StringHelper;
 import com.helger.ebinterface.v40.*;
 import com.helger.ebinterface.v40.extensions.Ebi40TaxExtensionType;
 
+import jakarta.xml.bind.JAXBElement;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.*;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.CompanyIDType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.DescriptionType;
