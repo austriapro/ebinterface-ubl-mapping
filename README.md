@@ -1,6 +1,6 @@
 # ebinterface-ubl-mapping
 
-Mapping ebInterface 4.x/5.0/6.0 from and to UBL 2.1.
+Mapping ebInterface 4.x/5.0/6.x from and to UBL 2.1.
 
 Author: Philip Helger
 
@@ -9,8 +9,10 @@ Since v4.5.0 the Maven group ID changed to `at.austriapro` - before that, the gr
 
 # Building
 
-To build the project you need at least Java 1.8 (or newer) and Apache Maven 3.x. Build is quite easy: call `mvn clean install` in this directory and the final result will be in the `target` directory.
+To build the project you need at least Java 11 (or newer) and Apache Maven 3.x. Build is quite easy: call `mvn clean install` in this directory and the final result will be in the `target` directory.
 Additionally Eclipse project files for the latest Eclipse version are contained.
+
+Versions prior to v5 use Java 1.8 as the baseline.
 
 # Maven usage
 
