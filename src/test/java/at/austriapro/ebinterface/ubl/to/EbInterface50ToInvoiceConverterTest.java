@@ -51,7 +51,7 @@ import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
 public final class EbInterface50ToInvoiceConverterTest
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (EbInterface50ToInvoiceConverterTest.class);
-  private static final String TARGET_FOLDER = "generated-ebi50-to-ubl-files/";
+  private static final String TARGET_FOLDER = "generated/ebi50-to-ubl-files/";
 
   @Before
   public void onInit ()
