@@ -34,7 +34,6 @@ import com.helger.commons.io.file.FileSystemIterator;
 import com.helger.commons.io.file.FilenameHelper;
 import com.helger.commons.io.file.IFileFilter;
 import com.helger.ebinterface.EbInterface50Marshaller;
-import com.helger.ebinterface.builder.EbInterfaceReader;
 import com.helger.ebinterface.v50.Ebi50InvoiceType;
 import com.helger.jaxb.GenericJAXBMarshaller;
 import com.helger.ubl21.UBL21Marshaller;
@@ -68,14 +67,14 @@ public final class EbInterface50ToInvoiceConverterTest
                                                                                         aLocale,
                                                                                         new ToEbinterfaceSettings ());
 
-    final GenericJAXBMarshaller <Ebi50InvoiceType> aEbiWriter = new EbInterface50Marshaller ().setFormattedOutput (true);
+    final GenericJAXBMarshaller <Ebi50InvoiceType> aEbiMarshaller = new EbInterface50Marshaller ().setFormattedOutput (true);
     final GenericJAXBMarshaller <InvoiceType> aUBLWriter = UBL21Marshaller.invoice ().setFormattedOutput (true);
 
     for (final File aFile : new FileSystemIterator ("src/test/resources/external/ebinterface/ebi50").withFilter (IFileFilter.filenameEndsWith (".xml")))
     {
       LOGGER.info (aFile.getAbsolutePath ());
 
-      final Ebi50InvoiceType aEbi = EbInterfaceReader.ebInterface50 ().read (aFile);
+      final Ebi50InvoiceType aEbi = aEbiMarshaller.read (aFile);
       assertNotNull (aEbi);
 
       // To UBL
@@ -92,8 +91,8 @@ public final class EbInterface50ToInvoiceConverterTest
       assertTrue (aErrorList.getAllErrors ().toString () + "\n\nSource UBL: " + sUBL, aErrorList.containsNoError ());
 
       // Convert both ebInterfaces to String and compare :)
-      final String sEbi1 = aEbiWriter.getAsString (aEbi);
-      final String sEbi2 = aEbiWriter.getAsString (aEbi2);
+      final String sEbi1 = aEbiMarshaller.getAsString (aEbi);
+      final String sEbi2 = aEbiMarshaller.getAsString (aEbi2);
 
       if (false)
         LOGGER.info (sEbi1 + "\n" + sUBL + "\n" + sEbi2);
