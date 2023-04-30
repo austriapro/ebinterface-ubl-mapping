@@ -94,8 +94,7 @@ public abstract class AbstractEbInterface42ToUBLConverter extends AbstractEbInte
 
     if (sID == null)
     {
-      if (LOGGER.isWarnEnabled ())
-        LOGGER.warn ("Failed to resolve document type " + eType);
+      LOGGER.warn ("Failed to resolve document type " + eType);
       return null;
     }
 
