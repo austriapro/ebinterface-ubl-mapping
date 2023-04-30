@@ -38,7 +38,7 @@ import com.helger.commons.io.file.IFileFilter;
 import com.helger.commons.io.resource.FileSystemResource;
 import com.helger.commons.io.resource.IReadableResource;
 import com.helger.ebinterface.v61.Ebi61InvoiceType;
-import com.helger.ubl21.UBL21Reader;
+import com.helger.ubl21.UBL21Marshaller;
 
 import at.austriapro.ebinterface.ubl.from.MockEbi61Marshaller;
 import at.austriapro.ebinterface.ubl.from.ToEbinterfaceSettings;
@@ -53,6 +53,7 @@ public final class CreditNoteToEbInterface61ConverterTest
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (CreditNoteToEbInterface61ConverterTest.class);
   private static final String TARGET_FOLDER = "generated-ubl-to-ebi61-files/";
+  private static final String PATH_UBL = "src/test/resources/external/ubl/";
 
   @Before
   public void onInit ()
@@ -64,7 +65,8 @@ public final class CreditNoteToEbInterface61ConverterTest
   public void testConvertPeppolCreditNoteLax ()
   {
     final ICommonsList <IReadableResource> aTestFiles = new CommonsArrayList <> ();
-    for (final File aFile : new FileSystemIterator (new File ("src/test/resources/ubl/creditnote")).withFilter (IFileFilter.filenameEndsWith (".xml")))
+    for (final File aFile : new FileSystemIterator (new File (PATH_UBL +
+                                                              "creditnote")).withFilter (IFileFilter.filenameEndsWith (".xml")))
       aTestFiles.add (new FileSystemResource (aFile));
 
     // For all Peppol test invoices
@@ -74,7 +76,7 @@ public final class CreditNoteToEbInterface61ConverterTest
       assertTrue (aRes.exists ());
 
       // Read UBL
-      final CreditNoteType aUBLCreditNote = UBL21Reader.creditNote ().read (aRes);
+      final CreditNoteType aUBLCreditNote = UBL21Marshaller.creditNote ().read (aRes);
       assertNotNull (aUBLCreditNote);
 
       // Convert to ebInterface
@@ -91,7 +93,9 @@ public final class CreditNoteToEbInterface61ConverterTest
         LOGGER.info ("  " + aErrorList.toString ());
 
       // Convert ebInterface to XML
-      assertTrue (new MockEbi61Marshaller ().write (aEbInvoice, new File (TARGET_FOLDER + FilenameHelper.getWithoutPath (aRes.getPath ())))
+      assertTrue (new MockEbi61Marshaller ().write (aEbInvoice,
+                                                    new File (TARGET_FOLDER +
+                                                              FilenameHelper.getWithoutPath (aRes.getPath ())))
                                             .isSuccess ());
     }
   }
@@ -100,7 +104,8 @@ public final class CreditNoteToEbInterface61ConverterTest
   public void testConvertPeppolInvoiceERB ()
   {
     final ICommonsList <IReadableResource> aTestFiles = new CommonsArrayList <> ();
-    for (final File aFile : new FileSystemIterator (new File ("src/test/resources/ubl/creditnote")).withFilter (IFileFilter.filenameEndsWith (".xml")))
+    for (final File aFile : new FileSystemIterator (new File (PATH_UBL +
+                                                              "creditnote")).withFilter (IFileFilter.filenameEndsWith (".xml")))
       aTestFiles.add (new FileSystemResource (aFile));
 
     // For all Peppol test invoices
@@ -110,7 +115,7 @@ public final class CreditNoteToEbInterface61ConverterTest
       assertTrue (aRes.exists ());
 
       // Read UBL
-      final CreditNoteType aUBLCreditNote = UBL21Reader.creditNote ().read (aRes);
+      final CreditNoteType aUBLCreditNote = UBL21Marshaller.creditNote ().read (aRes);
       assertNotNull (aUBLCreditNote);
 
       // Convert to ebInterface
@@ -119,14 +124,17 @@ public final class CreditNoteToEbInterface61ConverterTest
                                                                                   Locale.GERMANY,
                                                                                   ToEbinterfaceSettings.getERechnungGvAtSettings ()).convertToEbInterface (aUBLCreditNote,
                                                                                                                                                            aErrorList);
-      assertTrue (aRes.getPath () + ": " + aErrorList.toString (), aErrorList.getMostSevereErrorLevel ().isLT (EErrorLevel.ERROR));
+      assertTrue (aRes.getPath () + ": " + aErrorList.toString (),
+                  aErrorList.getMostSevereErrorLevel ().isLT (EErrorLevel.ERROR));
       assertNotNull (aEbInvoice);
 
       if (aErrorList.getMostSevereErrorLevel ().isGE (EErrorLevel.WARN))
         LOGGER.info ("  " + aErrorList.toString ());
 
       // Convert ebInterface to XML
-      assertTrue (new MockEbi61Marshaller ().write (aEbInvoice, new File (TARGET_FOLDER + FilenameHelper.getWithoutPath (aRes.getPath ())))
+      assertTrue (new MockEbi61Marshaller ().write (aEbInvoice,
+                                                    new File (TARGET_FOLDER +
+                                                              FilenameHelper.getWithoutPath (aRes.getPath ())))
                                             .isSuccess ());
     }
   }

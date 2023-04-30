@@ -33,11 +33,11 @@ import com.helger.commons.io.file.FileOperations;
 import com.helger.commons.io.file.FileSystemIterator;
 import com.helger.commons.io.file.FilenameHelper;
 import com.helger.commons.io.file.IFileFilter;
+import com.helger.ebinterface.EbInterface60Marshaller;
 import com.helger.ebinterface.builder.EbInterfaceReader;
-import com.helger.ebinterface.builder.EbInterfaceWriter;
 import com.helger.ebinterface.v60.Ebi60InvoiceType;
-import com.helger.ubl21.UBL21Writer;
-import com.helger.ubl21.UBL21WriterBuilder;
+import com.helger.jaxb.GenericJAXBMarshaller;
+import com.helger.ubl21.UBL21Marshaller;
 
 import at.austriapro.ebinterface.ubl.from.ToEbinterfaceSettings;
 import at.austriapro.ebinterface.ubl.from.invoice.InvoiceToEbInterface60Converter;
@@ -64,12 +64,14 @@ public final class EbInterface60ToInvoiceConverterTest
   {
     final Locale aLocale = Locale.GERMANY;
     final EbInterface60ToInvoiceConverter aToUBL = new EbInterface60ToInvoiceConverter (aLocale, aLocale);
-    final InvoiceToEbInterface60Converter aToEbi = new InvoiceToEbInterface60Converter (aLocale, aLocale, new ToEbinterfaceSettings ());
+    final InvoiceToEbInterface60Converter aToEbi = new InvoiceToEbInterface60Converter (aLocale,
+                                                                                        aLocale,
+                                                                                        new ToEbinterfaceSettings ());
 
-    final EbInterfaceWriter <Ebi60InvoiceType> aEbiWriter = EbInterfaceWriter.ebInterface60 ().setFormattedOutput (true);
-    final UBL21WriterBuilder <InvoiceType> aUBLWriter = UBL21Writer.invoice ().setFormattedOutput (true);
+    final GenericJAXBMarshaller <Ebi60InvoiceType> aEbiWriter = new EbInterface60Marshaller ().setFormattedOutput (true);
+    final GenericJAXBMarshaller <InvoiceType> aUBLWriter = UBL21Marshaller.invoice ().setFormattedOutput (true);
 
-    for (final File aFile : new FileSystemIterator ("src/test/resources/ebinterface/ebi60").withFilter (IFileFilter.filenameEndsWith (".xml")))
+    for (final File aFile : new FileSystemIterator ("src/test/resources/external/ebinterface/ebi60").withFilter (IFileFilter.filenameEndsWith (".xml")))
     {
       LOGGER.info (aFile.getAbsolutePath ());
 
@@ -101,7 +103,8 @@ public final class EbInterface60ToInvoiceConverterTest
         assertEquals ("Difference after conversion: " + sUBL, sEbi1, sEbi2);
 
       // Write to folder
-      assertTrue (aUBLWriter.write (aInvoice, new File (TARGET_FOLDER + FilenameHelper.getWithoutPath (aFile))).isSuccess ());
+      assertTrue (aUBLWriter.write (aInvoice, new File (TARGET_FOLDER + FilenameHelper.getWithoutPath (aFile)))
+                            .isSuccess ());
     }
   }
 }

@@ -38,7 +38,7 @@ import com.helger.commons.io.file.IFileFilter;
 import com.helger.commons.io.resource.FileSystemResource;
 import com.helger.commons.io.resource.IReadableResource;
 import com.helger.ebinterface.v50.Ebi50InvoiceType;
-import com.helger.ubl21.UBL21Reader;
+import com.helger.ubl21.UBL21Marshaller;
 
 import at.austriapro.ebinterface.ubl.from.MockEbi50Marshaller;
 import at.austriapro.ebinterface.ubl.from.ToEbinterfaceSettings;
@@ -53,6 +53,7 @@ public final class CreditNoteToEbInterface50ConverterTest
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (CreditNoteToEbInterface50ConverterTest.class);
   private static final String TARGET_FOLDER = "generated-ubl-to-ebi50-files/";
+  private static final String PATH_UBL = "src/test/resources/external/ubl/";
 
   @Before
   public void onInit ()
@@ -64,7 +65,8 @@ public final class CreditNoteToEbInterface50ConverterTest
   public void testConvertPeppolCreditNoteLax ()
   {
     final ICommonsList <IReadableResource> aTestFiles = new CommonsArrayList <> ();
-    for (final File aFile : new FileSystemIterator (new File ("src/test/resources/ubl/creditnote")).withFilter (IFileFilter.filenameEndsWith (".xml")))
+    for (final File aFile : new FileSystemIterator (new File (PATH_UBL +
+                                                              "creditnote")).withFilter (IFileFilter.filenameEndsWith (".xml")))
       aTestFiles.add (new FileSystemResource (aFile));
 
     // For all Peppol test invoices
@@ -74,7 +76,7 @@ public final class CreditNoteToEbInterface50ConverterTest
       assertTrue (aRes.exists ());
 
       // Read UBL
-      final CreditNoteType aUBLCreditNote = UBL21Reader.creditNote ().read (aRes);
+      final CreditNoteType aUBLCreditNote = UBL21Marshaller.creditNote ().read (aRes);
       assertNotNull (aUBLCreditNote);
 
       // Convert to ebInterface
@@ -102,7 +104,8 @@ public final class CreditNoteToEbInterface50ConverterTest
   public void testConvertPeppolInvoiceERB ()
   {
     final ICommonsList <IReadableResource> aTestFiles = new CommonsArrayList <> ();
-    for (final File aFile : new FileSystemIterator (new File ("src/test/resources/ubl/creditnote")).withFilter (IFileFilter.filenameEndsWith (".xml")))
+    for (final File aFile : new FileSystemIterator (new File (PATH_UBL +
+                                                              "creditnote")).withFilter (IFileFilter.filenameEndsWith (".xml")))
       aTestFiles.add (new FileSystemResource (aFile));
 
     // For all Peppol test invoices
@@ -112,7 +115,7 @@ public final class CreditNoteToEbInterface50ConverterTest
       assertTrue (aRes.exists ());
 
       // Read UBL
-      final CreditNoteType aUBLCreditNote = UBL21Reader.creditNote ().read (aRes);
+      final CreditNoteType aUBLCreditNote = UBL21Marshaller.creditNote ().read (aRes);
       assertNotNull (aUBLCreditNote);
 
       // Convert to ebInterface

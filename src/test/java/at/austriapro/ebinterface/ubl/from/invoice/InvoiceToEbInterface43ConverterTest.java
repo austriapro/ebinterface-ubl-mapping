@@ -40,7 +40,7 @@ import com.helger.commons.io.file.IFileFilter;
 import com.helger.commons.io.resource.FileSystemResource;
 import com.helger.commons.io.resource.IReadableResource;
 import com.helger.ebinterface.v43.Ebi43InvoiceType;
-import com.helger.ubl21.UBL21Reader;
+import com.helger.ubl21.UBL21Marshaller;
 
 import at.austriapro.ebinterface.ubl.from.MockEbi43Marshaller;
 import at.austriapro.ebinterface.ubl.from.ToEbinterfaceSettings;
@@ -55,6 +55,7 @@ public final class InvoiceToEbInterface43ConverterTest
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (InvoiceToEbInterface43ConverterTest.class);
   private static final String TARGET_FOLDER = "generated-ubl-to-ebi43-files/";
+  private static final String PATH_UBL = "src/test/resources/external/ubl/";
 
   @Before
   public void onInit ()
@@ -66,7 +67,8 @@ public final class InvoiceToEbInterface43ConverterTest
   public void testConvertPeppolInvoiceLax ()
   {
     final ICommonsList <IReadableResource> aTestFiles = new CommonsArrayList <> ();
-    for (final File aFile : new FileSystemIterator (new File ("src/test/resources/ubl/invoice")).withFilter (IFileFilter.filenameEndsWith (".xml")))
+    for (final File aFile : new FileSystemIterator (new File (PATH_UBL +
+                                                              "invoice")).withFilter (IFileFilter.filenameEndsWith (".xml")))
       aTestFiles.add (new FileSystemResource (aFile));
 
     // For all Peppol test invoices
@@ -76,7 +78,7 @@ public final class InvoiceToEbInterface43ConverterTest
       assertTrue (aRes.exists ());
 
       // Read UBL
-      final InvoiceType aUBLInvoice = UBL21Reader.invoice ().read (aRes);
+      final InvoiceType aUBLInvoice = UBL21Marshaller.invoice ().read (aRes);
       assertNotNull (aUBLInvoice);
 
       // Convert to ebInterface
@@ -93,7 +95,9 @@ public final class InvoiceToEbInterface43ConverterTest
         LOGGER.info ("  " + aErrorList.toString ());
 
       // Convert ebInterface to XML
-      assertTrue (new MockEbi43Marshaller ().write (aEbInvoice, new File (TARGET_FOLDER + FilenameHelper.getWithoutPath (aRes.getPath ())))
+      assertTrue (new MockEbi43Marshaller ().write (aEbInvoice,
+                                                    new File (TARGET_FOLDER +
+                                                              FilenameHelper.getWithoutPath (aRes.getPath ())))
                                             .isSuccess ());
     }
   }
@@ -102,7 +106,8 @@ public final class InvoiceToEbInterface43ConverterTest
   public void testConvertPeppolInvoiceERB ()
   {
     final ICommonsList <IReadableResource> aTestFiles = new CommonsArrayList <> ();
-    for (final File aFile : new FileSystemIterator (new File ("src/test/resources/ubl/invoice")).withFilter (IFileFilter.filenameEndsWith (".xml")))
+    for (final File aFile : new FileSystemIterator (new File (PATH_UBL +
+                                                              "invoice")).withFilter (IFileFilter.filenameEndsWith (".xml")))
       aTestFiles.add (new FileSystemResource (aFile));
 
     // For all Peppol test invoices
@@ -112,7 +117,7 @@ public final class InvoiceToEbInterface43ConverterTest
       assertTrue (aRes.exists ());
 
       // Read UBL
-      final InvoiceType aUBLInvoice = UBL21Reader.invoice ().read (aRes);
+      final InvoiceType aUBLInvoice = UBL21Marshaller.invoice ().read (aRes);
       assertNotNull (aUBLInvoice);
 
       // Convert to ebInterface
@@ -121,14 +126,17 @@ public final class InvoiceToEbInterface43ConverterTest
                                                                                Locale.GERMANY,
                                                                                ToEbinterfaceSettings.getERechnungGvAtSettings ()).convertToEbInterface (aUBLInvoice,
                                                                                                                                                         aErrorList);
-      assertTrue (aRes.getPath () + ": " + aErrorList.toString (), aErrorList.getMostSevereErrorLevel ().isLT (EErrorLevel.ERROR));
+      assertTrue (aRes.getPath () + ": " + aErrorList.toString (),
+                  aErrorList.getMostSevereErrorLevel ().isLT (EErrorLevel.ERROR));
       assertNotNull (aEbInvoice);
 
       if (aErrorList.getMostSevereErrorLevel ().isGE (EErrorLevel.WARN))
         LOGGER.info ("  " + aErrorList.toString ());
 
       // Convert ebInterface to XML
-      assertTrue (new MockEbi43Marshaller ().write (aEbInvoice, new File (TARGET_FOLDER + FilenameHelper.getWithoutPath (aRes.getPath ())))
+      assertTrue (new MockEbi43Marshaller ().write (aEbInvoice,
+                                                    new File (TARGET_FOLDER +
+                                                              FilenameHelper.getWithoutPath (aRes.getPath ())))
                                             .isSuccess ());
     }
   }
@@ -137,7 +145,8 @@ public final class InvoiceToEbInterface43ConverterTest
   public void testConvertPeppolInvoiceLaxBad ()
   {
     final ICommonsList <IReadableResource> aTestFiles = new CommonsArrayList <> ();
-    for (final File aFile : new FileSystemIterator (new File ("src/test/resources/ubl/invoice_bad")).withFilter (IFileFilter.filenameEndsWith (".xml")))
+    for (final File aFile : new FileSystemIterator (new File (PATH_UBL +
+                                                              "invoice_bad")).withFilter (IFileFilter.filenameEndsWith (".xml")))
       aTestFiles.add (new FileSystemResource (aFile));
 
     // For all Peppol test invoices
@@ -147,7 +156,7 @@ public final class InvoiceToEbInterface43ConverterTest
       assertTrue (aRes.exists ());
 
       // Read UBL
-      final InvoiceType aUBLInvoice = UBL21Reader.invoice ().read (aRes);
+      final InvoiceType aUBLInvoice = UBL21Marshaller.invoice ().read (aRes);
       assertNotNull (aUBLInvoice);
 
       // Convert to ebInterface

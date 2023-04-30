@@ -33,11 +33,11 @@ import com.helger.commons.io.file.FileOperations;
 import com.helger.commons.io.file.FileSystemIterator;
 import com.helger.commons.io.file.FilenameHelper;
 import com.helger.commons.io.file.IFileFilter;
+import com.helger.ebinterface.EbInterface50Marshaller;
 import com.helger.ebinterface.builder.EbInterfaceReader;
-import com.helger.ebinterface.builder.EbInterfaceWriter;
 import com.helger.ebinterface.v50.Ebi50InvoiceType;
-import com.helger.ubl21.UBL21Writer;
-import com.helger.ubl21.UBL21WriterBuilder;
+import com.helger.jaxb.GenericJAXBMarshaller;
+import com.helger.ubl21.UBL21Marshaller;
 
 import at.austriapro.ebinterface.ubl.from.ToEbinterfaceSettings;
 import at.austriapro.ebinterface.ubl.from.invoice.InvoiceToEbInterface50Converter;
@@ -68,11 +68,10 @@ public final class EbInterface50ToInvoiceConverterTest
                                                                                         aLocale,
                                                                                         new ToEbinterfaceSettings ());
 
-    final EbInterfaceWriter <Ebi50InvoiceType> aEbiWriter = EbInterfaceWriter.ebInterface50 ()
-                                                                             .setFormattedOutput (true);
-    final UBL21WriterBuilder <InvoiceType> aUBLWriter = UBL21Writer.invoice ().setFormattedOutput (true);
+    final GenericJAXBMarshaller <Ebi50InvoiceType> aEbiWriter = new EbInterface50Marshaller ().setFormattedOutput (true);
+    final GenericJAXBMarshaller <InvoiceType> aUBLWriter = UBL21Marshaller.invoice ().setFormattedOutput (true);
 
-    for (final File aFile : new FileSystemIterator ("src/test/resources/ebinterface/ebi50").withFilter (IFileFilter.filenameEndsWith (".xml")))
+    for (final File aFile : new FileSystemIterator ("src/test/resources/external/ebinterface/ebi50").withFilter (IFileFilter.filenameEndsWith (".xml")))
     {
       LOGGER.info (aFile.getAbsolutePath ());
 

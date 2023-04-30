@@ -42,7 +42,7 @@ import com.helger.commons.io.file.IFileFilter;
 import com.helger.commons.io.resource.FileSystemResource;
 import com.helger.commons.io.resource.IReadableResource;
 import com.helger.ebinterface.v40.Ebi40InvoiceType;
-import com.helger.ubl21.UBL21Reader;
+import com.helger.ubl21.UBL21Marshaller;
 
 import at.austriapro.ebinterface.ubl.from.MockEbi40Marshaller;
 import at.austriapro.ebinterface.ubl.from.ToEbinterfaceSettings;
@@ -57,6 +57,7 @@ public final class InvoiceToEbInterface40ConverterTest
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (InvoiceToEbInterface40ConverterTest.class);
   private static final String TARGET_FOLDER = "generated-ubl-to-ebi40-files/";
+  private static final String PATH_UBL = "src/test/resources/external/ubl/";
 
   private static final ICommonsSet <String> IGNORED_FILES = new CommonsHashSet <> ("20120822125754.482.xml",
                                                                                    "delivery-per-item.xml",
@@ -82,7 +83,8 @@ public final class InvoiceToEbInterface40ConverterTest
   public void testConvertPeppolInvoiceLax ()
   {
     final ICommonsList <IReadableResource> aTestFiles = new CommonsArrayList <> ();
-    for (final File aFile : new FileSystemIterator (new File ("src/test/resources/ubl/invoice")).withFilter (IFileFilter.filenameEndsWith (".xml")))
+    for (final File aFile : new FileSystemIterator (new File (PATH_UBL +
+                                                              "invoice")).withFilter (IFileFilter.filenameEndsWith (".xml")))
       if (!IGNORED_FILES.contains (aFile.getName ()))
         aTestFiles.add (new FileSystemResource (aFile));
 
@@ -93,7 +95,7 @@ public final class InvoiceToEbInterface40ConverterTest
       assertTrue (aRes.exists ());
 
       // Read UBL
-      final InvoiceType aUBLInvoice = UBL21Reader.invoice ().read (aRes);
+      final InvoiceType aUBLInvoice = UBL21Marshaller.invoice ().read (aRes);
       assertNotNull (aUBLInvoice);
 
       // Convert to ebInterface
@@ -121,7 +123,8 @@ public final class InvoiceToEbInterface40ConverterTest
   public void testConvertPeppolInvoiceERB ()
   {
     final ICommonsList <IReadableResource> aTestFiles = new CommonsArrayList <> ();
-    for (final File aFile : new FileSystemIterator (new File ("src/test/resources/ubl/invoice")).withFilter (IFileFilter.filenameEndsWith (".xml")))
+    for (final File aFile : new FileSystemIterator (new File (PATH_UBL +
+                                                              "invoice")).withFilter (IFileFilter.filenameEndsWith (".xml")))
       if (!IGNORED_FILES.contains (aFile.getName ()))
         aTestFiles.add (new FileSystemResource (aFile));
 
@@ -132,7 +135,7 @@ public final class InvoiceToEbInterface40ConverterTest
       assertTrue (aRes.exists ());
 
       // Read UBL
-      final InvoiceType aUBLInvoice = UBL21Reader.invoice ().read (aRes);
+      final InvoiceType aUBLInvoice = UBL21Marshaller.invoice ().read (aRes);
       assertNotNull (aUBLInvoice);
 
       // Convert to ebInterface
@@ -160,7 +163,8 @@ public final class InvoiceToEbInterface40ConverterTest
   public void testConvertPeppolInvoiceLaxBad ()
   {
     final ICommonsList <IReadableResource> aTestFiles = new CommonsArrayList <> ();
-    for (final File aFile : new FileSystemIterator (new File ("src/test/resources/ubl/invoice_bad")).withFilter (IFileFilter.filenameEndsWith (".xml")))
+    for (final File aFile : new FileSystemIterator (new File (PATH_UBL +
+                                                              "invoice_bad")).withFilter (IFileFilter.filenameEndsWith (".xml")))
       aTestFiles.add (new FileSystemResource (aFile));
 
     // For all Peppol test invoices
@@ -170,7 +174,7 @@ public final class InvoiceToEbInterface40ConverterTest
       assertTrue (aRes.exists ());
 
       // Read UBL
-      final InvoiceType aUBLInvoice = UBL21Reader.invoice ().read (aRes);
+      final InvoiceType aUBLInvoice = UBL21Marshaller.invoice ().read (aRes);
       assertNotNull (aUBLInvoice);
 
       // Convert to ebInterface

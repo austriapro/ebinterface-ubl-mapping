@@ -22,7 +22,7 @@
   <parent>
     <groupId>com.helger</groupId>
     <artifactId>parent-pom</artifactId>
-    <version>2.0.2</version>
+    <version>2.0.3</version>
   </parent>
   <groupId>at.austriapro</groupId>
   <artifactId>ebinterface-ubl-mapping</artifactId>
@@ -65,7 +65,7 @@
       <dependency>
         <groupId>com.helger.commons</groupId>
         <artifactId>ph-commons-parent-pom</artifactId>
-        <version>11.0.2</version>
+        <version>11.0.4</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -84,7 +84,7 @@
       <dependency>
         <groupId>com.helger.ubl</groupId>
         <artifactId>ph-ubl-parent-pom</artifactId>
-        <version>7.0.0</version>
+        <version>8.0.1</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -161,20 +161,6 @@
             <Export-Package>at.austriapro.ebinterface.ubl.*</Export-Package>
             <Import-Package>!javax.annotation.*,*</Import-Package>
           </instructions>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>com.mycila</groupId>
-        <artifactId>license-maven-plugin</artifactId>
-        <configuration>
-          <excludes>
-            <exclude>**/LICENSE</exclude>
-            <exclude>**/NOTICE</exclude>
-            <exclude>**/*.txt</exclude>
-            <exclude>src/test/resources/ebi*/**</exclude>
-            <exclude>src/test/resources/ubl*/**</exclude>
-            <exclude>generated-*-files/*</exclude>
-          </excludes>
         </configuration>
       </plugin>
       <plugin>
