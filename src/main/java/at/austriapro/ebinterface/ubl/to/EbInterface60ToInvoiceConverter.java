@@ -149,7 +149,8 @@ public class EbInterface60ToInvoiceConverter extends AbstractEbInterface60ToUBLC
                     aUBLFinancialAccount.setID (aUBLFAID);
                 }
                 aUBLFinancialAccount.setName (aEbiAccount.getBankAccountOwner ());
-                aUBLFinancialAccount.setFinancialInstitutionBranch (aUBLBranch);
+                if (aUBLBranch.getFinancialInstitution () != null)
+                  aUBLFinancialAccount.setFinancialInstitutionBranch (aUBLBranch);
                 aUBLPaymentMeans.setPayeeFinancialAccount (aUBLFinancialAccount);
               }
 
