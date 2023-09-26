@@ -1,6 +1,10 @@
 # ebinterface-ubl-mapping
 
-Mapping ebInterface 4.x/5.0/6.x from and to UBL 2.1.
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/at.austriapro/ebinterface-ubl-mapping/badge.svg)](https://maven-badges.herokuapp.com/maven-central/at.austriapro/ebinterface-ubl-mapping) 
+[![javadoc](https://javadoc.io/badge2/at.austriapro/ebinterface-ubl-mapping/javadoc.svg)](https://javadoc.io/doc/at.austriapro/ebinterface-ubl-mapping)
+[![CodeCov](https://codecov.io/gh/austriapro/ebinterface-ubl-mapping/branch/master/graph/badge.svg)](https://codecov.io/gh/austriapro/ebinterface-ubl-mapping)
+
+Mapping ebInterface 4.x/5.x/6.x from and to UBL 2.1.
 
 Author: Philip Helger
 
