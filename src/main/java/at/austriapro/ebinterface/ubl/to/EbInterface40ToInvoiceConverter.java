@@ -109,13 +109,17 @@ public class EbInterface40ToInvoiceConverter extends AbstractEbInterface40ToUBLC
                     aUBLFIID.setSchemeID ("local");
                   }
                   else
-                  {
-                    aUBLFIID.setValue (aEbiAccount.getBankName ());
-                    aUBLFIID.setSchemeID ("name");
-                  }
-                aUBLFinancialInstitution.setID (aUBLFIID);
+                    if (StringHelper.hasText (aEbiAccount.getBankName ()))
+                    {
+                      aUBLFIID.setValue (aEbiAccount.getBankName ());
+                      aUBLFIID.setSchemeID ("name");
+                    }
+                if (StringHelper.hasText (aUBLFIID.getValue ()))
+                  aUBLFinancialInstitution.setID (aUBLFIID);
               }
-              aUBLBranch.setFinancialInstitution (aUBLFinancialInstitution);
+              if (aUBLFinancialInstitution.getID () != null)
+                aUBLBranch.setFinancialInstitution (aUBLFinancialInstitution);
+
               {
                 final IDType aUBLFAID = new IDType ();
                 if (StringHelper.hasText (aEbiAccount.getIBAN ()))
@@ -128,11 +132,14 @@ public class EbInterface40ToInvoiceConverter extends AbstractEbInterface40ToUBLC
                   aUBLFAID.setSchemeID (SCHEME_IBAN);
                 }
                 else
-                {
-                  aUBLFAID.setValue (aEbiAccount.getBankAccountNr ());
-                  aUBLFAID.setSchemeID ("local");
-                }
-                aUBLFinancialAccount.setID (aUBLFAID);
+                  if (StringHelper.hasText (aEbiAccount.getBankAccountNr ()))
+                  {
+                    aUBLFAID.setValue (aEbiAccount.getBankAccountNr ());
+                    aUBLFAID.setSchemeID ("local");
+                  }
+
+                if (StringHelper.hasText (aUBLFAID.getValue ()))
+                  aUBLFinancialAccount.setID (aUBLFAID);
               }
               aUBLFinancialAccount.setName (aEbiAccount.getBankAccountOwner ());
               aUBLFinancialAccount.setFinancialInstitutionBranch (aUBLBranch);
@@ -165,7 +172,9 @@ public class EbInterface40ToInvoiceConverter extends AbstractEbInterface40ToUBLC
         if (aEbiPaymentConditions.getMinimumPayment () != null)
         {
           final BigDecimal aPerc = aEbiPaymentConditions.getMinimumPayment ()
-                                                        .divide (aEbiDoc.getTotalGrossAmount (), SCALE_PRICE4, ROUNDING_MODE)
+                                                        .divide (aEbiDoc.getTotalGrossAmount (),
+                                                                 SCALE_PRICE4,
+                                                                 ROUNDING_MODE)
                                                         .multiply (CGlobal.BIGDEC_100);
           aUBLPaymentTerms.setPaymentPercent (aPerc);
         }
@@ -213,8 +222,8 @@ public class EbInterface40ToInvoiceConverter extends AbstractEbInterface40ToUBLC
     // GeneratingSystem cannot be mapped
     aUBLDoc.setInvoiceTypeCode (getTypeCode (aEbiDoc.getDocumentType (), InvoiceTypeCodeType::new));
     final DocumentCurrencyCodeType aUBLCurrency = aUBLDoc.setDocumentCurrencyCode (sCurrency);
-    aUBLCurrency.setListAgencyID ("6");
-    aUBLCurrency.setListID ("ISO 4017 Alpha");
+    aUBLCurrency.setListAgencyID (CURRENCY_LIST_AGENCY_ID);
+    aUBLCurrency.setListID (CURRENCY_LIST_ID);
     // ManualProcessing cannot be mapped
     // DocumentTitle is not mapped
     // Language is not mapped
@@ -424,7 +433,8 @@ public class EbInterface40ToInvoiceConverter extends AbstractEbInterface40ToUBLC
                 aUBLAC.setAmount (aEbiRSValue.getAmount ()).setCurrencyID (sCurrency);
               else
                 if (aEbiRSValue.getPercentage () != null)
-                  aUBLAC.setAmount (MathHelper.getPercentValue (aEbiRSValue.getBaseAmount (), aEbiRSValue.getPercentage ()))
+                  aUBLAC.setAmount (MathHelper.getPercentValue (aEbiRSValue.getBaseAmount (),
+                                                                aEbiRSValue.getPercentage ()))
                         .setCurrencyID (sCurrency);
 
               aUBLLine.addAllowanceCharge (aUBLAC);
@@ -441,7 +451,8 @@ public class EbInterface40ToInvoiceConverter extends AbstractEbInterface40ToUBLC
                 aUBLAC.setAmount (aEbiRSValue.getAmount ()).setCurrencyID (sCurrency);
               else
                 if (aEbiRSValue.getPercentage () != null)
-                  aUBLAC.setAmount (MathHelper.getPercentValue (aEbiRSValue.getBaseAmount (), aEbiRSValue.getPercentage ()))
+                  aUBLAC.setAmount (MathHelper.getPercentValue (aEbiRSValue.getBaseAmount (),
+                                                                aEbiRSValue.getPercentage ()))
                         .setCurrencyID (sCurrency);
 
               aUBLLine.addAllowanceCharge (aUBLAC);
@@ -496,11 +507,15 @@ public class EbInterface40ToInvoiceConverter extends AbstractEbInterface40ToUBLC
             }
             if (aEbiAdditionalInfo.getWeight () != null)
             {
-              aUBLItem.addAdditionalItemProperty (createItemProperty ("Weight", aEbiAdditionalInfo.getWeight ().getValue ().toString ()));
+              aUBLItem.addAdditionalItemProperty (createItemProperty ("Weight",
+                                                                      aEbiAdditionalInfo.getWeight ()
+                                                                                        .getValue ()
+                                                                                        .toString ()));
             }
             if (aEbiAdditionalInfo.getBoxes () != null)
             {
-              aUBLItem.addAdditionalItemProperty (createItemProperty ("Boxes", aEbiAdditionalInfo.getBoxes ().toString ()));
+              aUBLItem.addAdditionalItemProperty (createItemProperty ("Boxes",
+                                                                      aEbiAdditionalInfo.getBoxes ().toString ()));
             }
             if (aEbiAdditionalInfo.getColor () != null)
             {

@@ -42,6 +42,9 @@ import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
 @Immutable
 public abstract class AbstractEbInterfaceToUBLConverter extends AbstractConverter
 {
+  public static final String CURRENCY_LIST_AGENCY_ID = "6";
+  public static final String CURRENCY_LIST_ID = "ISO 4217 Alpha";
+
   /**
    * Constructor
    *

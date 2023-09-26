@@ -28,6 +28,9 @@ Add the following to your pom.xml to use this artifact, replacing `x.y.z` with t
 
 # News and noteworthy
 
+* v5.1.1 - work in progress
+    * Fixed the `DocumentCurrencyCode/@listID` attribute for all ebInterface versions > 4.2
+    * Avoid creating empty UBL elements
 * v5.1.0 - 2023-04-30
     * Updated to ph-ubl 8.x
 * v5.0.0 - 2023-03-02

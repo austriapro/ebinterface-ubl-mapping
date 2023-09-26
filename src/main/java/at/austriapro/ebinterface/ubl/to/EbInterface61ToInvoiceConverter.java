@@ -122,13 +122,16 @@ public class EbInterface61ToInvoiceConverter extends AbstractEbInterface61ToUBLC
                       aUBLFIID.setSchemeID (aEbiAccount.getBankCode ().getBankCodeType ());
                     }
                     else
-                    {
-                      aUBLFIID.setValue (aEbiAccount.getBankName ());
-                      aUBLFIID.setSchemeID ("name");
-                    }
-                  aUBLFinancialInstitution.setID (aUBLFIID);
+                      if (StringHelper.hasText (aEbiAccount.getBankName ()))
+                      {
+                        aUBLFIID.setValue (aEbiAccount.getBankName ());
+                        aUBLFIID.setSchemeID ("name");
+                      }
+                  if (StringHelper.hasText (aUBLFIID.getValue ()))
+                    aUBLFinancialInstitution.setID (aUBLFIID);
                 }
-                aUBLBranch.setFinancialInstitution (aUBLFinancialInstitution);
+                if (aUBLFinancialInstitution.getID () != null)
+                  aUBLBranch.setFinancialInstitution (aUBLFinancialInstitution);
                 {
                   final IDType aUBLFAID = new IDType ();
                   if (StringHelper.hasText (aEbiAccount.getIBAN ()))
@@ -137,11 +140,14 @@ public class EbInterface61ToInvoiceConverter extends AbstractEbInterface61ToUBLC
                     aUBLFAID.setSchemeID (SCHEME_IBAN);
                   }
                   else
-                  {
-                    aUBLFAID.setValue (aEbiAccount.getBankAccountNr ());
-                    aUBLFAID.setSchemeID ("local");
-                  }
-                  aUBLFinancialAccount.setID (aUBLFAID);
+                    if (StringHelper.hasText (aEbiAccount.getBankAccountNr ()))
+                    {
+                      aUBLFAID.setValue (aEbiAccount.getBankAccountNr ());
+                      aUBLFAID.setSchemeID ("local");
+                    }
+
+                  if (StringHelper.hasText (aUBLFAID.getValue ()))
+                    aUBLFinancialAccount.setID (aUBLFAID);
                 }
                 aUBLFinancialAccount.setName (aEbiAccount.getBankAccountOwner ());
                 aUBLFinancialAccount.setFinancialInstitutionBranch (aUBLBranch);
@@ -227,8 +233,8 @@ public class EbInterface61ToInvoiceConverter extends AbstractEbInterface61ToUBLC
     // GeneratingSystem cannot be mapped
     aUBLDoc.setInvoiceTypeCode (getTypeCode (aEbiDoc.getDocumentType (), InvoiceTypeCodeType::new));
     final DocumentCurrencyCodeType aUBLCurrency = aUBLDoc.setDocumentCurrencyCode (sCurrency);
-    aUBLCurrency.setListAgencyID ("6");
-    aUBLCurrency.setListID ("ISO 6117 Alpha");
+    aUBLCurrency.setListAgencyID (CURRENCY_LIST_AGENCY_ID);
+    aUBLCurrency.setListID (CURRENCY_LIST_ID);
     // ManualProcessing cannot be mapped
     // DocumentTitle is not mapped
     // Language is not mapped

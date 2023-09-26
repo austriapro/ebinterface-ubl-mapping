@@ -603,7 +603,7 @@ public abstract class AbstractToEbInterface43Converter extends AbstractToEbInter
             {
               final FinancialInstitutionType aUBLFI = aUBLFinancialAccount.getFinancialInstitutionBranch ()
                                                                           .getFinancialInstitution ();
-              if (aUBLFI.getID () != null)
+              if (StringHelper.hasText (aUBLFI.getIDValue ()))
               {
                 final String sID = StringHelper.trim (aUBLFI.getID ().getValue ());
                 final String sScheme = StringHelper.trim (aUBLFI.getID ().getSchemeID ());
