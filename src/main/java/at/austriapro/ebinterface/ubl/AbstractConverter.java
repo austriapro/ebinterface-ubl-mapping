@@ -125,6 +125,7 @@ public abstract class AbstractConverter
   public static final String UBL_VERSION_23 = "2.3";
 
   /** The UBL customization ID to use */
+  @Deprecated (forRemoval = true, since = "5.1.2")
   public static final String CUSTOMIZATION_SCHEMEID = "PEPPOL";
 
   protected final Locale m_aDisplayLocale;
