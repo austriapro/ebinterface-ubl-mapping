@@ -557,7 +557,8 @@ public class EbInterface42ToInvoiceConverter extends AbstractEbInterface42ToUBLC
                   aUBLAC.addAllowanceChargeReason (new AllowanceChargeReasonType (aEbiRSValue.getComment ()));
               }
 
-              aUBLLine.addAllowanceCharge (aUBLAC);
+              if (aUBLAC.getAmount () != null)
+                aUBLLine.addAllowanceCharge (aUBLAC);
             }
 
           for (final Ebi42ArticleNumberType aArticleNumber : aEbiItem.getArticleNumber ())

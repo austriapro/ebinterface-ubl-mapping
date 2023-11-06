@@ -438,7 +438,8 @@ public class EbInterface40ToInvoiceConverter extends AbstractEbInterface40ToUBLC
                                                                 aEbiRSValue.getPercentage ()))
                         .setCurrencyID (sCurrency);
 
-              aUBLLine.addAllowanceCharge (aUBLAC);
+              if (aUBLAC.getAmount () != null)
+                aUBLLine.addAllowanceCharge (aUBLAC);
             }
             for (final Ebi40ReductionAndSurchargeBaseType aEbiRSValue : aEbiItem.getReductionAndSurchargeListLineItemDetails ()
                                                                                 .getSurchargeListLineItem ())
@@ -456,7 +457,8 @@ public class EbInterface40ToInvoiceConverter extends AbstractEbInterface40ToUBLC
                                                                 aEbiRSValue.getPercentage ()))
                         .setCurrencyID (sCurrency);
 
-              aUBLLine.addAllowanceCharge (aUBLAC);
+              if (aUBLAC.getAmount () != null)
+                aUBLLine.addAllowanceCharge (aUBLAC);
             }
           }
 
