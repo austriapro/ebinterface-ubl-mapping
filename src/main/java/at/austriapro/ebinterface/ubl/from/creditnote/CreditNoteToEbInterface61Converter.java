@@ -112,7 +112,8 @@ public final class CreditNoteToEbInterface61Converter extends AbstractToEbInterf
    *         severe error.
    */
   @Nullable
-  public Ebi61InvoiceType convertToEbInterface (@Nonnull final CreditNoteType aUBLDoc, @Nonnull final ErrorList aTransformationErrorList)
+  public Ebi61InvoiceType convertToEbInterface (@Nonnull final CreditNoteType aUBLDoc,
+                                                @Nonnull final ErrorList aTransformationErrorList)
   {
     ValueEnforcer.notNull (aUBLDoc, "UBLCreditNote");
     ValueEnforcer.notNull (aTransformationErrorList, "TransformationErrorList");
@@ -127,7 +128,8 @@ public final class CreditNoteToEbInterface61Converter extends AbstractToEbInterf
     final Ebi61InvoiceType aEbiDoc = new Ebi61InvoiceType ();
     aEbiDoc.setGeneratingSystem (EBI_GENERATING_SYSTEM_61);
     aEbiDoc.setDocumentType (getAsDocumentTypeType (aUBLDoc.getCreditNoteTypeCode () == null ? null
-                                                                                             : aUBLDoc.getCreditNoteTypeCode ().getName (),
+                                                                                             : aUBLDoc.getCreditNoteTypeCode ()
+                                                                                                      .getName (),
                                                     aUBLDoc.getCreditNoteTypeCodeValue (),
                                                     Ebi61DocumentTypeType.CREDIT_MEMO.value ()));
 
@@ -195,7 +197,7 @@ public final class CreditNoteToEbInterface61Converter extends AbstractToEbInterf
       if (StringHelper.hasNoText (aEbiBiller.getVATIdentificationNumber ()))
       {
         // Required by ebInterface
-        aEbiBiller.setVATIdentificationNumber ("ATU00000000");
+        aEbiBiller.setVATIdentificationNumber (UNDEFINED_AT_VATIN);
         aTransformationErrorList.add (SingleError.builderWarn ()
                                                  .errorFieldName ("AccountingSupplierParty/Party/PartyTaxScheme")
                                                  .errorText (EText.BILLER_VAT_MISSING.getDisplayText (m_aDisplayLocale))
@@ -262,8 +264,10 @@ public final class CreditNoteToEbInterface61Converter extends AbstractToEbInterf
       for (final DocumentReferenceType aDocumentReference : aUBLDoc.getContractDocumentReference ())
         if (StringHelper.hasTextAfterTrim (aDocumentReference.getIDValue ()))
         {
-          final String sKey = StringHelper.hasText (aDocumentReference.getID ().getSchemeID ()) ? aDocumentReference.getID ().getSchemeID ()
-                                                                                                : "Contract";
+          final String sKey = StringHelper.hasText (aDocumentReference.getID ()
+                                                                      .getSchemeID ()) ? aDocumentReference.getID ()
+                                                                                                           .getSchemeID ()
+                                                                                       : "Contract";
 
           final Ebi61FurtherIdentificationType aEbiFurtherIdentification = new Ebi61FurtherIdentificationType ();
           aEbiFurtherIdentification.setIdentificationType (sKey);
@@ -292,7 +296,7 @@ public final class CreditNoteToEbInterface61Converter extends AbstractToEbInterf
       if (StringHelper.hasNoText (aEbiRecipient.getVATIdentificationNumber ()))
       {
         // Required by ebInterface
-        aEbiRecipient.setVATIdentificationNumber ("ATU00000000");
+        aEbiRecipient.setVATIdentificationNumber (UNDEFINED_AT_VATIN);
         aTransformationErrorList.add (SingleError.builderWarn ()
                                                  .errorFieldName ("AccountingCustomerParty/PartyTaxScheme")
                                                  .errorText (EText.INVOICE_RECIPIENT_VAT_MISSING.getDisplayText (m_aDisplayLocale))
@@ -389,7 +393,8 @@ public final class CreditNoteToEbInterface61Converter extends AbstractToEbInterf
                                                                                  .getPartyIdentificationAtIndex (0)
                                                                                  .getIDValue ()));
       }
-      if (StringHelper.hasNoText (aEbiOrderingParty.getBillersOrderingPartyID ()) && aEbiDoc.getInvoiceRecipient () != null)
+      if (StringHelper.hasNoText (aEbiOrderingParty.getBillersOrderingPartyID ()) &&
+          aEbiDoc.getInvoiceRecipient () != null)
       {
         // Use the same as the the invoice recipient ID
         // Heuristics, but what should I do :(
@@ -477,7 +482,9 @@ public final class CreditNoteToEbInterface61Converter extends AbstractToEbInterf
               // Calculate percentage
               aUBLPercentage = MathHelper.isEQ0 (aUBLTaxableAmount) ? BigDecimal.ZERO
                                                                     : aUBLTaxAmount.multiply (CGlobal.BIGDEC_100)
-                                                                                   .divide (aUBLTaxableAmount, SCALE_PERC, ROUNDING_MODE);
+                                                                                   .divide (aUBLTaxableAmount,
+                                                                                            SCALE_PERC,
+                                                                                            ROUNDING_MODE);
             }
           }
 
@@ -490,7 +497,8 @@ public final class CreditNoteToEbInterface61Converter extends AbstractToEbInterf
               if (MathHelper.isNE0 (aUBLPercentage))
               {
                 // Calculate (inexact) subtotal
-                aUBLTaxableAmount = aUBLTaxAmount.multiply (CGlobal.BIGDEC_100).divide (aUBLPercentage, SCALE_PRICE4, ROUNDING_MODE);
+                aUBLTaxableAmount = aUBLTaxAmount.multiply (CGlobal.BIGDEC_100)
+                                                 .divide (aUBLPercentage, SCALE_PRICE4, ROUNDING_MODE);
               }
             }
             else
@@ -661,7 +669,8 @@ public final class CreditNoteToEbInterface61Converter extends AbstractToEbInterf
       for (final CreditNoteLineType aUBLLine : aUBLDoc.getCreditNoteLine ())
       {
         // Try to resolve tax category
-        TaxCategoryType aUBLTaxCategory = CollectionHelper.getAtIndex (aUBLLine.getItem ().getClassifiedTaxCategory (), 0);
+        TaxCategoryType aUBLTaxCategory = CollectionHelper.getAtIndex (aUBLLine.getItem ().getClassifiedTaxCategory (),
+                                                                       0);
         if (aUBLTaxCategory == null)
         {
           // No direct tax category -> check if it is somewhere in the tax total
@@ -685,7 +694,9 @@ public final class CreditNoteToEbInterface61Converter extends AbstractToEbInterf
               aUBLTaxCategory.getTaxScheme ().getID () != null)
           {
             // Not specified - check from previous map
-            final String sUBLTaxSchemeSchemeID = StringHelper.trim (aUBLTaxCategory.getTaxScheme ().getID ().getSchemeID ());
+            final String sUBLTaxSchemeSchemeID = StringHelper.trim (aUBLTaxCategory.getTaxScheme ()
+                                                                                   .getID ()
+                                                                                   .getSchemeID ());
             final String sUBLTaxSchemeID = StringHelper.trim (aUBLTaxCategory.getTaxScheme ().getIDValue ());
 
             final String sUBLTaxCategorySchemeID = StringHelper.trim (aUBLTaxCategory.getID ().getSchemeID ());
@@ -694,7 +705,8 @@ public final class CreditNoteToEbInterface61Converter extends AbstractToEbInterf
             if (StringHelper.hasText (sUBLTaxSchemeID) && StringHelper.hasText (sUBLTaxCategoryID))
             {
               final TaxCategoryKey aKey = new TaxCategoryKey (new SchemedID (sUBLTaxSchemeSchemeID, sUBLTaxSchemeID),
-                                                              new SchemedID (sUBLTaxCategorySchemeID, sUBLTaxCategoryID));
+                                                              new SchemedID (sUBLTaxCategorySchemeID,
+                                                                             sUBLTaxCategoryID));
               aUBLPercent = aTaxCategoryPercMap.get (aKey);
             }
           }
@@ -708,7 +720,9 @@ public final class CreditNoteToEbInterface61Converter extends AbstractToEbInterf
         {
           aUBLPercent = BigDecimal.ZERO;
           aTransformationErrorList.add (SingleError.builderWarn ()
-                                                   .errorFieldName ("CreditNoteLine[" + nLineIndex + "]/Item/ClassifiedTaxCategory")
+                                                   .errorFieldName ("CreditNoteLine[" +
+                                                                    nLineIndex +
+                                                                    "]/Item/ClassifiedTaxCategory")
                                                    .errorText (EText.DETAILS_TAX_PERCENTAGE_NOT_FOUND.getDisplayTextWithArgs (m_aDisplayLocale,
                                                                                                                               aUBLPercent))
                                                    .build ());
@@ -790,7 +804,9 @@ public final class CreditNoteToEbInterface61Converter extends AbstractToEbInterf
           // ebInterface requires a quantity!
           aEbiQuantity.setUnit (UOM_DEFAULT);
           aTransformationErrorList.add (SingleError.builderWarn ()
-                                                   .errorFieldName ("CreditNoteLine[" + nLineIndex + "]/CreditNotedQuantity/UnitCode")
+                                                   .errorFieldName ("CreditNoteLine[" +
+                                                                    nLineIndex +
+                                                                    "]/CreditNotedQuantity/UnitCode")
                                                    .errorText (EText.DETAILS_INVALID_UNIT.getDisplayTextWithArgs (m_aDisplayLocale,
                                                                                                                   aEbiQuantity.getUnit ()))
                                                    .build ());
@@ -799,7 +815,9 @@ public final class CreditNoteToEbInterface61Converter extends AbstractToEbInterf
         {
           aEbiQuantity.setValue (BigDecimal.ONE);
           aTransformationErrorList.add (SingleError.builderWarn ()
-                                                   .errorFieldName ("CreditNoteLine[" + nLineIndex + "]/CreditNotedQuantity")
+                                                   .errorFieldName ("CreditNoteLine[" +
+                                                                    nLineIndex +
+                                                                    "]/CreditNotedQuantity")
                                                    .errorText (EText.DETAILS_INVALID_QUANTITY.getDisplayTextWithArgs (m_aDisplayLocale,
                                                                                                                       aEbiQuantity.getValue ()))
                                                    .build ());
@@ -831,7 +849,9 @@ public final class CreditNoteToEbInterface61Converter extends AbstractToEbInterf
           if (MathHelper.isEQ0 (aEbiQuantity.getValue ()))
             aEbiUnitPrice.setValue (BigDecimal.ZERO);
           else
-            aEbiUnitPrice.setValue (aUBLLineExtensionAmount.divide (aEbiQuantity.getValue (), SCALE_PRICE4, ROUNDING_MODE));
+            aEbiUnitPrice.setValue (aUBLLineExtensionAmount.divide (aEbiQuantity.getValue (),
+                                                                    SCALE_PRICE4,
+                                                                    ROUNDING_MODE));
           aEbiListLineItem.setUnitPrice (aEbiUnitPrice);
         }
 
@@ -841,7 +861,8 @@ public final class CreditNoteToEbInterface61Converter extends AbstractToEbInterf
           aEbiUnitPriceValue = aEbiUnitPriceValue.divide (aBQ, SCALE_PRICE4, ROUNDING_MODE);
 
         // Line item amount (quantity * unit price +- reduction / surcharge)
-        aEbiListLineItem.setLineItemAmount (aUBLLine.getLineExtensionAmountValue ().setScale (SCALE_PRICE2, ROUNDING_MODE));
+        aEbiListLineItem.setLineItemAmount (aUBLLine.getLineExtensionAmountValue ()
+                                                    .setScale (SCALE_PRICE2, ROUNDING_MODE));
 
         final Ebi61TaxItemType aEbiTaxItem = new Ebi61TaxItemType ();
         aEbiTaxItem.setTaxableAmount (aEbiListLineItem.getLineItemAmount ());
@@ -872,7 +893,10 @@ public final class CreditNoteToEbInterface61Converter extends AbstractToEbInterf
         if (bTaxExemption)
           aEbiTaxItem.setTaxAmount (BigDecimal.ZERO);
         else
-          aEbiTaxItem.setTaxAmount (MathHelper.getPercentValue (aEbiTaxItem.getTaxableAmount (), aUBLPercent, SCALE_PRICE2, ROUNDING_MODE));
+          aEbiTaxItem.setTaxAmount (MathHelper.getPercentValue (aEbiTaxItem.getTaxableAmount (),
+                                                                aUBLPercent,
+                                                                SCALE_PRICE2,
+                                                                ROUNDING_MODE));
         aEbiListLineItem.setTaxItem (aEbiTaxItem);
 
         // Special handling in case no VAT item is present
@@ -903,7 +927,9 @@ public final class CreditNoteToEbInterface61Converter extends AbstractToEbInterf
               if (sOrderPosNumber.length () == 0)
               {
                 aTransformationErrorList.add (SingleError.builderError ()
-                                                         .errorFieldName ("CreditNoteLine[" + nLineIndex + "]/OrderLineReference/LineID")
+                                                         .errorFieldName ("CreditNoteLine[" +
+                                                                          nLineIndex +
+                                                                          "]/OrderLineReference/LineID")
                                                          .errorText (EText.ORDERLINE_REF_ID_EMPTY.getDisplayText (m_aDisplayLocale))
                                                          .build ());
               }
@@ -912,7 +938,8 @@ public final class CreditNoteToEbInterface61Converter extends AbstractToEbInterf
                 aEbiOrderRefDetail.setOrderPositionNumber (sOrderPosNumber);
               }
             }
-            if (StringHelper.hasText (aEbiOrderRefDetail.getOrderPositionNumber ()) && StringHelper.hasNoText (sUBLLineOrderReferenceID))
+            if (StringHelper.hasText (aEbiOrderRefDetail.getOrderPositionNumber ()) &&
+                StringHelper.hasNoText (sUBLLineOrderReferenceID))
             {
               if (m_aSettings.isOrderReferenceIDMandatory ())
               {
@@ -973,7 +1000,8 @@ public final class CreditNoteToEbInterface61Converter extends AbstractToEbInterf
             if (aUBLAllowanceCharge.getMultiplierFactorNumeric () != null)
             {
               // Percentage is optional
-              final BigDecimal aPerc = aUBLAllowanceCharge.getMultiplierFactorNumericValue ().multiply (CGlobal.BIGDEC_100);
+              final BigDecimal aPerc = aUBLAllowanceCharge.getMultiplierFactorNumericValue ()
+                                                          .multiply (CGlobal.BIGDEC_100);
               aEbiRSItem.setPercentage (aPerc);
             }
 
@@ -1003,7 +1031,11 @@ public final class CreditNoteToEbInterface61Converter extends AbstractToEbInterf
           if (aUBLDelivery.getActualDeliveryDate () != null)
           {
             final Ebi61DeliveryType aEbiDelivery = convertDelivery (aUBLDelivery,
-                                                                    "CreditNoteLine[" + nLineIndex + "]/Delivery[" + nDeliveryIndex + "]",
+                                                                    "CreditNoteLine[" +
+                                                                                  nLineIndex +
+                                                                                  "]/Delivery[" +
+                                                                                  nDeliveryIndex +
+                                                                                  "]",
                                                                     aUBLDoc.getAccountingCustomerParty (),
                                                                     aTransformationErrorList,
                                                                     m_aContentLocale,
@@ -1111,7 +1143,9 @@ public final class CreditNoteToEbInterface61Converter extends AbstractToEbInterf
         if (aEbiTaxPerc == null)
         {
           aTransformationErrorList.add (SingleError.builderError ()
-                                                   .errorFieldName ("CreditNote/AllowanceCharge[" + nAllowanceChargeIndex + "]")
+                                                   .errorFieldName ("CreditNote/AllowanceCharge[" +
+                                                                    nAllowanceChargeIndex +
+                                                                    "]")
                                                    .errorText (EText.ALLOWANCE_CHARGE_NO_TAXRATE.getDisplayText (m_aDisplayLocale))
                                                    .build ());
           // No default in this case
@@ -1151,7 +1185,8 @@ public final class CreditNoteToEbInterface61Converter extends AbstractToEbInterf
 
     // Total gross amount
     if (aUBLMonetaryTotal.getTaxInclusiveAmountValue () != null)
-      aEbiDoc.setTotalGrossAmount (aUBLMonetaryTotal.getTaxInclusiveAmountValue ().setScale (SCALE_PRICE2, ROUNDING_MODE));
+      aEbiDoc.setTotalGrossAmount (aUBLMonetaryTotal.getTaxInclusiveAmountValue ()
+                                                    .setScale (SCALE_PRICE2, ROUNDING_MODE));
     else
       aEbiDoc.setTotalGrossAmount (aUBLMonetaryTotal.getPayableAmountValue ().setScale (SCALE_PRICE2, ROUNDING_MODE));
 

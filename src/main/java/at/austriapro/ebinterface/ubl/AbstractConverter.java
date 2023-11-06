@@ -106,6 +106,8 @@ public abstract class AbstractConverter
                                                                                          "458",
                                                                                          "532").getAsUnmodifiable ();
 
+  public static final String UNDEFINED_AT_VATIN = "ATU00000000";
+
   public static final String UBL_VERSION_20 = "2.0";
   public static final String UBL_VERSION_21 = "2.1";
   public static final String UBL_VERSION_22 = "2.2";
