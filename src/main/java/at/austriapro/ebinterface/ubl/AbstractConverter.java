@@ -118,6 +118,9 @@ public abstract class AbstractConverter
   public static final String PAYMENT_MEANS_DIRECT_DEBIT = "49";
   public static final String PAYMENT_MEANS_SEPA_DIRECT_DEBIT = "59";
 
+  public static final String PAYMENT_MEANS_CREDIT_CARD = "54";
+  public static final String PAYMENT_MEANS_DEBIT_CARD = "55";
+
   // UBL versions
   public static final String UBL_VERSION_20 = "2.0";
   public static final String UBL_VERSION_21 = "2.1";
