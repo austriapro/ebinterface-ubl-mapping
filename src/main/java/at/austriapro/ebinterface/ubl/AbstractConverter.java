@@ -51,6 +51,7 @@ public abstract class AbstractConverter
   /** Austria uses HALF_UP mode! */
   public static final RoundingMode ROUNDING_MODE = RoundingMode.HALF_UP;
 
+  // UNCL 1001
   public static final String INVOICE_TYPE_CODE_PARTIAL = "326";
   /** The invoice type code to use (380) */
   public static final String INVOICE_TYPE_CODE_INVOICE = "380";
@@ -108,6 +109,16 @@ public abstract class AbstractConverter
 
   public static final String UNDEFINED_AT_VATIN = "ATU00000000";
 
+  // UNCL 4461
+  public static final String PAYMENT_MEANS_CREDIT_TRANSFER = "30";
+  public static final String PAYMENT_MEANS_DEBIT_TRANSFER = "31";
+  public static final String PAYMENT_MEANS_PAYMENT_TO_BANK_ACCOUNT = "42";
+  public static final String PAYMENT_MEANS_SEPA_CREDIT_TRANSFER = "58";
+
+  public static final String PAYMENT_MEANS_DIRECT_DEBIT = "49";
+  public static final String PAYMENT_MEANS_SEPA_DIRECT_DEBIT = "59";
+
+  // UBL versions
   public static final String UBL_VERSION_20 = "2.0";
   public static final String UBL_VERSION_21 = "2.1";
   public static final String UBL_VERSION_22 = "2.2";

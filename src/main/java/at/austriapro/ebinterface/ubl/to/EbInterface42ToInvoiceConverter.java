@@ -77,7 +77,7 @@ public class EbInterface42ToInvoiceConverter extends AbstractEbInterface42ToUBLC
         {
           // Direct debit (49)
           final PaymentMeansType aUBLPaymentMeans = new PaymentMeansType ();
-          aUBLPaymentMeans.setPaymentMeansCode ("49");
+          aUBLPaymentMeans.setPaymentMeansCode (PAYMENT_MEANS_DIRECT_DEBIT);
           if (aEbiPaymentConditions != null)
             aUBLPaymentMeans.setPaymentDueDate (aEbiPaymentConditions.getDueDate ());
           if (StringHelper.hasText (aEbiPaymentMethod.getComment ()))
@@ -92,7 +92,7 @@ public class EbInterface42ToInvoiceConverter extends AbstractEbInterface42ToUBLC
             // TODO SEPA Direct debit (59)
             // Back-mapping to ebInterface is also missing!!
             final PaymentMeansType aUBLPaymentMeans = new PaymentMeansType ();
-            aUBLPaymentMeans.setPaymentMeansCode ("59");
+            aUBLPaymentMeans.setPaymentMeansCode (PAYMENT_MEANS_SEPA_DIRECT_DEBIT);
             if (aEbiPaymentConditions != null)
               aUBLPaymentMeans.setPaymentDueDate (aEbiPaymentConditions.getDueDate ());
             if (StringHelper.hasText (aEbiPaymentMethod.getComment ()))
@@ -108,7 +108,7 @@ public class EbInterface42ToInvoiceConverter extends AbstractEbInterface42ToUBLC
               final PaymentMeansType aUBLPaymentMeans = new PaymentMeansType ();
               // 30 = Credit transfer
               // 58 = SEPA credit transfer
-              aUBLPaymentMeans.setPaymentMeansCode ("30");
+              aUBLPaymentMeans.setPaymentMeansCode (PAYMENT_MEANS_CREDIT_TRANSFER);
               aUBLPaymentMeans.setPaymentChannelCode (PAYMENT_CHANNEL_CODE_IBAN);
 
               if (aEbiUBT.hasBeneficiaryAccountEntries ())
@@ -149,7 +149,7 @@ public class EbInterface42ToInvoiceConverter extends AbstractEbInterface42ToUBLC
                     // Could change payment means to SEPA, but code "58" is
                     // quite new, so stick with "30"
                     if (false)
-                      aUBLPaymentMeans.setPaymentMeansCode ("58");
+                      aUBLPaymentMeans.setPaymentMeansCode (PAYMENT_MEANS_SEPA_CREDIT_TRANSFER);
                     aUBLFAID.setValue (aEbiAccount.getIBAN ());
                     aUBLFAID.setSchemeID (SCHEME_IBAN);
                   }

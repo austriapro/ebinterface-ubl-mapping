@@ -686,12 +686,12 @@ public abstract class AbstractToEbInterface40Converter extends AbstractToEbInter
                                                      .errorText (EText.PAYMENTMEANS_CODE_INVALID.getDisplayTextWithArgs (m_aDisplayLocale,
                                                                                                                          sPaymentMeansCode,
                                                                                                                          getOrString (", ",
-                                                                                                                                      "30",
-                                                                                                                                      "31",
-                                                                                                                                      "40",
-                                                                                                                                      "58"),
+                                                                                                                                      PAYMENT_MEANS_CREDIT_TRANSFER,
+                                                                                                                                      PAYMENT_MEANS_DEBIT_TRANSFER,
+                                                                                                                                      PAYMENT_MEANS_PAYMENT_TO_BANK_ACCOUNT,
+                                                                                                                                      PAYMENT_MEANS_SEPA_CREDIT_TRANSFER),
                                                                                                                          getOrString (", ",
-                                                                                                                                      "49")))
+                                                                                                                                      PAYMENT_MEANS_DIRECT_DEBIT)))
                                                      .build ());
           }
 

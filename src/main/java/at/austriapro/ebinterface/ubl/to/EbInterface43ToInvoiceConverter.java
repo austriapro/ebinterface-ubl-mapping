@@ -77,7 +77,7 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
         {
           // Direct debit (49)
           final PaymentMeansType aUBLPaymentMeans = new PaymentMeansType ();
-          aUBLPaymentMeans.setPaymentMeansCode ("49");
+          aUBLPaymentMeans.setPaymentMeansCode (PAYMENT_MEANS_DIRECT_DEBIT);
           if (aEbiPaymentConditions != null)
             aUBLPaymentMeans.setPaymentDueDate (aEbiPaymentConditions.getDueDate ());
           if (StringHelper.hasText (aEbiPaymentMethod.getComment ()))
@@ -92,7 +92,7 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
             // TODO SEPA Direct debit (59)
             // Back-mapping to ebInterface is also missing!!
             final PaymentMeansType aUBLPaymentMeans = new PaymentMeansType ();
-            aUBLPaymentMeans.setPaymentMeansCode ("59");
+            aUBLPaymentMeans.setPaymentMeansCode (PAYMENT_MEANS_SEPA_DIRECT_DEBIT);
             if (aEbiPaymentConditions != null)
               aUBLPaymentMeans.setPaymentDueDate (aEbiPaymentConditions.getDueDate ());
             if (StringHelper.hasText (aEbiPaymentMethod.getComment ()))
@@ -106,7 +106,7 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
             {
               // TODO universal bank transaction
               final PaymentMeansType aUBLPaymentMeans = new PaymentMeansType ();
-              aUBLPaymentMeans.setPaymentMeansCode ("30");
+              aUBLPaymentMeans.setPaymentMeansCode (PAYMENT_MEANS_CREDIT_TRANSFER);
               aUBLPaymentMeans.setPaymentChannelCode (PAYMENT_CHANNEL_CODE_IBAN);
 
               if (aEbiUBT.hasBeneficiaryAccountEntries ())
