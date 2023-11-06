@@ -107,7 +107,7 @@ public abstract class AbstractConverter
                                                                                          "458",
                                                                                          "532").getAsUnmodifiable ();
 
-  public static final String UNDEFINED_AT_VATIN = "ATU00000000";
+  public static final String AT_UNDEFINED_VATIN = "ATU00000000";
 
   // UNCL 4461
   public static final String PAYMENT_MEANS_CREDIT_TRANSFER = "30";

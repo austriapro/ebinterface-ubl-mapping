@@ -171,7 +171,7 @@ public final class InvoiceToEbInterface40Converter extends AbstractToEbInterface
       if (StringHelper.hasNoText (aEbiBiller.getVATIdentificationNumber ()))
       {
         // Required by ebInterface
-        aEbiBiller.setVATIdentificationNumber (UNDEFINED_AT_VATIN);
+        aEbiBiller.setVATIdentificationNumber (AT_UNDEFINED_VATIN);
         aTransformationErrorList.add (SingleError.builderWarn ()
                                                  .errorFieldName ("AccountingSupplierParty/Party/PartyTaxScheme")
                                                  .errorText (EText.BILLER_VAT_MISSING.getDisplayText (m_aDisplayLocale))
@@ -262,7 +262,7 @@ public final class InvoiceToEbInterface40Converter extends AbstractToEbInterface
       if (StringHelper.hasNoText (aEbiRecipient.getVATIdentificationNumber ()))
       {
         // Required by ebInterface
-        aEbiRecipient.setVATIdentificationNumber (UNDEFINED_AT_VATIN);
+        aEbiRecipient.setVATIdentificationNumber (AT_UNDEFINED_VATIN);
         aTransformationErrorList.add (SingleError.builderWarn ()
                                                  .errorFieldName ("AccountingCustomerParty/PartyTaxScheme")
                                                  .errorText (EText.INVOICE_RECIPIENT_VAT_MISSING.getDisplayText (m_aDisplayLocale))
