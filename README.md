@@ -32,6 +32,8 @@ Add the following to your pom.xml to use this artifact, replacing `x.y.z` with t
 
 # News and noteworthy
 
+* v5.1.2 - 2023-11-09
+    * Fixed the mapping of ebInterface DocumentType `CreditNote` to UBL Invoice Type Code `381`
 * v5.1.1 - 2023-09-26
     * Fixed the `DocumentCurrencyCode/@listID` attribute for all ebInterface versions != 4.2
     * Avoid creating empty UBL elements
@@ -46,7 +48,7 @@ Add the following to your pom.xml to use this artifact, replacing `x.y.z` with t
     * Extracted shared customization base interfaces
 * v4.8.2 - 2022-08-11
     * Updated to peppol-commons 8.7.6
-    * Added support for ebInterface 6.1
+    * Added support for ebInterface 6.1 from and to UBL
 * v4.8.1 - 2022-04-12
     * Added specific support for `InvoiceTypeCode` mapping of `326`, `386` and `389` from UBL to ebInterface
 * v4.8.0 - 2021-05-03
@@ -66,11 +68,11 @@ Add the following to your pom.xml to use this artifact, replacing `x.y.z` with t
 * v4.5.8 - 2020-08-13
     * Mapping UBL `AdditionalItemProperty` to ebInterface `AdditionalInformation` (ebInterface 5.0 or higher) on line level
 * v4.5.7 - 2020-07-08
-    * Using "Invoice/DueDate" as an alternative to "Invoice/PaymentMeans/PaymentDueDate"
+    * Using `Invoice/DueDate` as an alternative to `Invoice/PaymentMeans/PaymentDueDate`
 * v4.5.6 - 2020-05-26
     * Updated to ph-ebinterface 6.1.5 with ph-xsds 2.3.0 (new Maven groupId)
 * v4.5.5 - 2020-05-14
-    * Updated to support ebInterface 6.0
+    * Updated to support ebInterface 6.0 from and to UBL
     * Fixed a divide by zero error if payableAmount is 0
 * v4.5.4 - 2020-04-01
     * Now ebInterface 5.0 `Contact` email addresses and telephone numbers are also mapped to UBL (see [issue #2](https://github.com/austriapro/ebinterface-ubl-mapping/issues/2))
