@@ -78,11 +78,13 @@ public abstract class AbstractEbInterface50ToUBLConverter extends AbstractEbInte
       switch (eType)
       {
         case INVOICE:
-        case CREDIT_MEMO:
         case FINAL_SETTLEMENT:
         case SUBSEQUENT_CREDIT:
         case SUBSEQUENT_DEBIT:
           sID = INVOICE_TYPE_CODE_INVOICE;
+          break;
+        case CREDIT_MEMO:
+          sID = INVOICE_TYPE_CODE_CREDIT_NOTE;
           break;
         case INVOICE_FOR_PARTIAL_DELIVERY:
           sID = INVOICE_TYPE_CODE_PARTIAL;

@@ -95,13 +95,14 @@ public abstract class AbstractConverter
   // List taken from the EN 16931 validation artefacts 1.3.3
   // Also matching
   // https://docs.peppol.eu/poacc/billing/3.0/codelist/UNCL1001-cn/
+  public static final String INVOICE_TYPE_CODE_CREDIT_NOTE = "381";
   public static final Set <String> CREDIT_NOTE_TYPE_CODES = new CommonsLinkedHashSet <> ("81",
                                                                                          "83",
                                                                                          "261",
                                                                                          "262",
                                                                                          "296",
                                                                                          "308",
-                                                                                         "381",
+                                                                                         INVOICE_TYPE_CODE_CREDIT_NOTE,
                                                                                          "396",
                                                                                          "420",
                                                                                          "458",
