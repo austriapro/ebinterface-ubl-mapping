@@ -521,7 +521,11 @@ public abstract class AbstractToEbInterface60Converter extends AbstractToEbInter
         final ICommonsList <String> aComments = new CommonsArrayList <> ();
         for (final DocumentDescriptionType aUBLDocDesc : aUBLDocumentReference.getDocumentDescription ())
           aComments.add (aUBLDocDesc.getValue ());
-        aEbiRelatedDocument.setComment (StringHelper.getImplodedNonEmpty ('\n', aComments));
+
+        final String sComment = StringHelper.getImplodedNonEmpty ('\n', aComments);
+        if (StringHelper.hasText (sComment))
+          aEbiRelatedDocument.setComment (sComment);
+
         if (aUBLDocumentReference.getDocumentTypeCode () != null)
         {
           aEbiRelatedDocument.setDocumentType (getAsDocumentTypeType (aUBLDocumentReference.getDocumentTypeCode ()
