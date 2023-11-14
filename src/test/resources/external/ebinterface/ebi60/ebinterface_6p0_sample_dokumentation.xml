@@ -331,6 +331,7 @@
 			<BaseAmount>0</BaseAmount>
 			<Percentage>0</Percentage>
 			<Amount>0</Amount>
+      <Comment>Zero discount makes no sense</Comment>
 		</Discount>
 		<MinimumPayment>0</MinimumPayment>
 		<Comment>String</Comment>
