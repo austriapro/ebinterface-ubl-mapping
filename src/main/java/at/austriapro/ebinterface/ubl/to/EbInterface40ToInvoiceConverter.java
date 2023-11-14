@@ -204,6 +204,8 @@ public class EbInterface40ToInvoiceConverter extends AbstractEbInterface40ToUBLC
         if (aEbiDiscount.getAmount () != null)
           aUBLPaymentTerms.setSettlementDiscountAmount (aEbiDiscount.getAmount ()).setCurrencyID (sCurrency);
 
+        // No comment in ebInterface
+
         aUBLDoc.addPaymentTerms (aUBLPaymentTerms);
       }
     }

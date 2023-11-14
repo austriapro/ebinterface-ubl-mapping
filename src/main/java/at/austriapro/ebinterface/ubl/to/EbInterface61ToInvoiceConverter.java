@@ -215,6 +215,9 @@ public class EbInterface61ToInvoiceConverter extends AbstractEbInterface61ToUBLC
           aUBLPaymentTerms.setSettlementDiscountAmount (aEbiDiscount.getAmount ())
                           .setCurrencyID (aEbiDoc.getInvoiceCurrency ());
 
+        if (StringHelper.hasText (aEbiDiscount.getComment ()))
+          aUBLPaymentTerms.addNote (new NoteType (aEbiDiscount.getComment ()));
+
         aUBLDoc.addPaymentTerms (aUBLPaymentTerms);
       }
     }
