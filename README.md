@@ -32,8 +32,8 @@ Add the following to your pom.xml to use this artifact, replacing `x.y.z` with t
 
 # News and noteworthy
 
-* v5.1.3 - work in progress
-    * ebInterface 5.0+ Discount/Comment is converted to a UBL PaymentTerms/Note element
+* v5.1.3 - 2023-11-14
+    * ebInterface 5.0+ `Discount/Comment` is converted to a UBL `PaymentTerms/Note` element
 * v5.1.2 - 2023-11-09
     * Fixed the mapping of ebInterface DocumentType `CreditNote` to UBL Invoice Type Code `381`
 * v5.1.1 - 2023-09-26
