@@ -32,7 +32,7 @@ Add the following to your pom.xml to use this artifact, replacing `x.y.z` with t
 
 # News and noteworthy
 
-* v5.1.4 - work in progress
+* v5.1.4 - 2024-02-26
     * Avoid empty `RelatedDocument/Comment` elements in ebInterface 4.1+
     * Added support for invoice type code `218` as a `FinalSettlement`
 * v5.1.3 - 2023-11-14
