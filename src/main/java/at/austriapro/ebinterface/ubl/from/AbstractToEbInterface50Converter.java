@@ -470,6 +470,8 @@ public abstract class AbstractToEbInterface50Converter extends AbstractToEbInter
           }
 
           // Try the Invoice Type Codes
+          if (INVOICE_TYPE_CODE_FINAL_PAYMENT.equals (sClean))
+            return Ebi50DocumentTypeType.FINAL_SETTLEMENT;
           if (INVOICE_TYPE_CODE_PARTIAL.equals (sClean))
             return Ebi50DocumentTypeType.INVOICE_FOR_PARTIAL_DELIVERY;
           if (INVOICE_TYPE_CODE_PREPAYMENT_INVOICE.equals (sClean))

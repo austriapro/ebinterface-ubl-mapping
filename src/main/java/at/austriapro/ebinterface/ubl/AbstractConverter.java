@@ -52,6 +52,7 @@ public abstract class AbstractConverter
   public static final RoundingMode ROUNDING_MODE = RoundingMode.HALF_UP;
 
   // UNCL 1001
+  public static final String INVOICE_TYPE_CODE_FINAL_PAYMENT = "218";
   public static final String INVOICE_TYPE_CODE_PARTIAL = "326";
   /** The invoice type code to use (380) */
   public static final String INVOICE_TYPE_CODE_INVOICE = "380";
@@ -68,6 +69,7 @@ public abstract class AbstractConverter
                                                                                      "203",
                                                                                      "204",
                                                                                      "211",
+                                                                                     INVOICE_TYPE_CODE_FINAL_PAYMENT,
                                                                                      "295",
                                                                                      "325",
                                                                                      INVOICE_TYPE_CODE_PARTIAL,
@@ -127,6 +129,7 @@ public abstract class AbstractConverter
   public static final String UBL_VERSION_21 = "2.1";
   public static final String UBL_VERSION_22 = "2.2";
   public static final String UBL_VERSION_23 = "2.3";
+  public static final String UBL_VERSION_24 = "2.4";
 
   /** The UBL customization ID to use */
   @Deprecated (forRemoval = true, since = "5.1.2")
