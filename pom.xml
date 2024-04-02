@@ -26,7 +26,7 @@
   </parent>
   <groupId>at.austriapro</groupId>
   <artifactId>ebinterface-ubl-mapping</artifactId>
-  <version>5.1.5-SNAPSHOT</version>
+  <version>5.2.0-SNAPSHOT</version>
   <packaging>bundle</packaging>
   <name>ebinterface-ubl-mapping</name>
   <inceptionYear>2010</inceptionYear>
@@ -66,7 +66,7 @@
       <dependency>
         <groupId>com.helger.commons</groupId>
         <artifactId>ph-commons-parent-pom</artifactId>
-        <version>11.1.4</version>
+        <version>11.1.5</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -78,21 +78,21 @@
       <dependency>
         <groupId>com.helger.masterdata</groupId>
         <artifactId>ph-masterdata-parent-pom</artifactId>
-        <version>7.0.1</version>
+        <version>7.0.2</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>com.helger.ubl</groupId>
         <artifactId>ph-ubl-parent-pom</artifactId>
-        <version>8.0.3</version>
+        <version>9.0.1</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>com.helger.peppol</groupId>
         <artifactId>peppol-commons-parent-pom</artifactId>
-        <version>9.3.0</version>
+        <version>9.3.3</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>

@@ -32,6 +32,9 @@ Add the following to your pom.xml to use this artifact, replacing `x.y.z` with t
 
 # News and noteworthy
 
+* v5.2.0 - 2024-04-02
+    * Ensured Java 21 compatibility
+    * Updated to ph-ubl 9.x
 * v5.1.4 - 2024-02-26
     * Avoid empty `RelatedDocument/Comment` elements in ebInterface 4.1+
     * Added support for invoice type code `218` as a `FinalSettlement`
