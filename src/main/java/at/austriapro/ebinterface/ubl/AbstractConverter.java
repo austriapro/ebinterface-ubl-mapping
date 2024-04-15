@@ -40,7 +40,6 @@ public abstract class AbstractConverter
   public static final int IBAN_MAX_LENGTH = 34;
   public static final String PAYMENT_CHANNEL_CODE_IBAN = "IBAN";
   public static final String UOM_DEFAULT = "C62";
-  public static final String SUPPORTED_TAX_SCHEME_SCHEME_ID = "UN/ECE 5153";
   public static final String SUPPORTED_TAX_SCHEME_ID = "VAT";
   public static final String OTHER_TAX_SCHEME_ID = "OTH";
   public static final String SCHEME_SEPA = "SEPA";

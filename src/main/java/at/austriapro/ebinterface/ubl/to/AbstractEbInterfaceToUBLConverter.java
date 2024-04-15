@@ -32,7 +32,6 @@ import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.Cou
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.ItemPropertyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxCategoryType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxSchemeType;
-import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
 
 /**
  * Base class for ebInterface to Peppol UBL converter
@@ -63,9 +62,7 @@ public abstract class AbstractEbInterfaceToUBLConverter extends AbstractConverte
   protected static final TaxSchemeType createTaxScheme (@Nonnull final String sID)
   {
     final TaxSchemeType aUBLTaxScheme = new TaxSchemeType ();
-    final IDType aUBLTSID = aUBLTaxScheme.setID (sID);
-    aUBLTSID.setSchemeAgencyID ("6");
-    aUBLTSID.setSchemeID (SUPPORTED_TAX_SCHEME_SCHEME_ID);
+    aUBLTaxScheme.setID (sID);
     return aUBLTaxScheme;
   }
 
@@ -79,9 +76,7 @@ public abstract class AbstractEbInterfaceToUBLConverter extends AbstractConverte
   protected static final TaxCategoryType createTaxCategory (@Nonnull final String sID)
   {
     final TaxCategoryType aUBLTaxCategory = new TaxCategoryType ();
-    final IDType aUBLTCID = aUBLTaxCategory.setID (sID);
-    aUBLTCID.setSchemeAgencyID ("6");
-    aUBLTCID.setSchemeID (SUPPORTED_TAX_SCHEME_SCHEME_ID);
+    aUBLTaxCategory.setID (sID);
     return aUBLTaxCategory;
   }
 

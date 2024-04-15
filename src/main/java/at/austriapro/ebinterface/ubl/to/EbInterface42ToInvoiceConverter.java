@@ -89,10 +89,28 @@ public class EbInterface42ToInvoiceConverter extends AbstractEbInterface42ToUBLC
           final Ebi42SEPADirectDebitType aEbiSepaDirectDebit = aEbiPaymentMethod.getSEPADirectDebit ();
           if (aEbiSepaDirectDebit != null)
           {
-            // TODO SEPA Direct debit (59)
-            // Back-mapping to ebInterface is also missing!!
+            // SEPA Direct debit (59)
             final PaymentMeansType aUBLPaymentMeans = new PaymentMeansType ();
             aUBLPaymentMeans.setPaymentMeansCode (PAYMENT_MEANS_SEPA_DIRECT_DEBIT);
+
+            final FinancialAccountType aUBLFinancialAccount = new FinancialAccountType ();
+            aUBLFinancialAccount.setID (aEbiSepaDirectDebit.getIBAN ());
+            final BranchType aUBLBranch = new BranchType ();
+            aUBLBranch.setID (aEbiSepaDirectDebit.getBIC ());
+            aUBLFinancialAccount.setFinancialInstitutionBranch (aUBLBranch);
+            aUBLPaymentMeans.setPayeeFinancialAccount (aUBLFinancialAccount);
+
+            final PaymentMandateType aUBLMandate = new PaymentMandateType ();
+            aUBLMandate.setID (aEbiSepaDirectDebit.getMandateReference ());
+            aUBLPaymentMeans.setPaymentMandate (aUBLMandate);
+
+            final PartyIdentificationType aPartyID = new PartyIdentificationType ();
+            final IDType aPartyIDID = new IDType ();
+            aPartyIDID.setSchemeID (SCHEME_SEPA);
+            aPartyIDID.setValue (aEbiSepaDirectDebit.getCreditorID ());
+            aPartyID.setID (aPartyIDID);
+            aUBLDoc.getAccountingSupplierParty ().getParty ().addPartyIdentification (aPartyID);
+
             if (aEbiPaymentConditions != null)
               aUBLPaymentMeans.setPaymentDueDate (aEbiPaymentConditions.getDueDate ());
             if (StringHelper.hasText (aEbiPaymentMethod.getComment ()))

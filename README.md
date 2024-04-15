@@ -34,6 +34,8 @@ Add the following to your pom.xml to use this artifact, replacing `x.y.z` with t
 
 * v5.2.1 - 2024-04-15
     * Fixed the SEPA Direct Debit mapping from UBL to ebInterface
+    * Fixed the SEPA Direct Debit mapping from ebInterface to UBL
+    * Removed the `schemeID` and `schemeAgency` attributes from `TaxScheme` and `TaxCategory`
 * v5.2.0 - 2024-04-02
     * Ensured Java 21 compatibility
     * Updated to ph-ubl 9.x
