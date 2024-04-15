@@ -3,8 +3,7 @@
   xmlns:ccts="urn:un:unece:uncefact:documentation:2" xmlns:ext="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2"
   xmlns:ns2="http://www.w3.org/2005/08/addressing" xmlns:ns3="http://www.w3.org/2009/02/ws-tra" xmlns:ns4="http://busdox.org/transport/identifiers/1.0/"
   xmlns:qdt="urn:oasis:names:specification:ubl:schema:xsd:QualifiedDatatypes-2" xmlns:udt="urn:un:unece:uncefact:data:specification:UnqualifiedDataTypesSchemaModule:2"
-  xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2 UBL-Invoice-2.0.xsd">
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <cec:UBLExtensions xmlns:cec="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2">
     <cec:UBLExtension>
       <cec:ExtensionContent>
@@ -164,7 +163,10 @@
   </cac:AccountingCustomerParty>
   <cac:PayeeParty>
     <cac:PartyIdentification>
-      <cbc:ID schemeAgencyID="9" schemeID="GLN">6291041500213</cbc:ID>
+      <cbc:ID schemeID="0088">6291041500213</cbc:ID>
+    </cac:PartyIdentification>
+    <cac:PartyIdentification>
+      <cbc:ID schemeID="SEPA">SEPA Creditor ID</cbc:ID>
     </cac:PartyIdentification>
     <cac:PartyName>
       <cbc:Name>Ebeneser Scrooge Inc.</cbc:Name>
@@ -203,12 +205,12 @@
     <cac:PayeeFinancialAccount>
       <cbc:ID schemeID="IBAN">NO9386011117947</cbc:ID>
       <cac:FinancialInstitutionBranch>
-        <cbc:ID>9710</cbc:ID>
-        <cac:FinancialInstitution>
-          <cbc:ID schemeID="BIC">DNBANOKK</cbc:ID>
-        </cac:FinancialInstitution>
+        <cbc:ID schemeID="BIC">DNBANOKK</cbc:ID>
       </cac:FinancialInstitutionBranch>
     </cac:PayeeFinancialAccount>
+    <cac:PaymentMandate>
+      <cbc:ID>SEPA-Mandate-ID</cbc:ID>
+    </cac:PaymentMandate>
   </cac:PaymentMeans>
   <cac:PaymentTerms>
     <cbc:Note>Penalty percentage 10% from due date</cbc:Note>

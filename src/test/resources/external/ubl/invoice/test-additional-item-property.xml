@@ -3,8 +3,7 @@
   xmlns:ccts="urn:un:unece:uncefact:documentation:2" xmlns:ext="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2"
   xmlns:ns2="http://www.w3.org/2005/08/addressing" xmlns:ns3="http://www.w3.org/2009/02/ws-tra" xmlns:ns4="http://busdox.org/transport/identifiers/1.0/"
   xmlns:qdt="urn:oasis:names:specification:ubl:schema:xsd:QualifiedDatatypes-2" xmlns:udt="urn:un:unece:uncefact:data:specification:UnqualifiedDataTypesSchemaModule:2"
-  xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2 UBL-Invoice-2.0.xsd">
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <cec:UBLExtensions xmlns:cec="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2">
     <cec:UBLExtension>
       <cec:ExtensionContent>
@@ -196,9 +195,9 @@
     </cac:DeliveryParty>
   </cac:Delivery>
   <cac:PaymentMeans>
-    <cbc:PaymentMeansCode listAgencyID="NES" listID="UN/ECE 4461 Subset">59</cbc:PaymentMeansCode>
+    <cbc:PaymentMeansCode listAgencyID="NES" listID="UN/ECE 4461 Subset">30</cbc:PaymentMeansCode>
     <cbc:PaymentDueDate>2017-12-31</cbc:PaymentDueDate>
-    <cbc:PaymentChannelCode>SW</cbc:PaymentChannelCode>
+    <cbc:PaymentChannelCode>IBAN</cbc:PaymentChannelCode>
     <cbc:PaymentID>Payref1</cbc:PaymentID>
     <cac:PayeeFinancialAccount>
       <cbc:ID schemeID="IBAN">NO9386011117947</cbc:ID>

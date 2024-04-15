@@ -25,8 +25,10 @@ import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Translatable;
+import com.helger.commons.datetime.XMLOffsetDate;
 import com.helger.commons.error.SingleError;
 import com.helger.commons.error.list.ErrorList;
+import com.helger.commons.regex.RegExHelper;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.text.IMultilingualText;
 import com.helger.commons.text.display.IHasDisplayTextWithArgs;
@@ -36,10 +38,19 @@ import com.helger.peppolid.IProcessIdentifier;
 
 import at.austriapro.ebinterface.ubl.AbstractConverter;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AllowanceChargeType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.BranchType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.FinancialAccountType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.FinancialInstitutionType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyIdentificationType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyNameType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PaymentMandateType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PaymentMeansType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxCategoryType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxSubtotalType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxTotalType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.AllowanceChargeReasonType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.InvoiceTypeCodeType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.ProfileIDType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.UBLVersionIDType;
@@ -58,10 +69,10 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
   public enum EText implements IHasDisplayTextWithArgs
   {
     OR ("oder", "or"),
-    NO_UBL_VERSION_ID ("Die UBLVersionID fehlt. Es wird der Wert ''{0}'', ''{1}'', ''{2}'' oder ''{3}'' erwartet.",
-                       "No UBLVersionID present. It must be ''{0}'', ''{1}'', ''{2}'' or ''{3}''."),
-    INVALID_UBL_VERSION_ID ("Die UBLVersionID ''{0}'' ist ungültig. Diese muss den Wert ''{1}'', ''{2}'', ''{3}'' oder ''{4}'' haben.",
-                            "Invalid UBLVersionID value ''{0}'' present. It must be ''{1}'', ''{2}'', ''{3}'' or ''{4}''."),
+    NO_UBL_VERSION_ID ("Die UBLVersionID fehlt. Einer der folgenden Werte wird erwartet: {0}",
+                       "No UBLVersionID present. One of the following values is expected: {0}"),
+    INVALID_UBL_VERSION_ID ("Die UBLVersionID ''{0}'' ist ungültig. Einer der folgenden Werte wird erwartet: {1}",
+                            "Invalid UBLVersionID value ''{0}'' present. One of the following values is expected: {1}"),
     NO_PROFILE_ID ("Die ProfileID fehlt", "No ProfileID present."),
     INVALID_PROFILE_ID ("Die ProfileID ''{0}'' ist ungültig.", "Invalid ProfileID value ''{0}'' present."),
     NO_CUSTOMIZATION_ID ("Die CustomizationID fehlt", "No CustomizationID present."),
@@ -181,6 +192,17 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
     }
   }
 
+  protected static final class SEPADirectDebit
+  {
+    String m_sBIC;
+    boolean m_bUseBICFromFinancialInstitution = false;
+    String m_sIBAN;
+    String m_sBankAccountOwnerName;
+    String m_sCreditorID;
+    String m_sMandateReference;
+    XMLOffsetDate m_aDebitCollectionDate;
+  }
+
   public static final String EBI_GENERATING_SYSTEM_40 = "UBL 2.1 to ebInterface 4.0 converter";
   public static final String EBI_GENERATING_SYSTEM_41 = "UBL 2.1 to ebInterface 4.1 converter";
   public static final String EBI_GENERATING_SYSTEM_42 = "UBL 2.1 to ebInterface 4.2 converter";
@@ -248,10 +270,14 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
         aTransformationErrorList.add (SingleError.builderError ()
                                                  .errorFieldName ("UBLVersionID")
                                                  .errorText (EText.NO_UBL_VERSION_ID.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                             UBL_VERSION_20,
-                                                                                                             UBL_VERSION_21,
-                                                                                                             UBL_VERSION_22,
-                                                                                                             UBL_VERSION_23))
+                                                                                                             StringHelper.imploder ()
+                                                                                                                         .separator (", ")
+                                                                                                                         .source (UBL_VERSION_20,
+                                                                                                                                  UBL_VERSION_21,
+                                                                                                                                  UBL_VERSION_22,
+                                                                                                                                  UBL_VERSION_23,
+                                                                                                                                  UBL_VERSION_24)
+                                                                                                                         .build ()))
                                                  .build ());
     }
     else
@@ -260,16 +286,21 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
       if (!UBL_VERSION_20.equals (sUBLVersionID) &&
           !UBL_VERSION_21.equals (sUBLVersionID) &&
           !UBL_VERSION_22.equals (sUBLVersionID) &&
-          !UBL_VERSION_23.equals (sUBLVersionID))
+          !UBL_VERSION_23.equals (sUBLVersionID) &&
+          !UBL_VERSION_24.equals (sUBLVersionID))
       {
         aTransformationErrorList.add (SingleError.builderError ()
                                                  .errorFieldName ("UBLVersionID")
                                                  .errorText (EText.INVALID_UBL_VERSION_ID.getDisplayTextWithArgs (m_aDisplayLocale,
                                                                                                                   sUBLVersionID,
-                                                                                                                  UBL_VERSION_20,
-                                                                                                                  UBL_VERSION_21,
-                                                                                                                  UBL_VERSION_22,
-                                                                                                                  UBL_VERSION_23))
+                                                                                                                  StringHelper.imploder ()
+                                                                                                                              .separator (", ")
+                                                                                                                              .source (UBL_VERSION_20,
+                                                                                                                                       UBL_VERSION_21,
+                                                                                                                                       UBL_VERSION_22,
+                                                                                                                                       UBL_VERSION_23,
+                                                                                                                                       UBL_VERSION_24)
+                                                                                                                              .build ()))
                                                  .build ());
       }
     }
@@ -349,28 +380,38 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
         aTransformationErrorList.add (SingleError.builderError ()
                                                  .errorFieldName ("UBLVersionID")
                                                  .errorText (EText.NO_UBL_VERSION_ID.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                             UBL_VERSION_20,
-                                                                                                             UBL_VERSION_21,
-                                                                                                             UBL_VERSION_22,
-                                                                                                             UBL_VERSION_23))
+                                                                                                             StringHelper.imploder ()
+                                                                                                                         .separator (", ")
+                                                                                                                         .source (UBL_VERSION_20,
+                                                                                                                                  UBL_VERSION_21,
+                                                                                                                                  UBL_VERSION_22,
+                                                                                                                                  UBL_VERSION_23,
+                                                                                                                                  UBL_VERSION_24)
+                                                                                                                         .build ()))
                                                  .build ());
     }
     else
+
     {
       final String sUBLVersionID = StringHelper.trim (aUBLVersionID.getValue ());
       if (!UBL_VERSION_20.equals (sUBLVersionID) &&
           !UBL_VERSION_21.equals (sUBLVersionID) &&
           !UBL_VERSION_22.equals (sUBLVersionID) &&
-          !UBL_VERSION_23.equals (sUBLVersionID))
+          !UBL_VERSION_23.equals (sUBLVersionID) &&
+          !UBL_VERSION_24.equals (sUBLVersionID))
       {
         aTransformationErrorList.add (SingleError.builderError ()
                                                  .errorFieldName ("UBLVersionID")
                                                  .errorText (EText.INVALID_UBL_VERSION_ID.getDisplayTextWithArgs (m_aDisplayLocale,
                                                                                                                   sUBLVersionID,
-                                                                                                                  UBL_VERSION_20,
-                                                                                                                  UBL_VERSION_21,
-                                                                                                                  UBL_VERSION_22,
-                                                                                                                  UBL_VERSION_23))
+                                                                                                                  StringHelper.imploder ()
+                                                                                                                              .separator (", ")
+                                                                                                                              .source (UBL_VERSION_20,
+                                                                                                                                       UBL_VERSION_21,
+                                                                                                                                       UBL_VERSION_22,
+                                                                                                                                       UBL_VERSION_23,
+                                                                                                                                       UBL_VERSION_24)
+                                                                                                                              .build ()))
                                                  .build ());
       }
     }
@@ -441,6 +482,89 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
       }
     }
     return null;
+  }
+
+  @Nonnull
+  protected static SEPADirectDebit extractSEPADirectDebit (@Nonnull final XMLOffsetDate aUBLDueDate,
+                                                           @Nonnull final PaymentMeansType aUBLPaymentMeans,
+                                                           @Nullable final PartyType aUBLSupplierParty,
+                                                           @Nullable final PartyType aUBLPayeeParty)
+  {
+    final SEPADirectDebit ret = new SEPADirectDebit ();
+    final FinancialAccountType aPayeeFA = aUBLPaymentMeans.getPayeeFinancialAccount ();
+    if (aPayeeFA != null)
+    {
+      ret.m_sIBAN = aPayeeFA.getIDValue ();
+
+      final BranchType aUBLBranch = aPayeeFA.getFinancialInstitutionBranch ();
+      if (aUBLBranch != null)
+      {
+        ret.m_sBIC = StringHelper.trim (aUBLBranch.getIDValue ());
+        if (StringHelper.hasNoText (ret.m_sBIC) || !RegExHelper.stringMatchesPattern (REGEX_BIC, ret.m_sBIC))
+        {
+          final FinancialInstitutionType aUBLFI = aUBLBranch.getFinancialInstitution ();
+          if (aUBLFI != null)
+          {
+            ret.m_sBIC = StringHelper.trim (aUBLFI.getIDValue ());
+            ret.m_bUseBICFromFinancialInstitution = true;
+          }
+        }
+      }
+    }
+
+    if (aUBLPayeeParty != null)
+    {
+      for (final PartyNameType aPartyName : aUBLPayeeParty.getPartyName ())
+      {
+        ret.m_sBankAccountOwnerName = StringHelper.trim (aPartyName.getNameValue ());
+        if (StringHelper.hasText (ret.m_sBankAccountOwnerName))
+          break;
+      }
+
+      for (final PartyIdentificationType aPartyID : aUBLPayeeParty.getPartyIdentification ())
+      {
+        final IDType aID = aPartyID.getID ();
+        if (SCHEME_SEPA.equals (aID.getSchemeID ()))
+        {
+          ret.m_sCreditorID = StringHelper.trim (aID.getValue ());
+          break;
+        }
+      }
+    }
+    if (StringHelper.hasNoText (ret.m_sBankAccountOwnerName))
+    {
+      // Try fallback to supplier party
+      if (aUBLSupplierParty != null)
+        for (final PartyNameType aPartyName : aUBLSupplierParty.getPartyName ())
+        {
+          ret.m_sBankAccountOwnerName = StringHelper.trim (aPartyName.getNameValue ());
+          if (StringHelper.hasText (ret.m_sBankAccountOwnerName))
+            break;
+        }
+    }
+    if (StringHelper.hasNoText (ret.m_sCreditorID))
+    {
+      // Try fallback to supplier party
+      if (aUBLSupplierParty != null)
+        for (final PartyIdentificationType aPartyID : aUBLSupplierParty.getPartyIdentification ())
+        {
+          final IDType aID = aPartyID.getID ();
+          if (SCHEME_SEPA.equals (aID.getSchemeID ()))
+          {
+            ret.m_sCreditorID = StringHelper.trim (aID.getValue ());
+            break;
+          }
+        }
+    }
+
+    final PaymentMandateType aMandate = aUBLPaymentMeans.getPaymentMandate ();
+    if (aMandate != null)
+    {
+      ret.m_sMandateReference = StringHelper.trim (aMandate.getIDValue ());
+    }
+
+    ret.m_aDebitCollectionDate = aUBLDueDate;
+    return ret;
   }
 
   /**

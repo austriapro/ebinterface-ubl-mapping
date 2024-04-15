@@ -43,6 +43,7 @@ public abstract class AbstractConverter
   public static final String SUPPORTED_TAX_SCHEME_SCHEME_ID = "UN/ECE 5153";
   public static final String SUPPORTED_TAX_SCHEME_ID = "VAT";
   public static final String OTHER_TAX_SCHEME_ID = "OTH";
+  public static final String SCHEME_SEPA = "SEPA";
 
   public static final int SCALE_PERC = 2;
   public static final int SCALE_PRICE2 = 2;

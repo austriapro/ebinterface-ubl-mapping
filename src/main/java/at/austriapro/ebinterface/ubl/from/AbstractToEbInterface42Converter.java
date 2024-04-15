@@ -56,6 +56,7 @@ import com.helger.ebinterface.v42.Ebi42UniversalBankTransactionType;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AddressType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.BillingReferenceType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.BranchType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.ContactType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CustomerPartyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DeliveryType;
@@ -529,6 +530,14 @@ public abstract class AbstractToEbInterface42Converter extends AbstractToEbInter
       int nPaymentMeansIndex = 0;
       for (final PaymentMeansType aUBLPaymentMeans : aUBLDocPaymentMeans.get ())
       {
+        // Use the top-level due date
+        XMLOffsetDate aUBLDueDate = aUBLPaymentMeans.getPaymentDueDateValue ();
+        if (aUBLDueDate == null)
+        {
+          // Fallback
+          aUBLDueDate = aUBLTopLevelDueDate.get ();
+        }
+
         final String sPaymentMeansCode = StringHelper.trim (aUBLPaymentMeans.getPaymentMeansCodeValue ());
         if (isUniversalBankTransaction (sPaymentMeansCode))
         {
@@ -602,35 +611,55 @@ public abstract class AbstractToEbInterface42Converter extends AbstractToEbInter
 
             // BIC
             final FinancialAccountType aUBLFinancialAccount = aUBLPaymentMeans.getPayeeFinancialAccount ();
-            if (aUBLFinancialAccount != null &&
-                aUBLFinancialAccount.getFinancialInstitutionBranch () != null &&
-                aUBLFinancialAccount.getFinancialInstitutionBranch ().getFinancialInstitution () != null)
+            if (aUBLFinancialAccount != null)
             {
-              final FinancialInstitutionType aUBLFI = aUBLFinancialAccount.getFinancialInstitutionBranch ()
-                                                                          .getFinancialInstitution ();
-              if (StringHelper.hasText (aUBLFI.getIDValue ()))
+              final BranchType aUBLBranch = aUBLFinancialAccount.getFinancialInstitutionBranch ();
+              if (aUBLBranch != null)
               {
-                final String sID = StringHelper.trim (aUBLFI.getID ().getValue ());
-                final String sScheme = StringHelper.trim (aUBLFI.getID ().getSchemeID ());
-                final boolean bIsBIC = isBIC (sScheme);
-
-                if (bIsBIC)
-                  aEbiAccount.setBIC (sID);
-                else
-                  aEbiAccount.setBankName (sID);
-
-                if (bIsBIC)
-                  if (StringHelper.hasNoText (sID) || !RegExHelper.stringMatchesPattern (REGEX_BIC, sID))
+                // Prefer FinancialInstitutionBranch over FinancialInstitution
+                boolean bUseFI = false;
+                String sBIC = null;
+                String sBICScheme = null;
+                if (aUBLBranch.getID () != null)
+                {
+                  sBIC = StringHelper.trim (aUBLBranch.getID ().getValue ());
+                  sBICScheme = StringHelper.trim (aUBLBranch.getID ().getSchemeID ());
+                }
+                if (StringHelper.hasNoText (sBIC) || !RegExHelper.stringMatchesPattern (REGEX_BIC, sBIC))
+                {
+                  final FinancialInstitutionType aUBLFI = aUBLBranch.getFinancialInstitution ();
+                  if (aUBLFI != null && StringHelper.hasText (aUBLFI.getID ().getValue ()))
                   {
-                    aTransformationErrorList.add (SingleError.builderError ()
-                                                             .errorFieldName ("PaymentMeans[" +
-                                                                              nPaymentMeansIndex +
-                                                                              "]/PayeeFinancialAccount/FinancialInstitutionBranch/FinancialInstitution/ID")
-                                                             .errorText (EText.BIC_INVALID.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                                   sID))
-                                                             .build ());
-                    aEbiAccount.setBIC (null);
+                    bUseFI = true;
+                    sBIC = StringHelper.trim (aUBLFI.getID ().getValue ());
+                    sBICScheme = StringHelper.trim (aUBLFI.getID ().getSchemeID ());
                   }
+                }
+
+                if (StringHelper.hasText (sBIC) || StringHelper.hasText (sBICScheme))
+                {
+                  final boolean bIsBIC = isBIC (sBICScheme);
+                  if (bIsBIC)
+                    aEbiAccount.setBIC (sBIC);
+                  else
+                    aEbiAccount.setBankName (sBIC);
+
+                  if (bIsBIC)
+                    if (StringHelper.hasNoText (sBIC) || !RegExHelper.stringMatchesPattern (REGEX_BIC, sBIC))
+                    {
+                      aTransformationErrorList.add (SingleError.builderError ()
+                                                               .errorFieldName ("PaymentMeans[" +
+                                                                                nPaymentMeansIndex +
+                                                                                "]/PayeeFinancialAccount/FinancialInstitutionBranch" +
+                                                                                (bUseFI ? "/FinancialInstitution"
+                                                                                        : "") +
+                                                                                "/ID")
+                                                               .errorText (EText.BIC_INVALID.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                     sBIC))
+                                                               .build ());
+                      aEbiAccount.setBIC (null);
+                    }
+                }
               }
             }
 
@@ -683,7 +712,7 @@ public abstract class AbstractToEbInterface42Converter extends AbstractToEbInter
             aEbiDoc.setPaymentMethod (aEbiPaymentMethod);
 
             // Set due date (optional)
-            aEbiPaymentConditions.setDueDate (aUBLPaymentMeans.getPaymentDueDateValue ());
+            aEbiPaymentConditions.setDueDate (aUBLDueDate);
 
             break;
           }
@@ -703,7 +732,7 @@ public abstract class AbstractToEbInterface42Converter extends AbstractToEbInter
             aEbiDoc.setPaymentMethod (aEbiPaymentMethod);
 
             // Set due date (optional)
-            aEbiPaymentConditions.setDueDate (aUBLPaymentMeans.getPaymentDueDateValue ());
+            aEbiPaymentConditions.setDueDate (aUBLDueDate);
 
             break;
           }
@@ -711,23 +740,41 @@ public abstract class AbstractToEbInterface42Converter extends AbstractToEbInter
             if (isSEPADirectDebit (sPaymentMeansCode))
             {
               _setPaymentMeansComment (aUBLPaymentMeans, aEbiPaymentMethod);
-              // TODO use SEPA fields
-              if (true)
+
+              // Find SEPA fields
+              final SEPADirectDebit aDD = extractSEPADirectDebit (aUBLDueDate,
+                                                                  aUBLPaymentMeans,
+                                                                  aUBLDocAccountingSupplierParty.get ().getParty (),
+                                                                  aUBLDocPayeeParty.get ());
+
+              if (StringHelper.hasText (aDD.m_sBIC) && !RegExHelper.stringMatchesPattern (REGEX_BIC, aDD.m_sBIC))
               {
-                final Ebi42DirectDebitType aEbiDirectDebit = new Ebi42DirectDebitType ();
-                aEbiPaymentMethod.setDirectDebit (aEbiDirectDebit);
-                aEbiDoc.setPaymentMethod (aEbiPaymentMethod);
-              }
-              else
-              {
-                final Ebi42SEPADirectDebitType aEbiDirectDebit = new Ebi42SEPADirectDebitType ();
-                aEbiDirectDebit.setType (Ebi42SEPADirectDebitTypeType.B_2_C);
-                aEbiPaymentMethod.setSEPADirectDebit (aEbiDirectDebit);
-                aEbiDoc.setPaymentMethod (aEbiPaymentMethod);
+                aTransformationErrorList.add (SingleError.builderError ()
+                                                         .errorFieldName ("PaymentMeans[" +
+                                                                          nPaymentMeansIndex +
+                                                                          "]/PayeeFinancialAccount/FinancialInstitutionBranch" +
+                                                                          (aDD.m_bUseBICFromFinancialInstitution ? "/FinancialInstitution"
+                                                                                                                 : "") +
+                                                                          "/ID")
+                                                         .errorText (EText.BIC_INVALID.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                               aDD.m_sBIC))
+                                                         .build ());
               }
 
+              // use SEPA fields
+              final Ebi42SEPADirectDebitType aEbiDirectDebit = new Ebi42SEPADirectDebitType ();
+              aEbiDirectDebit.setType (Ebi42SEPADirectDebitTypeType.B_2_B);
+              aEbiDirectDebit.setBIC (aDD.m_sBIC);
+              aEbiDirectDebit.setIBAN (aDD.m_sIBAN);
+              aEbiDirectDebit.setBankAccountOwner (aDD.m_sBankAccountOwnerName);
+              aEbiDirectDebit.setCreditorID (aDD.m_sCreditorID);
+              aEbiDirectDebit.setMandateReference (aDD.m_sMandateReference);
+              aEbiDirectDebit.setDebitCollectionDate (aDD.m_aDebitCollectionDate);
+              aEbiPaymentMethod.setSEPADirectDebit (aEbiDirectDebit);
+              aEbiDoc.setPaymentMethod (aEbiPaymentMethod);
+
               // Set due date (optional)
-              aEbiPaymentConditions.setDueDate (aUBLPaymentMeans.getPaymentDueDateValue ());
+              aEbiPaymentConditions.setDueDate (aUBLDueDate);
 
               break;
             }
@@ -783,10 +830,6 @@ public abstract class AbstractToEbInterface42Converter extends AbstractToEbInter
         }
       }
     }
-
-    // Set due date alternative
-    if (aEbiPaymentConditions.getDueDate () == null)
-      aEbiPaymentConditions.setDueDate (aUBLTopLevelDueDate.get ());
 
     // Payment terms
     {
