@@ -558,60 +558,61 @@ public abstract class AbstractToEbInterface41Converter extends AbstractToEbInter
             final Ebi41UniversalBankTransactionType aEbiUBTMethod = new Ebi41UniversalBankTransactionType ();
 
             // Find payment reference
-            final InstructionIDType aUBLInstructionID = aUBLPaymentMeans.getInstructionID ();
-            if (aUBLInstructionID != null)
+            int nPaymentIDIndex = 0;
+            for (final PaymentIDType aUBLPaymentID : aUBLPaymentMeans.getPaymentID ())
             {
-              // Prefer InstructionID over payment reference
-              String sUBLInstructionID = StringHelper.trim (aUBLInstructionID.getValue ());
-              if (StringHelper.hasText (sUBLInstructionID))
+              String sUBLPaymentID = StringHelper.trim (aUBLPaymentID.getValue ());
+              if (StringHelper.hasText (sUBLPaymentID))
               {
-                if (sUBLInstructionID.length () > PAYMENT_REFERENCE_MAX_LENGTH)
+                if (sUBLPaymentID.length () > PAYMENT_REFERENCE_MAX_LENGTH)
                 {
                   // Reference
                   aTransformationErrorList.add (SingleError.builderWarn ()
                                                            .errorFieldName ("PaymentMeans[" +
                                                                             nPaymentMeansIndex +
-                                                                            "]/InstructionID")
+                                                                            "]/PaymentID[" +
+                                                                            nPaymentIDIndex +
+                                                                            "]")
                                                            .errorText (EText.PAYMENT_ID_TOO_LONG_CUT.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                                             sUBLInstructionID))
+                                                                                                                             sUBLPaymentID))
                                                            .build ());
-                  sUBLInstructionID = sUBLInstructionID.substring (0, PAYMENT_REFERENCE_MAX_LENGTH);
+                  sUBLPaymentID = sUBLPaymentID.substring (0, PAYMENT_REFERENCE_MAX_LENGTH);
                 }
 
                 final Ebi41PaymentReferenceType aEbiPaymentReference = new Ebi41PaymentReferenceType ();
-                aEbiPaymentReference.setValue (sUBLInstructionID);
+                aEbiPaymentReference.setValue (sUBLPaymentID);
                 aEbiUBTMethod.setPaymentReference (aEbiPaymentReference);
               }
+              ++nPaymentIDIndex;
             }
 
             if (aEbiUBTMethod.getPaymentReference () == null)
             {
-              int nPaymentIDIndex = 0;
-              for (final PaymentIDType aUBLPaymentID : aUBLPaymentMeans.getPaymentID ())
+              // Legacy (see #3)
+              final InstructionIDType aUBLInstructionID = aUBLPaymentMeans.getInstructionID ();
+              if (aUBLInstructionID != null)
               {
-                String sUBLPaymentID = StringHelper.trim (aUBLPaymentID.getValue ());
-                if (StringHelper.hasText (sUBLPaymentID))
+                // Prefer InstructionID over payment reference
+                String sUBLInstructionID = StringHelper.trim (aUBLInstructionID.getValue ());
+                if (StringHelper.hasText (sUBLInstructionID))
                 {
-                  if (sUBLPaymentID.length () > PAYMENT_REFERENCE_MAX_LENGTH)
+                  if (sUBLInstructionID.length () > PAYMENT_REFERENCE_MAX_LENGTH)
                   {
                     // Reference
                     aTransformationErrorList.add (SingleError.builderWarn ()
                                                              .errorFieldName ("PaymentMeans[" +
                                                                               nPaymentMeansIndex +
-                                                                              "]/PaymentID[" +
-                                                                              nPaymentIDIndex +
-                                                                              "]")
+                                                                              "]/InstructionID")
                                                              .errorText (EText.PAYMENT_ID_TOO_LONG_CUT.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                                               sUBLPaymentID))
+                                                                                                                               sUBLInstructionID))
                                                              .build ());
-                    sUBLPaymentID = sUBLPaymentID.substring (0, PAYMENT_REFERENCE_MAX_LENGTH);
+                    sUBLInstructionID = sUBLInstructionID.substring (0, PAYMENT_REFERENCE_MAX_LENGTH);
                   }
 
                   final Ebi41PaymentReferenceType aEbiPaymentReference = new Ebi41PaymentReferenceType ();
-                  aEbiPaymentReference.setValue (sUBLPaymentID);
+                  aEbiPaymentReference.setValue (sUBLInstructionID);
                   aEbiUBTMethod.setPaymentReference (aEbiPaymentReference);
                 }
-                ++nPaymentIDIndex;
               }
             }
 

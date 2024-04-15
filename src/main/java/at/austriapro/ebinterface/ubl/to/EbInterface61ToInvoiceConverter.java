@@ -41,6 +41,7 @@ import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.Instruc
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.InstructionNoteType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.InvoiceTypeCodeType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.NoteType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.PaymentIDType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.TaxExemptionReasonType;
 import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
 
@@ -175,7 +176,11 @@ public class EbInterface61ToInvoiceConverter extends AbstractEbInterface61ToUBLC
 
               // PaymentReference
               if (aEbiUBT.getPaymentReference () != null)
+              {
+                aUBLPaymentMeans.addPaymentID (new PaymentIDType (aEbiUBT.getPaymentReference ().getValue ()));
+                // Legacy (see #3)
                 aUBLPaymentMeans.setInstructionID (new InstructionIDType (aEbiUBT.getPaymentReference ().getValue ()));
+              }
 
               if (aEbiPaymentConditions != null)
                 aUBLPaymentMeans.setPaymentDueDate (aEbiPaymentConditions.getDueDate ());
