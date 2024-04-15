@@ -36,6 +36,7 @@ Add the following to your pom.xml to use this artifact, replacing `x.y.z` with t
     * Fixed the SEPA Direct Debit mapping from UBL to ebInterface
     * Fixed the SEPA Direct Debit mapping from ebInterface to UBL
     * Removed the `schemeID` and `schemeAgency` attributes from `TaxScheme` and `TaxCategory`
+    * Fixed payment reference mapping (`PaymentID` preferred over `InstructionID`). See [#3](https://github.com/austriapro/ebinterface-ubl-mapping/issues/3)
 * v5.2.0 - 2024-04-02
     * Ensured Java 21 compatibility
     * Updated to ph-ubl 9.x
