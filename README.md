@@ -32,7 +32,7 @@ Add the following to your pom.xml to use this artifact, replacing `x.y.z` with t
 
 # News and noteworthy
 
-* v5.2.2 - work in progress
+* v5.2.2 - 2024-05-02
     * Avoid overwriting `PaymentConditions/DueDate` with `null` when it is already set
     * Re-added using top-level `Invoice/DueDate` when creating ebInterface document
 * v5.2.1 - 2024-04-15
