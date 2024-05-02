@@ -922,6 +922,10 @@ public abstract class AbstractToEbInterface43Converter extends AbstractToEbInter
         aEbiPaymentConditions.setComment (StringHelper.getImploded ('\n', aPaymentConditionsNotes));
     }
 
+    // Set due date alternative
+    if (aEbiPaymentConditions.getDueDate () == null)
+      aEbiPaymentConditions.setDueDate (aUBLTopLevelDueDate.get ());
+
     if (aEbiPaymentConditions.getDueDate () == null)
     {
       // ebInterface requires due date

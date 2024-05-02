@@ -32,6 +32,9 @@ Add the following to your pom.xml to use this artifact, replacing `x.y.z` with t
 
 # News and noteworthy
 
+* v5.2.2 - work in progress
+    * Avoid overwriting `PaymentConditions/DueDate` with `null` when it is already set
+    * Re-added using top-level `Invoice/DueDate` when creating ebInterface document
 * v5.2.1 - 2024-04-15
     * Fixed the SEPA Direct Debit mapping from UBL to ebInterface
     * Fixed the SEPA Direct Debit mapping from ebInterface to UBL
