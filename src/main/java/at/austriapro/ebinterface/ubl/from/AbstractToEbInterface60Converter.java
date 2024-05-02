@@ -875,20 +875,23 @@ public abstract class AbstractToEbInterface60Converter extends AbstractToEbInter
         if (aUBLPaymentTerms.getPaymentDueDate () != null)
         {
           final XMLOffsetDate aUBLDueDate = aUBLPaymentTerms.getPaymentDueDateValue ();
-          final XMLOffsetDate aEbiDueDate = aEbiPaymentConditions.getDueDate ();
-          if (aUBLDueDate != null && aEbiDueDate != null)
+          if (aUBLDueDate != null)
           {
-            // Error only if due dates differ
-            if (!aEbiDueDate.equals (aUBLDueDate))
-              aTransformationErrorList.add (SingleError.builderWarn ()
-                                                       .errorFieldName ("PaymentTerms[" +
-                                                                        nPaymentTermsIndex +
-                                                                        "]/PaymentDueDate")
-                                                       .errorText (EText.PAYMENT_DUE_DATE_ALREADY_CONTAINED.getDisplayText (m_aDisplayLocale))
-                                                       .build ());
+            final XMLOffsetDate aEbiDueDate = aEbiPaymentConditions.getDueDate ();
+            if (aEbiDueDate != null)
+            {
+              // Error only if due dates differ
+              if (!aEbiDueDate.equals (aUBLDueDate))
+                aTransformationErrorList.add (SingleError.builderWarn ()
+                                                         .errorFieldName ("PaymentTerms[" +
+                                                                          nPaymentTermsIndex +
+                                                                          "]/PaymentDueDate")
+                                                         .errorText (EText.PAYMENT_DUE_DATE_ALREADY_CONTAINED.getDisplayText (m_aDisplayLocale))
+                                                         .build ());
+            }
+            else
+              aEbiPaymentConditions.setDueDate (aUBLDueDate);
           }
-          else
-            aEbiPaymentConditions.setDueDate (aUBLDueDate);
 
           final BigDecimal aUBLPaymentPerc = aUBLPaymentTerms.getPaymentPercentValue ();
           if (aUBLPaymentPerc != null && MathHelper.isGT0 (aUBLPaymentPerc) && MathHelper.isLT100 (aUBLPaymentPerc))
