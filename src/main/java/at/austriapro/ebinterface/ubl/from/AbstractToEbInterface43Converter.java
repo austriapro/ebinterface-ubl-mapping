@@ -638,7 +638,7 @@ public abstract class AbstractToEbInterface43Converter extends AbstractToEbInter
                   }
                 }
 
-                if (StringHelper.hasText (sBIC) || StringHelper.hasText (sBICScheme))
+                if (StringHelper.hasText (sBIC))
                 {
                   final boolean bIsBIC = isBIC (sBICScheme);
                   if (bIsBIC)
@@ -646,21 +646,19 @@ public abstract class AbstractToEbInterface43Converter extends AbstractToEbInter
                   else
                     aEbiAccount.setBankName (sBIC);
 
-                  if (bIsBIC)
-                    if (StringHelper.hasNoText (sBIC) || !RegExHelper.stringMatchesPattern (REGEX_BIC, sBIC))
-                    {
-                      aTransformationErrorList.add (SingleError.builderError ()
-                                                               .errorFieldName ("PaymentMeans[" +
-                                                                                nPaymentMeansIndex +
-                                                                                "]/PayeeFinancialAccount/FinancialInstitutionBranch" +
-                                                                                (bUseFI ? "/FinancialInstitution"
-                                                                                        : "") +
-                                                                                "/ID")
-                                                               .errorText (EText.BIC_INVALID.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                                     sBIC))
-                                                               .build ());
-                      aEbiAccount.setBIC (null);
-                    }
+                  if (bIsBIC && !RegExHelper.stringMatchesPattern (REGEX_BIC, sBIC))
+                  {
+                    aTransformationErrorList.add (SingleError.builderError ()
+                                                             .errorFieldName ("PaymentMeans[" +
+                                                                              nPaymentMeansIndex +
+                                                                              "]/PayeeFinancialAccount/FinancialInstitutionBranch" +
+                                                                              (bUseFI ? "/FinancialInstitution" : "") +
+                                                                              "/ID")
+                                                             .errorText (EText.BIC_INVALID.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                   sBIC))
+                                                             .build ());
+                    aEbiAccount.setBIC (null);
+                  }
                 }
               }
             }

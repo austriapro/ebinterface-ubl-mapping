@@ -54,6 +54,7 @@ import com.helger.ebinterface.v40.Ebi40PaymentReferenceType;
 import com.helger.ebinterface.v40.Ebi40UniversalBankTransactionType;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AddressType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.BranchType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.ContactType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CustomerPartyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DeliveryType;
@@ -569,35 +570,54 @@ public abstract class AbstractToEbInterface40Converter extends AbstractToEbInter
 
             // BIC
             final FinancialAccountType aUBLFinancialAccount = aUBLPaymentMeans.getPayeeFinancialAccount ();
-            if (aUBLFinancialAccount != null &&
-                aUBLFinancialAccount.getFinancialInstitutionBranch () != null &&
-                aUBLFinancialAccount.getFinancialInstitutionBranch ().getFinancialInstitution () != null)
+            if (aUBLFinancialAccount != null)
             {
-              final FinancialInstitutionType aUBLFI = aUBLFinancialAccount.getFinancialInstitutionBranch ()
-                                                                          .getFinancialInstitution ();
-              if (StringHelper.hasText (aUBLFI.getIDValue ()))
+              final BranchType aUBLBranch = aUBLFinancialAccount.getFinancialInstitutionBranch ();
+              if (aUBLBranch != null)
               {
-                final String sID = StringHelper.trim (aUBLFI.getID ().getValue ());
-                final String sScheme = StringHelper.trim (aUBLFI.getID ().getSchemeID ());
-                final boolean bIsBIC = isBIC (sScheme);
+                // Prefer FinancialInstitutionBranch over FinancialInstitution
+                boolean bUseFI = false;
+                String sBIC = null;
+                String sBICScheme = null;
+                if (aUBLBranch.getID () != null)
+                {
+                  sBIC = StringHelper.trim (aUBLBranch.getID ().getValue ());
+                  sBICScheme = StringHelper.trim (aUBLBranch.getID ().getSchemeID ());
+                }
+                if (StringHelper.hasNoText (sBIC) || !RegExHelper.stringMatchesPattern (REGEX_BIC, sBIC))
+                {
+                  // Fallback to old value
+                  final FinancialInstitutionType aUBLFI = aUBLBranch.getFinancialInstitution ();
+                  if (aUBLFI != null && StringHelper.hasText (aUBLFI.getID ().getValue ()))
+                  {
+                    bUseFI = true;
+                    sBIC = StringHelper.trim (aUBLFI.getID ().getValue ());
+                    sBICScheme = StringHelper.trim (aUBLFI.getID ().getSchemeID ());
+                  }
+                }
 
-                if (bIsBIC)
-                  aEbiAccount.setBIC (sID);
-                else
-                  aEbiAccount.setBankName (sID);
+                if (StringHelper.hasText (sBIC))
+                {
+                  final boolean bIsBIC = isBIC (sBICScheme);
+                  if (bIsBIC)
+                    aEbiAccount.setBIC (sBIC);
+                  else
+                    aEbiAccount.setBankName (sBIC);
 
-                if (bIsBIC)
-                  if (StringHelper.hasNoText (sID) || !RegExHelper.stringMatchesPattern (REGEX_BIC, sID))
+                  if (bIsBIC && !RegExHelper.stringMatchesPattern (REGEX_BIC, sBIC))
                   {
                     aTransformationErrorList.add (SingleError.builderError ()
                                                              .errorFieldName ("PaymentMeans[" +
                                                                               nPaymentMeansIndex +
-                                                                              "]/PayeeFinancialAccount/FinancialInstitutionBranch/FinancialInstitution/ID")
+                                                                              "]/PayeeFinancialAccount/FinancialInstitutionBranch" +
+                                                                              (bUseFI ? "/FinancialInstitution" : "") +
+                                                                              "/ID")
                                                              .errorText (EText.BIC_INVALID.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                                   sID))
+                                                                                                                   sBIC))
                                                              .build ());
                     aEbiAccount.setBIC (null);
                   }
+                }
               }
             }
 

@@ -32,6 +32,9 @@ Add the following to your pom.xml to use this artifact, replacing `x.y.z` with t
 
 # News and noteworthy
 
+* v5.2.3 - 2024-07-30
+    * Fixed BIC mapping for output format ebInterface 4.0
+    * Improved empty BIC handling when creating ebInterface
 * v5.2.2 - 2024-05-02
     * Avoid overwriting `PaymentConditions/DueDate` with `null` when it is already set
     * Re-added using top-level `Invoice/DueDate` when creating ebInterface document
