@@ -934,7 +934,7 @@ public abstract class AbstractToEbInterface41Converter extends AbstractToEbInter
 
     if (aEbiPaymentConditions.getDueDate () == null)
     {
-      // ebInterface requires due date
+      // ebInterface requires due date (up to ebi 4.1 only)
       if (aEbiPaymentConditions.hasDiscountEntries ())
         aTransformationErrorList.add (SingleError.builderError ()
                                                  .errorFieldName ("PaymentMeans/PaymentDueDate")

@@ -924,18 +924,11 @@ public abstract class AbstractToEbInterface43Converter extends AbstractToEbInter
     if (aEbiPaymentConditions.getDueDate () == null)
       aEbiPaymentConditions.setDueDate (aUBLTopLevelDueDate.get ());
 
-    if (aEbiPaymentConditions.getDueDate () == null)
+    if (aEbiPaymentConditions.getDueDate () != null ||
+        aEbiPaymentConditions.getMinimumPayment () != null ||
+        aEbiPaymentConditions.hasDiscountEntries () ||
+        StringHelper.hasText (aEbiPaymentConditions.getComment ()))
     {
-      // ebInterface requires due date
-      if (aEbiPaymentConditions.hasDiscountEntries ())
-        aTransformationErrorList.add (SingleError.builderError ()
-                                                 .errorFieldName ("PaymentMeans/PaymentDueDate")
-                                                 .errorText (EText.DISCOUNT_WITHOUT_DUEDATE.getDisplayText (m_aDisplayLocale))
-                                                 .build ());
-    }
-    else
-    {
-      // Independent if discounts are present or not
       aEbiDoc.setPaymentConditions (aEbiPaymentConditions);
     }
   }
