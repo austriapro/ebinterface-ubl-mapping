@@ -32,7 +32,9 @@ Add the following to your pom.xml to use this artifact, replacing `x.y.z` with t
 
 # News and noteworthy
 
-* v5.2.4 - 20240-09-05
+* v5.2.5 - work in progress
+    * The UBL `OrderLineReference` element is only created if the mandatory `LineID` element is present
+* v5.2.4 - 2024-09-05
     * Payment Conditions are also created in ebInterface 4.2 onwards, if any other field then just the DueDate is set
 * v5.2.3 - 2024-07-30
     * Fixed BIC mapping for output format ebInterface 4.0

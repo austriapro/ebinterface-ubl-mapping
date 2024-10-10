@@ -610,7 +610,8 @@ public class EbInterface61ToInvoiceConverter extends AbstractEbInterface61ToUBLC
             aUBLOrderLineRef.setLineID (aEbiORLine.getOrderPositionNumber ());
             bAny1 = true;
           }
-          if (bAny1)
+          // Line ID is a mandatory element
+          if (bAny1 && aUBLOrderLineRef.getLineID () != null)
             aUBLLine.addOrderLineReference (aUBLOrderLineRef);
         }
 
