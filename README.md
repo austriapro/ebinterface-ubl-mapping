@@ -32,6 +32,8 @@ Add the following to your pom.xml to use this artifact, replacing `x.y.z` with t
 
 # News and noteworthy
 
+* v5.2.6 - 2024-10-11
+    * Added mapping the ebInterface `Delivery/Description` element to UBL `Delivery/DeliveryTerms[0]/SpecialTerms[0]`
 * v5.2.5 - 2024-10-10
     * The UBL `OrderLineReference` element is only created if the mandatory `LineID` element is present
 * v5.2.4 - 2024-09-05

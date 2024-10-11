@@ -37,25 +37,7 @@ import com.helger.commons.regex.RegExHelper;
 import com.helger.commons.string.StringHelper;
 import com.helger.ebinterface.v41.*;
 
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AddressType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.BillingReferenceType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.BranchType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.ContactType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CustomerPartyType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DeliveryType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DocumentReferenceType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.FinancialAccountType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.FinancialInstitutionType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.LocationType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.MonetaryTotalType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyIdentificationType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyLegalEntityType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyNameType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PaymentMeansType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PaymentTermsType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PersonType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.SupplierPartyType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.*;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.DescriptionType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.DocumentDescriptionType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.InstructionIDType;
@@ -417,6 +399,13 @@ public abstract class AbstractToEbInterface41Converter extends AbstractToEbInter
                                                  .errorText (EText.DELIVERY_WITHOUT_NAME.getDisplayText (aDisplayLocale))
                                                  .build ());
       validateAddressData (aEbiAddress, sDeliveryType + "/DeliveryParty", aTransformationErrorList, aDisplayLocale);
+    }
+
+    if (aUBLDelivery.hasDeliveryTermsEntries ())
+    {
+      final DeliveryTermsType aDeliveryTerms = aUBLDelivery.getDeliveryTermsAtIndex (0);
+      if (aDeliveryTerms.hasSpecialTermsEntries ())
+        aEbiDelivery.setDescription (aDeliveryTerms.getSpecialTermsAtIndex (0).getValue ());
     }
 
     return aEbiDelivery;

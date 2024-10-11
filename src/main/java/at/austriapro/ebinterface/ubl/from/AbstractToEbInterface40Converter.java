@@ -57,6 +57,7 @@ import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.Add
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.BranchType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.ContactType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CustomerPartyType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DeliveryTermsType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DeliveryType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.FinancialAccountType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.FinancialInstitutionType;
@@ -430,6 +431,13 @@ public abstract class AbstractToEbInterface40Converter extends AbstractToEbInter
                                                  .errorText (EText.DELIVERY_WITHOUT_NAME.getDisplayText (aDisplayLocale))
                                                  .build ());
       validateAddressData (aEbiAddress, sDeliveryType + "/DeliveryParty", aTransformationErrorList, aDisplayLocale);
+    }
+
+    if (aUBLDelivery.hasDeliveryTermsEntries ())
+    {
+      final DeliveryTermsType aDeliveryTerms = aUBLDelivery.getDeliveryTermsAtIndex (0);
+      if (aDeliveryTerms.hasSpecialTermsEntries ())
+        aEbiDelivery.setDescription (aDeliveryTerms.getSpecialTermsAtIndex (0).getValue ());
     }
 
     return aEbiDelivery;

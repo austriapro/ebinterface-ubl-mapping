@@ -35,12 +35,14 @@ import com.helger.xsds.ccts.cct.schemamodule.CodeType;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AddressType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.ContactType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DeliveryTermsType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DeliveryType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyNameType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PeriodType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PersonType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.SpecialTermsType;
 
 /**
  * Base class for ebInterface 4.1 to Peppol UBL converter
@@ -220,6 +222,14 @@ public abstract class AbstractEbInterface41ToUBLConverter extends AbstractEbInte
       }
     aUBLDelivery.setDeliveryAddress (convertAddress (aEbiDelivery.getAddress (), aContentLocale));
     aUBLDelivery.setDeliveryParty (convertParty (aEbiDelivery.getAddress (), aContentLocale));
+
+    if (StringHelper.hasText (aEbiDelivery.getDescription ()))
+    {
+      final DeliveryTermsType aDeliveryTerms = new DeliveryTermsType ();
+      aDeliveryTerms.addSpecialTerms (new SpecialTermsType (aEbiDelivery.getDescription ()));
+      aUBLDelivery.addDeliveryTerms (aDeliveryTerms);
+    }
+
     return aUBLDelivery;
   }
 }
