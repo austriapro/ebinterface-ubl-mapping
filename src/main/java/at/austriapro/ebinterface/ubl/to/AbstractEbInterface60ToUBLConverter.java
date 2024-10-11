@@ -245,10 +245,26 @@ public abstract class AbstractEbInterface60ToUBLConverter extends AbstractEbInte
                                                  aEbiDelivery.getContact (),
                                                  aContentLocale));
 
-    if (StringHelper.hasText (aEbiDelivery.getDescription ()))
+    // UBL has no address info field - add all
+    String sDeliveryInfo = aEbiDelivery.getDescription ();
+    if (aEbiDelivery.getAddress () != null)
+    {
+      // AdditionalInformation since v6.0
+      for (final var aAddInfo : aEbiDelivery.getAddress ().getAdditionalInformation ())
+      {
+        if (StringHelper.hasText (sDeliveryInfo))
+        {
+          sDeliveryInfo += "\n\n";
+          sDeliveryInfo += aAddInfo.getValue ();
+        }
+        else
+          sDeliveryInfo = aAddInfo.getValue ();
+      }
+    }
+    if (StringHelper.hasText (sDeliveryInfo))
     {
       final DeliveryTermsType aDeliveryTerms = new DeliveryTermsType ();
-      aDeliveryTerms.addSpecialTerms (new SpecialTermsType (aEbiDelivery.getDescription ()));
+      aDeliveryTerms.addSpecialTerms (new SpecialTermsType (sDeliveryInfo));
       aUBLDelivery.addDeliveryTerms (aDeliveryTerms);
     }
 
