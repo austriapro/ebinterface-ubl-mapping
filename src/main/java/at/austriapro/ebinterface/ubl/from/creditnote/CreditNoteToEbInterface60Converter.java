@@ -764,23 +764,20 @@ public final class CreditNoteToEbInterface60Converter extends AbstractToEbInterf
         }
         aEbiListLineItem.setPositionNumber (aUBLPositionNumber);
 
+        // Use item name as description
+        final NameType aUBLName = aUBLLine.getItem ().getName ();
+        if (aUBLName != null)
+        {
+          final String sDesc = StringHelper.trim (aUBLName.getValue ());
+          if (StringHelper.hasText (sDesc))
+            aEbiListLineItem.addDescription (sDesc);
+        }
         // Descriptions
         for (final DescriptionType aUBLDescription : aUBLLine.getItem ().getDescription ())
         {
           final String sDesc = StringHelper.trim (aUBLDescription.getValue ());
           if (StringHelper.hasText (sDesc))
             aEbiListLineItem.addDescription (sDesc);
-        }
-        if (aEbiListLineItem.hasNoDescriptionEntries ())
-        {
-          // Use item name as description
-          final NameType aUBLName = aUBLLine.getItem ().getName ();
-          if (aUBLName != null)
-          {
-            final String sDesc = StringHelper.trim (aUBLName.getValue ());
-            if (StringHelper.hasText (sDesc))
-              aEbiListLineItem.addDescription (sDesc);
-          }
         }
         // Add the Note elements as well (IBM, 2016-11)
         for (final NoteType aUBLNote : aUBLLine.getNote ())

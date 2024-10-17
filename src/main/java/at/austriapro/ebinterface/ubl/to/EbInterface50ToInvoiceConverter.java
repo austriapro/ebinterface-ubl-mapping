@@ -494,7 +494,13 @@ public class EbInterface50ToInvoiceConverter extends AbstractEbInterface50ToUBLC
         {
           final ItemType aUBLItem = new ItemType ();
           for (final String sEbiDesc : aEbiItem.getDescription ())
-            aUBLItem.addDescription (new DescriptionType (sEbiDesc));
+          {
+            // In BIS Billing, the "Name" is mandatory - use first description
+            if (aUBLItem.getName () == null)
+              aUBLItem.setName (sEbiDesc);
+            else
+              aUBLItem.addDescription (new DescriptionType (sEbiDesc));
+          }
           aUBLItem.setPackSizeNumeric (BigDecimal.ONE);
 
           final Ebi50TaxItemType aEbiTaxItem = aEbiItem.getTaxItem ();

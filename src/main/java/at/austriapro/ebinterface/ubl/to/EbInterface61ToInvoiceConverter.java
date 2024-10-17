@@ -495,7 +495,13 @@ public class EbInterface61ToInvoiceConverter extends AbstractEbInterface61ToUBLC
         {
           final ItemType aUBLItem = new ItemType ();
           for (final String sEbiDesc : aEbiItem.getDescription ())
-            aUBLItem.addDescription (new DescriptionType (sEbiDesc));
+          {
+            // In BIS Billing, the "Name" is mandatory - use first description
+            if (aUBLItem.getName () == null)
+              aUBLItem.setName (sEbiDesc);
+            else
+              aUBLItem.addDescription (new DescriptionType (sEbiDesc));
+          }
           aUBLItem.setPackSizeNumeric (BigDecimal.ONE);
 
           final Ebi61TaxItemType aEbiTaxItem = aEbiItem.getTaxItem ();
@@ -641,8 +647,11 @@ public class EbInterface61ToInvoiceConverter extends AbstractEbInterface61ToUBLC
 
         {
           final ItemType aUBLItem = new ItemType ();
+          aUBLItem.setName ("BelowTheLineItem");
           if (StringHelper.hasText (aEbiItem.getDescription ()))
-            aUBLItem.addDescription (new DescriptionType (aEbiItem.getDescription ()));
+            aUBLItem.setName (aEbiItem.getDescription ());
+          else
+            aUBLItem.setName ("BelowTheLine");
           aUBLItem.setPackSizeNumeric (BigDecimal.ONE);
 
           {
