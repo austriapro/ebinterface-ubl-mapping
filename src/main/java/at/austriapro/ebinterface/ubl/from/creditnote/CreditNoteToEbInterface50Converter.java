@@ -265,7 +265,8 @@ public final class CreditNoteToEbInterface50Converter extends AbstractToEbInterf
 
       // Add contract reference as further identification
       for (final DocumentReferenceType aDocumentReference : aUBLDoc.getContractDocumentReference ())
-        if (StringHelper.hasTextAfterTrim (aDocumentReference.getIDValue ()))
+        if (StringHelper.hasTextAfterTrim (aDocumentReference.getIDValue ()) &&
+            FURTHER_IDENTIFICATION_SCHEME_NAME_EBI2UBL.equals (aDocumentReference.getID ().getSchemeName ()))
         {
           final String sKey = StringHelper.hasText (aDocumentReference.getID ()
                                                                       .getSchemeID ()) ? aDocumentReference.getID ()

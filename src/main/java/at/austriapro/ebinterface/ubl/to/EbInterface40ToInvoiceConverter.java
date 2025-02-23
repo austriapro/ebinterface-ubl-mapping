@@ -294,6 +294,7 @@ public class EbInterface40ToInvoiceConverter extends AbstractEbInterface40ToUBLC
           final IDType aID = new IDType ();
           aID.setValue (aEbiFI.getValue ());
           aID.setSchemeID (aEbiFI.getIdentificationType ());
+          aID.setSchemeName (FURTHER_IDENTIFICATION_SCHEME_NAME_EBI2UBL);
           aUBLContractDoc.setID (aID);
           aUBLDoc.addContractDocumentReference (aUBLContractDoc);
         }

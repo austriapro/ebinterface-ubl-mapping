@@ -112,6 +112,8 @@ public abstract class AbstractConverter
 
   public static final String AT_UNDEFINED_VATIN = "ATU00000000";
 
+  public static final String FURTHER_IDENTIFICATION_SCHEME_NAME_EBI2UBL = "ebi2ubl";
+
   // UNCL 4461
   public static final String PAYMENT_MEANS_CREDIT_TRANSFER = "30";
   public static final String PAYMENT_MEANS_DEBIT_TRANSFER = "31";

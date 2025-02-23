@@ -211,6 +211,8 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
   public static final String EBI_GENERATING_SYSTEM_60 = "UBL 2.1 to ebInterface 6.0 converter";
   public static final String EBI_GENERATING_SYSTEM_61 = "UBL 2.1 to ebInterface 6.1 converter";
 
+  public static final int PAYMENT_REFERENCE_MAX_LENGTH = 35;
+
   protected final IToEbinterfaceSettings m_aSettings;
 
   /**

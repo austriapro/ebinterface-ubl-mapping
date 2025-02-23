@@ -69,8 +69,6 @@ import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.Payment
 @Immutable
 public abstract class AbstractToEbInterface61Converter extends AbstractToEbInterfaceConverter
 {
-  public static final int PAYMENT_REFERENCE_MAX_LENGTH = 35;
-
   protected AbstractToEbInterface61Converter (@Nonnull final Locale aDisplayLocale,
                                               @Nonnull final Locale aContentLocale,
                                               @Nonnull final IToEbinterfaceSettings aSettings)
@@ -505,7 +503,9 @@ public abstract class AbstractToEbInterface61Converter extends AbstractToEbInter
                                                     @Nonnull final Ebi61InvoiceType aEbiDoc)
   {
     for (final DocumentReferenceType aUBLDocumentReference : aUBLDocumentReferences)
-      if (StringHelper.hasText (aUBLDocumentReference.getIDValue ()) && aUBLDocumentReference.getAttachment () == null)
+      if (StringHelper.hasText (aUBLDocumentReference.getIDValue ()) &&
+          aUBLDocumentReference.getAttachment () == null &&
+          !FURTHER_IDENTIFICATION_SCHEME_NAME_EBI2UBL.equals (aUBLDocumentReference.getID ().getSchemeName ()))
       {
         final Ebi61RelatedDocumentType aEbiRelatedDocument = new Ebi61RelatedDocumentType ();
         aEbiRelatedDocument.setInvoiceNumber (aUBLDocumentReference.getIDValue ());

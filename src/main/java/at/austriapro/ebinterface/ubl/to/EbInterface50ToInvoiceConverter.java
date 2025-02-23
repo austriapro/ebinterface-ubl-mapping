@@ -353,6 +353,7 @@ public class EbInterface50ToInvoiceConverter extends AbstractEbInterface50ToUBLC
           final IDType aID = new IDType ();
           aID.setValue (aEbiFI.getValue ());
           aID.setSchemeID (aEbiFI.getIdentificationType ());
+          aID.setSchemeName (FURTHER_IDENTIFICATION_SCHEME_NAME_EBI2UBL);
           aUBLContractDoc.setID (aID);
           aUBLDoc.addContractDocumentReference (aUBLContractDoc);
         }
@@ -395,10 +396,11 @@ public class EbInterface50ToInvoiceConverter extends AbstractEbInterface50ToUBLC
         // Put this into global contract document references
         for (final Ebi50FurtherIdentificationType aEbiFI : aEbiIR.getFurtherIdentification ())
         {
-          final AdditionalAccountIDType aUBLAddAccID = new AdditionalAccountIDType ();
-          aUBLAddAccID.setValue (aEbiFI.getValue ());
-          aUBLAddAccID.setSchemeID (aEbiFI.getIdentificationType ());
-          aUBLCustomer.addAdditionalAccountID (aUBLAddAccID);
+          final AdditionalAccountIDType aID = new AdditionalAccountIDType ();
+          aID.setValue (aEbiFI.getValue ());
+          aID.setSchemeID (aEbiFI.getIdentificationType ());
+          aID.setSchemeName (FURTHER_IDENTIFICATION_SCHEME_NAME_EBI2UBL);
+          aUBLCustomer.addAdditionalAccountID (aID);
         }
 
         // Handle order reference from invoice recipient
@@ -454,6 +456,7 @@ public class EbInterface50ToInvoiceConverter extends AbstractEbInterface50ToUBLC
           final IDType aID = new IDType ();
           aID.setValue (aEbiFI.getValue ());
           aID.setSchemeID (aEbiFI.getIdentificationType ());
+          aID.setSchemeName (FURTHER_IDENTIFICATION_SCHEME_NAME_EBI2UBL);
           aUBLContractDoc.setID (aID);
           aUBLDoc.addContractDocumentReference (aUBLContractDoc);
         }

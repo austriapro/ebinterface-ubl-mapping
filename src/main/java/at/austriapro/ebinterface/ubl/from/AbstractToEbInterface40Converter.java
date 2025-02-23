@@ -85,8 +85,6 @@ import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.Payment
 @Immutable
 public abstract class AbstractToEbInterface40Converter extends AbstractToEbInterfaceConverter
 {
-  public static final int PAYMENT_REFERENCE_MAX_LENGTH = 35;
-
   protected AbstractToEbInterface40Converter (@Nonnull final Locale aDisplayLocale,
                                               @Nonnull final Locale aContentLocale,
                                               @Nonnull final IToEbinterfaceSettings aSettings)
