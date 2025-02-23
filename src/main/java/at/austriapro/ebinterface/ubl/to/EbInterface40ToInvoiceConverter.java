@@ -448,7 +448,17 @@ public class EbInterface40ToInvoiceConverter extends AbstractEbInterface40ToUBLC
               if (aEbiRSValue.getPercentage () != null)
                 aUBLAC.setMultiplierFactorNumeric (aEbiRSValue.getPercentage ().divide (CGlobal.BIGDEC_100));
               if (aEbiRSValue.getAmount () != null)
+              {
                 aUBLAC.setAmount (aEbiRSValue.getAmount ()).setCurrencyID (sCurrency);
+                if (aUBLAC.getMultiplierFactorNumeric () == null)
+                {
+                  aUBLAC.setMultiplierFactorNumeric (MathHelper.isEQ0 (aEbiRSValue.getBaseAmount ()) ? BigDecimal.ZERO
+                                                                                                     : aEbiRSValue.getAmount ()
+                                                                                                                  .divide (aEbiRSValue.getBaseAmount (),
+                                                                                                                           SCALE_PRICE4,
+                                                                                                                           ROUNDING_MODE));
+                }
+              }
               else
                 if (aEbiRSValue.getPercentage () != null)
                   aUBLAC.setAmount (MathHelper.getPercentValue (aEbiRSValue.getBaseAmount (),
@@ -467,7 +477,17 @@ public class EbInterface40ToInvoiceConverter extends AbstractEbInterface40ToUBLC
               if (aEbiRSValue.getPercentage () != null)
                 aUBLAC.setMultiplierFactorNumeric (aEbiRSValue.getPercentage ().divide (CGlobal.BIGDEC_100));
               if (aEbiRSValue.getAmount () != null)
+              {
                 aUBLAC.setAmount (aEbiRSValue.getAmount ()).setCurrencyID (sCurrency);
+                if (aUBLAC.getMultiplierFactorNumeric () == null)
+                {
+                  aUBLAC.setMultiplierFactorNumeric (MathHelper.isEQ0 (aEbiRSValue.getBaseAmount ()) ? BigDecimal.ZERO
+                                                                                                     : aEbiRSValue.getAmount ()
+                                                                                                                  .divide (aEbiRSValue.getBaseAmount (),
+                                                                                                                           SCALE_PRICE4,
+                                                                                                                           ROUNDING_MODE));
+                }
+              }
               else
                 if (aEbiRSValue.getPercentage () != null)
                   aUBLAC.setAmount (MathHelper.getPercentValue (aEbiRSValue.getBaseAmount (),
