@@ -19,6 +19,7 @@ package at.austriapro.ebinterface.ubl.from;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Locale;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
@@ -35,6 +36,7 @@ import com.helger.commons.locale.country.CountryCache;
 import com.helger.commons.math.MathHelper;
 import com.helger.commons.regex.RegExHelper;
 import com.helger.commons.string.StringHelper;
+import com.helger.ebinterface.codelist.EFurtherIdentification;
 import com.helger.ebinterface.v40.Ebi40AccountType;
 import com.helger.ebinterface.v40.Ebi40AddressIdentifierType;
 import com.helger.ebinterface.v40.Ebi40AddressIdentifierTypeType;
@@ -46,6 +48,7 @@ import com.helger.ebinterface.v40.Ebi40DeliveryType;
 import com.helger.ebinterface.v40.Ebi40DirectDebitType;
 import com.helger.ebinterface.v40.Ebi40DiscountType;
 import com.helger.ebinterface.v40.Ebi40DocumentTypeType;
+import com.helger.ebinterface.v40.Ebi40FurtherIdentificationType;
 import com.helger.ebinterface.v40.Ebi40InvoiceType;
 import com.helger.ebinterface.v40.Ebi40NoPaymentType;
 import com.helger.ebinterface.v40.Ebi40PaymentConditionsType;
@@ -860,5 +863,27 @@ public abstract class AbstractToEbInterface40Converter extends AbstractToEbInter
       // Independent if discounts are present or not
       aEbiDoc.setPaymentConditions (aEbiPaymentConditions);
     }
+  }
+
+  @Nonnull
+  protected static Ebi40FurtherIdentificationType createFurtherIdentification (@Nonnull final String sKey,
+                                                                               @Nonnull final String sValue)
+  {
+    final Ebi40FurtherIdentificationType aEbiFurtherIdentification = new Ebi40FurtherIdentificationType ();
+    aEbiFurtherIdentification.setIdentificationType (StringHelper.trim (sKey));
+    aEbiFurtherIdentification.setValue (StringHelper.trim (sValue));
+    return aEbiFurtherIdentification;
+  }
+
+  protected static void convertFurtherIdentifications (@Nonnull final List <PartyIdentificationType> aPartyIDs,
+                                                       @Nonnull final Consumer <? super Ebi40FurtherIdentificationType> aFIConsumer)
+  {
+    for (final PartyIdentificationType aUBLPartyID : aPartyIDs)
+      if (aUBLPartyID.getID () != null &&
+          FURTHER_IDENTIFICATION_SCHEME_NAME_EBI2UBL.equals (aUBLPartyID.getID ().getSchemeName ()))
+      {
+        final String sKey = orDefault (aUBLPartyID.getID ().getSchemeID (), EFurtherIdentification.CONTRACT.getID ());
+        aFIConsumer.accept (createFurtherIdentification (sKey, aUBLPartyID.getIDValue ()));
+      }
   }
 }

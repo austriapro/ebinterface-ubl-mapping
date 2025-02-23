@@ -19,6 +19,7 @@ package at.austriapro.ebinterface.ubl.from;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Locale;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
@@ -35,6 +36,7 @@ import com.helger.commons.locale.country.CountryCache;
 import com.helger.commons.math.MathHelper;
 import com.helger.commons.regex.RegExHelper;
 import com.helger.commons.string.StringHelper;
+import com.helger.ebinterface.codelist.EFurtherIdentification;
 import com.helger.ebinterface.v42.Ebi42AccountType;
 import com.helger.ebinterface.v42.Ebi42AddressIdentifierType;
 import com.helger.ebinterface.v42.Ebi42AddressIdentifierTypeType;
@@ -44,6 +46,7 @@ import com.helger.ebinterface.v42.Ebi42DeliveryType;
 import com.helger.ebinterface.v42.Ebi42DirectDebitType;
 import com.helger.ebinterface.v42.Ebi42DiscountType;
 import com.helger.ebinterface.v42.Ebi42DocumentTypeType;
+import com.helger.ebinterface.v42.Ebi42FurtherIdentificationType;
 import com.helger.ebinterface.v42.Ebi42InvoiceType;
 import com.helger.ebinterface.v42.Ebi42NoPaymentType;
 import com.helger.ebinterface.v42.Ebi42PaymentConditionsType;
@@ -464,9 +467,7 @@ public abstract class AbstractToEbInterface42Converter extends AbstractToEbInter
                                                     @Nonnull final Ebi42InvoiceType aEbiDoc)
   {
     for (final DocumentReferenceType aUBLDocumentReference : aUBLDocumentReferences)
-      if (StringHelper.hasText (aUBLDocumentReference.getIDValue ()) &&
-          aUBLDocumentReference.getAttachment () == null &&
-          FURTHER_IDENTIFICATION_SCHEME_NAME_EBI2UBL.equals (aUBLDocumentReference.getID ().getSchemeName ()))
+      if (StringHelper.hasText (aUBLDocumentReference.getIDValue ()) && aUBLDocumentReference.getAttachment () == null)
       {
         final Ebi42RelatedDocumentType aEbiRelatedDocument = new Ebi42RelatedDocumentType ();
         aEbiRelatedDocument.setInvoiceNumber (aUBLDocumentReference.getIDValue ());
@@ -919,5 +920,27 @@ public abstract class AbstractToEbInterface42Converter extends AbstractToEbInter
     {
       aEbiDoc.setPaymentConditions (aEbiPaymentConditions);
     }
+  }
+
+  @Nonnull
+  protected static Ebi42FurtherIdentificationType createFurtherIdentification (@Nonnull final String sKey,
+                                                                               @Nonnull final String sValue)
+  {
+    final Ebi42FurtherIdentificationType aEbiFurtherIdentification = new Ebi42FurtherIdentificationType ();
+    aEbiFurtherIdentification.setIdentificationType (StringHelper.trim (sKey));
+    aEbiFurtherIdentification.setValue (StringHelper.trim (sValue));
+    return aEbiFurtherIdentification;
+  }
+
+  protected static void convertFurtherIdentifications (@Nonnull final List <PartyIdentificationType> aPartyIDs,
+                                                       @Nonnull final Consumer <? super Ebi42FurtherIdentificationType> aFIConsumer)
+  {
+    for (final PartyIdentificationType aUBLPartyID : aPartyIDs)
+      if (aUBLPartyID.getID () != null &&
+          FURTHER_IDENTIFICATION_SCHEME_NAME_EBI2UBL.equals (aUBLPartyID.getID ().getSchemeName ()))
+      {
+        final String sKey = orDefault (aUBLPartyID.getID ().getSchemeID (), EFurtherIdentification.CONTRACT.getID ());
+        aFIConsumer.accept (createFurtherIdentification (sKey, aUBLPartyID.getIDValue ()));
+      }
   }
 }

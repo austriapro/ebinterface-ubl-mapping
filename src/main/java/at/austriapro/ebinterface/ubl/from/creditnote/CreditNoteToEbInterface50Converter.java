@@ -38,6 +38,7 @@ import com.helger.commons.math.MathHelper;
 import com.helger.commons.state.ETriState;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.StringParser;
+import com.helger.ebinterface.codelist.EFurtherIdentification;
 import com.helger.ebinterface.v50.*;
 
 import at.austriapro.ebinterface.ubl.from.AbstractToEbInterface50Converter;
@@ -48,12 +49,12 @@ import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.All
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CreditNoteLineType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CustomerPartyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DeliveryType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DocumentReferenceType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.ItemPropertyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.MonetaryTotalType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.OrderLineReferenceType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.OrderReferenceType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyTaxSchemeType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PeriodType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.SupplierPartyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxCategoryType;
@@ -182,10 +183,12 @@ public final class CreditNoteToEbInterface50Converter extends AbstractToEbInterf
     // Biller/Supplier (creator of the invoice)
     {
       final SupplierPartyType aUBLSupplier = aUBLDoc.getAccountingSupplierParty ();
+      final PartyType aUBLParty = aUBLSupplier.getParty ();
+
       final Ebi50BillerType aEbiBiller = new Ebi50BillerType ();
       // Find the tax scheme that uses VAT
-      if (aUBLSupplier.getParty () != null)
-        for (final PartyTaxSchemeType aUBLPartyTaxScheme : aUBLSupplier.getParty ().getPartyTaxScheme ())
+      if (aUBLParty != null)
+        for (final PartyTaxSchemeType aUBLPartyTaxScheme : aUBLParty.getPartyTaxScheme ())
         {
           // TaxScheme is a mandatory field
           if (isVATSchemeID (aUBLPartyTaxScheme.getTaxScheme ().getIDValue ()))
@@ -209,13 +212,12 @@ public final class CreditNoteToEbInterface50Converter extends AbstractToEbInterf
         aEbiBiller.setInvoiceRecipientsBillerID (StringHelper.trim (aUBLSupplier.getCustomerAssignedAccountIDValue ()));
       }
       if (StringHelper.hasNoText (aEbiBiller.getInvoiceRecipientsBillerID ()) &&
-          aUBLSupplier.getParty () != null &&
-          aUBLSupplier.getParty ().hasPartyIdentificationEntries ())
+          aUBLParty != null &&
+          aUBLParty.hasPartyIdentificationEntries ())
       {
         // New version for BIS V2
-        aEbiBiller.setInvoiceRecipientsBillerID (StringHelper.trim (aUBLSupplier.getParty ()
-                                                                                .getPartyIdentificationAtIndex (0)
-                                                                                .getIDValue ()));
+        aEbiBiller.setInvoiceRecipientsBillerID (StringHelper.trim (aUBLParty.getPartyIdentificationAtIndex (0)
+                                                                             .getIDValue ()));
       }
 
       // Disabled because field is optional
@@ -231,22 +233,20 @@ public final class CreditNoteToEbInterface50Converter extends AbstractToEbInterf
 
       for (final AdditionalAccountIDType aUBLAddAccountID : aUBLSupplier.getAdditionalAccountID ())
       {
-        final Ebi50FurtherIdentificationType aFI = new Ebi50FurtherIdentificationType ();
-        aFI.setIdentificationType ("Consolidator");
-        aFI.setValue (StringHelper.trim (aUBLAddAccountID.getValue ()));
-        aEbiBiller.addFurtherIdentification (aFI);
+        aEbiBiller.addFurtherIdentification (createFurtherIdentification (EFurtherIdentification.CONSOLIDATOR.getID (),
+                                                                          aUBLAddAccountID.getValue ()));
       }
 
-      if (aUBLSupplier.getParty () != null)
+      if (aUBLParty != null)
       {
-        final Ebi50AddressType aEbiAddress = convertParty (aUBLSupplier.getParty (),
+        final Ebi50AddressType aEbiAddress = convertParty (aUBLParty,
                                                            "AccountingSupplierParty",
                                                            aTransformationErrorList,
                                                            m_aContentLocale,
                                                            m_aDisplayLocale,
                                                            true);
         aEbiBiller.setAddress (aEbiAddress);
-        final Ebi50ContactType aEbiContact = convertContact (aUBLSupplier.getParty (),
+        final Ebi50ContactType aEbiContact = convertContact (aUBLParty,
                                                              "AccountingSupplierParty",
                                                              aEbiBiller.getAddress ().getName (),
                                                              aTransformationErrorList,
@@ -261,23 +261,10 @@ public final class CreditNoteToEbInterface50Converter extends AbstractToEbInterf
             // Name is required for Contact
             aEbiAddress.addEmail (m_aSettings.getEnforcedSupplierEmailAddress ());
           }
+
+        // Add all further identifications
+        convertFurtherIdentifications (aUBLParty.getPartyIdentification (), aEbiBiller::addFurtherIdentification);
       }
-
-      // Add contract reference as further identification
-      for (final DocumentReferenceType aDocumentReference : aUBLDoc.getContractDocumentReference ())
-        if (StringHelper.hasTextAfterTrim (aDocumentReference.getIDValue ()) &&
-            FURTHER_IDENTIFICATION_SCHEME_NAME_EBI2UBL.equals (aDocumentReference.getID ().getSchemeName ()))
-        {
-          final String sKey = StringHelper.hasText (aDocumentReference.getID ()
-                                                                      .getSchemeID ()) ? aDocumentReference.getID ()
-                                                                                                           .getSchemeID ()
-                                                                                       : "Contract";
-
-          final Ebi50FurtherIdentificationType aEbiFurtherIdentification = new Ebi50FurtherIdentificationType ();
-          aEbiFurtherIdentification.setIdentificationType (sKey);
-          aEbiFurtherIdentification.setValue (StringHelper.trim (aDocumentReference.getIDValue ()));
-          aEbiBiller.addFurtherIdentification (aEbiFurtherIdentification);
-        }
 
       aEbiDoc.setBiller (aEbiBiller);
     }
@@ -285,10 +272,12 @@ public final class CreditNoteToEbInterface50Converter extends AbstractToEbInterf
     // CreditNote recipient
     {
       final CustomerPartyType aUBLCustomer = aUBLDoc.getAccountingCustomerParty ();
+      final PartyType aUBLParty = aUBLCustomer.getParty ();
+
       final Ebi50InvoiceRecipientType aEbiRecipient = new Ebi50InvoiceRecipientType ();
       // Find the tax scheme that uses VAT
-      if (aUBLCustomer.getParty () != null)
-        for (final PartyTaxSchemeType aUBLPartyTaxScheme : aUBLCustomer.getParty ().getPartyTaxScheme ())
+      if (aUBLParty != null)
+        for (final PartyTaxSchemeType aUBLPartyTaxScheme : aUBLParty.getPartyTaxScheme ())
         {
           // TaxScheme is a mandatory field
           if (isVATSchemeID (aUBLPartyTaxScheme.getTaxScheme ().getIDValue ()))
@@ -317,26 +306,27 @@ public final class CreditNoteToEbInterface50Converter extends AbstractToEbInterf
 
       for (final AdditionalAccountIDType aUBLAddAccountID : aUBLCustomer.getAdditionalAccountID ())
       {
-        final Ebi50FurtherIdentificationType aFI = new Ebi50FurtherIdentificationType ();
-        aFI.setIdentificationType ("Consolidator");
-        aFI.setValue (StringHelper.trim (aUBLAddAccountID.getValue ()));
-        aEbiRecipient.addFurtherIdentification (aFI);
+        aEbiRecipient.addFurtherIdentification (createFurtherIdentification (EFurtherIdentification.CONSOLIDATOR.getID (),
+                                                                             aUBLAddAccountID.getValue ()));
       }
 
-      if (aUBLCustomer.getParty () != null)
+      if (aUBLParty != null)
       {
-        aEbiRecipient.setAddress (convertParty (aUBLCustomer.getParty (),
+        aEbiRecipient.setAddress (convertParty (aUBLParty,
                                                 "AccountingCustomerParty",
                                                 aTransformationErrorList,
                                                 m_aContentLocale,
                                                 m_aDisplayLocale,
                                                 true));
-        aEbiRecipient.setContact (convertContact (aUBLCustomer.getParty (),
+        aEbiRecipient.setContact (convertContact (aUBLParty,
                                                   "AccountingCustomerParty",
                                                   aEbiRecipient.getAddress ().getName (),
                                                   aTransformationErrorList,
                                                   m_aDisplayLocale,
                                                   true));
+
+        // Add all further identifications
+        convertFurtherIdentifications (aUBLParty.getPartyIdentification (), aEbiRecipient::addFurtherIdentification);
       }
 
       aEbiDoc.setInvoiceRecipient (aEbiRecipient);
@@ -346,10 +336,12 @@ public final class CreditNoteToEbInterface50Converter extends AbstractToEbInterf
     final CustomerPartyType aUBLBuyer = aUBLDoc.getBuyerCustomerParty ();
     if (aUBLBuyer != null)
     {
+      final PartyType aUBLParty = aUBLBuyer.getParty ();
+
       final Ebi50OrderingPartyType aEbiOrderingParty = new Ebi50OrderingPartyType ();
       // Find the tax scheme that uses VAT
-      if (aUBLBuyer.getParty () != null)
-        for (final PartyTaxSchemeType aUBLPartyTaxScheme : aUBLBuyer.getParty ().getPartyTaxScheme ())
+      if (aUBLParty != null)
+        for (final PartyTaxSchemeType aUBLPartyTaxScheme : aUBLParty.getPartyTaxScheme ())
         {
           // TaxScheme is a mandatory field
           if (isVATSchemeID (aUBLPartyTaxScheme.getTaxScheme ().getIDValue ()))
@@ -367,20 +359,24 @@ public final class CreditNoteToEbInterface50Converter extends AbstractToEbInterf
                                                  .build ());
       }
 
-      if (aUBLBuyer.getParty () != null)
+      if (aUBLParty != null)
       {
-        aEbiOrderingParty.setAddress (convertParty (aUBLBuyer.getParty (),
+        aEbiOrderingParty.setAddress (convertParty (aUBLParty,
                                                     "BuyerCustomerParty",
                                                     aTransformationErrorList,
                                                     m_aContentLocale,
                                                     m_aDisplayLocale,
                                                     true));
-        aEbiOrderingParty.setContact (convertContact (aUBLBuyer.getParty (),
+        aEbiOrderingParty.setContact (convertContact (aUBLParty,
                                                       "BuyerCustomerParty",
                                                       aEbiOrderingParty.getAddress ().getName (),
                                                       aTransformationErrorList,
                                                       m_aDisplayLocale,
                                                       true));
+
+        // Add all further identifications
+        convertFurtherIdentifications (aUBLParty.getPartyIdentification (),
+                                       aEbiOrderingParty::addFurtherIdentification);
       }
 
       if (aUBLBuyer.getSupplierAssignedAccountID () != null)
@@ -389,12 +385,11 @@ public final class CreditNoteToEbInterface50Converter extends AbstractToEbInterf
         aEbiOrderingParty.setBillersOrderingPartyID (StringHelper.trim (aUBLBuyer.getSupplierAssignedAccountIDValue ()));
       }
       if (StringHelper.hasNoText (aEbiOrderingParty.getBillersOrderingPartyID ()) &&
-          aUBLBuyer.getParty () != null &&
-          aUBLBuyer.getParty ().hasPartyIdentificationEntries ())
+          aUBLParty != null &&
+          aUBLParty.hasPartyIdentificationEntries ())
       {
         // New version for BIS V2
-        aEbiOrderingParty.setBillersOrderingPartyID (StringHelper.trim (aUBLBuyer.getParty ()
-                                                                                 .getPartyIdentificationAtIndex (0)
+        aEbiOrderingParty.setBillersOrderingPartyID (StringHelper.trim (aUBLParty.getPartyIdentificationAtIndex (0)
                                                                                  .getIDValue ()));
       }
       if (StringHelper.hasNoText (aEbiOrderingParty.getBillersOrderingPartyID ()) &&

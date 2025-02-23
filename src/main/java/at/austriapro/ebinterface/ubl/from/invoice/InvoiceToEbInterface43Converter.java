@@ -38,6 +38,7 @@ import com.helger.commons.math.MathHelper;
 import com.helger.commons.state.ETriState;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.StringParser;
+import com.helger.ebinterface.codelist.EFurtherIdentification;
 import com.helger.ebinterface.codelist.ETaxCode;
 import com.helger.ebinterface.v43.*;
 
@@ -48,12 +49,12 @@ import at.austriapro.ebinterface.ubl.from.helper.TaxCategoryKey;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AllowanceChargeType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CustomerPartyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DeliveryType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DocumentReferenceType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.InvoiceLineType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.MonetaryTotalType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.OrderLineReferenceType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.OrderReferenceType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyTaxSchemeType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PeriodType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.SupplierPartyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxCategoryType;
@@ -182,10 +183,12 @@ public final class InvoiceToEbInterface43Converter extends AbstractToEbInterface
     // Biller/Supplier (creator of the invoice)
     {
       final SupplierPartyType aUBLSupplier = aUBLDoc.getAccountingSupplierParty ();
+      final PartyType aUBLParty = aUBLSupplier.getParty ();
+
       final Ebi43BillerType aEbiBiller = new Ebi43BillerType ();
       // Find the tax scheme that uses VAT
-      if (aUBLSupplier.getParty () != null)
-        for (final PartyTaxSchemeType aUBLPartyTaxScheme : aUBLSupplier.getParty ().getPartyTaxScheme ())
+      if (aUBLParty != null)
+        for (final PartyTaxSchemeType aUBLPartyTaxScheme : aUBLParty.getPartyTaxScheme ())
         {
           // TaxScheme is a mandatory field
           if (isVATSchemeID (aUBLPartyTaxScheme.getTaxScheme ().getIDValue ()))
@@ -209,13 +212,12 @@ public final class InvoiceToEbInterface43Converter extends AbstractToEbInterface
         aEbiBiller.setInvoiceRecipientsBillerID (StringHelper.trim (aUBLSupplier.getCustomerAssignedAccountIDValue ()));
       }
       if (StringHelper.hasNoText (aEbiBiller.getInvoiceRecipientsBillerID ()) &&
-          aUBLSupplier.getParty () != null &&
-          aUBLSupplier.getParty ().hasPartyIdentificationEntries ())
+          aUBLParty != null &&
+          aUBLParty.hasPartyIdentificationEntries ())
       {
         // New version for BIS V2
-        aEbiBiller.setInvoiceRecipientsBillerID (StringHelper.trim (aUBLSupplier.getParty ()
-                                                                                .getPartyIdentificationAtIndex (0)
-                                                                                .getIDValue ()));
+        aEbiBiller.setInvoiceRecipientsBillerID (StringHelper.trim (aUBLParty.getPartyIdentificationAtIndex (0)
+                                                                             .getIDValue ()));
       }
 
       // Disabled because field is optional
@@ -231,15 +233,13 @@ public final class InvoiceToEbInterface43Converter extends AbstractToEbInterface
 
       for (final AdditionalAccountIDType aUBLAddAccountID : aUBLSupplier.getAdditionalAccountID ())
       {
-        final Ebi43FurtherIdentificationType aFI = new Ebi43FurtherIdentificationType ();
-        aFI.setIdentificationType ("Consolidator");
-        aFI.setValue (StringHelper.trim (aUBLAddAccountID.getValue ()));
-        aEbiBiller.addFurtherIdentification (aFI);
+        aEbiBiller.addFurtherIdentification (createFurtherIdentification (EFurtherIdentification.CONSOLIDATOR.getID (),
+                                                                          aUBLAddAccountID.getValue ()));
       }
 
-      if (aUBLSupplier.getParty () != null)
+      if (aUBLParty != null)
       {
-        aEbiBiller.setAddress (convertParty (aUBLSupplier.getParty (),
+        aEbiBiller.setAddress (convertParty (aUBLParty,
                                              "AccountingSupplierParty",
                                              aTransformationErrorList,
                                              m_aContentLocale,
@@ -250,23 +250,10 @@ public final class InvoiceToEbInterface43Converter extends AbstractToEbInterface
         if (StringHelper.hasNoText (aEbiBiller.getAddress ().getEmail ()))
           if (m_aSettings.isEnforceSupplierEmailAddress ())
             aEbiBiller.getAddress ().setEmail (m_aSettings.getEnforcedSupplierEmailAddress ());
+
+        // Add all further identifications
+        convertFurtherIdentifications (aUBLParty.getPartyIdentification (), aEbiBiller::addFurtherIdentification);
       }
-
-      // Add contract reference as further identification
-      for (final DocumentReferenceType aDocumentReference : aUBLDoc.getContractDocumentReference ())
-        if (StringHelper.hasTextAfterTrim (aDocumentReference.getIDValue ()) &&
-            FURTHER_IDENTIFICATION_SCHEME_NAME_EBI2UBL.equals (aDocumentReference.getID ().getSchemeName ()))
-        {
-          final String sKey = StringHelper.hasText (aDocumentReference.getID ()
-                                                                      .getSchemeID ()) ? aDocumentReference.getID ()
-                                                                                                           .getSchemeID ()
-                                                                                       : "Contract";
-
-          final Ebi43FurtherIdentificationType aEbiFurtherIdentification = new Ebi43FurtherIdentificationType ();
-          aEbiFurtherIdentification.setIdentificationType (sKey);
-          aEbiFurtherIdentification.setValue (StringHelper.trim (aDocumentReference.getIDValue ()));
-          aEbiBiller.addFurtherIdentification (aEbiFurtherIdentification);
-        }
 
       aEbiDoc.setBiller (aEbiBiller);
     }
@@ -274,10 +261,12 @@ public final class InvoiceToEbInterface43Converter extends AbstractToEbInterface
     // Invoice recipient
     {
       final CustomerPartyType aUBLCustomer = aUBLDoc.getAccountingCustomerParty ();
+      final PartyType aUBLParty = aUBLCustomer.getParty ();
+
       final Ebi43InvoiceRecipientType aEbiRecipient = new Ebi43InvoiceRecipientType ();
       // Find the tax scheme that uses VAT
-      if (aUBLCustomer.getParty () != null)
-        for (final PartyTaxSchemeType aUBLPartyTaxScheme : aUBLCustomer.getParty ().getPartyTaxScheme ())
+      if (aUBLParty != null)
+        for (final PartyTaxSchemeType aUBLPartyTaxScheme : aUBLParty.getPartyTaxScheme ())
         {
           // TaxScheme is a mandatory field
           if (isVATSchemeID (aUBLPartyTaxScheme.getTaxScheme ().getIDValue ()))
@@ -306,19 +295,22 @@ public final class InvoiceToEbInterface43Converter extends AbstractToEbInterface
 
       for (final AdditionalAccountIDType aUBLAddAccountID : aUBLCustomer.getAdditionalAccountID ())
       {
-        final Ebi43FurtherIdentificationType aFI = new Ebi43FurtherIdentificationType ();
-        aFI.setIdentificationType ("Consolidator");
-        aFI.setValue (StringHelper.trim (aUBLAddAccountID.getValue ()));
-        aEbiRecipient.addFurtherIdentification (aFI);
+        aEbiRecipient.addFurtherIdentification (createFurtherIdentification (EFurtherIdentification.CONSOLIDATOR.getID (),
+                                                                             aUBLAddAccountID.getValue ()));
       }
 
-      if (aUBLCustomer.getParty () != null)
-        aEbiRecipient.setAddress (convertParty (aUBLCustomer.getParty (),
+      if (aUBLParty != null)
+      {
+        aEbiRecipient.setAddress (convertParty (aUBLParty,
                                                 "AccountingCustomerParty",
                                                 aTransformationErrorList,
                                                 m_aContentLocale,
                                                 m_aDisplayLocale,
                                                 true));
+
+        // Add all further identifications
+        convertFurtherIdentifications (aUBLParty.getPartyIdentification (), aEbiRecipient::addFurtherIdentification);
+      }
       if (aEbiRecipient.getAddress () == null)
       {
         // Required by ebInterface
@@ -335,10 +327,12 @@ public final class InvoiceToEbInterface43Converter extends AbstractToEbInterface
     final CustomerPartyType aUBLBuyer = aUBLDoc.getBuyerCustomerParty ();
     if (aUBLBuyer != null)
     {
+      final PartyType aUBLParty = aUBLBuyer.getParty ();
+
       final Ebi43OrderingPartyType aEbiOrderingParty = new Ebi43OrderingPartyType ();
       // Find the tax scheme that uses VAT
-      if (aUBLBuyer.getParty () != null)
-        for (final PartyTaxSchemeType aUBLPartyTaxScheme : aUBLBuyer.getParty ().getPartyTaxScheme ())
+      if (aUBLParty != null)
+        for (final PartyTaxSchemeType aUBLPartyTaxScheme : aUBLParty.getPartyTaxScheme ())
         {
           // TaxScheme is a mandatory field
           if (isVATSchemeID (aUBLPartyTaxScheme.getTaxScheme ().getIDValue ()))
@@ -356,13 +350,19 @@ public final class InvoiceToEbInterface43Converter extends AbstractToEbInterface
                                                  .build ());
       }
 
-      if (aUBLBuyer.getParty () != null)
-        aEbiOrderingParty.setAddress (convertParty (aUBLBuyer.getParty (),
+      if (aUBLParty != null)
+      {
+        aEbiOrderingParty.setAddress (convertParty (aUBLParty,
                                                     "BuyerCustomerParty",
                                                     aTransformationErrorList,
                                                     m_aContentLocale,
                                                     m_aDisplayLocale,
                                                     true));
+
+        // Add all further identifications
+        convertFurtherIdentifications (aUBLParty.getPartyIdentification (),
+                                       aEbiOrderingParty::addFurtherIdentification);
+      }
       if (aEbiOrderingParty.getAddress () == null)
       {
         // Required by ebInterface
@@ -378,12 +378,11 @@ public final class InvoiceToEbInterface43Converter extends AbstractToEbInterface
         aEbiOrderingParty.setBillersOrderingPartyID (StringHelper.trim (aUBLBuyer.getSupplierAssignedAccountIDValue ()));
       }
       if (StringHelper.hasNoText (aEbiOrderingParty.getBillersOrderingPartyID ()) &&
-          aUBLBuyer.getParty () != null &&
-          aUBLBuyer.getParty ().hasPartyIdentificationEntries ())
+          aUBLParty != null &&
+          aUBLParty.hasPartyIdentificationEntries ())
       {
         // New version for BIS V2
-        aEbiOrderingParty.setBillersOrderingPartyID (StringHelper.trim (aUBLBuyer.getParty ()
-                                                                                 .getPartyIdentificationAtIndex (0)
+        aEbiOrderingParty.setBillersOrderingPartyID (StringHelper.trim (aUBLParty.getPartyIdentificationAtIndex (0)
                                                                                  .getIDValue ()));
       }
       if (StringHelper.hasNoText (aEbiOrderingParty.getBillersOrderingPartyID ()) &&

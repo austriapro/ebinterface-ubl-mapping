@@ -32,6 +32,9 @@ Add the following to your pom.xml to use this artifact, replacing `x.y.z` with t
 
 # News and noteworthy
 
+* v5.3.0 - work in progress
+    * Requires ph-ebinterface 7.1.1
+    * Fixed the mapping of ebInterface `FurtherIdentification` from `DocumentReference` to `Party/PartyIdentification`
 * v5.2.7 - 2024-10-17
     * Made sure the UBL invoice line `Item/Name` element has higher precedence than `Item/Description`
 * v5.2.6 - 2024-10-11

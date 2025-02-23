@@ -26,7 +26,7 @@
   </parent>
   <groupId>at.austriapro</groupId>
   <artifactId>ebinterface-ubl-mapping</artifactId>
-  <version>5.2.8-SNAPSHOT</version>
+  <version>5.3.0-SNAPSHOT</version>
   <packaging>bundle</packaging>
   <name>ebinterface-ubl-mapping</name>
   <inceptionYear>2010</inceptionYear>
@@ -73,7 +73,7 @@
       <dependency>
         <groupId>com.helger</groupId>
         <artifactId>ph-ebinterface</artifactId>
-        <version>7.1.0</version>
+        <version>7.1.1-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>com.helger.masterdata</groupId>

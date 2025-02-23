@@ -285,20 +285,23 @@ public class EbInterface40ToInvoiceConverter extends AbstractEbInterface40ToUBLC
           aPI.setID (aEbiBiller.getInvoiceRecipientsBillerID ());
           aUBLParty.addPartyIdentification (aPI);
         }
-        aUBLSupplier.setParty (aUBLParty);
 
         // Put this into global contract document references
         for (final Ebi40FurtherIdentificationType aEbiFI : aEbiBiller.getFurtherIdentification ())
         {
-          final DocumentReferenceType aUBLContractDoc = new DocumentReferenceType ();
+          if (aUBLParty == null)
+            aUBLParty = new PartyType ();
+
+          final PartyIdentificationType aUBLPartyID = new PartyIdentificationType ();
           final IDType aID = new IDType ();
           aID.setValue (aEbiFI.getValue ());
           aID.setSchemeID (aEbiFI.getIdentificationType ());
           aID.setSchemeName (FURTHER_IDENTIFICATION_SCHEME_NAME_EBI2UBL);
-          aUBLContractDoc.setID (aID);
-          aUBLDoc.addContractDocumentReference (aUBLContractDoc);
+          aUBLPartyID.setID (aID);
+          aUBLParty.addPartyIdentification (aUBLPartyID);
         }
 
+        aUBLSupplier.setParty (aUBLParty);
         aUBLDoc.setAccountingSupplierParty (aUBLSupplier);
       }
     }

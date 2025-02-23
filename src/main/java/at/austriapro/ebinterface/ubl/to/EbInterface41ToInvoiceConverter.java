@@ -29,7 +29,6 @@ import com.helger.ebinterface.v41.*;
 
 import jakarta.xml.bind.JAXBElement;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.*;
-import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.AdditionalAccountIDType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.AllowanceChargeReasonType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.CompanyIDType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.DescriptionType;
@@ -357,20 +356,23 @@ public class EbInterface41ToInvoiceConverter extends AbstractEbInterface41ToUBLC
           aPI.setID (aEbiBiller.getInvoiceRecipientsBillerID ());
           aUBLParty.addPartyIdentification (aPI);
         }
-        aUBLSupplier.setParty (aUBLParty);
 
         // Put this into global contract document references
         for (final Ebi41FurtherIdentificationType aEbiFI : aEbiBiller.getFurtherIdentification ())
         {
-          final DocumentReferenceType aUBLContractDoc = new DocumentReferenceType ();
+          if (aUBLParty == null)
+            aUBLParty = new PartyType ();
+
+          final PartyIdentificationType aUBLPartyID = new PartyIdentificationType ();
           final IDType aID = new IDType ();
           aID.setValue (aEbiFI.getValue ());
           aID.setSchemeID (aEbiFI.getIdentificationType ());
           aID.setSchemeName (FURTHER_IDENTIFICATION_SCHEME_NAME_EBI2UBL);
-          aUBLContractDoc.setID (aID);
-          aUBLDoc.addContractDocumentReference (aUBLContractDoc);
+          aUBLPartyID.setID (aID);
+          aUBLParty.addPartyIdentification (aUBLPartyID);
         }
 
+        aUBLSupplier.setParty (aUBLParty);
         aUBLDoc.setAccountingSupplierParty (aUBLSupplier);
       }
     }
@@ -404,16 +406,20 @@ public class EbInterface41ToInvoiceConverter extends AbstractEbInterface41ToUBLC
           aPI.setID (aEbiIR.getBillersInvoiceRecipientID ());
           aUBLParty.addPartyIdentification (aPI);
         }
-        aUBLCustomer.setParty (aUBLParty);
 
         // Put this into global contract document references
         for (final Ebi41FurtherIdentificationType aEbiFI : aEbiIR.getFurtherIdentification ())
         {
-          final AdditionalAccountIDType aID = new AdditionalAccountIDType ();
+          if (aUBLParty == null)
+            aUBLParty = new PartyType ();
+
+          final PartyIdentificationType aUBLPartyID = new PartyIdentificationType ();
+          final IDType aID = new IDType ();
           aID.setValue (aEbiFI.getValue ());
           aID.setSchemeID (aEbiFI.getIdentificationType ());
           aID.setSchemeName (FURTHER_IDENTIFICATION_SCHEME_NAME_EBI2UBL);
-          aUBLCustomer.addAdditionalAccountID (aID);
+          aUBLPartyID.setID (aID);
+          aUBLParty.addPartyIdentification (aUBLPartyID);
         }
 
         // Handle order reference from invoice recipient
@@ -427,6 +433,7 @@ public class EbInterface41ToInvoiceConverter extends AbstractEbInterface41ToUBLC
           aUBLDoc.setOrderReference (aUBLOR);
         }
 
+        aUBLCustomer.setParty (aUBLParty);
         aUBLDoc.setAccountingCustomerParty (aUBLCustomer);
       }
     }
@@ -460,20 +467,23 @@ public class EbInterface41ToInvoiceConverter extends AbstractEbInterface41ToUBLC
           aPI.setID (aEbiOrdering.getBillersOrderingPartyID ());
           aUBLParty.addPartyIdentification (aPI);
         }
-        aUBLCustomer.setParty (aUBLParty);
 
         // Put this into global contract document references
         for (final Ebi41FurtherIdentificationType aEbiFI : aEbiOrdering.getFurtherIdentification ())
         {
-          final DocumentReferenceType aUBLContractDoc = new DocumentReferenceType ();
+          if (aUBLParty == null)
+            aUBLParty = new PartyType ();
+
+          final PartyIdentificationType aUBLPartyID = new PartyIdentificationType ();
           final IDType aID = new IDType ();
           aID.setValue (aEbiFI.getValue ());
           aID.setSchemeID (aEbiFI.getIdentificationType ());
           aID.setSchemeName (FURTHER_IDENTIFICATION_SCHEME_NAME_EBI2UBL);
-          aUBLContractDoc.setID (aID);
-          aUBLDoc.addContractDocumentReference (aUBLContractDoc);
+          aUBLPartyID.setID (aID);
+          aUBLParty.addPartyIdentification (aUBLPartyID);
         }
 
+        aUBLCustomer.setParty (aUBLParty);
         aUBLDoc.setBuyerCustomerParty (aUBLCustomer);
       }
     }

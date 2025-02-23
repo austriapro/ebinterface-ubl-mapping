@@ -19,6 +19,7 @@ package at.austriapro.ebinterface.ubl.from;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Locale;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
@@ -35,6 +36,7 @@ import com.helger.commons.locale.country.CountryCache;
 import com.helger.commons.math.MathHelper;
 import com.helger.commons.regex.RegExHelper;
 import com.helger.commons.string.StringHelper;
+import com.helger.ebinterface.codelist.EFurtherIdentification;
 import com.helger.ebinterface.v41.*;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.*;
@@ -473,9 +475,7 @@ public abstract class AbstractToEbInterface41Converter extends AbstractToEbInter
                                                     @Nonnull final Ebi41InvoiceType aEbiDoc)
   {
     for (final DocumentReferenceType aUBLDocumentReference : aUBLDocumentReferences)
-      if (StringHelper.hasText (aUBLDocumentReference.getIDValue ()) &&
-          aUBLDocumentReference.getAttachment () == null &&
-          FURTHER_IDENTIFICATION_SCHEME_NAME_EBI2UBL.equals (aUBLDocumentReference.getID ().getSchemeName ()))
+      if (StringHelper.hasText (aUBLDocumentReference.getIDValue ()) && aUBLDocumentReference.getAttachment () == null)
       {
         final Ebi41RelatedDocumentType aEbiRelatedDocument = new Ebi41RelatedDocumentType ();
         aEbiRelatedDocument.setInvoiceNumber (aUBLDocumentReference.getIDValue ());
@@ -935,5 +935,27 @@ public abstract class AbstractToEbInterface41Converter extends AbstractToEbInter
       // Independent if discounts are present or not
       aEbiDoc.setPaymentConditions (aEbiPaymentConditions);
     }
+  }
+
+  @Nonnull
+  protected static Ebi41FurtherIdentificationType createFurtherIdentification (@Nonnull final String sKey,
+                                                                               @Nonnull final String sValue)
+  {
+    final Ebi41FurtherIdentificationType aEbiFurtherIdentification = new Ebi41FurtherIdentificationType ();
+    aEbiFurtherIdentification.setIdentificationType (StringHelper.trim (sKey));
+    aEbiFurtherIdentification.setValue (StringHelper.trim (sValue));
+    return aEbiFurtherIdentification;
+  }
+
+  protected static void convertFurtherIdentifications (@Nonnull final List <PartyIdentificationType> aPartyIDs,
+                                                       @Nonnull final Consumer <? super Ebi41FurtherIdentificationType> aFIConsumer)
+  {
+    for (final PartyIdentificationType aUBLPartyID : aPartyIDs)
+      if (aUBLPartyID.getID () != null &&
+          FURTHER_IDENTIFICATION_SCHEME_NAME_EBI2UBL.equals (aUBLPartyID.getID ().getSchemeName ()))
+      {
+        final String sKey = orDefault (aUBLPartyID.getID ().getSchemeID (), EFurtherIdentification.CONTRACT.getID ());
+        aFIConsumer.accept (createFurtherIdentification (sKey, aUBLPartyID.getIDValue ()));
+      }
   }
 }

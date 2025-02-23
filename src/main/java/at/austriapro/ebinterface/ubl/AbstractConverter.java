@@ -19,12 +19,15 @@ package at.austriapro.ebinterface.ubl;
 import java.math.RoundingMode;
 import java.util.Locale;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.collection.impl.CommonsLinkedHashSet;
+import com.helger.commons.string.StringHelper;
 
 /**
  * Base class for Peppol UBL to/from ebInterface converter
@@ -153,5 +156,27 @@ public abstract class AbstractConverter
   {
     m_aDisplayLocale = ValueEnforcer.notNull (aDisplayLocale, "DisplayLocale");
     m_aContentLocale = ValueEnforcer.notNull (aContentLocale, "ContentLocale");
+  }
+
+  protected static <T> boolean ifNotNull (@Nonnull final Consumer <? super T> aConsumer, @Nullable final T aObj)
+  {
+    if (aObj == null)
+      return false;
+    aConsumer.accept (aObj);
+    return true;
+  }
+
+  protected static boolean ifNotEmpty (@Nonnull final Consumer <? super String> aConsumer, @Nullable final String s)
+  {
+    if (StringHelper.hasNoText (s))
+      return false;
+    aConsumer.accept (s);
+    return true;
+  }
+
+  @Nullable
+  protected static String orDefault (@Nullable final String s, @Nullable final String sDefault)
+  {
+    return StringHelper.hasText (s) ? s : sDefault;
   }
 }
