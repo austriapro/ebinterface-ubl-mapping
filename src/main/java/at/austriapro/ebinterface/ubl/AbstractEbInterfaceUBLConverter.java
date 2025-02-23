@@ -35,7 +35,7 @@ import com.helger.commons.string.StringHelper;
  * @author philip
  */
 @Immutable
-public abstract class AbstractConverter
+public abstract class AbstractEbInterfaceUBLConverter
 {
   public static final String SCHEME_BIC = "BIC";
   public static final String REGEX_BIC = "[0-9A-Za-z]{8}([0-9A-Za-z]{3})?";
@@ -164,7 +164,7 @@ public abstract class AbstractConverter
    * @param aContentLocale
    *        The locale for the created payload. May not be <code>null</code>.
    */
-  public AbstractConverter (@Nonnull final Locale aDisplayLocale, @Nonnull final Locale aContentLocale)
+  public AbstractEbInterfaceUBLConverter (@Nonnull final Locale aDisplayLocale, @Nonnull final Locale aContentLocale)
   {
     m_aDisplayLocale = ValueEnforcer.notNull (aDisplayLocale, "DisplayLocale");
     m_aContentLocale = ValueEnforcer.notNull (aContentLocale, "ContentLocale");

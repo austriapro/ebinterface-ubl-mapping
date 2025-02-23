@@ -26,7 +26,7 @@ import com.helger.commons.locale.country.CountryCache;
 import com.helger.commons.string.StringHelper;
 import com.helger.ebinterface.codelist.ETaxCategoryCode;
 
-import at.austriapro.ebinterface.ubl.AbstractConverter;
+import at.austriapro.ebinterface.ubl.AbstractEbInterfaceUBLConverter;
 import at.austriapro.ebinterface.ubl.helper.MultilingualCountryCache;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CountryType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.ItemPropertyType;
@@ -39,7 +39,7 @@ import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.Tax
  * @author Philip Helger
  */
 @Immutable
-public abstract class AbstractEbInterfaceToUBLConverter extends AbstractConverter
+public abstract class AbstractEbInterfaceToUBLConverter extends AbstractEbInterfaceUBLConverter
 {
   public static final String CURRENCY_LIST_AGENCY_ID = "6";
   public static final String CURRENCY_LIST_ID = "ISO 4217 Alpha";

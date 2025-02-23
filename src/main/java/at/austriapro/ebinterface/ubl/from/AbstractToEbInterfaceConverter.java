@@ -36,7 +36,7 @@ import com.helger.commons.text.resolve.DefaultTextResolver;
 import com.helger.commons.text.util.TextHelper;
 import com.helger.peppolid.IProcessIdentifier;
 
-import at.austriapro.ebinterface.ubl.AbstractConverter;
+import at.austriapro.ebinterface.ubl.AbstractEbInterfaceUBLConverter;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AllowanceChargeType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.BranchType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.FinancialAccountType;
@@ -63,7 +63,7 @@ import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
  * @author philip
  */
 @Immutable
-public abstract class AbstractToEbInterfaceConverter extends AbstractConverter
+public abstract class AbstractToEbInterfaceConverter extends AbstractEbInterfaceUBLConverter
 {
   @Translatable
   public enum EText implements IHasDisplayTextWithArgs
