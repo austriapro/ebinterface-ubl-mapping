@@ -61,22 +61,28 @@ public abstract class AbstractConverter
   public static final String INVOICE_TYPE_CODE_INVOICE = "380";
   public static final String INVOICE_TYPE_CODE_PREPAYMENT_INVOICE = "386";
   public static final String INVOICE_TYPE_CODE_SELF_BILLING = "389";
-  // List taken from the EN 16931 validation artefacts 1.3.3
+  // List taken from the EN 16931 validation artefacts 1.3.13
   // Also matching
   // https://docs.peppol.eu/poacc/billing/3.0/codelist/UNCL1001-inv/
-  public static final Set <String> INVOICE_TYPE_CODES = new CommonsLinkedHashSet <> ("80",
+  public static final Set <String> INVOICE_TYPE_CODES = new CommonsLinkedHashSet <> ("71",
+                                                                                     "80",
+                                                                                     "81",
                                                                                      "82",
                                                                                      "84",
+                                                                                     "102",
                                                                                      "130",
                                                                                      "202",
                                                                                      "203",
                                                                                      "204",
                                                                                      "211",
                                                                                      INVOICE_TYPE_CODE_FINAL_PAYMENT,
+                                                                                     "219",
                                                                                      "295",
                                                                                      "325",
                                                                                      INVOICE_TYPE_CODE_PARTIAL,
+                                                                                     "331",
                                                                                      INVOICE_TYPE_CODE_INVOICE,
+                                                                                     "382",
                                                                                      "383",
                                                                                      "384",
                                                                                      "385",
@@ -91,13 +97,19 @@ public abstract class AbstractConverter
                                                                                      "456",
                                                                                      "457",
                                                                                      "527",
+                                                                                     "553",
                                                                                      "575",
                                                                                      "623",
                                                                                      "633",
                                                                                      "751",
                                                                                      "780",
+                                                                                     "817",
+                                                                                     "870",
+                                                                                     "875",
+                                                                                     "876",
+                                                                                     "877",
                                                                                      "935").getAsUnmodifiable ();
-  // List taken from the EN 16931 validation artefacts 1.3.3
+  // List taken from the EN 16931 validation artefacts 1.3.13
   // Also matching
   // https://docs.peppol.eu/poacc/billing/3.0/codelist/UNCL1001-cn/
   public static final String INVOICE_TYPE_CODE_CREDIT_NOTE = "381";
