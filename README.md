@@ -32,7 +32,7 @@ Add the following to your pom.xml to use this artifact, replacing `x.y.z` with t
 
 # News and noteworthy
 
-* v5.3.0 - work in progress
+* v5.3.0 - 2025-05-04
     * Requires ph-ebinterface 7.1.1
     * Fixed the mapping of ebInterface `FurtherIdentification` from `DocumentReference` to `Party/PartyIdentification`
     * Updated Invoice Type Codes according to EN 16931 validation rules 1.3.13
