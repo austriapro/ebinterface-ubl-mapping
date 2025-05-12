@@ -60,6 +60,7 @@ import com.helger.ebinterface.v42.Ebi42UniversalBankTransactionType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.*;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.DescriptionType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.DocumentDescriptionType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.InstructionIDType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.InstructionNoteType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.NoteType;
@@ -936,11 +937,29 @@ public abstract class AbstractToEbInterface42Converter extends AbstractToEbInter
                                                        @Nonnull final Consumer <? super Ebi42FurtherIdentificationType> aFIConsumer)
   {
     for (final PartyIdentificationType aUBLPartyID : aPartyIDs)
-      if (aUBLPartyID.getID () != null &&
-          FURTHER_IDENTIFICATION_SCHEME_NAME_EBI2UBL.equals (aUBLPartyID.getID ().getSchemeName ()))
+    {
+      final IDType aID = aUBLPartyID.getID ();
+      if (aID != null)
       {
-        final String sKey = orDefault (aUBLPartyID.getID ().getSchemeID (), EFurtherIdentification.CONTRACT.getID ());
-        aFIConsumer.accept (createFurtherIdentification (sKey, aUBLPartyID.getIDValue ()));
+        final String sValue = aID.getValue ();
+        if (StringHelper.hasText (sValue))
+        {
+          String sKey = aID.getSchemeID ();
+          // Take all of those, as they were created in the reverse mapping
+          if (FURTHER_IDENTIFICATION_SCHEME_NAME_EBI2UBL.equals (aID.getSchemeName ()))
+          {
+            // Make sure key is not empty
+            sKey = orDefault (sKey, EFurtherIdentification.CONTRACT.getID ());
+            aFIConsumer.accept (createFurtherIdentification (sKey, aID.getValue ()));
+          }
+          else
+            if (StringHelper.hasText (sKey))
+            {
+              // Use only non-empty keys
+              aFIConsumer.accept (createFurtherIdentification (sKey, aID.getValue ()));
+            }
+        }
       }
+    }
   }
 }
