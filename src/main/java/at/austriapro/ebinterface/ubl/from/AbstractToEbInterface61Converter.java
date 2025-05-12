@@ -978,12 +978,6 @@ public abstract class AbstractToEbInterface61Converter extends AbstractToEbInter
             sKey = orDefault (sKey, EFurtherIdentification.CONTRACT.getID ());
             aFIConsumer.accept (createFurtherIdentification (sKey, aID.getValue ()));
           }
-          else
-            if (StringHelper.hasText (sKey))
-            {
-              // Use only non-empty keys
-              aFIConsumer.accept (createFurtherIdentification (sKey, aID.getValue ()));
-            }
         }
       }
     }
