@@ -209,14 +209,16 @@ public final class InvoiceToEbInterface41Converter extends AbstractToEbInterface
         // The customer's internal identifier for the supplier.
         aEbiBiller.setInvoiceRecipientsBillerID (StringHelper.trim (aUBLSupplier.getCustomerAssignedAccountIDValue ()));
       }
-      if (StringHelper.hasNoText (aEbiBiller.getInvoiceRecipientsBillerID ()) &&
-          aUBLParty != null &&
-          aUBLParty.hasPartyIdentificationEntries ())
-      {
-        // New version for BIS V2
-        aEbiBiller.setInvoiceRecipientsBillerID (StringHelper.trim (aUBLParty.getPartyIdentificationAtIndex (0)
-                                                                             .getIDValue ()));
-      }
+
+      if (false)
+        if (StringHelper.hasNoText (aEbiBiller.getInvoiceRecipientsBillerID ()) &&
+            aUBLParty != null &&
+            aUBLParty.hasPartyIdentificationEntries ())
+        {
+          // New version for BIS V2
+          aEbiBiller.setInvoiceRecipientsBillerID (StringHelper.trim (aUBLParty.getPartyIdentificationAtIndex (0)
+                                                                               .getIDValue ()));
+        }
 
       // Disabled because field is optional
       if (false)
@@ -375,14 +377,17 @@ public final class InvoiceToEbInterface41Converter extends AbstractToEbInterface
         // The billers internal identifier for the ordering party.
         aEbiOrderingParty.setBillersOrderingPartyID (StringHelper.trim (aUBLBuyer.getSupplierAssignedAccountIDValue ()));
       }
-      if (StringHelper.hasNoText (aEbiOrderingParty.getBillersOrderingPartyID ()) &&
-          aUBLParty != null &&
-          aUBLParty.hasPartyIdentificationEntries ())
-      {
-        // New version for BIS V2
-        aEbiOrderingParty.setBillersOrderingPartyID (StringHelper.trim (aUBLParty.getPartyIdentificationAtIndex (0)
-                                                                                 .getIDValue ()));
-      }
+
+      if (false)
+        if (StringHelper.hasNoText (aEbiOrderingParty.getBillersOrderingPartyID ()) &&
+            aUBLParty != null &&
+            aUBLParty.hasPartyIdentificationEntries ())
+        {
+          // New version for BIS V2
+          aEbiOrderingParty.setBillersOrderingPartyID (StringHelper.trim (aUBLParty.getPartyIdentificationAtIndex (0)
+                                                                                   .getIDValue ()));
+        }
+
       if (StringHelper.hasNoText (aEbiOrderingParty.getBillersOrderingPartyID ()) &&
           aEbiDoc.getInvoiceRecipient () != null)
       {

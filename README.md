@@ -32,6 +32,9 @@ Add the following to your pom.xml to use this artifact, replacing `x.y.z` with t
 
 # News and noteworthy
 
+* v5.3.2 - work in progress
+    * Removed Peppol BIS v2 mapping of `InvoiceRecipientsBillerID`
+    * Added the exception fixes of 5.3.1 also to CreditNote mapping
 * v5.3.1 - 2025-06-26
     * Fixed potential exception, if an ebInterface has no line extension amount
 * v5.3.0 - 2025-05-04
