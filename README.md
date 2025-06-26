@@ -32,6 +32,8 @@ Add the following to your pom.xml to use this artifact, replacing `x.y.z` with t
 
 # News and noteworthy
 
+* v5.3.1 - work in progress
+    * Fixed potential exception, if an ebInterface has no line extension amount
 * v5.3.0 - 2025-05-04
     * Requires ph-ebinterface 7.1.1
     * Fixed the mapping of ebInterface `FurtherIdentification` from `DocumentReference` to `Party/PartyIdentification`
