@@ -850,8 +850,10 @@ public final class InvoiceToEbInterface60Converter extends AbstractToEbInterface
           aEbiUnitPriceValue = aEbiUnitPriceValue.divide (aBQ, SCALE_PRICE4, ROUNDING_MODE);
 
         // Line item amount (quantity * unit price +- reduction / surcharge)
-        aEbiListLineItem.setLineItemAmount (aUBLLine.getLineExtensionAmountValue ()
-                                                    .setScale (SCALE_PRICE2, ROUNDING_MODE));
+        aEbiListLineItem.setLineItemAmount (aUBLLine.getLineExtensionAmountValue () == null ? BigDecimal.ZERO : aUBLLine
+                                                                                                                        .getLineExtensionAmountValue ()
+                                                                                                                        .setScale (SCALE_PRICE2,
+                                                                                                                                   ROUNDING_MODE));
 
         final Ebi60TaxItemType aEbiTaxItem = new Ebi60TaxItemType ();
         aEbiTaxItem.setTaxableAmount (aEbiListLineItem.getLineItemAmount ());
@@ -1044,7 +1046,7 @@ public final class InvoiceToEbInterface60Converter extends AbstractToEbInterface
             sKey = aAdditionalItem.getIDValue ();
 
           // Value is Value :)
-          String sValue = aAdditionalItem.getValueValue ();
+          final String sValue = aAdditionalItem.getValueValue ();
 
           if (StringHelper.hasText (sKey) && StringHelper.hasText (sValue))
           {

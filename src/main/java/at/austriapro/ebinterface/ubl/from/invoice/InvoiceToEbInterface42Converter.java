@@ -871,8 +871,10 @@ public final class InvoiceToEbInterface42Converter extends AbstractToEbInterface
         }
 
         // Line item amount (quantity * unit price +- reduction / surcharge)
-        aEbiListLineItem.setLineItemAmount (aUBLLine.getLineExtensionAmountValue ()
-                                                    .setScale (SCALE_PRICE2, ROUNDING_MODE));
+        aEbiListLineItem.setLineItemAmount (aUBLLine.getLineExtensionAmountValue () == null ? BigDecimal.ZERO : aUBLLine
+                                                                                                                        .getLineExtensionAmountValue ()
+                                                                                                                        .setScale (SCALE_PRICE2,
+                                                                                                                                   ROUNDING_MODE));
 
         // Special handling in case no VAT item is present
         if (MathHelper.isEQ0 (aUBLPercent))
