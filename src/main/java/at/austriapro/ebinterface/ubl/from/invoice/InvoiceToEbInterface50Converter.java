@@ -83,8 +83,7 @@ public final class InvoiceToEbInterface50Converter extends AbstractToEbInterface
    * @param aDisplayLocale
    *        The locale for error messages. May not be <code>null</code>.
    * @param aContentLocale
-   *        The locale for the created ebInterface files. May not be
-   *        <code>null</code>.
+   *        The locale for the created ebInterface files. May not be <code>null</code>.
    * @param aSettings
    *        Conversion settings to be used. May not be <code>null</code>.
    */
@@ -109,8 +108,7 @@ public final class InvoiceToEbInterface50Converter extends AbstractToEbInterface
    *        The UBL invoice to be converted
    * @param aTransformationErrorList
    *        Error list. Must be empty!
-   * @return The created ebInterface document or <code>null</code> in case of a
-   *         severe error.
+   * @return The created ebInterface document or <code>null</code> in case of a severe error.
    */
   @Nullable
   public Ebi50InvoiceType convertToEbInterface (@Nonnull final InvoiceType aUBLDoc,
@@ -128,9 +126,9 @@ public final class InvoiceToEbInterface50Converter extends AbstractToEbInterface
     // Build ebInterface invoice
     final Ebi50InvoiceType aEbiDoc = new Ebi50InvoiceType ();
     aEbiDoc.setGeneratingSystem (EBI_GENERATING_SYSTEM_50);
-    aEbiDoc.setDocumentType (getAsDocumentTypeType (aUBLDoc.getInvoiceTypeCode () == null ? null
-                                                                                          : aUBLDoc.getInvoiceTypeCode ()
-                                                                                                   .getName (),
+    aEbiDoc.setDocumentType (getAsDocumentTypeType (aUBLDoc.getInvoiceTypeCode () == null ? null : aUBLDoc
+                                                                                                          .getInvoiceTypeCode ()
+                                                                                                          .getName (),
                                                     aUBLDoc.getInvoiceTypeCodeValue (),
                                                     Ebi50DocumentTypeType.INVOICE.value ()));
 
@@ -476,11 +474,11 @@ public final class InvoiceToEbInterface50Converter extends AbstractToEbInterface
             if (aUBLTaxAmount != null && aUBLTaxableAmount != null)
             {
               // Calculate percentage
-              aUBLPercentage = MathHelper.isEQ0 (aUBLTaxableAmount) ? BigDecimal.ZERO
-                                                                    : aUBLTaxAmount.multiply (CGlobal.BIGDEC_100)
-                                                                                   .divide (aUBLTaxableAmount,
-                                                                                            SCALE_PERC,
-                                                                                            ROUNDING_MODE);
+              aUBLPercentage = MathHelper.isEQ0 (aUBLTaxableAmount) ? BigDecimal.ZERO : aUBLTaxAmount.multiply (
+                                                                                                                CGlobal.BIGDEC_100)
+                                                                                                     .divide (aUBLTaxableAmount,
+                                                                                                              SCALE_PERC,
+                                                                                                              ROUNDING_MODE);
             }
           }
 
@@ -501,11 +499,11 @@ public final class InvoiceToEbInterface50Converter extends AbstractToEbInterface
               if (aUBLTaxableAmount != null && aUBLTaxAmount == null)
               {
                 // Calculate (inexact) subtotal
-                aUBLTaxAmount = MathHelper.isEQ0 (aUBLPercentage) ? BigDecimal.ZERO
-                                                                  : aUBLTaxableAmount.multiply (aUBLPercentage)
-                                                                                     .divide (CGlobal.BIGDEC_100,
-                                                                                              SCALE_PRICE4,
-                                                                                              ROUNDING_MODE);
+                aUBLTaxAmount = MathHelper.isEQ0 (aUBLPercentage) ? BigDecimal.ZERO : aUBLTaxableAmount.multiply (
+                                                                                                                  aUBLPercentage)
+                                                                                                       .divide (CGlobal.BIGDEC_100,
+                                                                                                                SCALE_PRICE4,
+                                                                                                                ROUNDING_MODE);
               }
           }
 
@@ -829,7 +827,7 @@ public final class InvoiceToEbInterface50Converter extends AbstractToEbInterface
           // Unit price = lineExtensionAmount / quantity (mandatory)
           final BigDecimal aUBLLineExtensionAmount = aUBLLine.getLineExtensionAmountValue ();
           final Ebi50UnitPriceType aEbiUnitPrice = new Ebi50UnitPriceType ();
-          if (MathHelper.isEQ0 (aEbiQuantity.getValue ()))
+          if (MathHelper.isEQ0 (aEbiQuantity.getValue ()) || aUBLLineExtensionAmount == null)
             aEbiUnitPrice.setValue (BigDecimal.ZERO);
           else
             aEbiUnitPrice.setValue (aUBLLineExtensionAmount.divide (aEbiQuantity.getValue (),
@@ -1031,8 +1029,6 @@ public final class InvoiceToEbInterface50Converter extends AbstractToEbInterface
         for (final ItemPropertyType aAdditionalItem : aUBLLine.getItem ().getAdditionalItemProperty ())
         {
           String sKey = null;
-          String sValue = null;
-
           // Key is Name or ID
           if (aAdditionalItem.getName () != null)
             sKey = aAdditionalItem.getName ().getValue ();
@@ -1040,7 +1036,7 @@ public final class InvoiceToEbInterface50Converter extends AbstractToEbInterface
             sKey = aAdditionalItem.getIDValue ();
 
           // Value is Value :)
-          sValue = aAdditionalItem.getValueValue ();
+          String sValue = aAdditionalItem.getValueValue ();
 
           if (StringHelper.hasText (sKey) && StringHelper.hasText (sValue))
           {
