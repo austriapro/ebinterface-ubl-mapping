@@ -159,8 +159,7 @@ public abstract class AbstractEbInterfaceUBLConverter
    * Constructor
    *
    * @param aDisplayLocale
-   *        The locale for error messages (the locale of the user). May not be
-   *        <code>null</code>.
+   *        The locale for error messages (the locale of the user). May not be <code>null</code>.
    * @param aContentLocale
    *        The locale for the created payload. May not be <code>null</code>.
    */

@@ -959,12 +959,11 @@ public abstract class AbstractToEbInterface41Converter extends AbstractToEbInter
         final String sValue = aID.getValue ();
         if (StringHelper.hasText (sValue))
         {
-          String sKey = aID.getSchemeID ();
           // Take all of those, as they were created in the reverse mapping
           if (FURTHER_IDENTIFICATION_SCHEME_NAME_EBI2UBL.equals (aID.getSchemeName ()))
           {
             // Make sure key is not empty
-            sKey = orDefault (sKey, EFurtherIdentification.CONTRACT.getID ());
+            final String sKey = orDefault (aID.getSchemeID (), EFurtherIdentification.CONTRACT.getID ());
             aFIConsumer.accept (createFurtherIdentification (sKey, aID.getValue ()));
           }
         }
