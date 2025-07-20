@@ -498,8 +498,8 @@ public class EbInterface41ToInvoiceConverter extends AbstractEbInterface41ToUBLC
       for (final Ebi41ListLineItemType aEbiItem : aEbiItemList.getListLineItem ())
       {
         final InvoiceLineType aUBLLine = new InvoiceLineType ();
-        aUBLLine.setID (aEbiItem.getPositionNumber () != null ? aEbiItem.getPositionNumber ().toString ()
-                                                              : Integer.toString (nInvoiceLineIndex));
+        aUBLLine.setID (aEbiItem.getPositionNumber () != null ? aEbiItem.getPositionNumber ().toString () : Integer
+                                                                                                                   .toString (nInvoiceLineIndex));
 
         String sUOM = StringHelper.trim (aEbiItem.getQuantity ().getUnit ());
         if (sUOM == null)
@@ -842,9 +842,15 @@ public class EbInterface41ToInvoiceConverter extends AbstractEbInterface41ToUBLC
         {
           aUBLAC.setAmount (aAmount).setCurrencyID (sCurrency);
           if (aUBLAC.isChargeIndicatorValue (false))
+          {
             aSumCharges = aSumCharges.add (aAmount);
+            aTaxExclusiveAmount = aTaxExclusiveAmount.add (aAmount);
+          }
           else
+          {
             aSumAllowances = aSumAllowances.add (aAmount);
+            aTaxExclusiveAmount = aTaxExclusiveAmount.subtract (aAmount);
+          }
         }
 
         aUBLDoc.addAllowanceCharge (aUBLAC);
