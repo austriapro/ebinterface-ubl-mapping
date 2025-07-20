@@ -32,6 +32,9 @@ Add the following to your pom.xml to use this artifact, replacing `x.y.z` with t
 
 # News and noteworthy
 
+v5.3.4 - 2025-07-20
+* Applying the `isPrepaidAmountSupported` when converting UBL Credit Notes as well
+
 v5.3.3 - 2025-07-20
 * When converting to UBL, the `LegalMonetaryTotal/TaxExclusiveAmount` now includes the sums of allowances and charges
 * Extended `IToEbinterfaceSettings` with `isPrepaidAmountSupported`
