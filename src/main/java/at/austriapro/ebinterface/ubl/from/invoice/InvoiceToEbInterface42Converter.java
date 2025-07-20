@@ -1143,7 +1143,7 @@ public final class InvoiceToEbInterface42Converter extends AbstractToEbInterface
 
     // PrepaidAmount is not supported!
     final MonetaryTotalType aUBLMonetaryTotal = aUBLDoc.getLegalMonetaryTotal ();
-    if (aUBLMonetaryTotal.getPrepaidAmount () != null && !MathHelper.isEQ0 (aUBLMonetaryTotal.getPrepaidAmountValue ()))
+    if (aUBLMonetaryTotal.getPrepaidAmount () != null && MathHelper.isNE0 (aUBLMonetaryTotal.getPrepaidAmountValue ()))
     {
       aTransformationErrorList.add (SingleError.builderError ()
                                                .errorFieldName ("Invoice/LegalMonetaryTotal/PrepaidAmount")
