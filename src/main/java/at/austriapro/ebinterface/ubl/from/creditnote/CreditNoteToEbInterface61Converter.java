@@ -1171,15 +1171,21 @@ public final class CreditNoteToEbInterface61Converter extends AbstractToEbInterf
 
     // PrepaidAmount is not supported!
     final MonetaryTotalType aUBLMonetaryTotal = aUBLDoc.getLegalMonetaryTotal ();
-    if (!m_aSettings.isPrepaidAmountSupported ())
-      if (aUBLMonetaryTotal.getPrepaidAmount () != null &&
-          !MathHelper.isEQ0 (aUBLMonetaryTotal.getPrepaidAmountValue ()))
-      {
+    if (aUBLMonetaryTotal.getPrepaidAmount () != null && !MathHelper.isEQ0 (aUBLMonetaryTotal.getPrepaidAmountValue ()))
+    {
+      if (!m_aSettings.isPrepaidAmountSupported ())
         aTransformationErrorList.add (SingleError.builderError ()
                                                  .errorFieldName ("CreditNote/LegalMonetaryTotal/PrepaidAmount")
                                                  .errorText (EText.PREPAID_NOT_SUPPORTED.getDisplayText (m_aDisplayLocale))
                                                  .build ());
-      }
+      else
+        aEbiDoc.setPrepaidAmount (aUBLMonetaryTotal.getPrepaidAmountValue ());
+    }
+
+    // Rounding amount
+    if (aUBLMonetaryTotal.getPayableRoundingAmountValue () != null &&
+        MathHelper.isNE0 (aUBLMonetaryTotal.getPayableRoundingAmountValue ()))
+      aEbiDoc.setRoundingAmount (aUBLMonetaryTotal.getPayableRoundingAmountValue ());
 
     // Total gross amount
     if (aUBLMonetaryTotal.getTaxInclusiveAmountValue () != null)
