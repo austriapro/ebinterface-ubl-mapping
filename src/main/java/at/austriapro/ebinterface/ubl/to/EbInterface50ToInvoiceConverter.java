@@ -785,6 +785,10 @@ public class EbInterface50ToInvoiceConverter extends AbstractEbInterface50ToUBLC
       aUBLMT.setChargeTotalAmount (aSumCharges).setCurrencyID (sCurrency);
       aUBLMT.setTaxExclusiveAmount (aTaxExclusiveAmount).setCurrencyID (sCurrency);
       aUBLMT.setTaxInclusiveAmount (aEbiDoc.getTotalGrossAmount ()).setCurrencyID (sCurrency);
+      if (aEbiDoc.getRoundingAmount () != null)
+        aUBLMT.setPayableRoundingAmount (aEbiDoc.getRoundingAmount ()).setCurrencyID (sCurrency);
+      if (aEbiDoc.getPrepaidAmount () != null)
+        aUBLMT.setPrepaidAmount (aEbiDoc.getPrepaidAmount ()).setCurrencyID (sCurrency);
       aUBLMT.setPayableAmount (aEbiDoc.getPayableAmount ()).setCurrencyID (sCurrency);
       aUBLDoc.setLegalMonetaryTotal (aUBLMT);
     }

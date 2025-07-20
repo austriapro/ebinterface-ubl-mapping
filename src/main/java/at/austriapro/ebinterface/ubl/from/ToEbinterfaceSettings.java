@@ -48,8 +48,7 @@ public class ToEbinterfaceSettings implements IToEbinterfaceSettings
    */
   private boolean m_bOrderReferenceIDMandatory = false;
   /**
-   * The maximum OrderReference/ID length. All values &lt; 0 mean "no max
-   * length".
+   * The maximum OrderReference/ID length. All values &lt; 0 mean "no max length".
    */
   private int m_nOrderReferenceIDMaxLen = -1;
   /**
@@ -61,13 +60,11 @@ public class ToEbinterfaceSettings implements IToEbinterfaceSettings
    */
   private boolean m_bEnforceSupplierEmailAddress = false;
   /**
-   * The fake email address used by Peppol when no biller email address is in
-   * the original XML file
+   * The fake email address used by Peppol when no biller email address is in the original XML file
    */
   private String m_sEnforcedSupplierEmailAddress = DEFAULT_ENFORCED_SUPPLIER_EMAIL_ADDRESS;
   /**
-   * The fallback billers invoice recipient ID to be used if none is present
-   * (for ebi 4.0)
+   * The fallback billers invoice recipient ID to be used if none is present (for ebi 4.0)
    */
   private String m_sFallbackBillersInvoiceRecipientID = null;
   /**
@@ -75,10 +72,13 @@ public class ToEbinterfaceSettings implements IToEbinterfaceSettings
    */
   private boolean m_bErrorOnPositionNumber = false;
   /**
-   * Is the payment method of an invoice mandatory? This does not apply to
-   * credit notes!
+   * Is the payment method of an invoice mandatory? This does not apply to credit notes!
    */
   private boolean m_bInvoicePaymentMethodMandatory = false;
+  /**
+   * Is a prepaid amount supported?
+   */
+  private boolean m_bIsPrepaidAmountSupported = true;
 
   public ToEbinterfaceSettings ()
   {}
@@ -221,9 +221,20 @@ public class ToEbinterfaceSettings implements IToEbinterfaceSettings
     return this;
   }
 
+  public boolean isPrepaidAmountSupported ()
+  {
+    return m_bIsPrepaidAmountSupported;
+  }
+
+  @Nonnull
+  public ToEbinterfaceSettings setPrepaidAmountSupported (final boolean b)
+  {
+    m_bIsPrepaidAmountSupported = b;
+    return this;
+  }
+
   /**
-   * @return Settings similar to what eRechnung.gv.at uses - mainly for testing
-   *         purposes.
+   * @return Settings similar to what eRechnung.gv.at uses - mainly for testing purposes.
    */
   @Nonnull
   public static ToEbinterfaceSettings getERechnungGvAtSettings ()
@@ -234,6 +245,7 @@ public class ToEbinterfaceSettings implements IToEbinterfaceSettings
                                        .setOrderReferenceIDMaxLength (54)
                                        .setDeliveryDateMandatory (true)
                                        .setEnforceSupplierEmailAddress (true)
-                                       .setInvoicePaymentMethodMandatory (true);
+                                       .setInvoicePaymentMethodMandatory (true)
+                                       .setPrepaidAmountSupported (false);
   }
 }
