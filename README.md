@@ -32,10 +32,10 @@ Add the following to your pom.xml to use this artifact, replacing `x.y.z` with t
 
 # News and noteworthy
 
-v5.3.3 - work in progress
+v5.3.3 - 2025-07-20
 * When converting to UBL, the `LegalMonetaryTotal/TaxExclusiveAmount` now includes the sums of allowances and charges
 * Extended `IToEbinterfaceSettings` with `isPrepaidAmountSupported`
-* When converting to UBL, the `LegalMonetaryTotal` elements `PayableRoundingAmount` and `PrepaidAmount` (for ebInterface 5.0 only)
+* When converting to UBL, the `LegalMonetaryTotal` elements `PayableRoundingAmount` and `PrepaidAmount` (for ebInterface 5.0 onwards only)
 
 v5.3.2 - 2025-06-27
 * Removed Peppol BIS v2 mapping of `InvoiceRecipientsBillerID`
