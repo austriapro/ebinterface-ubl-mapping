@@ -32,6 +32,9 @@ Add the following to your pom.xml to use this artifact, replacing `x.y.z` with t
 
 # News and noteworthy
 
+v5.3.5 - 2025-08-29
+* Fixed the UBL to ebInterface maaping of `InvoiceRecipientsBillerID` (regression from v5.3.2)
+
 v5.3.4 - 2025-07-20
 * Applying the `isPrepaidAmountSupported` when converting UBL Credit Notes as well
 * Converting the rounding amount and the prepaid amount to ebInterface (5.0+) as well

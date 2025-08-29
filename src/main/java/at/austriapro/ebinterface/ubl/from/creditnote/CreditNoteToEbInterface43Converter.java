@@ -204,21 +204,23 @@ public final class CreditNoteToEbInterface43Converter extends AbstractToEbInterf
                                                  .errorText (EText.BILLER_VAT_MISSING.getDisplayText (m_aDisplayLocale))
                                                  .build ());
       }
-      if (aUBLSupplier.getCustomerAssignedAccountID () != null)
-      {
-        // The customer's internal identifier for the supplier.
-        aEbiBiller.setInvoiceRecipientsBillerID (StringHelper.trim (aUBLSupplier.getCustomerAssignedAccountIDValue ()));
-      }
 
+      // This was the BIS2 Mapping
       if (false)
-        if (StringHelper.hasNoText (aEbiBiller.getInvoiceRecipientsBillerID ()) &&
-            aUBLParty != null &&
-            aUBLParty.hasPartyIdentificationEntries ())
+        if (aUBLSupplier.getCustomerAssignedAccountID () != null)
         {
-          // New version for BIS V2
-          aEbiBiller.setInvoiceRecipientsBillerID (StringHelper.trim (aUBLParty.getPartyIdentificationAtIndex (0)
-                                                                               .getIDValue ()));
+          // The customer's internal identifier for the supplier.
+          aEbiBiller.setInvoiceRecipientsBillerID (StringHelper.trim (aUBLSupplier.getCustomerAssignedAccountIDValue ()));
         }
+
+      if (StringHelper.hasNoText (aEbiBiller.getInvoiceRecipientsBillerID ()) &&
+          aUBLParty != null &&
+          aUBLParty.hasPartyIdentificationEntries ())
+      {
+        // New version for BIS V2
+        aEbiBiller.setInvoiceRecipientsBillerID (StringHelper.trim (aUBLParty.getPartyIdentificationAtIndex (0)
+                                                                             .getIDValue ()));
+      }
 
       // Disabled because field is optional
       if (false)
