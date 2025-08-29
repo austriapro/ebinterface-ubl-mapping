@@ -16,8 +16,7 @@
  */
 package at.austriapro.ebinterface.ubl.from.creditnote;
 
-import javax.annotation.Nonnull;
-
+import jakarta.annotation.Nonnull;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CreditNoteLineType;
 import oasis.names.specification.ubl.schema.xsd.creditnote_21.CreditNoteType;
 

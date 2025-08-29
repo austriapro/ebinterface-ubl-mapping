@@ -18,16 +18,15 @@ package at.austriapro.ebinterface.ubl.to;
 
 import java.util.Locale;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
-
-import com.helger.commons.locale.country.CountryCache;
-import com.helger.commons.string.StringHelper;
+import com.helger.annotation.concurrent.Immutable;
+import com.helger.base.string.StringHelper;
 import com.helger.ebinterface.codelist.ETaxCategoryCode;
+import com.helger.text.locale.country.CountryCache;
 
 import at.austriapro.ebinterface.ubl.AbstractEbInterfaceUBLConverter;
 import at.austriapro.ebinterface.ubl.helper.MultilingualCountryCache;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CountryType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.ItemPropertyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxCategoryType;
@@ -115,9 +114,9 @@ public abstract class AbstractEbInterfaceToUBLConverter extends AbstractEbInterf
   {
     final String sRealCode;
     final String sRealName;
-    if (StringHelper.hasNoText (sCode))
+    if (StringHelper.isEmpty (sCode))
     {
-      if (StringHelper.hasNoText (sName))
+      if (StringHelper.isEmpty (sName))
         return null;
 
       // Find code from name
@@ -129,7 +128,7 @@ public abstract class AbstractEbInterfaceToUBLConverter extends AbstractEbInterf
         sRealName = sName;
     }
     else
-      if (StringHelper.hasNoText (sName))
+      if (StringHelper.isEmpty (sName))
       {
         // Find name from code
         sRealCode = sCode;

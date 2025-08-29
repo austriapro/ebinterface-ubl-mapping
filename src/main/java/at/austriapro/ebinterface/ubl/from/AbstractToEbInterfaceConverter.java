@@ -19,24 +19,24 @@ package at.austriapro.ebinterface.ubl.from;
 import java.util.List;
 import java.util.Locale;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
-
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.Translatable;
-import com.helger.commons.datetime.XMLOffsetDate;
-import com.helger.commons.error.SingleError;
-import com.helger.commons.error.list.ErrorList;
-import com.helger.commons.regex.RegExHelper;
-import com.helger.commons.string.StringHelper;
-import com.helger.commons.text.IMultilingualText;
-import com.helger.commons.text.display.IHasDisplayTextWithArgs;
-import com.helger.commons.text.resolve.DefaultTextResolver;
-import com.helger.commons.text.util.TextHelper;
+import com.helger.annotation.concurrent.Immutable;
+import com.helger.annotation.misc.Translatable;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.string.StringHelper;
+import com.helger.base.string.StringImplode;
+import com.helger.cache.regex.RegExHelper;
+import com.helger.datetime.xml.XMLOffsetDate;
+import com.helger.diagnostics.error.SingleError;
+import com.helger.diagnostics.error.list.ErrorList;
 import com.helger.peppolid.IProcessIdentifier;
+import com.helger.text.IMultilingualText;
+import com.helger.text.display.IHasDisplayTextWithArgs;
+import com.helger.text.resolve.DefaultTextResolver;
+import com.helger.text.util.TextHelper;
 
 import at.austriapro.ebinterface.ubl.AbstractEbInterfaceUBLConverter;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AllowanceChargeType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.BranchType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.FinancialAccountType;
@@ -221,8 +221,7 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractEbInterface
    * @param aDisplayLocale
    *        The locale for error messages. May not be <code>null</code>.
    * @param aContentLocale
-   *        The locale for the created ebInterface files. May not be
-   *        <code>null</code>.
+   *        The locale for the created ebInterface files. May not be <code>null</code>.
    * @param aSettings
    *        Conversion settings to be used. May not be <code>null</code>.
    */
@@ -242,7 +241,7 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractEbInterface
     for (final AllowanceChargeReasonType aUBLReason : aUBLAllowanceCharge.getAllowanceChargeReason ())
     {
       final String sReason = StringHelper.trim (aUBLReason.getValue ());
-      if (StringHelper.hasText (sReason))
+      if (StringHelper.isNotEmpty (sReason))
       {
         if (aSB.length () > 0)
           aSB.append ('\n');
@@ -272,14 +271,14 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractEbInterface
         aTransformationErrorList.add (SingleError.builderError ()
                                                  .errorFieldName ("UBLVersionID")
                                                  .errorText (EText.NO_UBL_VERSION_ID.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                             StringHelper.imploder ()
-                                                                                                                         .separator (", ")
-                                                                                                                         .source (UBL_VERSION_20,
-                                                                                                                                  UBL_VERSION_21,
-                                                                                                                                  UBL_VERSION_22,
-                                                                                                                                  UBL_VERSION_23,
-                                                                                                                                  UBL_VERSION_24)
-                                                                                                                         .build ()))
+                                                                                                             StringImplode.imploder ()
+                                                                                                                          .separator (", ")
+                                                                                                                          .source (UBL_VERSION_20,
+                                                                                                                                   UBL_VERSION_21,
+                                                                                                                                   UBL_VERSION_22,
+                                                                                                                                   UBL_VERSION_23,
+                                                                                                                                   UBL_VERSION_24)
+                                                                                                                          .build ()))
                                                  .build ());
     }
     else
@@ -295,14 +294,14 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractEbInterface
                                                  .errorFieldName ("UBLVersionID")
                                                  .errorText (EText.INVALID_UBL_VERSION_ID.getDisplayTextWithArgs (m_aDisplayLocale,
                                                                                                                   sUBLVersionID,
-                                                                                                                  StringHelper.imploder ()
-                                                                                                                              .separator (", ")
-                                                                                                                              .source (UBL_VERSION_20,
-                                                                                                                                       UBL_VERSION_21,
-                                                                                                                                       UBL_VERSION_22,
-                                                                                                                                       UBL_VERSION_23,
-                                                                                                                                       UBL_VERSION_24)
-                                                                                                                              .build ()))
+                                                                                                                  StringImplode.imploder ()
+                                                                                                                               .separator (", ")
+                                                                                                                               .source (UBL_VERSION_20,
+                                                                                                                                        UBL_VERSION_21,
+                                                                                                                                        UBL_VERSION_22,
+                                                                                                                                        UBL_VERSION_23,
+                                                                                                                                        UBL_VERSION_24)
+                                                                                                                               .build ()))
                                                  .build ());
       }
     }
@@ -341,8 +340,8 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractEbInterface
       aTransformationErrorList.add (SingleError.builderWarn ()
                                                .errorFieldName ("InvoiceTypeCode")
                                                .errorText (EText.NO_INVOICE_TYPECODE.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                             StringHelper.getImploded (", ",
-                                                                                                                                       INVOICE_TYPE_CODES)))
+                                                                                                             StringImplode.getImploded (", ",
+                                                                                                                                        INVOICE_TYPE_CODES)))
                                                .build ());
     }
     else
@@ -355,8 +354,8 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractEbInterface
                                                  .errorFieldName ("InvoiceTypeCode")
                                                  .errorText (EText.INVALID_INVOICE_TYPECODE.getDisplayTextWithArgs (m_aDisplayLocale,
                                                                                                                     sInvoiceTypeCode,
-                                                                                                                    StringHelper.getImploded (", ",
-                                                                                                                                              INVOICE_TYPE_CODES)))
+                                                                                                                    StringImplode.getImploded (", ",
+                                                                                                                                               INVOICE_TYPE_CODES)))
                                                  .build ());
       }
     }
@@ -382,14 +381,14 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractEbInterface
         aTransformationErrorList.add (SingleError.builderError ()
                                                  .errorFieldName ("UBLVersionID")
                                                  .errorText (EText.NO_UBL_VERSION_ID.getDisplayTextWithArgs (m_aDisplayLocale,
-                                                                                                             StringHelper.imploder ()
-                                                                                                                         .separator (", ")
-                                                                                                                         .source (UBL_VERSION_20,
-                                                                                                                                  UBL_VERSION_21,
-                                                                                                                                  UBL_VERSION_22,
-                                                                                                                                  UBL_VERSION_23,
-                                                                                                                                  UBL_VERSION_24)
-                                                                                                                         .build ()))
+                                                                                                             StringImplode.imploder ()
+                                                                                                                          .separator (", ")
+                                                                                                                          .source (UBL_VERSION_20,
+                                                                                                                                   UBL_VERSION_21,
+                                                                                                                                   UBL_VERSION_22,
+                                                                                                                                   UBL_VERSION_23,
+                                                                                                                                   UBL_VERSION_24)
+                                                                                                                          .build ()))
                                                  .build ());
     }
     else
@@ -406,14 +405,14 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractEbInterface
                                                  .errorFieldName ("UBLVersionID")
                                                  .errorText (EText.INVALID_UBL_VERSION_ID.getDisplayTextWithArgs (m_aDisplayLocale,
                                                                                                                   sUBLVersionID,
-                                                                                                                  StringHelper.imploder ()
-                                                                                                                              .separator (", ")
-                                                                                                                              .source (UBL_VERSION_20,
-                                                                                                                                       UBL_VERSION_21,
-                                                                                                                                       UBL_VERSION_22,
-                                                                                                                                       UBL_VERSION_23,
-                                                                                                                                       UBL_VERSION_24)
-                                                                                                                              .build ()))
+                                                                                                                  StringImplode.imploder ()
+                                                                                                                               .separator (", ")
+                                                                                                                               .source (UBL_VERSION_20,
+                                                                                                                                        UBL_VERSION_21,
+                                                                                                                                        UBL_VERSION_22,
+                                                                                                                                        UBL_VERSION_23,
+                                                                                                                                        UBL_VERSION_24)
+                                                                                                                               .build ()))
                                                  .build ());
       }
     }
@@ -502,7 +501,7 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractEbInterface
       if (aUBLBranch != null)
       {
         ret.m_sBIC = StringHelper.trim (aUBLBranch.getIDValue ());
-        if (StringHelper.hasNoText (ret.m_sBIC) || !RegExHelper.stringMatchesPattern (REGEX_BIC, ret.m_sBIC))
+        if (StringHelper.isEmpty (ret.m_sBIC) || !RegExHelper.stringMatchesPattern (REGEX_BIC, ret.m_sBIC))
         {
           final FinancialInstitutionType aUBLFI = aUBLBranch.getFinancialInstitution ();
           if (aUBLFI != null)
@@ -519,7 +518,7 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractEbInterface
       for (final PartyNameType aPartyName : aUBLPayeeParty.getPartyName ())
       {
         ret.m_sBankAccountOwnerName = StringHelper.trim (aPartyName.getNameValue ());
-        if (StringHelper.hasText (ret.m_sBankAccountOwnerName))
+        if (StringHelper.isNotEmpty (ret.m_sBankAccountOwnerName))
           break;
       }
 
@@ -533,18 +532,18 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractEbInterface
         }
       }
     }
-    if (StringHelper.hasNoText (ret.m_sBankAccountOwnerName))
+    if (StringHelper.isEmpty (ret.m_sBankAccountOwnerName))
     {
       // Try fallback to supplier party
       if (aUBLSupplierParty != null)
         for (final PartyNameType aPartyName : aUBLSupplierParty.getPartyName ())
         {
           ret.m_sBankAccountOwnerName = StringHelper.trim (aPartyName.getNameValue ());
-          if (StringHelper.hasText (ret.m_sBankAccountOwnerName))
+          if (StringHelper.isNotEmpty (ret.m_sBankAccountOwnerName))
             break;
         }
     }
-    if (StringHelper.hasNoText (ret.m_sCreditorID))
+    if (StringHelper.isEmpty (ret.m_sCreditorID))
     {
       // Try fallback to supplier party
       if (aUBLSupplierParty != null)
@@ -570,10 +569,9 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractEbInterface
   }
 
   /**
-   * Get a string in the form
-   * [string][sep][string][sep][string][or][last-string]. So the last and the
-   * second last entries are separated by " or " whereas the other entries are
-   * separated by the provided separator.
+   * Get a string in the form [string][sep][string][sep][string][or][last-string]. So the last and
+   * the second last entries are separated by " or " whereas the other entries are separated by the
+   * provided separator.
    *
    * @param sSep
    *        Separator to use. May not be <code>null</code>.
@@ -630,11 +628,11 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractEbInterface
   protected static boolean isIBAN (@Nullable final String sPaymentChannelCode)
   {
     // null/empty for standard Peppol BIS
-    return StringHelper.hasNoText (sPaymentChannelCode) || PAYMENT_CHANNEL_CODE_IBAN.equals (sPaymentChannelCode);
+    return StringHelper.isEmpty (sPaymentChannelCode) || PAYMENT_CHANNEL_CODE_IBAN.equals (sPaymentChannelCode);
   }
 
   protected static boolean isBIC (@Nullable final String sScheme)
   {
-    return StringHelper.hasNoText (sScheme) || SCHEME_BIC.equalsIgnoreCase (sScheme);
+    return StringHelper.isEmpty (sScheme) || SCHEME_BIC.equalsIgnoreCase (sScheme);
   }
 }

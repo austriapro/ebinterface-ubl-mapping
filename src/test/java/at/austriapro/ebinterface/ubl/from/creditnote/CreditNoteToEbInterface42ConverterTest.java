@@ -27,17 +27,17 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.collection.impl.CommonsArrayList;
-import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.error.level.EErrorLevel;
-import com.helger.commons.error.list.ErrorList;
-import com.helger.commons.io.file.FileOperations;
-import com.helger.commons.io.file.FileSystemIterator;
-import com.helger.commons.io.file.FilenameHelper;
-import com.helger.commons.io.file.IFileFilter;
-import com.helger.commons.io.resource.FileSystemResource;
-import com.helger.commons.io.resource.IReadableResource;
+import com.helger.collection.commons.CommonsArrayList;
+import com.helger.collection.commons.ICommonsList;
+import com.helger.diagnostics.error.level.EErrorLevel;
+import com.helger.diagnostics.error.list.ErrorList;
 import com.helger.ebinterface.v42.Ebi42InvoiceType;
+import com.helger.io.file.FileOperations;
+import com.helger.io.file.FileSystemIterator;
+import com.helger.io.file.FilenameHelper;
+import com.helger.io.file.IFileFilter;
+import com.helger.io.resource.FileSystemResource;
+import com.helger.io.resource.IReadableResource;
 import com.helger.ubl21.UBL21Marshaller;
 
 import at.austriapro.ebinterface.ubl.from.MockEbi42Marshaller;

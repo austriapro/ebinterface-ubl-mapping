@@ -28,13 +28,13 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.error.list.ErrorList;
-import com.helger.commons.io.file.FileOperations;
-import com.helger.commons.io.file.FileSystemIterator;
-import com.helger.commons.io.file.FilenameHelper;
-import com.helger.commons.io.file.IFileFilter;
+import com.helger.diagnostics.error.list.ErrorList;
 import com.helger.ebinterface.EbInterface41Marshaller;
 import com.helger.ebinterface.v41.Ebi41InvoiceType;
+import com.helger.io.file.FileOperations;
+import com.helger.io.file.FileSystemIterator;
+import com.helger.io.file.FilenameHelper;
+import com.helger.io.file.IFileFilter;
 import com.helger.jaxb.GenericJAXBMarshaller;
 import com.helger.ubl21.UBL21Marshaller;
 

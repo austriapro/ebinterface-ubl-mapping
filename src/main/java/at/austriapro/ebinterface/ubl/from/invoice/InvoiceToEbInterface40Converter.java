@@ -20,22 +20,19 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Locale;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
-
-import com.helger.commons.CGlobal;
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.collection.CollectionHelper;
-import com.helger.commons.collection.impl.CommonsHashMap;
-import com.helger.commons.collection.impl.ICommonsMap;
-import com.helger.commons.datetime.XMLOffsetDate;
-import com.helger.commons.error.SingleError;
-import com.helger.commons.error.list.ErrorList;
-import com.helger.commons.math.MathHelper;
-import com.helger.commons.state.ETriState;
-import com.helger.commons.string.StringHelper;
-import com.helger.commons.string.StringParser;
+import com.helger.annotation.concurrent.Immutable;
+import com.helger.base.CGlobal;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.numeric.BigHelper;
+import com.helger.base.state.ETriState;
+import com.helger.base.string.StringHelper;
+import com.helger.base.string.StringParser;
+import com.helger.collection.CollectionHelper;
+import com.helger.collection.commons.CommonsHashMap;
+import com.helger.collection.commons.ICommonsMap;
+import com.helger.datetime.xml.XMLOffsetDate;
+import com.helger.diagnostics.error.SingleError;
+import com.helger.diagnostics.error.list.ErrorList;
 import com.helger.ebinterface.codelist.EFurtherIdentification;
 import com.helger.ebinterface.v40.*;
 
@@ -43,6 +40,8 @@ import at.austriapro.ebinterface.ubl.from.AbstractToEbInterface40Converter;
 import at.austriapro.ebinterface.ubl.from.IToEbinterfaceSettings;
 import at.austriapro.ebinterface.ubl.from.helper.SchemedID;
 import at.austriapro.ebinterface.ubl.from.helper.TaxCategoryKey;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AllowanceChargeType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CustomerPartyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DeliveryType;
@@ -137,7 +136,7 @@ public final class InvoiceToEbInterface40Converter extends AbstractToEbInterface
 
     // Invoice Number
     final String sInvoiceNumber = StringHelper.trim (aUBLDoc.getIDValue ());
-    if (StringHelper.hasNoText (sInvoiceNumber))
+    if (StringHelper.isEmpty (sInvoiceNumber))
       aTransformationErrorList.add (SingleError.builderError ()
                                                .errorFieldName ("ID")
                                                .errorText (EText.MISSING_INVOICE_NUMBER.getDisplayText (m_aDisplayLocale))
@@ -169,7 +168,7 @@ public final class InvoiceToEbInterface40Converter extends AbstractToEbInterface
             break;
           }
         }
-      if (StringHelper.hasNoText (aEbiBiller.getVATIdentificationNumber ()))
+      if (StringHelper.isEmpty (aEbiBiller.getVATIdentificationNumber ()))
       {
         // Required by ebInterface
         aEbiBiller.setVATIdentificationNumber (AT_UNDEFINED_VATIN);
@@ -187,7 +186,7 @@ public final class InvoiceToEbInterface40Converter extends AbstractToEbInterface
           aEbiBiller.setInvoiceRecipientsBillerID (StringHelper.trim (aUBLSupplier.getCustomerAssignedAccountIDValue ()));
         }
 
-      if (StringHelper.hasNoText (aEbiBiller.getInvoiceRecipientsBillerID ()) &&
+      if (StringHelper.isEmpty (aEbiBiller.getInvoiceRecipientsBillerID ()) &&
           aUBLParty != null &&
           aUBLParty.hasPartyIdentificationEntries ())
       {
@@ -198,7 +197,7 @@ public final class InvoiceToEbInterface40Converter extends AbstractToEbInterface
 
       // Disabled because field is optional
       if (false)
-        if (StringHelper.hasNoText (aEbiBiller.getInvoiceRecipientsBillerID ()))
+        if (StringHelper.isEmpty (aEbiBiller.getInvoiceRecipientsBillerID ()))
         {
           // Mandatory field
           aTransformationErrorList.add (SingleError.builderError ()
@@ -223,7 +222,7 @@ public final class InvoiceToEbInterface40Converter extends AbstractToEbInterface
                                              true));
 
         // Ensure a fake biller email address is present
-        if (StringHelper.hasNoText (aEbiBiller.getAddress ().getEmail ()))
+        if (StringHelper.isEmpty (aEbiBiller.getAddress ().getEmail ()))
           if (m_aSettings.isEnforceSupplierEmailAddress ())
             aEbiBiller.getAddress ().setEmail (m_aSettings.getEnforcedSupplierEmailAddress ());
 
@@ -251,7 +250,7 @@ public final class InvoiceToEbInterface40Converter extends AbstractToEbInterface
             break;
           }
         }
-      if (StringHelper.hasNoText (aEbiRecipient.getVATIdentificationNumber ()))
+      if (StringHelper.isEmpty (aEbiRecipient.getVATIdentificationNumber ()))
       {
         // Required by ebInterface
         aEbiRecipient.setVATIdentificationNumber (AT_UNDEFINED_VATIN);
@@ -267,12 +266,12 @@ public final class InvoiceToEbInterface40Converter extends AbstractToEbInterface
         // eb: Identifikation des Rechnungsempfängers beim Rechnungssteller.
         aEbiRecipient.setBillersInvoiceRecipientID (StringHelper.trim (aUBLCustomer.getSupplierAssignedAccountIDValue ()));
       }
-      if (StringHelper.hasNoText (aEbiRecipient.getBillersInvoiceRecipientID ()))
+      if (StringHelper.isEmpty (aEbiRecipient.getBillersInvoiceRecipientID ()))
       {
         // Check if a fallback is present
         aEbiRecipient.setBillersInvoiceRecipientID (m_aSettings.getFallbackBillersInvoiceRecipientID ());
       }
-      if (StringHelper.hasNoText (aEbiRecipient.getBillersInvoiceRecipientID ()))
+      if (StringHelper.isEmpty (aEbiRecipient.getBillersInvoiceRecipientID ()))
       {
         // BillersInvoiceRecipientID is mandatory in ebi 4.0
         aTransformationErrorList.add (SingleError.builderError ()
@@ -320,7 +319,7 @@ public final class InvoiceToEbInterface40Converter extends AbstractToEbInterface
             break;
           }
         }
-      if (StringHelper.hasNoText (aEbiOrderingParty.getVATIdentificationNumber ()))
+      if (StringHelper.isEmpty (aEbiOrderingParty.getVATIdentificationNumber ()))
       {
         // Required by ebInterface
         aTransformationErrorList.add (SingleError.builderError ()
@@ -356,7 +355,7 @@ public final class InvoiceToEbInterface40Converter extends AbstractToEbInterface
       }
 
       if (false)
-        if (StringHelper.hasNoText (aEbiOrderingParty.getBillersOrderingPartyID ()) &&
+        if (StringHelper.isEmpty (aEbiOrderingParty.getBillersOrderingPartyID ()) &&
             aUBLBuyer.getParty () != null &&
             aUBLBuyer.getParty ().hasPartyIdentificationEntries ())
         {
@@ -366,14 +365,14 @@ public final class InvoiceToEbInterface40Converter extends AbstractToEbInterface
                                                                                    .getIDValue ()));
         }
 
-      if (StringHelper.hasNoText (aEbiOrderingParty.getBillersOrderingPartyID ()) &&
+      if (StringHelper.isEmpty (aEbiOrderingParty.getBillersOrderingPartyID ()) &&
           aEbiDoc.getInvoiceRecipient () != null)
       {
         // Use the same as the the invoice recipient ID
         // Heuristics, but what should I do :(
         aEbiOrderingParty.setBillersOrderingPartyID (aEbiDoc.getInvoiceRecipient ().getBillersInvoiceRecipientID ());
       }
-      if (StringHelper.hasNoText (aEbiOrderingParty.getBillersOrderingPartyID ()))
+      if (StringHelper.isEmpty (aEbiOrderingParty.getBillersOrderingPartyID ()))
       {
         // Required by ebInterface
         aTransformationErrorList.add (SingleError.builderError ()
@@ -395,7 +394,7 @@ public final class InvoiceToEbInterface40Converter extends AbstractToEbInterface
         sUBLOrderReferenceID = StringHelper.trim (aUBLOrderReference.getIDValue ());
       }
 
-      if (StringHelper.hasNoText (sUBLOrderReferenceID))
+      if (StringHelper.isEmpty (sUBLOrderReferenceID))
       {
         if (m_aSettings.isOrderReferenceIDMandatory ())
           aTransformationErrorList.add (SingleError.builderError ()
@@ -454,11 +453,11 @@ public final class InvoiceToEbInterface40Converter extends AbstractToEbInterface
             if (aUBLTaxAmount != null && aUBLTaxableAmount != null)
             {
               // Calculate percentage
-              aUBLPercentage = MathHelper.isEQ0 (aUBLTaxableAmount) ? BigDecimal.ZERO : aUBLTaxAmount.multiply (
-                                                                                                                CGlobal.BIGDEC_100)
-                                                                                                     .divide (aUBLTaxableAmount,
-                                                                                                              SCALE_PERC,
-                                                                                                              ROUNDING_MODE);
+              aUBLPercentage = BigHelper.isEQ0 (aUBLTaxableAmount) ? BigDecimal.ZERO : aUBLTaxAmount.multiply (
+                                                                                                               CGlobal.BIGDEC_100)
+                                                                                                    .divide (aUBLTaxableAmount,
+                                                                                                             SCALE_PERC,
+                                                                                                             ROUNDING_MODE);
             }
           }
 
@@ -468,7 +467,7 @@ public final class InvoiceToEbInterface40Converter extends AbstractToEbInterface
             if (aUBLTaxableAmount == null && aUBLTaxAmount != null)
             {
               // Cannot "back" calculate the taxable amount from 0 percentage!
-              if (MathHelper.isNE0 (aUBLPercentage))
+              if (BigHelper.isNE0 (aUBLPercentage))
               {
                 // Calculate (inexact) subtotal
                 aUBLTaxableAmount = aUBLTaxAmount.multiply (CGlobal.BIGDEC_100)
@@ -479,11 +478,11 @@ public final class InvoiceToEbInterface40Converter extends AbstractToEbInterface
               if (aUBLTaxableAmount != null && aUBLTaxAmount == null)
               {
                 // Calculate (inexact) subtotal
-                aUBLTaxAmount = MathHelper.isEQ0 (aUBLPercentage) ? BigDecimal.ZERO : aUBLTaxableAmount.multiply (
-                                                                                                                  aUBLPercentage)
-                                                                                                       .divide (CGlobal.BIGDEC_100,
-                                                                                                                SCALE_PRICE4,
-                                                                                                                ROUNDING_MODE);
+                aUBLTaxAmount = BigHelper.isEQ0 (aUBLPercentage) ? BigDecimal.ZERO : aUBLTaxableAmount.multiply (
+                                                                                                                 aUBLPercentage)
+                                                                                                      .divide (CGlobal.BIGDEC_100,
+                                                                                                               SCALE_PRICE4,
+                                                                                                               ROUNDING_MODE);
               }
           }
 
@@ -503,7 +502,7 @@ public final class InvoiceToEbInterface40Converter extends AbstractToEbInterface
           }
           final String sUBLTaxSchemeSchemeID = StringHelper.trim (aUBLTaxSchemeID.getSchemeID ());
           final String sUBLTaxSchemeID = StringHelper.trim (aUBLTaxSchemeID.getValue ());
-          if (StringHelper.hasNoText (sUBLTaxSchemeID))
+          if (StringHelper.isEmpty (sUBLTaxSchemeID))
           {
             aTransformationErrorList.add (SingleError.builderError ()
                                                      .errorFieldName ("TaxTotal[" +
@@ -528,7 +527,7 @@ public final class InvoiceToEbInterface40Converter extends AbstractToEbInterface
                                                      .build ());
             break;
           }
-          if (StringHelper.hasNoText (sUBLTaxCategoryID))
+          if (StringHelper.isEmpty (sUBLTaxCategoryID))
           {
             aTransformationErrorList.add (SingleError.builderError ()
                                                      .errorFieldName ("TaxTotal[" +
@@ -588,7 +587,7 @@ public final class InvoiceToEbInterface40Converter extends AbstractToEbInterface
                       sReason = aUBLTaxCategory.getTaxExemptionReasonAtIndex (0).getValue ();
                     if (sReason == null && aUBLTaxCategory.getTaxExemptionReasonCode () != null)
                       sReason = aUBLTaxCategory.getTaxExemptionReasonCode ().getValue ();
-                    if (StringHelper.hasNoText (sReason))
+                    if (StringHelper.isEmpty (sReason))
                       sReason = "Tax Exemption";
                     aEbiVAT.setTaxExemption (StringHelper.getConcatenatedOnDemand (aEbiVAT.getTaxExemption (),
                                                                                    '\n',
@@ -626,7 +625,7 @@ public final class InvoiceToEbInterface40Converter extends AbstractToEbInterface
         ++nTaxTotalIndex;
       }
 
-      if (aEbiVAT.hasItemEntries () && StringHelper.hasText (aEbiVAT.getTaxExemption ()))
+      if (aEbiVAT.hasItemEntries () && StringHelper.isNotEmpty (aEbiVAT.getTaxExemption ()))
       {
         // v4.0 cannot mix Tax item and Tax exemption
         aTransformationErrorList.add (SingleError.builderError ()
@@ -680,7 +679,7 @@ public final class InvoiceToEbInterface40Converter extends AbstractToEbInterface
             final String sUBLTaxCategorySchemeID = StringHelper.trim (aUBLTaxCategory.getID ().getSchemeID ());
 
             // Avoid Exception
-            if (StringHelper.hasText (sUBLTaxSchemeID) && StringHelper.hasText (sUBLTaxCategoryID))
+            if (StringHelper.isNotEmpty (sUBLTaxSchemeID) && StringHelper.isNotEmpty (sUBLTaxCategoryID))
             {
               final TaxCategoryKey aKey = new TaxCategoryKey (new SchemedID (sUBLTaxSchemeSchemeID, sUBLTaxSchemeID),
                                                               new SchemedID (sUBLTaxCategorySchemeID,
@@ -714,7 +713,7 @@ public final class InvoiceToEbInterface40Converter extends AbstractToEbInterface
         BigInteger aUBLPositionNumber = StringParser.parseBigInteger (sUBLPositionNumber);
         if (aUBLPositionNumber != null)
         {
-          if (MathHelper.isLT1 (aUBLPositionNumber))
+          if (BigHelper.isLT1 (aUBLPositionNumber))
             if (m_aSettings.isErrorOnPositionNumber ())
             {
               // Must be &gt; 0
@@ -747,21 +746,21 @@ public final class InvoiceToEbInterface40Converter extends AbstractToEbInterface
         if (aUBLName != null)
         {
           final String sDesc = StringHelper.trim (aUBLName.getValue ());
-          if (StringHelper.hasText (sDesc))
+          if (StringHelper.isNotEmpty (sDesc))
             aEbiListLineItem.addDescription (sDesc);
         }
         // Descriptions
         for (final DescriptionType aUBLDescription : aUBLLine.getItem ().getDescription ())
         {
           final String sDesc = StringHelper.trim (aUBLDescription.getValue ());
-          if (StringHelper.hasText (sDesc))
+          if (StringHelper.isNotEmpty (sDesc))
             aEbiListLineItem.addDescription (sDesc);
         }
         // Add the Note elements as well (IBM, 2016-11)
         for (final NoteType aUBLNote : aUBLLine.getNote ())
         {
           final String sDesc = StringHelper.trim (aUBLNote.getValue ());
-          if (StringHelper.hasText (sDesc))
+          if (StringHelper.isNotEmpty (sDesc))
             aEbiListLineItem.addDescription (sDesc);
         }
 
@@ -806,7 +805,7 @@ public final class InvoiceToEbInterface40Converter extends AbstractToEbInterface
           final BigDecimal aUBLBaseQuantity = aUBLLine.getPrice ().getBaseQuantityValue ();
           if (aUBLBaseQuantity != null)
           {
-            if (MathHelper.isEQ0 (aUBLBaseQuantity))
+            if (BigHelper.isEQ0 (aUBLBaseQuantity))
               aEbiListLineItem.setUnitPrice (BigDecimal.ZERO);
             else
               aEbiListLineItem.setUnitPrice (aUBLPriceAmount.divide (aUBLBaseQuantity, SCALE_PRICE4, ROUNDING_MODE));
@@ -819,7 +818,7 @@ public final class InvoiceToEbInterface40Converter extends AbstractToEbInterface
           // Unit price = lineExtensionAmount / quantity (mandatory)
           final BigDecimal aUBLLineExtensionAmount = aUBLLine.getLineExtensionAmountValue ();
           final BigDecimal aEbiUnitPrice;
-          if (MathHelper.isEQ0 (aEbiQuantity.getValue ()) || aUBLLineExtensionAmount == null)
+          if (BigHelper.isEQ0 (aEbiQuantity.getValue ()) || aUBLLineExtensionAmount == null)
             aEbiUnitPrice = BigDecimal.ZERO;
           else
             aEbiUnitPrice = aUBLLineExtensionAmount.divide (aEbiQuantity.getValue (), SCALE_PRICE4, ROUNDING_MODE);
@@ -856,12 +855,12 @@ public final class InvoiceToEbInterface40Converter extends AbstractToEbInterface
                                                                                                                                    ROUNDING_MODE));
 
         // Special handling in case no VAT item is present
-        if (MathHelper.isEQ0 (aUBLPercent))
+        if (BigHelper.isEQ0 (aUBLPercent))
           aTotalZeroPercLineExtensionAmount = aTotalZeroPercLineExtensionAmount.add (aEbiListLineItem.getLineItemAmount ());
 
         // Order reference per line
         for (final OrderLineReferenceType aUBLOrderLineReference : aUBLLine.getOrderLineReference ())
-          if (StringHelper.hasText (aUBLOrderLineReference.getLineIDValue ()))
+          if (StringHelper.isNotEmpty (aUBLOrderLineReference.getLineIDValue ()))
           {
             final Ebi40OrderReferenceDetailType aEbiOrderRefDetail = new Ebi40OrderReferenceDetailType ();
 
@@ -869,7 +868,7 @@ public final class InvoiceToEbInterface40Converter extends AbstractToEbInterface
             String sUBLLineOrderReferenceID = null;
             if (aUBLOrderLineReference.getOrderReference () != null)
               sUBLLineOrderReferenceID = StringHelper.trim (aUBLOrderLineReference.getOrderReference ().getIDValue ());
-            if (StringHelper.hasNoText (sUBLLineOrderReferenceID))
+            if (StringHelper.isEmpty (sUBLLineOrderReferenceID))
             {
               // Use the global order reference from header level
               sUBLLineOrderReferenceID = sUBLOrderReferenceID;
@@ -894,8 +893,8 @@ public final class InvoiceToEbInterface40Converter extends AbstractToEbInterface
                 aEbiOrderRefDetail.setOrderPositionNumber (sOrderPosNumber);
               }
             }
-            if (StringHelper.hasText (aEbiOrderRefDetail.getOrderPositionNumber ()) &&
-                StringHelper.hasNoText (sUBLLineOrderReferenceID))
+            if (StringHelper.isNotEmpty (aEbiOrderRefDetail.getOrderPositionNumber ()) &&
+                StringHelper.isEmpty (sUBLLineOrderReferenceID))
             {
               if (m_aSettings.isOrderReferenceIDMandatory ())
               {
@@ -919,7 +918,7 @@ public final class InvoiceToEbInterface40Converter extends AbstractToEbInterface
               }
             }
 
-            if (StringHelper.hasText (sUBLLineOrderReferenceID))
+            if (StringHelper.isNotEmpty (sUBLLineOrderReferenceID))
               aEbiListLineItem.setInvoiceRecipientsOrderReference (aEbiOrderRefDetail);
             break;
           }
@@ -1096,7 +1095,7 @@ public final class InvoiceToEbInterface40Converter extends AbstractToEbInterface
 
     // PrepaidAmount is not supported!
     final MonetaryTotalType aUBLMonetaryTotal = aUBLDoc.getLegalMonetaryTotal ();
-    if (aUBLMonetaryTotal.getPrepaidAmount () != null && MathHelper.isNE0 (aUBLMonetaryTotal.getPrepaidAmountValue ()))
+    if (aUBLMonetaryTotal.getPrepaidAmount () != null && BigHelper.isNE0 (aUBLMonetaryTotal.getPrepaidAmountValue ()))
     {
       aTransformationErrorList.add (SingleError.builderError ()
                                                .errorFieldName ("Invoice/LegalMonetaryTotal/PrepaidAmount")

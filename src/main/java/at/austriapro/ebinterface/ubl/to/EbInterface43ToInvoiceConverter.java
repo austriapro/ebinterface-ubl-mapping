@@ -19,14 +19,13 @@ package at.austriapro.ebinterface.ubl.to;
 import java.math.BigDecimal;
 import java.util.Locale;
 
-import javax.annotation.Nonnull;
-
-import com.helger.commons.CGlobal;
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.math.MathHelper;
-import com.helger.commons.string.StringHelper;
+import com.helger.base.CGlobal;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.numeric.BigHelper;
+import com.helger.base.string.StringHelper;
 import com.helger.ebinterface.v43.*;
 
+import jakarta.annotation.Nonnull;
 import jakarta.xml.bind.JAXBElement;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.*;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.AllowanceChargeReasonType;
@@ -80,7 +79,7 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
           aUBLPaymentMeans.setPaymentMeansCode (PAYMENT_MEANS_DIRECT_DEBIT);
           if (aEbiPaymentConditions != null)
             aUBLPaymentMeans.setPaymentDueDate (aEbiPaymentConditions.getDueDate ());
-          if (StringHelper.hasText (aEbiPaymentMethod.getComment ()))
+          if (StringHelper.isNotEmpty (aEbiPaymentMethod.getComment ()))
             aUBLPaymentMeans.addInstructionNote (new InstructionNoteType (aEbiPaymentMethod.getComment ()));
           aUBLDoc.addPaymentMeans (aUBLPaymentMeans);
         }
@@ -113,7 +112,7 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
 
             if (aEbiPaymentConditions != null)
               aUBLPaymentMeans.setPaymentDueDate (aEbiPaymentConditions.getDueDate ());
-            if (StringHelper.hasText (aEbiPaymentMethod.getComment ()))
+            if (StringHelper.isNotEmpty (aEbiPaymentMethod.getComment ()))
               aUBLPaymentMeans.addInstructionNote (new InstructionNoteType (aEbiPaymentMethod.getComment ()));
             aUBLDoc.addPaymentMeans (aUBLPaymentMeans);
           }
@@ -136,7 +135,7 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
                 final FinancialInstitutionType aUBLFinancialInstitution = new FinancialInstitutionType ();
                 {
                   final IDType aUBLFIID = new IDType ();
-                  if (StringHelper.hasText (aEbiAccount.getBIC ()))
+                  if (StringHelper.isNotEmpty (aEbiAccount.getBIC ()))
                   {
                     aUBLFIID.setValue (aEbiAccount.getBIC ());
                     aUBLFIID.setSchemeID (SCHEME_BIC);
@@ -148,31 +147,31 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
                       aUBLFIID.setSchemeID (aEbiAccount.getBankCode ().getBankCodeType ());
                     }
                     else
-                      if (StringHelper.hasText (aEbiAccount.getBankName ()))
+                      if (StringHelper.isNotEmpty (aEbiAccount.getBankName ()))
                       {
                         aUBLFIID.setValue (aEbiAccount.getBankName ());
                         aUBLFIID.setSchemeID ("name");
                       }
-                  if (StringHelper.hasText (aUBLFIID.getValue ()))
+                  if (StringHelper.isNotEmpty (aUBLFIID.getValue ()))
                     aUBLFinancialInstitution.setID (aUBLFIID);
                 }
                 if (aUBLFinancialInstitution.getID () != null)
                   aUBLBranch.setFinancialInstitution (aUBLFinancialInstitution);
                 {
                   final IDType aUBLFAID = new IDType ();
-                  if (StringHelper.hasText (aEbiAccount.getIBAN ()))
+                  if (StringHelper.isNotEmpty (aEbiAccount.getIBAN ()))
                   {
                     aUBLFAID.setValue (aEbiAccount.getIBAN ());
                     aUBLFAID.setSchemeID (SCHEME_IBAN);
                   }
                   else
-                    if (StringHelper.hasText (aEbiAccount.getBankAccountNr ()))
+                    if (StringHelper.isNotEmpty (aEbiAccount.getBankAccountNr ()))
                     {
                       aUBLFAID.setValue (aEbiAccount.getBankAccountNr ());
                       aUBLFAID.setSchemeID ("local");
                     }
 
-                  if (StringHelper.hasText (aUBLFAID.getValue ()))
+                  if (StringHelper.isNotEmpty (aUBLFAID.getValue ()))
                     aUBLFinancialAccount.setID (aUBLFAID);
                 }
                 aUBLFinancialAccount.setName (aEbiAccount.getBankAccountOwner ());
@@ -191,7 +190,7 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
 
               if (aEbiPaymentConditions != null)
                 aUBLPaymentMeans.setPaymentDueDate (aEbiPaymentConditions.getDueDate ());
-              if (StringHelper.hasText (aEbiPaymentMethod.getComment ()))
+              if (StringHelper.isNotEmpty (aEbiPaymentMethod.getComment ()))
                 aUBLPaymentMeans.addInstructionNote (new InstructionNoteType (aEbiPaymentMethod.getComment ()));
               aUBLDoc.addPaymentMeans (aUBLPaymentMeans);
             }
@@ -220,7 +219,7 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
           aUBLPaymentTerms.setPaymentPercent (aPerc);
         }
 
-        if (StringHelper.hasText (aEbiPaymentConditions.getComment ()))
+        if (StringHelper.isNotEmpty (aEbiPaymentConditions.getComment ()))
           aUBLPaymentTerms.addNote (new NoteType (aEbiPaymentConditions.getComment ()));
 
         aUBLDoc.addPaymentTerms (aUBLPaymentTerms);
@@ -287,7 +286,7 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
         aUBLDocRef.setIssueDate (aEbiCancelledDoc.getInvoiceDate ());
         aUBLDocRef.setDocumentType ("CancelledOriginalDocument");
         aUBLDocRef.setDocumentTypeCode (getTypeCode (aEbiCancelledDoc.getDocumentType (), DocumentTypeCodeType::new));
-        if (StringHelper.hasText (aEbiCancelledDoc.getComment ()))
+        if (StringHelper.isNotEmpty (aEbiCancelledDoc.getComment ()))
           aUBLDocRef.addDocumentDescription (new DocumentDescriptionType (aEbiCancelledDoc.getComment ()));
         aUBLDoc.addAdditionalDocumentReference (aUBLDocRef);
       }
@@ -302,7 +301,7 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
         aUBLDocRef.setIssueDate (aEbiRelatedItem.getInvoiceDate ());
         aUBLDocRef.setDocumentType ("RelatedDocument");
         aUBLDocRef.setDocumentTypeCode (getTypeCode (aEbiRelatedItem.getDocumentType (), DocumentTypeCodeType::new));
-        if (StringHelper.hasText (aEbiRelatedItem.getComment ()))
+        if (StringHelper.isNotEmpty (aEbiRelatedItem.getComment ()))
           aUBLDocRef.addDocumentDescription (new DocumentDescriptionType (aEbiRelatedItem.getComment ()));
         aUBLDoc.addAdditionalDocumentReference (aUBLDocRef);
       }
@@ -328,7 +327,7 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
       {
         final SupplierPartyType aUBLSupplier = new SupplierPartyType ();
         PartyType aUBLParty = convertParty (aEbiBiller.getAddress (), m_aContentLocale);
-        if (StringHelper.hasText (aEbiBiller.getVATIdentificationNumber ()))
+        if (StringHelper.isNotEmpty (aEbiBiller.getVATIdentificationNumber ()))
         {
           if (aUBLParty == null)
             aUBLParty = new PartyType ();
@@ -339,7 +338,7 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
           aCID.setSchemeID (SUPPORTED_TAX_SCHEME_ID);
           aUBLParty.addPartyTaxScheme (aPTS);
         }
-        if (StringHelper.hasText (aEbiBiller.getInvoiceRecipientsBillerID ()))
+        if (StringHelper.isNotEmpty (aEbiBiller.getInvoiceRecipientsBillerID ()))
         {
           if (aUBLParty == null)
             aUBLParty = new PartyType ();
@@ -378,7 +377,7 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
       {
         final CustomerPartyType aUBLCustomer = new CustomerPartyType ();
         PartyType aUBLParty = convertParty (aEbiIR.getAddress (), m_aContentLocale);
-        if (StringHelper.hasText (aEbiIR.getVATIdentificationNumber ()))
+        if (StringHelper.isNotEmpty (aEbiIR.getVATIdentificationNumber ()))
         {
           if (aUBLParty == null)
             aUBLParty = new PartyType ();
@@ -389,7 +388,7 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
           aCID.setSchemeID (SUPPORTED_TAX_SCHEME_ID);
           aUBLParty.addPartyTaxScheme (aPTS);
         }
-        if (StringHelper.hasText (aEbiIR.getBillersInvoiceRecipientID ()))
+        if (StringHelper.isNotEmpty (aEbiIR.getBillersInvoiceRecipientID ()))
         {
           if (aUBLParty == null)
             aUBLParty = new PartyType ();
@@ -439,7 +438,7 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
       {
         final CustomerPartyType aUBLCustomer = new CustomerPartyType ();
         PartyType aUBLParty = convertParty (aEbiOrdering.getAddress (), m_aContentLocale);
-        if (StringHelper.hasText (aEbiOrdering.getVATIdentificationNumber ()))
+        if (StringHelper.isNotEmpty (aEbiOrdering.getVATIdentificationNumber ()))
         {
           if (aUBLParty == null)
             aUBLParty = new PartyType ();
@@ -450,7 +449,7 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
           aCID.setSchemeID (SUPPORTED_TAX_SCHEME_ID);
           aUBLParty.addPartyTaxScheme (aPTS);
         }
-        if (StringHelper.hasText (aEbiOrdering.getBillersOrderingPartyID ()))
+        if (StringHelper.isNotEmpty (aEbiOrdering.getBillersOrderingPartyID ()))
         {
           if (aUBLParty == null)
             aUBLParty = new PartyType ();
@@ -530,7 +529,7 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
               // Exempt
               aUBLTaxCategory = createTaxCategoryVAT ("E");
               aUBLTaxCategory.setPercent (BigDecimal.ZERO);
-              if (StringHelper.hasText (aEbiItem.getTaxExemption ().getValue ()))
+              if (StringHelper.isNotEmpty (aEbiItem.getTaxExemption ().getValue ()))
                 aUBLTaxCategory.addTaxExemptionReason (new TaxExemptionReasonType (aEbiItem.getTaxExemption ()
                                                                                            .getValue ()));
             }
@@ -539,7 +538,7 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
               // Standard
               aUBLTaxCategory = createTaxCategoryVAT ("S");
               aUBLTaxCategory.setPercent (aEbiItem.getVATRate ().getValue ());
-              if (StringHelper.hasText (aEbiItem.getVATRate ().getTaxCode ()))
+              if (StringHelper.isNotEmpty (aEbiItem.getVATRate ().getTaxCode ()))
                 aUBLTaxCategory.setName (aEbiItem.getVATRate ().getTaxCode ());
             }
 
@@ -567,7 +566,7 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
                   aUBLAC.setAmount (aEbiRSValue.getAmount ()).setCurrencyID (sCurrency);
                   if (aUBLAC.getMultiplierFactorNumeric () == null)
                   {
-                    aUBLAC.setMultiplierFactorNumeric (MathHelper.isEQ0 (aEbiRSValue.getBaseAmount ()) ? BigDecimal.ZERO
+                    aUBLAC.setMultiplierFactorNumeric (BigHelper.isEQ0 (aEbiRSValue.getBaseAmount ()) ? BigDecimal.ZERO
                                                                                                        : aEbiRSValue.getAmount ()
                                                                                                                     .divide (aEbiRSValue.getBaseAmount (),
                                                                                                                              SCALE_PRICE4,
@@ -576,12 +575,12 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
                 }
                 else
                   if (aEbiRSValue.getPercentage () != null)
-                    aUBLAC.setAmount (MathHelper.getPercentValue (aEbiRSValue.getBaseAmount (),
+                    aUBLAC.setAmount (BigHelper.getPercentValue (aEbiRSValue.getBaseAmount (),
                                                                   aEbiRSValue.getPercentage ()))
                           .setCurrencyID (sCurrency);
-                if (StringHelper.hasText (aEbiRSValue.getTaxID ()))
+                if (StringHelper.isNotEmpty (aEbiRSValue.getTaxID ()))
                   aUBLAC.setAllowanceChargeReasonCode (aEbiRSValue.getTaxID ());
-                if (StringHelper.hasText (aEbiRSValue.getComment ()))
+                if (StringHelper.isNotEmpty (aEbiRSValue.getComment ()))
                   aUBLAC.addAllowanceChargeReason (new AllowanceChargeReasonType (aEbiRSValue.getComment ()));
               }
               else
@@ -599,7 +598,7 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
                   aUBLAC.setAmount (aEbiRSValue.getAmount ()).setCurrencyID (sCurrency);
                   if (aUBLAC.getMultiplierFactorNumeric () == null)
                   {
-                    aUBLAC.setMultiplierFactorNumeric (MathHelper.isEQ0 (aEbiRSValue.getBaseAmount ()) ? BigDecimal.ZERO
+                    aUBLAC.setMultiplierFactorNumeric (BigHelper.isEQ0 (aEbiRSValue.getBaseAmount ()) ? BigDecimal.ZERO
                                                                                                        : aEbiRSValue.getAmount ()
                                                                                                                     .divide (aEbiRSValue.getBaseAmount (),
                                                                                                                              SCALE_PRICE4,
@@ -608,10 +607,10 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
                 }
                 else
                   if (aEbiRSValue.getPercentage () != null)
-                    aUBLAC.setAmount (MathHelper.getPercentValue (aEbiRSValue.getBaseAmount (),
+                    aUBLAC.setAmount (BigHelper.getPercentValue (aEbiRSValue.getBaseAmount (),
                                                                   aEbiRSValue.getPercentage ()))
                           .setCurrencyID (sCurrency);
-                if (StringHelper.hasText (aEbiRSValue.getComment ()))
+                if (StringHelper.isNotEmpty (aEbiRSValue.getComment ()))
                   aUBLAC.addAllowanceChargeReason (new AllowanceChargeReasonType (aEbiRSValue.getComment ()));
               }
 
@@ -747,7 +746,7 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
 
         {
           final ItemType aUBLItem = new ItemType ();
-          if (StringHelper.hasText (aEbiItem.getDescription ()))
+          if (StringHelper.isNotEmpty (aEbiItem.getDescription ()))
             aUBLItem.setName (aEbiItem.getDescription ());
           else
             aUBLItem.setName ("BelowTheLine");
@@ -796,10 +795,10 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
             aAmount = aEbiRSValue.getAmount ();
           else
             if (aEbiRSValue.getPercentage () != null)
-              aAmount = MathHelper.getPercentValue (aEbiRSValue.getBaseAmount (), aEbiRSValue.getPercentage ());
-          if (StringHelper.hasText (aEbiRSValue.getTaxID ()))
+              aAmount = BigHelper.getPercentValue (aEbiRSValue.getBaseAmount (), aEbiRSValue.getPercentage ());
+          if (StringHelper.isNotEmpty (aEbiRSValue.getTaxID ()))
             aUBLAC.setAllowanceChargeReasonCode (aEbiRSValue.getTaxID ());
-          if (StringHelper.hasText (aEbiRSValue.getComment ()))
+          if (StringHelper.isNotEmpty (aEbiRSValue.getComment ()))
             aUBLAC.addAllowanceChargeReason (new AllowanceChargeReasonType (aEbiRSValue.getComment ()));
 
           // add tax category
@@ -821,8 +820,8 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
             aAmount = aEbiRSValue.getAmount ();
           else
             if (aEbiRSValue.getPercentage () != null)
-              aAmount = MathHelper.getPercentValue (aEbiRSValue.getBaseAmount (), aEbiRSValue.getPercentage ());
-          if (StringHelper.hasText (aEbiRSValue.getComment ()))
+              aAmount = BigHelper.getPercentValue (aEbiRSValue.getBaseAmount (), aEbiRSValue.getPercentage ());
+          if (StringHelper.isNotEmpty (aEbiRSValue.getComment ()))
             aUBLAC.addAllowanceChargeReason (new AllowanceChargeReasonType (aEbiRSValue.getComment ()));
 
           // add tax category
@@ -866,7 +865,7 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
           // Exempt
           aUBLTaxCategory = createTaxCategoryVAT ("E");
           aUBLTaxCategory.setPercent (BigDecimal.ZERO);
-          if (StringHelper.hasText (aEbiVATItem.getTaxExemption ().getValue ()))
+          if (StringHelper.isNotEmpty (aEbiVATItem.getTaxExemption ().getValue ()))
             aUBLTaxCategory.addTaxExemptionReason (new TaxExemptionReasonType (aEbiVATItem.getTaxExemption ()
                                                                                           .getValue ()));
         }
@@ -875,7 +874,7 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
           // Standard
           aUBLTaxCategory = createTaxCategoryVAT ("S");
           aUBLTaxCategory.setPercent (aEbiVATItem.getVATRate ().getValue ());
-          if (StringHelper.hasText (aEbiVATItem.getVATRate ().getTaxCode ()))
+          if (StringHelper.isNotEmpty (aEbiVATItem.getVATRate ().getTaxCode ()))
             aUBLTaxCategory.setName (aEbiVATItem.getVATRate ().getTaxCode ());
         }
         aUBLTaxSubtotal.setTaxCategory (aUBLTaxCategory);
@@ -889,7 +888,7 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
         aUBLTaxSubtotal.setTaxAmount (aEbiOtherTax.getAmount ()).setCurrencyID (sCurrency);
 
         final TaxCategoryType aUBLTaxCategory = createTaxCategoryOther ();
-        if (StringHelper.hasText (aEbiOtherTax.getComment ()))
+        if (StringHelper.isNotEmpty (aEbiOtherTax.getComment ()))
           aUBLTaxCategory.getTaxScheme ().setName (aEbiOtherTax.getComment ());
         aUBLTaxSubtotal.setTaxCategory (aUBLTaxCategory);
 
@@ -919,7 +918,7 @@ public class EbInterface43ToInvoiceConverter extends AbstractEbInterface43ToUBLC
     }
 
     // Comment
-    if (StringHelper.hasText (aEbiDoc.getComment ()))
+    if (StringHelper.isNotEmpty (aEbiDoc.getComment ()))
       aUBLDoc.addNote (new NoteType (aEbiDoc.getComment ()));
 
     return aUBLDoc;

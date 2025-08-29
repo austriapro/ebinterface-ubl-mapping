@@ -16,8 +16,7 @@
  */
 package at.austriapro.ebinterface.ubl.from.invoice;
 
-import javax.annotation.Nonnull;
-
+import jakarta.annotation.Nonnull;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.InvoiceLineType;
 import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
 

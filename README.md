@@ -8,14 +8,14 @@ Mapping ebInterface 4.x/5.x/6.x from and to UBL 2.1.
 
 Author: Philip Helger
 
-The reason why this project is not in the [ebinterface-mappings](https://github.com/austriapro/ebinterface-mappings) project is the totally different software stack used and the requirement of this project to be published on Maven central. 
-Since v4.5.0 the Maven group ID changed to `at.austriapro` - before that, the group ID was "com.helger".
+The reason why this project is not in the [ebinterface-mappings](https://github.com/austriapro/ebinterface-mappings) project is the totally different software stack used and the requirement of this project to be published on Maven central.
 
 # Building
 
-To build the project you need at least Java 11 (or newer) and Apache Maven 3.x. Build is quite easy: call `mvn clean install` in this directory and the final result will be in the `target` directory.
+To build the project you need at least Java 17 (or newer) and Apache Maven 3.x. Build is quite easy: call `mvn clean install` in this directory and the final result will be in the `target` directory.
 Additionally Eclipse project files for the latest Eclipse version are contained.
 
+Versions prior to v6 use Java 11 as the baseline.
 Versions prior to v5 use Java 1.8 as the baseline.
 
 # Maven usage
@@ -29,8 +29,15 @@ Add the following to your pom.xml to use this artifact, replacing `x.y.z` with t
   <version>x.y.z</version>
 </dependency>
 ```
+ 
+Note: prior to v4.5.0 the Maven group ID was `com.helger`.
 
 # News and noteworthy
+
+v6.0.0 - 2025-08-29
+* Requires Java 17 as the minimum version
+* Updated to ph-commons 12.0.0
+* Removed all deprecated methods marked for removal
 
 v5.3.5 - 2025-08-29
 * Fixed the UBL to ebInterface maaping of `InvoiceRecipientsBillerID` (regression from v5.3.2)

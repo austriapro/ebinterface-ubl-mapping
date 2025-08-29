@@ -18,11 +18,11 @@ package at.austriapro.ebinterface.ubl.from;
 
 import java.io.Serializable;
 
-import javax.annotation.CheckForSigned;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import com.helger.annotation.CheckForSigned;
+import com.helger.annotation.Nonempty;
 
-import com.helger.commons.annotation.Nonempty;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Interface for the settings for the conversion from UBL to ebInterface.

@@ -21,13 +21,13 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
+import com.helger.annotation.concurrent.Immutable;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.string.StringHelper;
+import com.helger.collection.commons.CommonsLinkedHashSet;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.collection.impl.CommonsLinkedHashSet;
-import com.helger.commons.string.StringHelper;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Base class for Peppol UBL to/from ebInterface converter
@@ -148,10 +148,6 @@ public abstract class AbstractEbInterfaceUBLConverter
   public static final String UBL_VERSION_23 = "2.3";
   public static final String UBL_VERSION_24 = "2.4";
 
-  /** The UBL customization ID to use */
-  @Deprecated (forRemoval = true, since = "5.1.2")
-  public static final String CUSTOMIZATION_SCHEMEID = "PEPPOL";
-
   protected final Locale m_aDisplayLocale;
   protected final Locale m_aContentLocale;
 
@@ -179,7 +175,7 @@ public abstract class AbstractEbInterfaceUBLConverter
 
   protected static boolean ifNotEmpty (@Nonnull final Consumer <? super String> aConsumer, @Nullable final String s)
   {
-    if (StringHelper.hasNoText (s))
+    if (StringHelper.isEmpty (s))
       return false;
     aConsumer.accept (s);
     return true;
@@ -188,6 +184,6 @@ public abstract class AbstractEbInterfaceUBLConverter
   @Nullable
   protected static String orDefault (@Nullable final String s, @Nullable final String sDefault)
   {
-    return StringHelper.hasText (s) ? s : sDefault;
+    return StringHelper.isNotEmpty (s) ? s : sDefault;
   }
 }

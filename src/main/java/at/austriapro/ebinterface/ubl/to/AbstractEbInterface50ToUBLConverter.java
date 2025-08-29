@@ -19,16 +19,14 @@ package at.austriapro.ebinterface.ubl.to;
 import java.util.Locale;
 import java.util.function.Supplier;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.collection.impl.CommonsLinkedHashSet;
-import com.helger.commons.collection.impl.ICommonsOrderedSet;
-import com.helger.commons.string.StringHelper;
+import com.helger.annotation.concurrent.Immutable;
+import com.helger.base.string.StringHelper;
+import com.helger.base.string.StringImplode;
+import com.helger.collection.commons.CommonsLinkedHashSet;
+import com.helger.collection.commons.ICommonsOrderedSet;
 import com.helger.ebinterface.v50.Ebi50AddressIdentifierType;
 import com.helger.ebinterface.v50.Ebi50AddressType;
 import com.helger.ebinterface.v50.Ebi50ContactType;
@@ -36,6 +34,8 @@ import com.helger.ebinterface.v50.Ebi50DeliveryType;
 import com.helger.ebinterface.v50.Ebi50DocumentTypeType;
 import com.helger.xsds.ccts.cct.schemamodule.CodeType;
 
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AddressType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.ContactType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DeliveryTermsType;
@@ -133,13 +133,13 @@ public abstract class AbstractEbInterface50ToUBLConverter extends AbstractEbInte
       ret.setID (aUBLID);
     }
 
-    if (StringHelper.hasText (aEbiAddress.getStreet ()))
+    if (StringHelper.isNotEmpty (aEbiAddress.getStreet ()))
       ret.setStreetName (aEbiAddress.getStreet ());
-    if (StringHelper.hasText (aEbiAddress.getPOBox ()))
+    if (StringHelper.isNotEmpty (aEbiAddress.getPOBox ()))
       ret.setPostbox (aEbiAddress.getPOBox ());
-    if (StringHelper.hasText (aEbiAddress.getTown ()))
+    if (StringHelper.isNotEmpty (aEbiAddress.getTown ()))
       ret.setCityName (aEbiAddress.getTown ());
-    if (StringHelper.hasText (aEbiAddress.getZIP ()))
+    if (StringHelper.isNotEmpty (aEbiAddress.getZIP ()))
       ret.setPostalZone (aEbiAddress.getZIP ());
 
     if (aEbiAddress.getCountry () != null)
@@ -167,7 +167,7 @@ public abstract class AbstractEbInterface50ToUBLConverter extends AbstractEbInte
     final PartyType ret = new PartyType ();
     if (aEbiAddress != null)
     {
-      if (StringHelper.hasText (aEbiAddress.getName ()))
+      if (StringHelper.isNotEmpty (aEbiAddress.getName ()))
       {
         final PartyNameType aUBLPartyName = new PartyNameType ();
         aUBLPartyName.setName (aEbiAddress.getName ());
@@ -185,14 +185,14 @@ public abstract class AbstractEbInterface50ToUBLConverter extends AbstractEbInte
 
     if (aEbiContact != null)
     {
-      if (StringHelper.hasText (aEbiContact.getSalutation ()))
+      if (StringHelper.isNotEmpty (aEbiContact.getSalutation ()))
       {
         final PersonType aUBLPerson = new PersonType ();
         aUBLPerson.setGenderCode (aEbiContact.getSalutation ());
         ret.addPerson (aUBLPerson);
       }
 
-      if (StringHelper.hasText (aEbiContact.getName ()))
+      if (StringHelper.isNotEmpty (aEbiContact.getName ()))
       {
         aUBLContact.setName (aEbiContact.getName ());
         bHasContactData = true;
@@ -204,13 +204,13 @@ public abstract class AbstractEbInterface50ToUBLConverter extends AbstractEbInte
 
     if (aEmails.isNotEmpty ())
     {
-      aUBLContact.setElectronicMail (StringHelper.getImploded (' ', aEmails));
+      aUBLContact.setElectronicMail (StringImplode.getImploded (' ', aEmails));
       bHasContactData = true;
     }
 
     if (aPhones.isNotEmpty ())
     {
-      aUBLContact.setTelephone (StringHelper.getImploded (' ', aPhones));
+      aUBLContact.setTelephone (StringImplode.getImploded (' ', aPhones));
       bHasContactData = true;
     }
     if (bHasContactData)
@@ -245,7 +245,7 @@ public abstract class AbstractEbInterface50ToUBLConverter extends AbstractEbInte
                                                  aEbiDelivery.getContact (),
                                                  aContentLocale));
 
-    if (StringHelper.hasText (aEbiDelivery.getDescription ()))
+    if (StringHelper.isNotEmpty (aEbiDelivery.getDescription ()))
     {
       final DeliveryTermsType aDeliveryTerms = new DeliveryTermsType ();
       aDeliveryTerms.addSpecialTerms (new SpecialTermsType (aEbiDelivery.getDescription ()));

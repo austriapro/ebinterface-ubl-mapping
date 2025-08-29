@@ -17,25 +17,23 @@
 package at.austriapro.ebinterface.ubl.from;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
-
-import com.helger.commons.collection.CollectionHelper;
-import com.helger.commons.collection.impl.CommonsArrayList;
-import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.datetime.XMLOffsetDate;
-import com.helger.commons.error.SingleError;
-import com.helger.commons.error.list.ErrorList;
-import com.helger.commons.locale.country.CountryCache;
-import com.helger.commons.math.MathHelper;
-import com.helger.commons.regex.RegExHelper;
-import com.helger.commons.string.StringHelper;
+import com.helger.annotation.concurrent.Immutable;
+import com.helger.base.numeric.BigHelper;
+import com.helger.base.string.StringHelper;
+import com.helger.base.string.StringImplode;
+import com.helger.cache.regex.RegExHelper;
+import com.helger.collection.CollectionHelper;
+import com.helger.collection.commons.CommonsArrayList;
+import com.helger.collection.commons.ICommonsList;
+import com.helger.datetime.xml.XMLOffsetDate;
+import com.helger.diagnostics.error.SingleError;
+import com.helger.diagnostics.error.list.ErrorList;
 import com.helger.ebinterface.codelist.EFurtherIdentification;
 import com.helger.ebinterface.v40.Ebi40AccountType;
 import com.helger.ebinterface.v40.Ebi40AddressIdentifierType;
@@ -55,7 +53,10 @@ import com.helger.ebinterface.v40.Ebi40PaymentConditionsType;
 import com.helger.ebinterface.v40.Ebi40PaymentMethodType;
 import com.helger.ebinterface.v40.Ebi40PaymentReferenceType;
 import com.helger.ebinterface.v40.Ebi40UniversalBankTransactionType;
+import com.helger.text.locale.country.CountryCache;
 
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AddressType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.BranchType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.ContactType;
@@ -99,7 +100,7 @@ public abstract class AbstractToEbInterface40Converter extends AbstractToEbInter
   @Nullable
   public static Ebi40CountryCodeType getCountryCode (@Nullable final String sCountry)
   {
-    if (StringHelper.hasNoText (sCountry))
+    if (StringHelper.isEmpty (sCountry))
       return null;
 
     final String sUC = sCountry.toUpperCase (Locale.US);
@@ -112,7 +113,7 @@ public abstract class AbstractToEbInterface40Converter extends AbstractToEbInter
   @Nullable
   public static Ebi40CurrencyType getCurrencyCode (@Nullable final String sCurrency)
   {
-    if (StringHelper.hasNoText (sCurrency))
+    if (StringHelper.isEmpty (sCurrency))
       return null;
 
     final String sUC = sCurrency.toUpperCase (Locale.US);
@@ -129,9 +130,12 @@ public abstract class AbstractToEbInterface40Converter extends AbstractToEbInter
     // Convert main address
     if (aUBLAddress != null)
     {
-      aEbiAddress.setStreet (StringHelper.getImplodedNonEmpty (' ',
-                                                               StringHelper.trim (aUBLAddress.getStreetNameValue ()),
-                                                               StringHelper.trim (aUBLAddress.getBuildingNumberValue ())));
+      aEbiAddress.setStreet (StringImplode.imploder ()
+                                          .source (StringHelper.trim (aUBLAddress.getStreetNameValue ()),
+                                                   StringHelper.trim (aUBLAddress.getBuildingNumberValue ()))
+                                          .separator (' ')
+                                          .filterNonEmpty ()
+                                          .build ());
       aEbiAddress.setPOBox (StringHelper.trim (aUBLAddress.getPostboxValue ()));
       aEbiAddress.setTown (StringHelper.trim (aUBLAddress.getCityNameValue ()));
       aEbiAddress.setZIP (StringHelper.trim (aUBLAddress.getPostalZoneValue ()));
@@ -145,7 +149,7 @@ public abstract class AbstractToEbInterface40Converter extends AbstractToEbInter
 
         final String sCountryName = StringHelper.trim (aUBLAddress.getCountry ().getNameValue ());
         aEbiCountry.setContent (sCountryName);
-        if (StringHelper.hasNoText (sCountryName) && StringHelper.hasText (sEbiCountryCode))
+        if (StringHelper.isEmpty (sCountryName) && StringHelper.isNotEmpty (sEbiCountryCode))
         {
           // Write locale of country in content locale
           final Locale aLocale = CountryCache.getInstance ().getCountry (sEbiCountryCode);
@@ -232,27 +236,27 @@ public abstract class AbstractToEbInterface40Converter extends AbstractToEbInter
     // Person name
     final ICommonsList <String> ebContacts = new CommonsArrayList <> ();
     if (aUBLContact != null)
-      if (StringHelper.hasTextAfterTrim (aUBLContact.getNameValue ()))
+      if (StringHelper.isNotEmptyAfterTrim (aUBLContact.getNameValue ()))
         ebContacts.add (StringHelper.trim (aUBLContact.getNameValue ()));
     for (final PersonType aUBLPerson : aUBLParty.getPerson ())
     {
-      if (StringHelper.hasNoText (aEbiAddress.getSalutation ()))
+      if (StringHelper.isEmpty (aEbiAddress.getSalutation ()))
         aEbiAddress.setSalutation (StringHelper.trim (aUBLPerson.getGenderCodeValue ()));
-      ebContacts.add (StringHelper.getImplodedNonEmpty (' ',
-                                                        StringHelper.trim (aUBLPerson.getTitleValue ()),
-                                                        StringHelper.trim (aUBLPerson.getFirstNameValue ()),
-                                                        StringHelper.trim (aUBLPerson.getMiddleNameValue ()),
-                                                        StringHelper.trim (aUBLPerson.getFamilyNameValue ()),
-                                                        StringHelper.trim (aUBLPerson.getNameSuffixValue ())));
+      ebContacts.add (StringImplode.getImplodedNonEmpty (' ',
+                                                         StringHelper.trim (aUBLPerson.getTitleValue ()),
+                                                         StringHelper.trim (aUBLPerson.getFirstNameValue ()),
+                                                         StringHelper.trim (aUBLPerson.getMiddleNameValue ()),
+                                                         StringHelper.trim (aUBLPerson.getFamilyNameValue ()),
+                                                         StringHelper.trim (aUBLPerson.getNameSuffixValue ())));
     }
     if (!ebContacts.isEmpty ())
-      aEbiAddress.setContact (StringHelper.getImplodedNonEmpty ('\n', ebContacts));
+      aEbiAddress.setContact (StringImplode.getImplodedNonEmpty ('\n', ebContacts));
 
     // GLN and DUNS number
     if (aUBLParty.getEndpointID () != null)
     {
       final String sEndpointID = StringHelper.trim (aUBLParty.getEndpointIDValue ());
-      if (StringHelper.hasText (sEndpointID))
+      if (StringHelper.isNotEmpty (sEndpointID))
       {
         // We have an endpoint ID
 
@@ -316,16 +320,16 @@ public abstract class AbstractToEbInterface40Converter extends AbstractToEbInter
   }
 
   @Nonnull
-  protected static String getAggregated (@Nonnull final Iterable <DescriptionType> aList)
+  protected static String getAggregated (@Nonnull final Collection <DescriptionType> aList)
   {
-    return StringHelper.getImplodedMapped ('\n', aList, DescriptionType::getValue);
+    return StringImplode.getImplodedMapped ('\n', aList, DescriptionType::getValue);
   }
 
   protected static boolean isAddressIncomplete (@Nonnull final Ebi40AddressType aEbiAddress)
   {
-    return StringHelper.hasNoText (aEbiAddress.getName ()) ||
-           StringHelper.hasNoText (aEbiAddress.getTown ()) ||
-           StringHelper.hasNoText (aEbiAddress.getZIP ()) ||
+    return StringHelper.isEmpty (aEbiAddress.getName ()) ||
+           StringHelper.isEmpty (aEbiAddress.getTown ()) ||
+           StringHelper.isEmpty (aEbiAddress.getZIP ()) ||
            aEbiAddress.getCountry () == null;
   }
 
@@ -396,38 +400,38 @@ public abstract class AbstractToEbInterface40Converter extends AbstractToEbInter
         for (final PartyNameType aUBLPartyName : aUBLDelivery.getDeliveryParty ().getPartyName ())
         {
           sAddressName = StringHelper.trim (aUBLPartyName.getNameValue ());
-          if (StringHelper.hasText (sAddressName))
+          if (StringHelper.isNotEmpty (sAddressName))
             break;
         }
 
       // As fallback use delivery location name
-      if (StringHelper.hasNoText (sAddressName) && aUBLDeliveryLocation != null)
+      if (StringHelper.isEmpty (sAddressName) && aUBLDeliveryLocation != null)
         sAddressName = StringHelper.trim (aUBLDeliveryLocation.getNameValue ());
 
       // As fallback use accounting customer party
-      if (StringHelper.hasNoText (sAddressName) && aCustomerParty != null && aCustomerParty.getParty () != null)
+      if (StringHelper.isEmpty (sAddressName) && aCustomerParty != null && aCustomerParty.getParty () != null)
       {
         for (final PartyNameType aUBLPartyName : aCustomerParty.getParty ().getPartyName ())
         {
           sAddressName = StringHelper.trim (aUBLPartyName.getNameValue ());
-          if (StringHelper.hasText (sAddressName))
+          if (StringHelper.isNotEmpty (sAddressName))
             break;
         }
 
-        if (StringHelper.hasNoText (sAddressName))
+        if (StringHelper.isEmpty (sAddressName))
         {
           // For EN invoices
           for (final PartyLegalEntityType aUBLPartyLegalEntity : aCustomerParty.getParty ().getPartyLegalEntity ())
           {
             sAddressName = StringHelper.trim (aUBLPartyLegalEntity.getRegistrationNameValue ());
-            if (StringHelper.hasText (sAddressName))
+            if (StringHelper.isNotEmpty (sAddressName))
               break;
           }
         }
       }
       aEbiAddress.setName (sAddressName);
 
-      if (StringHelper.hasNoText (aEbiAddress.getName ()))
+      if (StringHelper.isEmpty (aEbiAddress.getName ()))
         aTransformationErrorList.add (SingleError.builderError ()
                                                  .errorFieldName (sDeliveryType + "/DeliveryParty")
                                                  .errorText (EText.DELIVERY_WITHOUT_NAME.getDisplayText (aDisplayLocale))
@@ -485,7 +489,7 @@ public abstract class AbstractToEbInterface40Converter extends AbstractToEbInter
       for (final InstructionNoteType aUBLNote : aUBLPaymentMeans.getInstructionNote ())
         aNotes.add (StringHelper.trim (aUBLNote.getValue ()));
       if (aNotes.isNotEmpty ())
-        aEbiPaymentMethod.setComment (StringHelper.getImplodedNonEmpty ('\n', aNotes));
+        aEbiPaymentMethod.setComment (StringImplode.getImplodedNonEmpty ('\n', aNotes));
     }
   }
 
@@ -521,7 +525,7 @@ public abstract class AbstractToEbInterface40Converter extends AbstractToEbInter
             for (final PaymentIDType aUBLPaymentID : aUBLPaymentMeans.getPaymentID ())
             {
               String sUBLPaymentID = StringHelper.trim (aUBLPaymentID.getValue ());
-              if (StringHelper.hasText (sUBLPaymentID))
+              if (StringHelper.isNotEmpty (sUBLPaymentID))
               {
                 if (sUBLPaymentID.length () > PAYMENT_REFERENCE_MAX_LENGTH)
                 {
@@ -553,7 +557,7 @@ public abstract class AbstractToEbInterface40Converter extends AbstractToEbInter
               {
                 // Prefer InstructionID over payment reference
                 String sUBLInstructionID = StringHelper.trim (aUBLInstructionID.getValue ());
-                if (StringHelper.hasText (sUBLInstructionID))
+                if (StringHelper.isNotEmpty (sUBLInstructionID))
                 {
                   if (sUBLInstructionID.length () > PAYMENT_REFERENCE_MAX_LENGTH)
                   {
@@ -594,11 +598,11 @@ public abstract class AbstractToEbInterface40Converter extends AbstractToEbInter
                   sBIC = StringHelper.trim (aUBLBranch.getID ().getValue ());
                   sBICScheme = StringHelper.trim (aUBLBranch.getID ().getSchemeID ());
                 }
-                if (StringHelper.hasNoText (sBIC) || !RegExHelper.stringMatchesPattern (REGEX_BIC, sBIC))
+                if (StringHelper.isEmpty (sBIC) || !RegExHelper.stringMatchesPattern (REGEX_BIC, sBIC))
                 {
                   // Fallback to old value
                   final FinancialInstitutionType aUBLFI = aUBLBranch.getFinancialInstitution ();
-                  if (aUBLFI != null && StringHelper.hasText (aUBLFI.getID ().getValue ()))
+                  if (aUBLFI != null && StringHelper.isNotEmpty (aUBLFI.getID ().getValue ()))
                   {
                     bUseFI = true;
                     sBIC = StringHelper.trim (aUBLFI.getID ().getValue ());
@@ -606,7 +610,7 @@ public abstract class AbstractToEbInterface40Converter extends AbstractToEbInter
                   }
                 }
 
-                if (StringHelper.hasText (sBIC))
+                if (StringHelper.isNotEmpty (sBIC))
                 {
                   final boolean bIsBIC = isBIC (sBICScheme);
                   if (bIsBIC)
@@ -651,25 +655,25 @@ public abstract class AbstractToEbInterface40Converter extends AbstractToEbInter
             // Bank Account Owner - no field present - check PayeePart or
             // SupplierPartyName
             String sBankAccountOwnerName = aUBLFinancialAccount != null ? aUBLFinancialAccount.getNameValue () : null;
-            if (StringHelper.hasNoText (sBankAccountOwnerName))
+            if (StringHelper.isEmpty (sBankAccountOwnerName))
             {
               final PartyType aUBLPayeeParty = aUBLDocPayeeParty.get ();
               if (aUBLPayeeParty != null)
                 for (final PartyNameType aPartyName : aUBLPayeeParty.getPartyName ())
                 {
                   sBankAccountOwnerName = StringHelper.trim (aPartyName.getNameValue ());
-                  if (StringHelper.hasText (sBankAccountOwnerName))
+                  if (StringHelper.isNotEmpty (sBankAccountOwnerName))
                     break;
                 }
             }
-            if (StringHelper.hasNoText (sBankAccountOwnerName))
+            if (StringHelper.isEmpty (sBankAccountOwnerName))
             {
               final PartyType aSupplierParty = aUBLDocAccountingSupplierParty.get ().getParty ();
               if (aSupplierParty != null)
                 for (final PartyNameType aPartyName : aSupplierParty.getPartyName ())
                 {
                   sBankAccountOwnerName = StringHelper.trim (aPartyName.getNameValue ());
-                  if (StringHelper.hasText (sBankAccountOwnerName))
+                  if (StringHelper.isNotEmpty (sBankAccountOwnerName))
                     break;
                 }
             }
@@ -705,7 +709,7 @@ public abstract class AbstractToEbInterface40Converter extends AbstractToEbInter
           else
           {
             // No supported payment means code
-            if (MathHelper.isEQ0 (aEbiDoc.getTotalGrossAmount ()))
+            if (BigHelper.isEQ0 (aEbiDoc.getTotalGrossAmount ()))
             {
               // As nothing is to be paid we can safely use NoPayment
               final Ebi40NoPaymentType aEbiPaymentMethod = new Ebi40NoPaymentType ();
@@ -767,7 +771,7 @@ public abstract class AbstractToEbInterface40Converter extends AbstractToEbInter
         for (final NoteType aUBLNote : aUBLPaymentTerms.getNote ())
         {
           final String sUBLNote = StringHelper.trim (aUBLNote.getValue ());
-          if (StringHelper.hasText (sUBLNote))
+          if (StringHelper.isNotEmpty (sUBLNote))
             aPaymentConditionsNotes.add (sUBLNote);
         }
 
@@ -793,16 +797,16 @@ public abstract class AbstractToEbInterface40Converter extends AbstractToEbInter
           }
 
           final BigDecimal aUBLPaymentPerc = aUBLPaymentTerms.getPaymentPercentValue ();
-          if (aUBLPaymentPerc != null && MathHelper.isGT0 (aUBLPaymentPerc) && MathHelper.isLT100 (aUBLPaymentPerc))
+          if (aUBLPaymentPerc != null && BigHelper.isGT0 (aUBLPaymentPerc) && BigHelper.isLT100 (aUBLPaymentPerc))
           {
             final MonetaryTotalType aUBLTotal = aUBLDocLegalMonetaryTotal.get ();
             final BigDecimal aBaseAmount = aUBLTotal == null ? null : aUBLTotal.getPayableAmountValue ();
             if (aBaseAmount != null)
             {
-              final BigDecimal aMinimumPayment = MathHelper.getPercentValue (aBaseAmount,
-                                                                             aUBLPaymentPerc,
-                                                                             SCALE_PRICE2,
-                                                                             ROUNDING_MODE);
+              final BigDecimal aMinimumPayment = BigHelper.getPercentValue (aBaseAmount,
+                                                                            aUBLPaymentPerc,
+                                                                            SCALE_PRICE2,
+                                                                            ROUNDING_MODE);
               aEbiPaymentConditions.setMinimumPayment (aMinimumPayment);
             }
           }
@@ -843,7 +847,7 @@ public abstract class AbstractToEbInterface40Converter extends AbstractToEbInter
       }
 
       if (!aPaymentConditionsNotes.isEmpty ())
-        aEbiPaymentConditions.setComment (StringHelper.getImploded ('\n', aPaymentConditionsNotes));
+        aEbiPaymentConditions.setComment (StringImplode.getImploded ('\n', aPaymentConditionsNotes));
     }
 
     // Set due date alternative
@@ -885,7 +889,7 @@ public abstract class AbstractToEbInterface40Converter extends AbstractToEbInter
       if (aID != null)
       {
         final String sValue = aID.getValue ();
-        if (StringHelper.hasText (sValue))
+        if (StringHelper.isNotEmpty (sValue))
         {
           // Take all of those, as they were created in the reverse mapping
           if (FURTHER_IDENTIFICATION_SCHEME_NAME_EBI2UBL.equals (aID.getSchemeName ()))

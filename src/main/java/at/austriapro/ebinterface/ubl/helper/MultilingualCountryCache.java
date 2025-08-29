@@ -18,17 +18,17 @@ package at.austriapro.ebinterface.ubl.helper;
 
 import java.util.Locale;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
+import com.helger.annotation.concurrent.Immutable;
+import com.helger.base.string.StringHelper;
+import com.helger.collection.commons.CommonsTreeMap;
+import com.helger.collection.commons.ICommonsCollection;
+import com.helger.collection.commons.ICommonsMap;
+import com.helger.text.locale.LocaleCache;
+import com.helger.text.locale.LocaleHelper;
+import com.helger.text.locale.country.CountryCache;
 
-import com.helger.commons.collection.impl.CommonsTreeMap;
-import com.helger.commons.collection.impl.ICommonsCollection;
-import com.helger.commons.collection.impl.ICommonsMap;
-import com.helger.commons.locale.LocaleCache;
-import com.helger.commons.locale.LocaleHelper;
-import com.helger.commons.locale.country.CountryCache;
-import com.helger.commons.string.StringHelper;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 @Immutable
 public final class MultilingualCountryCache
@@ -62,7 +62,7 @@ public final class MultilingualCountryCache
   public static String getRealCountryCode (@Nullable final String sCountry)
   {
     // Empty
-    if (StringHelper.hasNoText (sCountry))
+    if (StringHelper.isEmpty (sCountry))
       return null;
 
     // Empty after trim?
