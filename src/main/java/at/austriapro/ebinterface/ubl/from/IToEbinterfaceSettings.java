@@ -18,11 +18,11 @@ package at.austriapro.ebinterface.ubl.from;
 
 import java.io.Serializable;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.CheckForSigned;
 import com.helger.annotation.Nonempty;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Interface for the settings for the conversion from UBL to ebInterface.
@@ -45,7 +45,7 @@ public interface IToEbinterfaceSettings extends Serializable
   /**
    * @return The custom process ID resolver to be used. Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   IProfileIDResolver getProfileIDResolver ();
 
   /**
@@ -81,7 +81,7 @@ public interface IToEbinterfaceSettings extends Serializable
    * @return The email address to be used when {@link #isEnforceSupplierEmailAddress()} is
    *         <code>true</code> and an email address is missing in the invoice.
    */
-  @Nonnull
+  @NonNull
   @Nonempty
   String getEnforcedSupplierEmailAddress ();
 

@@ -19,6 +19,9 @@ package at.austriapro.ebinterface.ubl.from;
 import java.util.List;
 import java.util.Locale;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.annotation.misc.Translatable;
 import com.helger.base.enforce.ValueEnforcer;
@@ -35,8 +38,6 @@ import com.helger.text.resolve.DefaultTextResolver;
 import com.helger.text.util.TextHelper;
 
 import at.austriapro.ebinterface.ubl.AbstractEbInterfaceUBLConverter;
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AllowanceChargeType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.BranchType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.FinancialAccountType;
@@ -180,13 +181,13 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractEbInterface
 
     private final IMultilingualText m_aTP;
 
-    EText (@Nonnull final String sDE, @Nonnull final String sEN)
+    EText (@NonNull final String sDE, @NonNull final String sEN)
     {
       m_aTP = TextHelper.create_DE_EN (sDE, sEN);
     }
 
     @Nullable
-    public String getDisplayText (@Nonnull final Locale aContentLocale)
+    public String getDisplayText (@NonNull final Locale aContentLocale)
     {
       return DefaultTextResolver.getTextStatic (this, m_aTP, aContentLocale);
     }
@@ -225,16 +226,16 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractEbInterface
    * @param aSettings
    *        Conversion settings to be used. May not be <code>null</code>.
    */
-  protected AbstractToEbInterfaceConverter (@Nonnull final Locale aDisplayLocale,
-                                            @Nonnull final Locale aContentLocale,
-                                            @Nonnull final IToEbinterfaceSettings aSettings)
+  protected AbstractToEbInterfaceConverter (@NonNull final Locale aDisplayLocale,
+                                            @NonNull final Locale aContentLocale,
+                                            @NonNull final IToEbinterfaceSettings aSettings)
   {
     super (aDisplayLocale, aContentLocale);
     m_aSettings = ValueEnforcer.notNull (aSettings, "Settings");
   }
 
-  @Nonnull
-  protected static String getAllowanceChargeComment (@Nonnull final AllowanceChargeType aUBLAllowanceCharge)
+  @NonNull
+  protected static String getAllowanceChargeComment (@NonNull final AllowanceChargeType aUBLAllowanceCharge)
   {
     // AllowanceChargeReason to Comment
     final StringBuilder aSB = new StringBuilder ();
@@ -259,8 +260,8 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractEbInterface
    * @param aTransformationErrorList
    *        The error list to be filled. May not be <code>null</code>.
    */
-  protected final void checkInvoiceConsistency (@Nonnull final InvoiceType aUBLInvoice,
-                                                @Nonnull final ErrorList aTransformationErrorList)
+  protected final void checkInvoiceConsistency (@NonNull final InvoiceType aUBLInvoice,
+                                                @NonNull final ErrorList aTransformationErrorList)
   {
     // Check UBLVersionID
     final UBLVersionIDType aUBLVersionID = aUBLInvoice.getUBLVersionID ();
@@ -369,8 +370,8 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractEbInterface
    * @param aTransformationErrorList
    *        The error list to be filled. May not be <code>null</code>.
    */
-  protected final void checkCreditNoteConsistency (@Nonnull final CreditNoteType aUBLCreditNote,
-                                                   @Nonnull final ErrorList aTransformationErrorList)
+  protected final void checkCreditNoteConsistency (@NonNull final CreditNoteType aUBLCreditNote,
+                                                   @NonNull final ErrorList aTransformationErrorList)
   {
     // Check UBLVersionID
     final UBLVersionIDType aUBLVersionID = aUBLCreditNote.getUBLVersionID ();
@@ -467,7 +468,7 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractEbInterface
   }
 
   @Nullable
-  protected static TaxCategoryType findTaxCategory (@Nonnull final List <TaxTotalType> aUBLTaxTotals)
+  protected static TaxCategoryType findTaxCategory (@NonNull final List <TaxTotalType> aUBLTaxTotals)
   {
     // No direct tax category -> check if it is somewhere in the tax total
     for (final TaxTotalType aUBLTaxTotal : aUBLTaxTotals)
@@ -485,9 +486,9 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractEbInterface
     return null;
   }
 
-  @Nonnull
-  protected static SEPADirectDebit extractSEPADirectDebit (@Nonnull final XMLOffsetDate aUBLDueDate,
-                                                           @Nonnull final PaymentMeansType aUBLPaymentMeans,
+  @NonNull
+  protected static SEPADirectDebit extractSEPADirectDebit (@NonNull final XMLOffsetDate aUBLDueDate,
+                                                           @NonNull final PaymentMeansType aUBLPaymentMeans,
                                                            @Nullable final PartyType aUBLSupplierParty,
                                                            @Nullable final PartyType aUBLPayeeParty)
   {
@@ -579,8 +580,8 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractEbInterface
    *        Values to be combined.
    * @return The combined string. Never <code>null</code>.
    */
-  @Nonnull
-  protected final String getOrString (@Nonnull final String sSep, @Nullable final String... aValues)
+  @NonNull
+  protected final String getOrString (@NonNull final String sSep, @Nullable final String... aValues)
   {
     final StringBuilder aSB = new StringBuilder ();
     if (aValues != null)

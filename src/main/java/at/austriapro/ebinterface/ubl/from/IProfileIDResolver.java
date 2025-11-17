@@ -18,11 +18,11 @@ package at.austriapro.ebinterface.ubl.from;
 
 import java.util.function.Function;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.peppolid.IProcessIdentifier;
 import com.helger.peppolid.factory.PeppolIdentifierFactory;
 import com.helger.peppolid.peppol.process.PredefinedProcessIdentifierManager;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * A utility interface to resolve a profile ID to a parsed process identifier
@@ -32,7 +32,7 @@ import jakarta.annotation.Nonnull;
 public interface IProfileIDResolver extends Function <String, IProcessIdentifier>
 {
   /* empty */
-  @Nonnull
+  @NonNull
   static IProfileIDResolver getDefault ()
   {
     return sProfileID -> {

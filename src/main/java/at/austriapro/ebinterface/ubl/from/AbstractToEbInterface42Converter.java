@@ -23,6 +23,9 @@ import java.util.Locale;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.base.numeric.BigHelper;
 import com.helger.base.string.StringHelper;
@@ -56,8 +59,6 @@ import com.helger.ebinterface.v42.Ebi42SEPADirectDebitTypeType;
 import com.helger.ebinterface.v42.Ebi42UniversalBankTransactionType;
 import com.helger.text.locale.country.CountryCache;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.*;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.DescriptionType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.DocumentDescriptionType;
@@ -75,16 +76,16 @@ import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.Payment
 @Immutable
 public abstract class AbstractToEbInterface42Converter extends AbstractToEbInterfaceConverter
 {
-  protected AbstractToEbInterface42Converter (@Nonnull final Locale aDisplayLocale,
-                                              @Nonnull final Locale aContentLocale,
-                                              @Nonnull final IToEbinterfaceSettings aSettings)
+  protected AbstractToEbInterface42Converter (@NonNull final Locale aDisplayLocale,
+                                              @NonNull final Locale aContentLocale,
+                                              @NonNull final IToEbinterfaceSettings aSettings)
   {
     super (aDisplayLocale, aContentLocale, aSettings);
   }
 
   public static void setAddressData (@Nullable final AddressType aUBLAddress,
-                                     @Nonnull final Ebi42AddressType aEbiAddress,
-                                     @Nonnull final Locale aContentLocale)
+                                     @NonNull final Ebi42AddressType aEbiAddress,
+                                     @NonNull final Locale aContentLocale)
   {
     // Convert main address
     if (aUBLAddress != null)
@@ -117,10 +118,10 @@ public abstract class AbstractToEbInterface42Converter extends AbstractToEbInter
     }
   }
 
-  public static void validateAddressData (@Nonnull final Ebi42AddressType aEbiAddress,
-                                          @Nonnull final String sPartyType,
-                                          @Nonnull final ErrorList aTransformationErrorList,
-                                          @Nonnull final Locale aDisplayLocale)
+  public static void validateAddressData (@NonNull final Ebi42AddressType aEbiAddress,
+                                          @NonNull final String sPartyType,
+                                          @NonNull final ErrorList aTransformationErrorList,
+                                          @NonNull final Locale aDisplayLocale)
   {
     if (aEbiAddress.getStreet () == null)
       aTransformationErrorList.add (SingleError.builderError ()
@@ -145,12 +146,12 @@ public abstract class AbstractToEbInterface42Converter extends AbstractToEbInter
                                                .build ());
   }
 
-  @Nonnull
-  public static Ebi42AddressType convertParty (@Nonnull final PartyType aUBLParty,
-                                               @Nonnull final String sPartyType,
-                                               @Nonnull final ErrorList aTransformationErrorList,
-                                               @Nonnull final Locale aContentLocale,
-                                               @Nonnull final Locale aDisplayLocale,
+  @NonNull
+  public static Ebi42AddressType convertParty (@NonNull final PartyType aUBLParty,
+                                               @NonNull final String sPartyType,
+                                               @NonNull final ErrorList aTransformationErrorList,
+                                               @NonNull final Locale aContentLocale,
+                                               @NonNull final Locale aDisplayLocale,
                                                final boolean bValidate)
   {
     final Ebi42AddressType aEbiAddress = new Ebi42AddressType ();
@@ -275,13 +276,13 @@ public abstract class AbstractToEbInterface42Converter extends AbstractToEbInter
     return aEbiAddress;
   }
 
-  @Nonnull
-  protected static String getAggregated (@Nonnull final Collection <DescriptionType> aList)
+  @NonNull
+  protected static String getAggregated (@NonNull final Collection <DescriptionType> aList)
   {
     return StringImplode.getImplodedMapped ('\n', aList, DescriptionType::getValue);
   }
 
-  protected static boolean isAddressIncomplete (@Nonnull final Ebi42AddressType aEbiAddress)
+  protected static boolean isAddressIncomplete (@NonNull final Ebi42AddressType aEbiAddress)
   {
     return StringHelper.isEmpty (aEbiAddress.getName ()) ||
            StringHelper.isEmpty (aEbiAddress.getTown ()) ||
@@ -289,13 +290,13 @@ public abstract class AbstractToEbInterface42Converter extends AbstractToEbInter
            aEbiAddress.getCountry () == null;
   }
 
-  @Nonnull
-  public static Ebi42DeliveryType convertDelivery (@Nonnull final DeliveryType aUBLDelivery,
-                                                   @Nonnull final String sDeliveryType,
+  @NonNull
+  public static Ebi42DeliveryType convertDelivery (@NonNull final DeliveryType aUBLDelivery,
+                                                   @NonNull final String sDeliveryType,
                                                    @Nullable final CustomerPartyType aCustomerParty,
-                                                   @Nonnull final ErrorList aTransformationErrorList,
-                                                   @Nonnull final Locale aContentLocale,
-                                                   @Nonnull final Locale aDisplayLocale)
+                                                   @NonNull final ErrorList aTransformationErrorList,
+                                                   @NonNull final Locale aContentLocale,
+                                                   @NonNull final Locale aDisplayLocale)
   {
     final Ebi42DeliveryType aEbiDelivery = new Ebi42DeliveryType ();
 
@@ -436,8 +437,8 @@ public abstract class AbstractToEbInterface42Converter extends AbstractToEbInter
     return null;
   }
 
-  protected static void convertRelatedDocuments (@Nonnull final List <BillingReferenceType> aUBLBillingReferences,
-                                                 @Nonnull final Ebi42InvoiceType aEbiDoc)
+  protected static void convertRelatedDocuments (@NonNull final List <BillingReferenceType> aUBLBillingReferences,
+                                                 @NonNull final Ebi42InvoiceType aEbiDoc)
   {
     for (final BillingReferenceType aUBLBillingReference : aUBLBillingReferences)
     {
@@ -465,8 +466,8 @@ public abstract class AbstractToEbInterface42Converter extends AbstractToEbInter
     }
   }
 
-  protected static void convertReferencedDocuments (@Nonnull final List <DocumentReferenceType> aUBLDocumentReferences,
-                                                    @Nonnull final Ebi42InvoiceType aEbiDoc)
+  protected static void convertReferencedDocuments (@NonNull final List <DocumentReferenceType> aUBLDocumentReferences,
+                                                    @NonNull final Ebi42InvoiceType aEbiDoc)
   {
     for (final DocumentReferenceType aUBLDocumentReference : aUBLDocumentReferences)
       if (StringHelper.isNotEmpty (aUBLDocumentReference.getIDValue ()) &&
@@ -493,8 +494,8 @@ public abstract class AbstractToEbInterface42Converter extends AbstractToEbInter
       }
   }
 
-  private static void _setPaymentMeansComment (@Nonnull final PaymentMeansType aUBLPaymentMeans,
-                                               @Nonnull final Ebi42PaymentMethodType aEbiPaymentMethod)
+  private static void _setPaymentMeansComment (@NonNull final PaymentMeansType aUBLPaymentMeans,
+                                               @NonNull final Ebi42PaymentMethodType aEbiPaymentMethod)
   {
     if (aUBLPaymentMeans.hasInstructionNoteEntries ())
     {
@@ -506,14 +507,14 @@ public abstract class AbstractToEbInterface42Converter extends AbstractToEbInter
     }
   }
 
-  protected void convertPayment (@Nonnull final Supplier <XMLOffsetDate> aUBLTopLevelDueDate,
-                                 @Nonnull final Supplier <List <PaymentMeansType>> aUBLDocPaymentMeans,
-                                 @Nonnull final Supplier <PartyType> aUBLDocPayeeParty,
-                                 @Nonnull final Supplier <SupplierPartyType> aUBLDocAccountingSupplierParty,
-                                 @Nonnull final Supplier <List <PaymentTermsType>> aUBLDocPaymentTerms,
-                                 @Nonnull final Supplier <MonetaryTotalType> aUBLDocLegalMonetaryTotal,
-                                 @Nonnull final ErrorList aTransformationErrorList,
-                                 @Nonnull final Ebi42InvoiceType aEbiDoc,
+  protected void convertPayment (@NonNull final Supplier <XMLOffsetDate> aUBLTopLevelDueDate,
+                                 @NonNull final Supplier <List <PaymentMeansType>> aUBLDocPaymentMeans,
+                                 @NonNull final Supplier <PartyType> aUBLDocPayeeParty,
+                                 @NonNull final Supplier <SupplierPartyType> aUBLDocAccountingSupplierParty,
+                                 @NonNull final Supplier <List <PaymentTermsType>> aUBLDocPaymentTerms,
+                                 @NonNull final Supplier <MonetaryTotalType> aUBLDocLegalMonetaryTotal,
+                                 @NonNull final ErrorList aTransformationErrorList,
+                                 @NonNull final Ebi42InvoiceType aEbiDoc,
                                  final boolean bIsCreditNote)
   {
     final Ebi42PaymentMethodType aEbiPaymentMethod = new Ebi42PaymentMethodType ();
@@ -925,9 +926,9 @@ public abstract class AbstractToEbInterface42Converter extends AbstractToEbInter
     }
   }
 
-  @Nonnull
-  protected static Ebi42FurtherIdentificationType createFurtherIdentification (@Nonnull final String sKey,
-                                                                               @Nonnull final String sValue)
+  @NonNull
+  protected static Ebi42FurtherIdentificationType createFurtherIdentification (@NonNull final String sKey,
+                                                                               @NonNull final String sValue)
   {
     final Ebi42FurtherIdentificationType aEbiFurtherIdentification = new Ebi42FurtherIdentificationType ();
     aEbiFurtherIdentification.setIdentificationType (StringHelper.trim (sKey));
@@ -935,8 +936,8 @@ public abstract class AbstractToEbInterface42Converter extends AbstractToEbInter
     return aEbiFurtherIdentification;
   }
 
-  protected static void convertFurtherIdentifications (@Nonnull final List <PartyIdentificationType> aPartyIDs,
-                                                       @Nonnull final Consumer <? super Ebi42FurtherIdentificationType> aFIConsumer)
+  protected static void convertFurtherIdentifications (@NonNull final List <PartyIdentificationType> aPartyIDs,
+                                                       @NonNull final Consumer <? super Ebi42FurtherIdentificationType> aFIConsumer)
   {
     for (final PartyIdentificationType aUBLPartyID : aPartyIDs)
     {

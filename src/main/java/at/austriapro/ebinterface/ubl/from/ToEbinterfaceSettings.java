@@ -16,11 +16,11 @@
  */
 package at.austriapro.ebinterface.ubl.from;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.Nonempty;
 import com.helger.base.enforce.ValueEnforcer;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Default implementation of {@link IToEbinterfaceSettings}.
@@ -88,7 +88,7 @@ public class ToEbinterfaceSettings implements IToEbinterfaceSettings
     return m_bUBLVersionIDMandatory;
   }
 
-  @Nonnull
+  @NonNull
   public ToEbinterfaceSettings setUBLVersionIDMandatory (final boolean bUBLVersionIDMandatory)
   {
     m_bUBLVersionIDMandatory = bUBLVersionIDMandatory;
@@ -100,21 +100,21 @@ public class ToEbinterfaceSettings implements IToEbinterfaceSettings
     return m_bUBLProfileIDMandatory;
   }
 
-  @Nonnull
+  @NonNull
   public ToEbinterfaceSettings setUBLProfileIDMandatory (final boolean bUBLProfileIDMandatory)
   {
     m_bUBLProfileIDMandatory = bUBLProfileIDMandatory;
     return this;
   }
 
-  @Nonnull
+  @NonNull
   public IProfileIDResolver getProfileIDResolver ()
   {
     return m_aProfileIDResolver;
   }
 
-  @Nonnull
-  public ToEbinterfaceSettings setProfileIDResolver (@Nonnull final IProfileIDResolver aProfileIDResolver)
+  @NonNull
+  public ToEbinterfaceSettings setProfileIDResolver (@NonNull final IProfileIDResolver aProfileIDResolver)
   {
     ValueEnforcer.notNull (aProfileIDResolver, "ProfileIDResolver");
     m_aProfileIDResolver = aProfileIDResolver;
@@ -126,7 +126,7 @@ public class ToEbinterfaceSettings implements IToEbinterfaceSettings
     return m_bOrderReferenceIDMandatory;
   }
 
-  @Nonnull
+  @NonNull
   public ToEbinterfaceSettings setOrderReferenceIDMandatory (final boolean b)
   {
     m_bOrderReferenceIDMandatory = b;
@@ -138,7 +138,7 @@ public class ToEbinterfaceSettings implements IToEbinterfaceSettings
     return m_nOrderReferenceIDMaxLen;
   }
 
-  @Nonnull
+  @NonNull
   public ToEbinterfaceSettings setOrderReferenceIDMaxLength (final int n)
   {
     m_nOrderReferenceIDMaxLen = n;
@@ -150,7 +150,7 @@ public class ToEbinterfaceSettings implements IToEbinterfaceSettings
     return m_bDeliveryDateMandatory;
   }
 
-  @Nonnull
+  @NonNull
   public ToEbinterfaceSettings setDeliveryDateMandatory (final boolean b)
   {
     m_bDeliveryDateMandatory = b;
@@ -162,22 +162,22 @@ public class ToEbinterfaceSettings implements IToEbinterfaceSettings
     return m_bEnforceSupplierEmailAddress;
   }
 
-  @Nonnull
+  @NonNull
   public ToEbinterfaceSettings setEnforceSupplierEmailAddress (final boolean b)
   {
     m_bEnforceSupplierEmailAddress = b;
     return this;
   }
 
-  @Nonnull
+  @NonNull
   @Nonempty
   public String getEnforcedSupplierEmailAddress ()
   {
     return m_sEnforcedSupplierEmailAddress;
   }
 
-  @Nonnull
-  public ToEbinterfaceSettings setEnforcedSupplierEmailAddress (@Nonnull @Nonempty final String s)
+  @NonNull
+  public ToEbinterfaceSettings setEnforcedSupplierEmailAddress (@NonNull @Nonempty final String s)
   {
     ValueEnforcer.notEmpty (s, "EmailAddress");
     m_sEnforcedSupplierEmailAddress = s;
@@ -190,7 +190,7 @@ public class ToEbinterfaceSettings implements IToEbinterfaceSettings
     return m_sFallbackBillersInvoiceRecipientID;
   }
 
-  @Nonnull
+  @NonNull
   public ToEbinterfaceSettings setFallbackBillersInvoiceRecipientID (@Nullable final String sFallbackBillersInvoiceRecipientID)
   {
     m_sFallbackBillersInvoiceRecipientID = sFallbackBillersInvoiceRecipientID;
@@ -202,7 +202,7 @@ public class ToEbinterfaceSettings implements IToEbinterfaceSettings
     return m_bErrorOnPositionNumber;
   }
 
-  @Nonnull
+  @NonNull
   public ToEbinterfaceSettings setErrorOnPositionNumber (final boolean bErrorOnPositionNumber)
   {
     m_bErrorOnPositionNumber = bErrorOnPositionNumber;
@@ -214,7 +214,7 @@ public class ToEbinterfaceSettings implements IToEbinterfaceSettings
     return m_bInvoicePaymentMethodMandatory;
   }
 
-  @Nonnull
+  @NonNull
   public ToEbinterfaceSettings setInvoicePaymentMethodMandatory (final boolean b)
   {
     m_bInvoicePaymentMethodMandatory = b;
@@ -226,7 +226,7 @@ public class ToEbinterfaceSettings implements IToEbinterfaceSettings
     return m_bIsPrepaidAmountSupported;
   }
 
-  @Nonnull
+  @NonNull
   public ToEbinterfaceSettings setPrepaidAmountSupported (final boolean b)
   {
     m_bIsPrepaidAmountSupported = b;
@@ -236,7 +236,7 @@ public class ToEbinterfaceSettings implements IToEbinterfaceSettings
   /**
    * @return Settings similar to what eRechnung.gv.at uses - mainly for testing purposes.
    */
-  @Nonnull
+  @NonNull
   public static ToEbinterfaceSettings getERechnungGvAtSettings ()
   {
     return new ToEbinterfaceSettings ().setUBLVersionIDMandatory (false)

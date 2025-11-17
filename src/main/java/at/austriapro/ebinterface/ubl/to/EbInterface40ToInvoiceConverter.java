@@ -19,6 +19,8 @@ package at.austriapro.ebinterface.ubl.to;
 import java.math.BigDecimal;
 import java.util.Locale;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.base.CGlobal;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.numeric.BigHelper;
@@ -26,7 +28,6 @@ import com.helger.base.string.StringHelper;
 import com.helger.ebinterface.v40.*;
 import com.helger.ebinterface.v40.extensions.Ebi40TaxExtensionType;
 
-import jakarta.annotation.Nonnull;
 import jakarta.xml.bind.JAXBElement;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.*;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.CompanyIDType;
@@ -48,12 +49,12 @@ import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
  */
 public class EbInterface40ToInvoiceConverter extends AbstractEbInterface40ToUBLConverter
 {
-  public EbInterface40ToInvoiceConverter (@Nonnull final Locale aDisplayLocale, @Nonnull final Locale aContentLocale)
+  public EbInterface40ToInvoiceConverter (@NonNull final Locale aDisplayLocale, @NonNull final Locale aContentLocale)
   {
     super (aDisplayLocale, aContentLocale);
   }
 
-  private static void _convertPayment (@Nonnull final Ebi40InvoiceType aEbiDoc, @Nonnull final InvoiceType aUBLDoc)
+  private static void _convertPayment (@NonNull final Ebi40InvoiceType aEbiDoc, @NonNull final InvoiceType aUBLDoc)
   {
     final Ebi40PaymentMethodType aEbiPaymentMethod = aEbiDoc.getPaymentMethod ();
     final Ebi40PaymentConditionsType aEbiPaymentConditions = aEbiDoc.getPaymentConditions ();
@@ -215,8 +216,8 @@ public class EbInterface40ToInvoiceConverter extends AbstractEbInterface40ToUBLC
     }
   }
 
-  @Nonnull
-  public InvoiceType convertInvoice (@Nonnull final Ebi40InvoiceType aEbiDoc)
+  @NonNull
+  public InvoiceType convertInvoice (@NonNull final Ebi40InvoiceType aEbiDoc)
   {
     ValueEnforcer.notNull (aEbiDoc, "ebInterfaceDocument");
 

@@ -20,6 +20,9 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Locale;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.base.CGlobal;
 import com.helger.base.enforce.ValueEnforcer;
@@ -44,8 +47,6 @@ import at.austriapro.ebinterface.ubl.from.AbstractToEbInterface41Converter;
 import at.austriapro.ebinterface.ubl.from.IToEbinterfaceSettings;
 import at.austriapro.ebinterface.ubl.from.helper.SchemedID;
 import at.austriapro.ebinterface.ubl.from.helper.TaxCategoryKey;
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AllowanceChargeType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CustomerPartyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DeliveryType;
@@ -87,14 +88,14 @@ public final class InvoiceToEbInterface41Converter extends AbstractToEbInterface
    * @param aSettings
    *        Conversion settings to be used. May not be <code>null</code>.
    */
-  public InvoiceToEbInterface41Converter (@Nonnull final Locale aDisplayLocale,
-                                          @Nonnull final Locale aContentLocale,
-                                          @Nonnull final IToEbinterfaceSettings aSettings)
+  public InvoiceToEbInterface41Converter (@NonNull final Locale aDisplayLocale,
+                                          @NonNull final Locale aContentLocale,
+                                          @NonNull final IToEbinterfaceSettings aSettings)
   {
     super (aDisplayLocale, aContentLocale, aSettings);
   }
 
-  @Nonnull
+  @NonNull
   public InvoiceToEbInterface41Converter setCustomizer (@Nullable final ICustomInvoiceToEbInterface41Converter aCustomizer)
   {
     m_aCustomizer = aCustomizer;
@@ -111,8 +112,8 @@ public final class InvoiceToEbInterface41Converter extends AbstractToEbInterface
    * @return The created ebInterface document or <code>null</code> in case of a severe error.
    */
   @Nullable
-  public Ebi41InvoiceType convertToEbInterface (@Nonnull final InvoiceType aUBLDoc,
-                                                @Nonnull final ErrorList aTransformationErrorList)
+  public Ebi41InvoiceType convertToEbInterface (@NonNull final InvoiceType aUBLDoc,
+                                                @NonNull final ErrorList aTransformationErrorList)
   {
     ValueEnforcer.notNull (aUBLDoc, "UBLInvoice");
     ValueEnforcer.notNull (aTransformationErrorList, "TransformationErrorList");

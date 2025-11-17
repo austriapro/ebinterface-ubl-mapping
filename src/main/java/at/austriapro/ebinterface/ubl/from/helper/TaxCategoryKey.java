@@ -16,12 +16,12 @@
  */
 package at.austriapro.ebinterface.ubl.from.helper;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.hashcode.HashCodeGenerator;
 import com.helger.base.tostring.ToStringGenerator;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * This class contains the data of a single TaxtCategory. That is required when
@@ -36,7 +36,7 @@ public final class TaxCategoryKey
   private final SchemedID m_aTaxCategoryScheme;
   private final SchemedID m_aTaxCategoryID;
 
-  public TaxCategoryKey (@Nonnull final SchemedID aTaxCategoryScheme, @Nonnull final SchemedID aTaxCategoryID)
+  public TaxCategoryKey (@NonNull final SchemedID aTaxCategoryScheme, @NonNull final SchemedID aTaxCategoryID)
   {
     ValueEnforcer.notNull (aTaxCategoryScheme, "TaxCategoryScheme");
     ValueEnforcer.notNull (aTaxCategoryID, "TaxCategoryID");
@@ -44,13 +44,13 @@ public final class TaxCategoryKey
     m_aTaxCategoryID = aTaxCategoryID;
   }
 
-  @Nonnull
+  @NonNull
   public SchemedID getTaxCategoryScheme ()
   {
     return m_aTaxCategoryScheme;
   }
 
-  @Nonnull
+  @NonNull
   public SchemedID getTaxCategoryID ()
   {
     return m_aTaxCategoryID;

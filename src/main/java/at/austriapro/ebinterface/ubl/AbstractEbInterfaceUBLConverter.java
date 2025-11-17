@@ -21,13 +21,13 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.function.Consumer;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.string.StringHelper;
 import com.helger.collection.commons.CommonsLinkedHashSet;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Base class for Peppol UBL to/from ebInterface converter
@@ -159,13 +159,13 @@ public abstract class AbstractEbInterfaceUBLConverter
    * @param aContentLocale
    *        The locale for the created payload. May not be <code>null</code>.
    */
-  public AbstractEbInterfaceUBLConverter (@Nonnull final Locale aDisplayLocale, @Nonnull final Locale aContentLocale)
+  public AbstractEbInterfaceUBLConverter (@NonNull final Locale aDisplayLocale, @NonNull final Locale aContentLocale)
   {
     m_aDisplayLocale = ValueEnforcer.notNull (aDisplayLocale, "DisplayLocale");
     m_aContentLocale = ValueEnforcer.notNull (aContentLocale, "ContentLocale");
   }
 
-  protected static <T> boolean ifNotNull (@Nonnull final Consumer <? super T> aConsumer, @Nullable final T aObj)
+  protected static <T> boolean ifNotNull (@NonNull final Consumer <? super T> aConsumer, @Nullable final T aObj)
   {
     if (aObj == null)
       return false;
@@ -173,7 +173,7 @@ public abstract class AbstractEbInterfaceUBLConverter
     return true;
   }
 
-  protected static boolean ifNotEmpty (@Nonnull final Consumer <? super String> aConsumer, @Nullable final String s)
+  protected static boolean ifNotEmpty (@NonNull final Consumer <? super String> aConsumer, @Nullable final String s)
   {
     if (StringHelper.isEmpty (s))
       return false;

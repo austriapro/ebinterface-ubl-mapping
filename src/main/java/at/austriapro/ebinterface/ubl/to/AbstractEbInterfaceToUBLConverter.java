@@ -18,6 +18,9 @@ package at.austriapro.ebinterface.ubl.to;
 
 import java.util.Locale;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.base.string.StringHelper;
 import com.helger.ebinterface.codelist.ETaxCategoryCode;
@@ -25,8 +28,6 @@ import com.helger.text.locale.country.CountryCache;
 
 import at.austriapro.ebinterface.ubl.AbstractEbInterfaceUBLConverter;
 import at.austriapro.ebinterface.ubl.helper.MultilingualCountryCache;
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CountryType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.ItemPropertyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxCategoryType;
@@ -51,36 +52,36 @@ public abstract class AbstractEbInterfaceToUBLConverter extends AbstractEbInterf
    * @param aContentLocale
    *        The locale for the created UBL files. May not be <code>null</code>.
    */
-  protected AbstractEbInterfaceToUBLConverter (@Nonnull final Locale aDisplayLocale,
-                                               @Nonnull final Locale aContentLocale)
+  protected AbstractEbInterfaceToUBLConverter (@NonNull final Locale aDisplayLocale,
+                                               @NonNull final Locale aContentLocale)
   {
     super (aDisplayLocale, aContentLocale);
   }
 
-  @Nonnull
-  protected static final TaxSchemeType createTaxScheme (@Nonnull final String sID)
+  @NonNull
+  protected static final TaxSchemeType createTaxScheme (@NonNull final String sID)
   {
     final TaxSchemeType aUBLTaxScheme = new TaxSchemeType ();
     aUBLTaxScheme.setID (sID);
     return aUBLTaxScheme;
   }
 
-  @Nonnull
+  @NonNull
   protected static final TaxSchemeType createTaxSchemeVAT ()
   {
     return createTaxScheme (SUPPORTED_TAX_SCHEME_ID);
   }
 
-  @Nonnull
-  protected static final TaxCategoryType createTaxCategory (@Nonnull final String sID)
+  @NonNull
+  protected static final TaxCategoryType createTaxCategory (@NonNull final String sID)
   {
     final TaxCategoryType aUBLTaxCategory = new TaxCategoryType ();
     aUBLTaxCategory.setID (sID);
     return aUBLTaxCategory;
   }
 
-  @Nonnull
-  protected static final TaxCategoryType createTaxCategoryVAT (@Nonnull final String sID)
+  @NonNull
+  protected static final TaxCategoryType createTaxCategoryVAT (@NonNull final String sID)
   {
     final TaxCategoryType aUBLTaxCategory = createTaxCategory (sID);
     // Set default scheme
@@ -88,7 +89,7 @@ public abstract class AbstractEbInterfaceToUBLConverter extends AbstractEbInterf
     return aUBLTaxCategory;
   }
 
-  @Nonnull
+  @NonNull
   protected static final TaxCategoryType createTaxCategoryOther ()
   {
     final TaxCategoryType aUBLTaxCategory = createTaxCategory (ETaxCategoryCode.O.getID ());
@@ -97,7 +98,7 @@ public abstract class AbstractEbInterfaceToUBLConverter extends AbstractEbInterf
     return aUBLTaxCategory;
   }
 
-  @Nonnull
+  @NonNull
   protected static final ItemPropertyType createItemProperty (@Nullable final String sName,
                                                               @Nullable final String sValue)
   {
@@ -110,7 +111,7 @@ public abstract class AbstractEbInterfaceToUBLConverter extends AbstractEbInterf
   @Nullable
   protected static final CountryType createCountry (@Nullable final String sCode,
                                                     @Nullable final String sName,
-                                                    @Nonnull final Locale aContentLocale)
+                                                    @NonNull final Locale aContentLocale)
   {
     final String sRealCode;
     final String sRealName;

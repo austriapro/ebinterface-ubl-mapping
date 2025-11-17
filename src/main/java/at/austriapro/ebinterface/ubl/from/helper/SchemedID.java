@@ -16,15 +16,15 @@
  */
 package at.austriapro.ebinterface.ubl.from.helper;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.Nonempty;
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.equals.EqualsHelper;
 import com.helger.base.hashcode.HashCodeGenerator;
 import com.helger.base.tostring.ToStringGenerator;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Represents a generic ID consisting of schemeID and the main ID value.
@@ -37,7 +37,7 @@ public final class SchemedID
   private final String m_sSchemeID;
   private final String m_sID;
 
-  public SchemedID (@Nullable final String sSchemeID, @Nonnull @Nonempty final String sID)
+  public SchemedID (@Nullable final String sSchemeID, @NonNull @Nonempty final String sID)
   {
     m_sSchemeID = sSchemeID;
     m_sID = ValueEnforcer.notEmpty (sID, "ID");
@@ -49,7 +49,7 @@ public final class SchemedID
     return m_sSchemeID;
   }
 
-  @Nonnull
+  @NonNull
   @Nonempty
   public String getID ()
   {

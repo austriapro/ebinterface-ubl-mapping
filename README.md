@@ -15,8 +15,8 @@ The reason why this project is not in the [ebinterface-mappings](https://github.
 To build the project you need at least Java 17 (or newer) and Apache Maven 3.x. Build is quite easy: call `mvn clean install` in this directory and the final result will be in the `target` directory.
 Additionally Eclipse project files for the latest Eclipse version are contained.
 
-Versions prior to v6 use Java 11 as the baseline.
-Versions prior to v5 use Java 1.8 as the baseline.
+* Versions prior to v6 use Java 11 as the baseline.
+* Versions prior to v5 use Java 1.8 as the baseline.
 
 # Maven usage
 
@@ -33,6 +33,10 @@ Add the following to your pom.xml to use this artifact, replacing `x.y.z` with t
 Note: prior to v4.5.0 the Maven group ID was `com.helger`.
 
 # News and noteworthy
+
+v6.1.0 - 2025-11-17
+* Updated to ph-commons 12.1.0
+* Using JSpecify annotations
 
 v6.0.0 - 2025-08-29
 * Requires Java 17 as the minimum version

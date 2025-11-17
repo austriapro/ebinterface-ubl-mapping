@@ -16,7 +16,8 @@
  */
 package at.austriapro.ebinterface.ubl.from.invoice;
 
-import jakarta.annotation.Nonnull;
+import org.jspecify.annotations.NonNull;
+
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.InvoiceLineType;
 import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
 
@@ -40,7 +41,7 @@ public interface ICustomInvoiceToEbInterfaceConverter <INVOICETYPE, LINETYPE>
    * @param aEbiInvoice
    *        Existing pre-filled ebInterface invoice. Never <code>null</code>.
    */
-  default void additionalGlobalMapping (@Nonnull final InvoiceType aUBLInvoice, @Nonnull final INVOICETYPE aEbiInvoice)
+  default void additionalGlobalMapping (@NonNull final InvoiceType aUBLInvoice, @NonNull final INVOICETYPE aEbiInvoice)
   {}
 
   /**
@@ -53,6 +54,6 @@ public interface ICustomInvoiceToEbInterfaceConverter <INVOICETYPE, LINETYPE>
    *        Existing pre-filled ebInterface invoice line. Never
    *        <code>null</code>.
    */
-  default void additionalItemMapping (@Nonnull final InvoiceLineType aUBLInvoiceLine, @Nonnull final LINETYPE aEbiInvoiceLine)
+  default void additionalItemMapping (@NonNull final InvoiceLineType aUBLInvoiceLine, @NonNull final LINETYPE aEbiInvoiceLine)
   {}
 }

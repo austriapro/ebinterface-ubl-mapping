@@ -19,6 +19,8 @@ package at.austriapro.ebinterface.ubl.to;
 import java.util.Locale;
 import java.util.function.Supplier;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,8 +32,6 @@ import com.helger.ebinterface.v42.Ebi42DeliveryType;
 import com.helger.ebinterface.v42.Ebi42DocumentTypeType;
 import com.helger.xsds.ccts.cct.schemamodule.CodeType;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AddressType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.ContactType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DeliveryTermsType;
@@ -61,15 +61,15 @@ public abstract class AbstractEbInterface42ToUBLConverter extends AbstractEbInte
    * @param aContentLocale
    *        The locale for the created UBL files. May not be <code>null</code>.
    */
-  protected AbstractEbInterface42ToUBLConverter (@Nonnull final Locale aDisplayLocale,
-                                                 @Nonnull final Locale aContentLocale)
+  protected AbstractEbInterface42ToUBLConverter (@NonNull final Locale aDisplayLocale,
+                                                 @NonNull final Locale aContentLocale)
   {
     super (aDisplayLocale, aContentLocale);
   }
 
   @Nullable
   protected static <T extends CodeType> T getTypeCode (@Nullable final Ebi42DocumentTypeType eType,
-                                                       @Nonnull final Supplier <T> aFactory)
+                                                       @NonNull final Supplier <T> aFactory)
   {
     String sID = null;
     if (eType != null)
@@ -112,7 +112,7 @@ public abstract class AbstractEbInterface42ToUBLConverter extends AbstractEbInte
 
   @Nullable
   protected static AddressType convertAddress (@Nullable final Ebi42AddressType aEbiAddress,
-                                               @Nonnull final Locale aContentLocale)
+                                               @NonNull final Locale aContentLocale)
   {
     if (aEbiAddress == null)
       return null;
@@ -150,7 +150,7 @@ public abstract class AbstractEbInterface42ToUBLConverter extends AbstractEbInte
 
   @Nullable
   protected static PartyType convertParty (@Nullable final Ebi42AddressType aEbiAddress,
-                                           @Nonnull final Locale aContentLocale)
+                                           @NonNull final Locale aContentLocale)
   {
     if (aEbiAddress == null)
       return null;
@@ -197,7 +197,7 @@ public abstract class AbstractEbInterface42ToUBLConverter extends AbstractEbInte
 
   @Nullable
   protected static DeliveryType convertDelivery (@Nullable final Ebi42DeliveryType aEbiDelivery,
-                                                 @Nonnull final Locale aContentLocale)
+                                                 @NonNull final Locale aContentLocale)
   {
     if (aEbiDelivery == null)
       return null;

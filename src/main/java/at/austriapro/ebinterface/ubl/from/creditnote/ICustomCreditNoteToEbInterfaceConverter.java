@@ -16,7 +16,8 @@
  */
 package at.austriapro.ebinterface.ubl.from.creditnote;
 
-import jakarta.annotation.Nonnull;
+import org.jspecify.annotations.NonNull;
+
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CreditNoteLineType;
 import oasis.names.specification.ubl.schema.xsd.creditnote_21.CreditNoteType;
 
@@ -40,7 +41,7 @@ public interface ICustomCreditNoteToEbInterfaceConverter <INVOICETYPE, LINETYPE>
    * @param aEbiInvoice
    *        Existing pre-filled ebInterface invoice. Never <code>null</code>.
    */
-  default void additionalGlobalMapping (@Nonnull final CreditNoteType aUBLCreditNote, @Nonnull final INVOICETYPE aEbiInvoice)
+  default void additionalGlobalMapping (@NonNull final CreditNoteType aUBLCreditNote, @NonNull final INVOICETYPE aEbiInvoice)
   {}
 
   /**
@@ -53,6 +54,6 @@ public interface ICustomCreditNoteToEbInterfaceConverter <INVOICETYPE, LINETYPE>
    *        Existing pre-filled ebInterface invoice line. Never
    *        <code>null</code>.
    */
-  default void additionalItemMapping (@Nonnull final CreditNoteLineType aUBLCreditNoteLine, @Nonnull final LINETYPE aEbiInvoiceLine)
+  default void additionalItemMapping (@NonNull final CreditNoteLineType aUBLCreditNoteLine, @NonNull final LINETYPE aEbiInvoiceLine)
   {}
 }

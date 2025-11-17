@@ -20,6 +20,9 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Locale;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.base.CGlobal;
 import com.helger.base.enforce.ValueEnforcer;
@@ -40,8 +43,6 @@ import at.austriapro.ebinterface.ubl.from.AbstractToEbInterface40Converter;
 import at.austriapro.ebinterface.ubl.from.IToEbinterfaceSettings;
 import at.austriapro.ebinterface.ubl.from.helper.SchemedID;
 import at.austriapro.ebinterface.ubl.from.helper.TaxCategoryKey;
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AllowanceChargeType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CreditNoteLineType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CustomerPartyType;
@@ -83,14 +84,14 @@ public final class CreditNoteToEbInterface40Converter extends AbstractToEbInterf
    * @param aSettings
    *        Conversion settings to be used. May not be <code>null</code>.
    */
-  public CreditNoteToEbInterface40Converter (@Nonnull final Locale aDisplayLocale,
-                                             @Nonnull final Locale aContentLocale,
-                                             @Nonnull final IToEbinterfaceSettings aSettings)
+  public CreditNoteToEbInterface40Converter (@NonNull final Locale aDisplayLocale,
+                                             @NonNull final Locale aContentLocale,
+                                             @NonNull final IToEbinterfaceSettings aSettings)
   {
     super (aDisplayLocale, aContentLocale, aSettings);
   }
 
-  @Nonnull
+  @NonNull
   public CreditNoteToEbInterface40Converter setCustomizer (@Nullable final ICustomCreditNoteToEbInterface40Converter aCustomizer)
   {
     m_aCustomizer = aCustomizer;
@@ -107,8 +108,8 @@ public final class CreditNoteToEbInterface40Converter extends AbstractToEbInterf
    * @return The created ebInterface document or <code>null</code> in case of a severe error.
    */
   @Nullable
-  public Ebi40InvoiceType convertToEbInterface (@Nonnull final CreditNoteType aUBLDoc,
-                                                @Nonnull final ErrorList aTransformationErrorList)
+  public Ebi40InvoiceType convertToEbInterface (@NonNull final CreditNoteType aUBLDoc,
+                                                @NonNull final ErrorList aTransformationErrorList)
   {
     ValueEnforcer.notNull (aUBLDoc, "UBLCreditNote");
     ValueEnforcer.notNull (aTransformationErrorList, "TransformationErrorList");

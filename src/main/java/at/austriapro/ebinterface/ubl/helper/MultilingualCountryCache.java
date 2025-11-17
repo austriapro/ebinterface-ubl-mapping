@@ -18,6 +18,9 @@ package at.austriapro.ebinterface.ubl.helper;
 
 import java.util.Locale;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.base.string.StringHelper;
 import com.helger.collection.commons.CommonsTreeMap;
@@ -27,17 +30,14 @@ import com.helger.text.locale.LocaleCache;
 import com.helger.text.locale.LocaleHelper;
 import com.helger.text.locale.country.CountryCache;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
-
 @Immutable
 public final class MultilingualCountryCache
 {
   // Cache all country codes in all display languages
   private static ICommonsMap <String, Locale> s_aNameToCodeMap = new CommonsTreeMap <> ();
 
-  @Nonnull
-  private static String _unify (@Nonnull final String s)
+  @NonNull
+  private static String _unify (@NonNull final String s)
   {
     return s.toLowerCase (Locale.US);
   }
