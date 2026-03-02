@@ -34,6 +34,10 @@ Note: prior to v4.5.0 the Maven group ID was `com.helger`.
 
 # News and noteworthy
 
+v6.1.1 - 2026-03-02
+* Fixed the mapping of EN 16931 BT-71 (Deliver to location identifier) to ebInterface
+* Mapping the Delivery Address from and to UBL Delivery/DeliveryLocation/Address
+
 v6.1.0 - 2025-11-17
 * Updated to ph-commons 12.1.0
 * Using JSpecify annotations

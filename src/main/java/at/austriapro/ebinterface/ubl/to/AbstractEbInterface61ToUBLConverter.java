@@ -40,6 +40,7 @@ import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.Add
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.ContactType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DeliveryTermsType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DeliveryType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.LocationType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyNameType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PeriodType;
@@ -77,29 +78,15 @@ public abstract class AbstractEbInterface61ToUBLConverter extends AbstractEbInte
   {
     String sID = null;
     if (eType != null)
-      switch (eType)
+      sID = switch (eType)
       {
-        case INVOICE:
-        case SUBSEQUENT_CREDIT:
-        case SUBSEQUENT_DEBIT:
-          sID = INVOICE_TYPE_CODE_INVOICE;
-          break;
-        case CREDIT_MEMO:
-          sID = INVOICE_TYPE_CODE_CREDIT_NOTE;
-          break;
-        case INVOICE_FOR_PARTIAL_DELIVERY:
-          sID = INVOICE_TYPE_CODE_PARTIAL;
-          break;
-        case INVOICE_FOR_ADVANCE_PAYMENT:
-          sID = INVOICE_TYPE_CODE_PREPAYMENT_INVOICE;
-          break;
-        case SELF_BILLING:
-          sID = INVOICE_TYPE_CODE_SELF_BILLING;
-          break;
-        case FINAL_SETTLEMENT:
-          sID = INVOICE_TYPE_CODE_FINAL_PAYMENT;
-          break;
-      }
+        case INVOICE, SUBSEQUENT_CREDIT, SUBSEQUENT_DEBIT -> INVOICE_TYPE_CODE_INVOICE;
+        case CREDIT_MEMO -> INVOICE_TYPE_CODE_CREDIT_NOTE;
+        case INVOICE_FOR_PARTIAL_DELIVERY -> INVOICE_TYPE_CODE_PARTIAL;
+        case INVOICE_FOR_ADVANCE_PAYMENT -> INVOICE_TYPE_CODE_PREPAYMENT_INVOICE;
+        case SELF_BILLING -> INVOICE_TYPE_CODE_SELF_BILLING;
+        case FINAL_SETTLEMENT -> INVOICE_TYPE_CODE_FINAL_PAYMENT;
+      };
 
     if (sID == null)
     {
@@ -227,8 +214,16 @@ public abstract class AbstractEbInterface61ToUBLConverter extends AbstractEbInte
       return null;
 
     final DeliveryType aUBLDelivery = new DeliveryType ();
+
+    final LocationType aUBLDeliveryLocation = new LocationType ();
+    aUBLDelivery.setDeliveryLocation (aUBLDeliveryLocation);
+
     if (aEbiDelivery.getDeliveryID () != null)
-      aUBLDelivery.setID (aEbiDelivery.getDeliveryID ());
+    {
+      // BT-71
+      aUBLDeliveryLocation.setID (aEbiDelivery.getDeliveryID ());
+    }
+
     if (aEbiDelivery.getDate () != null)
       aUBLDelivery.setActualDeliveryDate (aEbiDelivery.getDate ());
     else
@@ -240,7 +235,8 @@ public abstract class AbstractEbInterface61ToUBLConverter extends AbstractEbInte
         aUBLPeriod.setEndDate (aEbiDelivery.getPeriod ().getToDate ());
         aUBLDelivery.setRequestedDeliveryPeriod (aUBLPeriod);
       }
-    aUBLDelivery.setDeliveryAddress (convertAddress (aEbiDelivery.getAddress (), aContentLocale));
+    // BG-15
+    aUBLDeliveryLocation.setAddress (convertAddress (aEbiDelivery.getAddress (), aContentLocale));
     aUBLDelivery.setDeliveryParty (convertParty (aEbiDelivery.getAddress (),
                                                  aEbiDelivery.getContact (),
                                                  aContentLocale));

@@ -343,9 +343,17 @@ public abstract class AbstractToEbInterface40Converter extends AbstractToEbInter
                                                    @NonNull final Locale aDisplayLocale)
   {
     final Ebi40DeliveryType aEbiDelivery = new Ebi40DeliveryType ();
+    final LocationType aUBLDeliveryLocation = aUBLDelivery.getDeliveryLocation ();
 
     // Set the delivery ID
-    aEbiDelivery.setDeliveryID (aUBLDelivery.getIDValue ());
+    // Prefer EN 16931-1 BT-71 mapping
+    if (aUBLDeliveryLocation != null)
+      aEbiDelivery.setDeliveryID (aUBLDeliveryLocation.getIDValue ());
+    if (StringHelper.isEmpty (aEbiDelivery.getDeliveryID ()))
+    {
+      // Old version as fallback
+      aEbiDelivery.setDeliveryID (aUBLDelivery.getIDValue ());
+    }
 
     // Set the delivery date
     aEbiDelivery.setDate (aUBLDelivery.getActualDeliveryDateValue ());
@@ -376,20 +384,20 @@ public abstract class AbstractToEbInterface40Converter extends AbstractToEbInter
       }
     }
 
-    final LocationType aUBLDeliveryLocation = aUBLDelivery.getDeliveryLocation ();
-    if (aUBLDeliveryLocation != null && aUBLDeliveryLocation.getAddress () != null)
+    if (aUBLDeliveryLocation != null)
     {
       // Optional description
       aEbiDelivery.setDescription (getAggregated (aUBLDeliveryLocation.getDescription ()));
 
-      if (aEbiAddress == null || isAddressIncomplete (aEbiAddress))
-      {
-        // No Delivery/DeliveryAddress present
-        if (aEbiAddress == null)
-          aEbiAddress = new Ebi40AddressType ();
-        setAddressData (aUBLDeliveryLocation.getAddress (), aEbiAddress, aContentLocale);
-        aEbiDelivery.setAddress (aEbiAddress);
-      }
+      if (aUBLDeliveryLocation.getAddress () != null)
+        if (aEbiAddress == null || isAddressIncomplete (aEbiAddress))
+        {
+          // No Delivery/DeliveryAddress present
+          if (aEbiAddress == null)
+            aEbiAddress = new Ebi40AddressType ();
+          setAddressData (aUBLDeliveryLocation.getAddress (), aEbiAddress, aContentLocale);
+          aEbiDelivery.setAddress (aEbiAddress);
+        }
     }
 
     if (aEbiAddress != null)
