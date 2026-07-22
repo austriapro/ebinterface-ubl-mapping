@@ -974,20 +974,20 @@ public final class InvoiceToEbInterface41Converter extends AbstractToEbInterface
             final Ebi41ReductionAndSurchargeBaseType aEbiRSItem = new Ebi41ReductionAndSurchargeBaseType ();
             // Amount is mandatory
             final BigDecimal aAmount = aUBLAllowanceCharge.getAmountValue ();
-            aEbiRSItem.setAmount (bSwapSigns ? aAmount.negate () : aAmount);
+            aEbiRSItem.setAmount ((bSwapSigns ? aAmount.negate () : aAmount).setScale (SCALE_PRICE2, ROUNDING_MODE));
 
             // Base amount is optional
             if (aUBLAllowanceCharge.getBaseAmount () != null)
-              aEbiRSItem.setBaseAmount (aUBLAllowanceCharge.getBaseAmountValue ());
+              aEbiRSItem.setBaseAmount (aUBLAllowanceCharge.getBaseAmountValue ().setScale (SCALE_PRICE2, ROUNDING_MODE));
             if (aEbiRSItem.getBaseAmount () == null)
-              aEbiRSItem.setBaseAmount (aEbiBaseAmount);
+              aEbiRSItem.setBaseAmount (aEbiBaseAmount.setScale (SCALE_PRICE2, ROUNDING_MODE));
 
             if (aUBLAllowanceCharge.getMultiplierFactorNumeric () != null)
             {
               // Percentage is optional
               final BigDecimal aPerc = aUBLAllowanceCharge.getMultiplierFactorNumericValue ()
                                                           .multiply (CGlobal.BIGDEC_100);
-              aEbiRSItem.setPercentage (aPerc);
+              aEbiRSItem.setPercentage (aPerc.setScale (SCALE_PERC, ROUNDING_MODE));
             }
 
             if (eSurcharge.isTrue ())
@@ -1084,19 +1084,19 @@ public final class InvoiceToEbInterface41Converter extends AbstractToEbInterface
         final Ebi41ReductionAndSurchargeType aEbiRSItem = new Ebi41ReductionAndSurchargeType ();
         // Amount is mandatory
         final BigDecimal aAmount = aUBLAllowanceCharge.getAmountValue ();
-        aEbiRSItem.setAmount (aAmount);
+        aEbiRSItem.setAmount (aAmount.setScale (SCALE_PRICE2, ROUNDING_MODE));
 
         // Base amount is optional
         if (aUBLAllowanceCharge.getBaseAmount () != null)
-          aEbiRSItem.setBaseAmount (aUBLAllowanceCharge.getBaseAmountValue ());
+          aEbiRSItem.setBaseAmount (aUBLAllowanceCharge.getBaseAmountValue ().setScale (SCALE_PRICE2, ROUNDING_MODE));
         if (aEbiRSItem.getBaseAmount () == null)
-          aEbiRSItem.setBaseAmount (aEbiBaseAmount);
+          aEbiRSItem.setBaseAmount (aEbiBaseAmount.setScale (SCALE_PRICE2, ROUNDING_MODE));
 
         if (aUBLAllowanceCharge.getMultiplierFactorNumeric () != null)
         {
           // Percentage is optional
           final BigDecimal aPerc = aUBLAllowanceCharge.getMultiplierFactorNumericValue ().multiply (CGlobal.BIGDEC_100);
-          aEbiRSItem.setPercentage (aPerc);
+          aEbiRSItem.setPercentage (aPerc.setScale (SCALE_PERC, ROUNDING_MODE));
         }
 
         aEbiRSItem.setComment (getAllowanceChargeComment (aUBLAllowanceCharge));

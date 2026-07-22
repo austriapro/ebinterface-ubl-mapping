@@ -34,8 +34,9 @@ Note: prior to v4.5.0 the Maven group ID was `com.helger`.
 
 # News and noteworthy
 
-v6.1.2 - work in progress
+v6.1.2 - 2026-07-22
 * No longer an OSGI bundle
+* Rounding the reduction/surcharge `BaseAmount`, `Amount` and `Percentage` to the ebInterface `Decimal2Type` scale on the UBL to ebInterface mapping
 
 v6.1.1 - 2026-03-02
 * Fixed the mapping of EN 16931 BT-71 (Deliver to location identifier) to ebInterface
