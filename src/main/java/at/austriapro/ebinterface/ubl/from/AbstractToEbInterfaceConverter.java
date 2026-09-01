@@ -133,6 +133,8 @@ public abstract class AbstractToEbInterfaceConverter extends AbstractEbInterface
                          "No tax percentage could be determined for this tax category."),
     TAXABLE_AMOUNT_MISSING ("Es konnte kein Steuerbasisbetrag (der Betrag auf den die Steuer anzuwenden ist) für diese Steuerkategorie ermittelt werden.",
                             "No taxable amount could be determined for this tax category."),
+    TAX_TOTAL_WITHOUT_TAX_SUBTOTAL ("Das TaxTotal Element enthält zwar den Steuerbetrag ''{0}'' aber kein TaxSubtotal. Der Betrag wird ignoriert, da ebInterface keinen Steuerbetrag ohne Bemessungsgrundlage und Steuersatz abbilden kann.",
+                                    "The TaxTotal element contains the tax amount ''{0}'' but no TaxSubtotal. The amount is ignored, because ebInterface cannot represent a tax amount without taxable amount and tax percentage."),
     UNSUPPORTED_TAX_SCHEME ("Nicht unterstütztes Steuerschema gefunden: ''{0}'' und ''{1}''.",
                             "Other tax scheme found and ignored: ''{0}'' and ''{1}''."),
     DETAILS_TAX_PERCENTAGE_NOT_FOUND ("Der Steuersatz der Rechnungszeile konnte nicht ermittelt werden. Verwende den Standardwert {0}%.",

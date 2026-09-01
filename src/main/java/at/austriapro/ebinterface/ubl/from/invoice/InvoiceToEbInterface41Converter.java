@@ -460,6 +460,17 @@ public final class InvoiceToEbInterface41Converter extends AbstractToEbInterface
       int nTaxTotalIndex = 0;
       for (final TaxTotalType aUBLTaxTotal : aUBLDoc.getTaxTotal ())
       {
+        if (aUBLTaxTotal.hasNoTaxSubtotalEntries () && aUBLTaxTotal.getTaxAmount () != null)
+        {
+          // EN 16931 BR-CO-18 requires at least one VAT breakdown group (BG-23) and
+          // ebInterface has no counterpart for a plain total tax amount
+          aTransformationErrorList.add (SingleError.builderWarn ()
+                                                   .errorFieldName ("TaxTotal[" + nTaxTotalIndex + "]/TaxAmount")
+                                                   .errorText (EText.TAX_TOTAL_WITHOUT_TAX_SUBTOTAL.getDisplayTextWithArgs (m_aDisplayLocale,
+                                                                                                                            aUBLTaxTotal.getTaxAmountValue ()))
+                                                   .build ());
+        }
+
         int nTaxSubtotalIndex = 0;
         for (final TaxSubtotalType aUBLSubtotal : aUBLTaxTotal.getTaxSubtotal ())
         {

@@ -34,6 +34,9 @@ Note: prior to v4.5.0 the Maven group ID was `com.helger`.
 
 # News and noteworthy
 
+v6.1.3 - work in progress
+* Added a warning to the ebInterface conversion, if a UBL `TaxTotal` element contains a `TaxAmount` but no `TaxSubtotal`, as this value can not be mapped to ebInterface
+
 v6.1.2 - 2026-07-22
 * No longer an OSGI bundle
 * Rounding the reduction/surcharge `BaseAmount`, `Amount` and `Percentage` to the ebInterface `Decimal2Type` scale on the UBL to ebInterface mapping
