@@ -34,7 +34,7 @@ Note: prior to v4.5.0 the Maven group ID was `com.helger`.
 
 # News and noteworthy
 
-v6.1.3 - work in progress
+v6.1.3 - 2026-09-25
 * Added a warning to the ebInterface conversion, if a UBL `TaxTotal` element contains a `TaxAmount` but no `TaxSubtotal`, as this value can not be mapped to ebInterface
 * Mapping the ebInterface VAT breakdown `Comment` to UBL `TaxExemptionReason` (BT-120) for ebInterface 5.0, 6.0 and 6.1
 * Mapping the UBL `TaxExemptionReason` (BT-120) to the ebInterface VAT breakdown `Comment` for all tax category codes, and no longer only for the tax exemption ones, for ebInterface 5.0, 6.0 and 6.1
