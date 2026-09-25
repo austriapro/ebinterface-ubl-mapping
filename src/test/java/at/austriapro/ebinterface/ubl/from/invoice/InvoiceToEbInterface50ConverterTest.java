@@ -77,8 +77,8 @@ public final class InvoiceToEbInterface50ConverterTest
   public void testConvertPeppolInvoiceLax ()
   {
     final ICommonsList <IReadableResource> aTestFiles = new CommonsArrayList <> ();
-    for (final File aFile : new FileSystemIterator (new File (PATH_UBL +
-                                                              "invoice")).withFilter (IFileFilter.filenameEndsWith (".xml")))
+    for (final File aFile : new FileSystemIterator (new File (PATH_UBL + "invoice")).withFilter (IFileFilter
+                                                                                                            .filenameEndsWith (".xml")))
       if (!IGNORED_FILES.contains (aFile.getName ()))
         aTestFiles.add (new FileSystemResource (aFile));
 
@@ -117,8 +117,8 @@ public final class InvoiceToEbInterface50ConverterTest
   public void testConvertPeppolInvoiceERB ()
   {
     final ICommonsList <IReadableResource> aTestFiles = new CommonsArrayList <> ();
-    for (final File aFile : new FileSystemIterator (new File (PATH_UBL +
-                                                              "invoice")).withFilter (IFileFilter.filenameEndsWith (".xml")))
+    for (final File aFile : new FileSystemIterator (new File (PATH_UBL + "invoice")).withFilter (IFileFilter
+                                                                                                            .filenameEndsWith (".xml")))
       if (!IGNORED_FILES.contains (aFile.getName ()))
         aTestFiles.add (new FileSystemResource (aFile));
 
@@ -157,8 +157,8 @@ public final class InvoiceToEbInterface50ConverterTest
   public void testConvertPeppolInvoiceLaxBad ()
   {
     final ICommonsList <IReadableResource> aTestFiles = new CommonsArrayList <> ();
-    for (final File aFile : new FileSystemIterator (new File (PATH_UBL +
-                                                              "invoice_bad")).withFilter (IFileFilter.filenameEndsWith (".xml")))
+    for (final File aFile : new FileSystemIterator (new File (PATH_UBL + "invoice_bad")).withFilter (IFileFilter
+                                                                                                                .filenameEndsWith (".xml")))
       if (!IGNORED_FILES.contains (aFile.getName ()))
         aTestFiles.add (new FileSystemResource (aFile));
 
@@ -205,8 +205,8 @@ public final class InvoiceToEbInterface50ConverterTest
     assertNotNull (aEbiDoc);
 
     // To UBL - BT-120 is dropped for the tax category code "S" only
-    final InvoiceType aUBLDoc = new EbInterface50ToInvoiceConverter (Locale.GERMANY,
-                                                                     Locale.GERMANY).convertInvoice (aEbiDoc);
+    final InvoiceType aUBLDoc = new EbInterface50ToInvoiceConverter (Locale.GERMANY, Locale.GERMANY).convertInvoice (
+                                                                                                                     aEbiDoc);
     assertNotNull (aUBLDoc);
 
     // Back to ebInterface - BT-120 ends up in the VAT breakdown Comment again
@@ -218,10 +218,7 @@ public final class InvoiceToEbInterface50ConverterTest
     assertNotNull (aEbiDoc2);
     assertTrue (aErrorList.toString (), aErrorList.containsNoError ());
 
-    assertEquals (new CommonsArrayList <String> (null,
-                                                 "10% reduzierter Steuersatz",
-                                                 "Reverse Charge",
-                                                 COMMENT_EXEMPT),
+    assertEquals (new CommonsArrayList <> (null, "10% reduzierter Steuersatz", "Reverse Charge", COMMENT_EXEMPT),
                   _getTaxItemComments (aEbiDoc2));
   }
 }

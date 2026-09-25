@@ -193,7 +193,7 @@ public abstract class AbstractToEbInterface42Converter extends AbstractToEbInter
     // Person name
     final ICommonsList <String> ebContacts = new CommonsArrayList <> ();
     if (aUBLContact != null)
-      if (StringHelper.isNotEmptyAfterTrim (aUBLContact.getNameValue ()))
+      if (StringHelper.isNotBlank (aUBLContact.getNameValue ()))
         ebContacts.add (StringHelper.trim (aUBLContact.getNameValue ()));
     for (final PersonType aUBLPerson : aUBLParty.getPerson ())
     {
