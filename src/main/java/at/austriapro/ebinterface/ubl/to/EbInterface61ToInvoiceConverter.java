@@ -792,6 +792,7 @@ public class EbInterface61ToInvoiceConverter extends AbstractEbInterface61ToUBLC
           final TaxCategoryType aUBLTaxCategory = createTaxCategoryVAT (aEbiVATItem.getTaxPercent ()
                                                                                    .getTaxCategoryCode ());
           aUBLTaxCategory.setPercent (aEbiVATItem.getTaxPercentValue ());
+          applyTaxExemptionReason (aUBLTaxCategory, aEbiVATItem.getComment ());
           aUBLTaxSubtotal.setTaxCategory (aUBLTaxCategory);
         }
         aUBLTaxTotal.addTaxSubtotal (aUBLTaxSubtotal);

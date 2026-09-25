@@ -625,7 +625,16 @@ public final class CreditNoteToEbInterface60Converter extends AbstractToEbInterf
                   if (bTaxExemption)
                   {
                     aEbiTaxPerc.setValue (BigDecimal.ZERO);
-
+                  }
+                  else
+                  {
+                    // tax rate
+                    aEbiTaxPerc.setValue (aUBLPercentage);
+                  }
+                  // EN 16931 BT-120 - present for all tax category codes, and not only
+                  // for the tax exemption ones
+                  if (StringHelper.isEmpty (aEbiTaxItem.getComment ()))
+                  {
                     String sReason = null;
                     if (aUBLTaxCategory.hasTaxExemptionReasonEntries ())
                       sReason = aUBLTaxCategory.getTaxExemptionReasonAtIndex (0).getValue ();
@@ -633,11 +642,6 @@ public final class CreditNoteToEbInterface60Converter extends AbstractToEbInterf
                       sReason = aUBLTaxCategory.getTaxExemptionReasonCode ().getValue ();
                     if (StringHelper.isNotEmpty (sReason))
                       aEbiTaxItem.setComment (sReason);
-                  }
-                  else
-                  {
-                    // tax rate
-                    aEbiTaxPerc.setValue (aUBLPercentage);
                   }
                   aEbiTaxItem.setTaxPercent (aEbiTaxPerc);
                   // Tax amount (mandatory)

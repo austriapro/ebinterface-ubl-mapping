@@ -16,6 +16,7 @@
  */
 package at.austriapro.ebinterface.ubl.from.invoice;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -23,6 +24,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.util.Locale;
 
+import org.jspecify.annotations.NonNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -35,7 +37,9 @@ import com.helger.collection.commons.ICommonsList;
 import com.helger.collection.commons.ICommonsSet;
 import com.helger.diagnostics.error.level.EErrorLevel;
 import com.helger.diagnostics.error.list.ErrorList;
+import com.helger.ebinterface.EbInterface61Marshaller;
 import com.helger.ebinterface.v61.Ebi61InvoiceType;
+import com.helger.ebinterface.v61.Ebi61TaxItemType;
 import com.helger.io.file.FileOperations;
 import com.helger.io.file.FileSystemIterator;
 import com.helger.io.file.FilenameHelper;
@@ -46,6 +50,7 @@ import com.helger.ubl21.UBL21Marshaller;
 
 import at.austriapro.ebinterface.ubl.from.MockEbi61Marshaller;
 import at.austriapro.ebinterface.ubl.from.ToEbinterfaceSettings;
+import at.austriapro.ebinterface.ubl.to.EbInterface61ToInvoiceConverter;
 import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
 
 /**
@@ -60,6 +65,7 @@ public final class InvoiceToEbInterface61ConverterTest
 
   private static final ICommonsSet <String> IGNORED_FILES = new CommonsHashSet <> ("test-paymentmeans-code-49.xml");
   private static final String PATH_UBL = "src/test/resources/external/ubl/";
+  private static final String COMMENT_EXEMPT = "USt-befreit gemäß § xxx";
 
   @Before
   public void onInit ()
@@ -180,5 +186,42 @@ public final class InvoiceToEbInterface61ConverterTest
       final Document aDocEb = new MockEbi61Marshaller ().getAsDocument (aEbInvoice);
       assertNull (aRes.getPath () + ": " + aErrorList.toString (), aDocEb);
     }
+  }
+
+  @NonNull
+  private static ICommonsList <String> _getTaxItemComments (@NonNull final Ebi61InvoiceType aEbiDoc)
+  {
+    final ICommonsList <String> ret = new CommonsArrayList <> ();
+    for (final Ebi61TaxItemType aEbiTaxItem : aEbiDoc.getTax ().getTaxItem ())
+      ret.add (aEbiTaxItem.getComment ());
+    return ret;
+  }
+
+  @Test
+  public void testTaxExemptionReason ()
+  {
+    final File aFile = new File ("src/test/resources/external/ebinterface/ebi61/ebinterface_6p1_sample_dokumentation.xml");
+    final Ebi61InvoiceType aEbiDoc = new EbInterface61Marshaller ().read (aFile);
+    assertNotNull (aEbiDoc);
+
+    // To UBL - BT-120 is dropped for the tax category code "S" only
+    final InvoiceType aUBLDoc = new EbInterface61ToInvoiceConverter (Locale.GERMANY,
+                                                                     Locale.GERMANY).convertInvoice (aEbiDoc);
+    assertNotNull (aUBLDoc);
+
+    // Back to ebInterface - BT-120 ends up in the VAT breakdown Comment again
+    final ErrorList aErrorList = new ErrorList ();
+    final Ebi61InvoiceType aEbiDoc2 = new InvoiceToEbInterface61Converter (Locale.GERMANY,
+                                                                           Locale.GERMANY,
+                                                                           new ToEbinterfaceSettings ()).convertToEbInterface (aUBLDoc,
+                                                                                                                               aErrorList);
+    assertNotNull (aEbiDoc2);
+    assertTrue (aErrorList.toString (), aErrorList.containsNoError ());
+
+    assertEquals (new CommonsArrayList <String> (null,
+                                                 "10% reduzierter Steuersatz",
+                                                 "Abgabe - nicht steuerbar",
+                                                 COMMENT_EXEMPT),
+                  _getTaxItemComments (aEbiDoc2));
   }
 }
