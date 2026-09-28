@@ -1,8 +1,11 @@
 # ebinterface-ubl-mapping
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/at.austriapro/ebinterface-ubl-mapping/badge.svg)](https://maven-badges.herokuapp.com/maven-central/at.austriapro/ebinterface-ubl-mapping) 
+<!-- ph-badge-start -->
+[![Sonatype Central](https://maven-badges.sml.io/sonatype-central/at.austriapro/ebinterface-ubl-mapping/badge.svg)](https://maven-badges.sml.io/sonatype-central/at.austriapro/ebinterface-ubl-mapping/)
 [![javadoc](https://javadoc.io/badge2/at.austriapro/ebinterface-ubl-mapping/javadoc.svg)](https://javadoc.io/doc/at.austriapro/ebinterface-ubl-mapping)
-[![CodeCov](https://codecov.io/gh/austriapro/ebinterface-ubl-mapping/branch/master/graph/badge.svg)](https://codecov.io/gh/austriapro/ebinterface-ubl-mapping)
+
+> If this project saved you some time or made your day a little easier, a star would mean a lot — it helps others find it too.
+<!-- ph-badge-end -->
 
 Mapping ebInterface 4.x/5.x/6.x from and to UBL 2.1.
 
