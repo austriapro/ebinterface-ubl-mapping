@@ -26,7 +26,7 @@
   </parent>
   <groupId>at.austriapro</groupId>
   <artifactId>ebinterface-ubl-mapping</artifactId>
-  <version>6.1.3-SNAPSHOT</version>
+  <version>6.1.4-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>ebinterface-ubl-mapping</name>
   <inceptionYear>2010</inceptionYear>

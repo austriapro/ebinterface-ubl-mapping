@@ -79,7 +79,7 @@
 			<Phone>+43 / 1 / 78 56 789 21</Phone>
 			<Email>moser@willi.at</Email>
 		</Contact>
-		<InvoiceRecipientsBillerID>ID4456</InvoiceRecipientsBillerID>
+		<InvoiceRecipientsBillerID>1234567</InvoiceRecipientsBillerID>
 		<Extension>
 			<Custom ID="ext_id" Name="BillerExtensionAutomotive">
 				<n1:DeliveryExtension>456</n1:DeliveryExtension>
@@ -90,7 +90,7 @@
 		<VATIdentificationNumber>ATU00000006</VATIdentificationNumber>
 		<FurtherIdentification IdentificationType="DVR">7654543</FurtherIdentification>
 		<OrderReference>
-			<OrderID>ID3456</OrderID>
+			<OrderID>Z01</OrderID>
 			<ReferenceDate>2017-09-20</ReferenceDate>
 			<Description>Bestellung per Fax.</Description>
 		</OrderReference>

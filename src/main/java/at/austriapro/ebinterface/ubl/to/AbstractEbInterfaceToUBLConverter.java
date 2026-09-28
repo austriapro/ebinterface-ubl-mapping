@@ -32,6 +32,7 @@ import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.Cou
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.ItemPropertyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxCategoryType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxSchemeType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.TaxExemptionReasonType;
 
 /**
  * Base class for ebInterface to Peppol UBL converter
@@ -96,6 +97,31 @@ public abstract class AbstractEbInterfaceToUBLConverter extends AbstractEbInterf
     // Set default scheme
     aUBLTaxCategory.setTaxScheme (createTaxScheme (OTHER_TAX_SCHEME_ID));
     return aUBLTaxCategory;
+  }
+
+  /**
+   * Add the provided text as the UBL <code>TaxExemptionReason</code> (EN 16931 BT-120) to the
+   * provided tax category. The EN 16931 rules BR-S-10 and BR-Z-10 forbid BT-120 for the tax
+   * category codes "S" and "Z", so for these codes nothing happens.
+   *
+   * @param aUBLTaxCategory
+   *        The UBL tax category to be filled. May not be <code>null</code>.
+   * @param sComment
+   *        The tax exemption reason text to be used. May be <code>null</code>.
+   */
+  protected static final void applyTaxExemptionReason (@NonNull final TaxCategoryType aUBLTaxCategory,
+                                                       @Nullable final String sComment)
+  {
+    if (StringHelper.isNotEmpty (sComment))
+    {
+      // BR-S-10 and BR-Z-10 forbid BT-120 for these tax category codes
+      final String sTaxCategoryCode = aUBLTaxCategory.getIDValue ();
+      if (!ETaxCategoryCode.S.getID ().equals (sTaxCategoryCode) &&
+          !ETaxCategoryCode.Z.getID ().equals (sTaxCategoryCode))
+      {
+        aUBLTaxCategory.addTaxExemptionReason (new TaxExemptionReasonType (sComment));
+      }
+    }
   }
 
   @NonNull
