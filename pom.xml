@@ -22,7 +22,7 @@
   <parent>
     <groupId>com.helger</groupId>
     <artifactId>parent-pom</artifactId>
-    <version>3.1.1</version>
+    <version>3.2.0</version>
   </parent>
   <groupId>at.austriapro</groupId>
   <artifactId>ebinterface-ubl-mapping</artifactId>
@@ -65,8 +65,8 @@
     <dependencies>
       <dependency>
         <groupId>com.helger.commons</groupId>
-        <artifactId>ph-commons-parent-pom</artifactId>
-        <version>12.6.0</version>
+        <artifactId>ph-commons-bom</artifactId>
+        <version>12.7.1</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -77,24 +77,38 @@
       </dependency>
       <dependency>
         <groupId>com.helger.masterdata</groupId>
-        <artifactId>ph-masterdata-parent-pom</artifactId>
-        <version>8.2.1</version>
+        <artifactId>ph-masterdata-bom</artifactId>
+        <version>8.2.2</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>com.helger.ubl</groupId>
-        <artifactId>ph-ubl-parent-pom</artifactId>
-        <version>10.2.1</version>
+        <artifactId>ph-ubl-bom</artifactId>
+        <version>10.3.0</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>com.helger.peppol</groupId>
-        <artifactId>peppol-commons-parent-pom</artifactId>
-        <version>13.2.2</version>
+        <artifactId>peppol-commons-bom</artifactId>
+        <version>13.2.3</version>
         <type>pom</type>
         <scope>import</scope>
+      </dependency>
+      
+      <dependency>
+        <groupId>org.glassfish.jaxb</groupId>
+        <artifactId>jaxb-bom</artifactId>
+        <version>4.0.9</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${junit4.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
